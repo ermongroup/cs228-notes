@@ -1,0 +1,25 @@
+baseurl: /cs228-notes
+title: Probabilistic graphical modeling course
+subtitle: Lecture notes for Stanford cs228.
+author: Volodymyr Kuleshov
+simple_search: http://google.com/search
+description: Lecture notes for Stanford cs228.
+name: cs228-notes
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+permalink: /articles/:short_year/:title
+timezone: America/New_York
+excerpt_separator: <!--more-->  # you can specify your own separator, of course.
+exclude: ['Gemfile', 'Gemfile.lock', 'Rakefile', 'README.md']
+post:
+  template: _post.txt
+  extension: md
+page:
+  template: _page.txt
+  extension: md
+editor: gvim
+git:
+  branch: master
+transfer:
+  command: rsync
+  settings: -av
+  source: _site/

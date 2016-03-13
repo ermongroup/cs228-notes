@@ -1,0 +1,17 @@
+<!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+	<!-- <a href="{{site.baseurl}}/"><img class="badge" src="{{site.baseurl}}/assets/img/badge_1.png" alt="CH"></a> -->
+	{% for node in site.pages %}
+		{% unless node.nav_exclude %}
+		    {% if page.url == node.url %}
+		      <a class="active" href="{{node.url | prepend: site.baseurl}}" class="active">{{node.title}}</a>
+		    {% else %}
+		      <a href="{{node.url | prepend: site.baseurl}}">{{node.title}}</a>
+		    {% endif %}
+	    {% endunless %}
+  	{% endfor %}
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="#">Github</a>
+	</nav>
+</header>
