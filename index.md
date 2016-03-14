@@ -10,11 +10,11 @@ This site is currently under construction, but come back soon as we get more mat
 
 ## Preliminaries
 
-1. [Introduction](#): What is probabilistic graphical modeling? Overview of the course.
+1. [Introduction](preliminaries/introduction/) What is probabilistic graphical modeling? Overview of the course.
 
 2. [Review of probability theory](#): Probability distributions. Conditional probability. Random variables.
 
-3. [Examples of real-world applications](#): Image denoising. RNA structure prediciton. Lexical analyses of sentences. Optical character recogition.
+2. [Examples of real-world applications](#): Image denoising. RNA structure prediciton. Lexical analyses of sentences. Optical character recogition.
 
 ## Representation
 

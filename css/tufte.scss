@@ -55,7 +55,7 @@ html{
 
 // sets link style according to values in _settings.scss
 .mathblock{
-  font-size: 1.3rem;
+  font-size: 1.5rem;
 }
 a {
   color: $contrast-color;
@@ -277,13 +277,17 @@ section { padding-top: 1rem;
 
 p, ol, ul { font-size: 1.4rem; }
 
+// ol { width: 50%;
+//      -webkit-padding-start: 5%;
+//      -webkit-padding-end: 5%;
+//    }
 
 ul { width: 45%;
      -webkit-padding-start: 5%;
      -webkit-padding-end: 5%;
      list-style-type: none; }
 
-//li { padding: 0.5em 0; } //vertical padding on list items screws up vertical rhythym
+ul li { padding: 0.5em 0; } //vertical padding on list items screws up vertical rhythym
 
 figure, figure img.maincolumn { max-width: 55%;
          -webkit-margin-start: 0;
