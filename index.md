@@ -3,10 +3,10 @@ layout: post
 title: Contents
 ---
 {% newthought 'These notes'%} form a concise introductory course on probabilistic graphical modeling{% sidenote 1 'Probabilistic graphical modeling is a subfield of AI that studies how to model the world with probability distributions.'%}.
-They accompany and are based on the material of [CS228](cs.stanford.edu/~ermon/cs228/index.html), the graphical models course at Stanford University, taught by [Stefano Ermon](cs.stanford.edu/~ermon/).
+They accompany and are based on the material of [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), the graphical models course at Stanford University, taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/).
 
-The notes are written and maintained by [Volodymyr Kuleshov](www.stanford.edu/~kuleshov); contact me with any feedback and feel free to contribute your improvements on [Github](https://github.com/kuleshov/cs228-notes).
 This site is currently under construction, but come back soon as we get more material online.
+In the meantime, contact [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov) with any feedback and feel free to contribute your improvements on [Github](https://github.com/kuleshov/cs228-notes).
 
 ## Preliminaries
 
@@ -24,9 +24,9 @@ This site is currently under construction, but come back soon as we get more mat
 
 ## Inference
 
-1. [Variable elimination](#): The inference problem. Variable elimination. Complexity of inference.
+1. [Variable elimination](inference/ve/) The inference problem. Variable elimination. Complexity of inference.
 
-2. Belief propagation: The junction tree algorithm. Exact inference in arbitrary graphs.
+2. [Belief propagation](inference/jt/): The junction tree algorithm. Exact inference in arbitrary graphs.
 
 3. Sampling-based inference: Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.
 
