@@ -26,9 +26,9 @@ In the meantime, contact [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov)
 
 1. [Variable elimination](inference/ve/) The inference problem. Variable elimination. Complexity of inference.
 
-2. [Belief propagation](inference/jt/): The junction tree algorithm. Exact inference in arbitrary graphs.
+2. [Belief propagation](inference/jt/): The junction tree algorithm. Exact inference in arbitrary graphs. Loopy Belief Propagation.
 
-3. Sampling-based inference: Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.
+3. [Sampling-based inference](inference/sampling/): Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.
 
 ## Learning
 
