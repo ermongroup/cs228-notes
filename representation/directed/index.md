@@ -12,7 +12,7 @@ In this chapter, we will:
 - Study how our graphical representation describes properties of the probability distribution; this will enable to us to accurately understand our modeling assumptions and will later help designing efficient inference algorithms.
 
 We will later see that there are two general approaches to representing probabilities.
-The first approach, which we will see here, describes probabilities using directed graphs, also referred to as *Bayesian networks*. The second approach, covered in the next chapter, will involve directed graphs, which are also called *Markov random fields*.
+The first approach, which we will see here, describes probabilities using directed graphs, also referred to as *Bayesian networks*. The second approach, covered in the next chapter, will involve undirected graphs, which are also called *Markov random fields*.
 
 
 ## Probabilistic modeling with Bayesian networks
@@ -42,7 +42,7 @@ p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
 The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student's intelligence and the difficulty of the exam.
 
 Another way to interpret directed graphs is in terms of stories for how the data was generated.
-In the above example, to determine the quality of the reference letter, we may sfirst ample an intelligence level and an exam difficulty; then, a student's grade is sampled given these parameters; finally, the recomendation letter is generated based on that grade.
+In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student's grade is sampled given these parameters; finally, the recomendation letter is generated based on that grade.
 In the previous spam classification example, we implicitly postulated that email is generated according to a two-step process:
 first, we choose a spam/non-spam label $$y$$; then we sample independently whether each word is present, conditioned on that label.
 
