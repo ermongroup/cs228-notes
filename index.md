@@ -28,12 +28,21 @@ In the meantime, contact [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov)
 
 2. [Belief propagation](inference/jt/): The junction tree algorithm. Exact inference in arbitrary graphs. Loopy Belief Propagation.
 
-3. [Sampling-based inference](inference/sampling/): Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.
+3. [MAP inference](inference/map/): Max-sum message passing. Graphcuts. Linear programming relaxations. Dual decomposition.
+
+4. [Sampling-based inference](inference/sampling/): Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.
+
+5. Variational inference: Variational lower bounds. Mean Field. Marginal polytope and its relaxations.
 
 ## Learning
 
-1. Learning in directed models: Undirected graphs. Independencies in undirected models. Conditional random fields.
+1. Learning in directed models: Maximum likelihood estimation. Learning theory basics. Maximum likelihood estimators for Bayesian networks.
 
-2. Learning in undirected models: Undirected graphs. Independencies in undirected models. Conditional random fields.
+2. Learning in undirected models: Exponential families. Gradient descent maximum likelihood estimation.
 
-3. Structure learning: Undirected graphs. Independencies in undirected models. Conditional random fields.
+3. Learning in latent-variable models: Gaussian mixture models. Expectation maximization.
+
+4. Bayesian learning: Bayesian paradigm. Conjugate priors. Examples.
+
+5. Structure learning: Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning.
+
