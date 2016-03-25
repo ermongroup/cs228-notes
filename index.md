@@ -3,10 +3,12 @@ layout: post
 title: Contents
 ---
 {% newthought 'These notes'%} form a concise introductory course on probabilistic graphical modeling{% sidenote 1 'Probabilistic graphical modeling is a subfield of AI that studies how to model the world with probability distributions.'%}.
-They accompany and are based on the material of [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), the graphical models course at Stanford University, taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/).
+They accompany the material of [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), the graphical models course at Stanford University, taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and are written and maintained by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov).
 
-This site is currently under construction, but come back soon as we get more material online.
-In the meantime, contact [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov) with any feedback and feel free to contribute your improvements on [Github](https://github.com/kuleshov/cs228-notes).
+{% marginnote 'mn-id-whatever' 'These notes are still **under construction**!
+They are about 70% complete, and probably contain a lot of typos.
+We are in the process of finalizing them; in the meantime feel free to submit your fixes on [Github](https://github.com/kuleshov/cs228-notes).'%}
+Please send any feedback to [Volodymyr](http://www.stanford.edu/~kuleshov); also, free to contribute your improvements on [Github](https://github.com/kuleshov/cs228-notes).
 
 ## Preliminaries
 
