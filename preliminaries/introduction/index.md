@@ -9,7 +9,7 @@ Building probabilistic models turns out to be a complex and fascinating problem.
 Probabilistic modeling is also deeply grounded in reality and has countless real-world applications in fields as diverse as medicine, language processing, vision, physics, and many others. 
 It is very likely that at least half a dozen applications currently running on your computer are using graphical models internally. 
 
-This combination of beautiful theory and powerful applications makes graphical models one of the most fascinating topics in modern artificial intelligence and computer science{% sidenote 1 'Indeed, the 2011 Turing award (concidered to be the "Nobel prize of computer science") was recently awarded to [Judea Pearl](http://amturing.acm.org/award_winners/pearl_2658896.cfm) for settling the foundations of probabilistic graphical modeling.'%}.
+This combination of beautiful theory and powerful applications makes graphical models one of the most fascinating topics in modern artificial intelligence and computer science{% sidenote 1 'Indeed, the 2011 Turing award (considered to be the "Nobel prize of computer science") was recently awarded to [Judea Pearl](http://amturing.acm.org/award_winners/pearl_2658896.cfm) for settling the foundations of probabilistic graphical modeling.'%}.
 
 ## Probabilistic modeling
 
@@ -47,7 +47,7 @@ In addition, we will also see many examples of applying these principled algorit
 
 To get a first taste of the of the challenges that will be facing us in this course, consider another application of probabilistic modeling: spam classification.
 
-Suppose we have a model $$p(y,x_1,...,x_n)$$ of word occurences in spam and non-spam mail. Each binary variable $$x_i$$ encodes whether the $$i$$-ith English word is present in the email; the binary variable $$Y$$ indicates whether the email is spam. In order to classify a new email, we may look at the probability {%m%} P(y=1 | x_1,...,x_n) {%em%}.
+Suppose we have a model $$p(y,x_1,...,x_n)$$ of word occurrences in spam and non-spam mail. Each binary variable $$x_i$$ encodes whether the $$i$$-ith English word is present in the email; the binary variable $$Y$$ indicates whether the email is spam. In order to classify a new email, we may look at the probability {%m%} P(y=1 | x_1,...,x_n) {%em%}.
 
 What is the ``size" of the function $$\pt$$ that we just defined? Our model defines a probability in $$[0,1]$$ for each combination of parameters $$Y,X_1,...,X_n$$;  specifying all these probabilities will require us to write down a staggering $$2^{n+1}$$ different values, one for each assignment to our $$n+1$$ binary variables. Since $$n$$ is the size of the English vocabulary, this is clearly impractical from both a computational (how do we store this large list) as well as from a statistical (how do we efficiently estimates all these parameters from limited data) point of view. More generally, our example illustrates one of the main challenges that this course will deal with: probabilities are inherently exponentially-sized objects; the only way in which we can manipulate them is by making simplifying assumptions about their structure.
 

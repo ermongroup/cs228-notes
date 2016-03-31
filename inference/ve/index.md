@@ -25,9 +25,9 @@ Consider first the problem of marginal inference. Suppose for simplicity that we
 {% math %}
 p(x_1,...,x_n) = p(x_1) \prod_{i=2}^n p(x_i \mid x_{i-1}).
 {% endmath %}
-We are interesteded in computing the marginal probability $$p(x_n)$$. We will assume for the rest of the chapter that the $$x_i$$ are discrete variables taking $$d$$ possible values each{% sidenote 1 'The principles behind variable elimination also extend to many continuous distributions (e.g. Gaussians), but we will not discuss these extensions here.'%}.
+We are interested in computing the marginal probability $$p(x_n)$$. We will assume for the rest of the chapter that the $$x_i$$ are discrete variables taking $$d$$ possible values each{% sidenote 1 'The principles behind variable elimination also extend to many continuous distributions (e.g. Gaussians), but we will not discuss these extensions here.'%}.
 
-The naive way of performing this is to sum the proability over all the $$d^{n-1}$$ assignments to $$x_1,...,x_{n-1}$$:
+The naive way of performing this is to sum the probability over all the $$d^{n-1}$$ assignments to $$x_1,...,x_{n-1}$$:
 {% math %}
 p(x_n) = \sum_{x_1} \cdots \sum_{x_{n-1}} p(x_1,...,x_n).
 {% endmath %}
@@ -40,7 +40,7 @@ p(x_n)
 & = \sum_{x_{n-1}} p(x_n \mid x_{n-1}) \sum_{x_{n-2}} p(x_{n-1} \mid x_{n-2}) \cdots \sum_{x_1} p(x_2 \mid x_1) p(x_1) .
 \end{align*}
 {% endmath %}
-We perform this summation by first summing the inner terms, starting from $$x_1$$, and ending with $$x_{n-1}$$. More concretely, we start by computing an intermediary *factor* $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$ by summing out $$x_1$$. This takes $$O(d^2)$$ time because we must sum over $$x_1$$ for eacha assignment to $$x_1$$. The resulting factor $$\tau(x_2)$$ can be thought of as a table of values (though not necessarily probabilities), with one entry for eacha assignment to $$x_2$$ (just as factor $$p(x_1)$$ can be represented as a table. We may then rewrite the marginal probability using $$\tau$$ as
+We perform this summation by first summing the inner terms, starting from $$x_1$$, and ending with $$x_{n-1}$$. More concretely, we start by computing an intermediary *factor* $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$ by summing out $$x_1$$. This takes $$O(d^2)$$ time because we must sum over $$x_1$$ for each assignment to $$x_1$$. The resulting factor $$\tau(x_2)$$ can be thought of as a table of values (though not necessarily probabilities), with one entry for each assignment to $$x_2$$ (just as factor $$p(x_1)$$ can be represented as a table. We may then rewrite the marginal probability using $$\tau$$ as
 {% math %}
 p(x_n) = \sum_{x_{n-1}} p(x_n \mid x_{n-1}) \sum_{x_{n-2}} p(x_{n-1} \mid x_{n-2}) \cdots \sum_{x_2} p(x_3 \mid x_2) \tau(x_2).
 {% endmath %}
@@ -110,7 +110,7 @@ The probability specified by the model is of the form
 {% math %}
 p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
 {% endmath %}
-Let's suppose that we are computing $$p(l)$$ and are eliminating variables in their topolgical ordering in the graph. First, we eliminate $$d$$, which corresponds to creating a new factor $$\tau_1(g,i) = \sum_{d} p(g \mid  i, d)p(d)$$. Next, we eliminate $$i$$ to produce a factor $$\tau_2(g,s) = \sum_{d} \tau_1(g,i) p(i) p(s \mid i)$$; then we eliminate $$g$$ yielding $$\tau_2(g) = \sum_{d} \tau_2(g,d)$$, and so forth. Note that these operations are equivalent to summing out the factored probability distribution as follows:
+Let's suppose that we are computing $$p(l)$$ and are eliminating variables in their topological ordering in the graph. First, we eliminate $$d$$, which corresponds to creating a new factor $$\tau_1(g,i) = \sum_{d} p(g \mid  i, d)p(d)$$. Next, we eliminate $$i$$ to produce a factor $$\tau_2(g,s) = \sum_{d} \tau_1(g,i) p(i) p(s \mid i)$$; then we eliminate $$g$$ yielding $$\tau_2(g) = \sum_{d} \tau_2(g,d)$$, and so forth. Note that these operations are equivalent to summing out the factored probability distribution as follows:
 {% math %}
 p(l) = \sum_{g} p(l \mid  g) \sum_{s} p(s\mid d) \sum_{i} p(i) \sum_{d} p(g \mid  i, d) p(d) .
 {% endmath %}
@@ -138,7 +138,7 @@ Clearly some ordering are much more efficient than others. In fact, the running 
 
 ### Choosing variable elimination orderings
 
-Unfortunately, choosing the optimal VE ordering is an NP-hard problem. However, in practice, we may resort to the following heurstics:
+Unfortunately, choosing the optimal VE ordering is an NP-hard problem. However, in practice, we may resort to the following heuristics:
 
 - *Min-neighbors*: Choose a variable with the fewest dependent variables.
 - *Min-weight*: Choose variables to minimize the product of the cardinalities of its dependent variables.

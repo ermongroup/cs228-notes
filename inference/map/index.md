@@ -21,7 +21,7 @@ Marginal inference can also be seen as computing and summing all assignments to 
 
 Note, however, that MAP inference is still not an easy problem in the general case.
 The above optimization objective includes many intractable problems as special cases, e.g. 3-sat. We may reduce 3-sat to MAP inference by constructing for each clause $$ c = (x \lor y \lor \neg z)$$ a factor $$\theta_c (x, y, z)$$ that equals one if $$x, y, z$$ satisfy
-clause $$c$$, and $$\theta_c (x, y, z) = 0$$ otherwise. Then, the 3-sat instance is satisfiable if and only if the value of the MAP assignment equals the number of clauses{% sidenote 1 'We may also use a similar construction to prove that marginal infernece is NP-hard. The high-level idea is to add an additional variable $$X$$ that equals $$1$$ when all the clauses are satisfied, and zero otherwise. Its marginal probability will be greater than zero iff the 3-sat instance is satisfiable.'%}.
+clause $$c$$, and $$\theta_c (x, y, z) = 0$$ otherwise. Then, the 3-sat instance is satisfiable if and only if the value of the MAP assignment equals the number of clauses{% sidenote 1 'We may also use a similar construction to prove that marginal inference is NP-hard. The high-level idea is to add an additional variable $$X$$ that equals $$1$$ when all the clauses are satisfied, and zero otherwise. Its marginal probability will be greater than zero iff the 3-sat instance is satisfiable.'%}.
 
 Nonetheless, we will see that the MAP problem is easier than general inference, in the sense that there are some models in which MAP inference can be solved in polynomial time, while general inference is NP-hard.
 
@@ -35,7 +35,7 @@ Many interesting examples of MAP inference are instances of *structured predicti
 {% marginfigure 'ocr' 'assets/img/ocr.png' 'Chain-structured conditional random field for optical character recognition.' %}
 We discussed structured prediction in detail when we covered CRFs.
 Recall that our main example was handwriting recognition, in which we are given 
-images $$x_i \in [0, 1]^{d\times d}$$ of characters in the form of pixel matrices; MAP inference in this setting amounts to jointly recogniting the most likely word $$(y_i)_{i=1}^n$$ encoded by the images.
+images $$x_i \in [0, 1]^{d\times d}$$ of characters in the form of pixel matrices; MAP inference in this setting amounts to jointly recognizing the most likely word $$(y_i)_{i=1}^n$$ encoded by the images.
 
 Another example of MAP inference is image segmentation; here, we are interested in locating an entity in an image and label all its pixels. Our input $$\bfx \in [0, 1]^{d\times d}$$ is a matrix of image pixels, and our task is to predict the label $$y \in \{0, 1\}^{d\times d}$$, indicating whether each pixel encodes the object we want to recover. Intuitively, neighboring pixels should have similar values in $$\bfy$$, i.e. pixels associated with the horse should form one continuous blob (rather than white noise).
 {% marginfigure 'ocr' 'assets/img/imagesegmentation.png' 'An illustration of the image segmentation problem.' %}
@@ -59,7 +59,7 @@ where $$\lambda_{st} \geq 0$$ is a cost that penalizes edge mismatches.
 Assume also that nodes have unary potentials; we can always normalize the nodes' energies so that $$E_u(1) = 0$$ or $$E_u(0) = 0$$ and $$E_u \geq 0$$.
 
 
-{% marginfigure 'mincut' 'assets/img/mincut.png' 'Formulating the segmantation task in a 2x2 MRF as a graph cut problem. Dashed edges are part of the min-cut. (Source: Machine Learning: A Probabilistic Perspective).' %}
+{% marginfigure 'mincut' 'assets/img/mincut.png' 'Formulating the segmentation task in a 2x2 MRF as a graph cut problem. Dashed edges are part of the min-cut. (Source: Machine Learning: A Probabilistic Perspective).' %}
 The motivation for this model comes from image segmentation. We are looking for an assignment that minimizes the energy, which (among other things) tries to reduce discordance between adjacent variables.
 
 We can formulate energy minimization in this type of model as a min-cut problem in an augmented graph $$G'$$:
@@ -96,7 +96,7 @@ practical [tools](https://en.wikipedia.org/wiki/CPLEX) that can solve very large
 
 Integer linear programming (ILP) is an extension of linear programming in which we also require that $$\bfx \in \{0, 1\}^n$$. Unfortunately, this makes optimization considerably more difficult, and ILP is in general NP-hard. Nonetheless, there are many heuristics for solving ILP problems in practice, and commercial solvers can handle instances with thousands of variables or more.
 
-One of the main techniques for solving ILP problems is *rounding*. The idea of rounding is to relax the requirement that $$\bfx \in \{0, 1\}^n$$ into $$0 \leq \bfx \leq 1$$, solve the resulting LP, and then round the LP solution to its nearest integer value. This approach works suprisingly well in practice and has theoreetical guarantees for some classes of ILPs.
+One of the main techniques for solving ILP problems is *rounding*. The idea of rounding is to relax the requirement that $$\bfx \in \{0, 1\}^n$$ into $$0 \leq \bfx \leq 1$$, solve the resulting LP, and then round the LP solution to its nearest integer value. This approach works surprisingly well in practice and has theoretical guarantees for some classes of ILPs.
 
 ### Formulating MAP inference as ILP
 
@@ -141,7 +141,7 @@ Suppose that we are dealing with an MRF of the form
 {% math %}
 \max_x \sum_{i \in V} \theta_i (x_i) + \sum_{f \in F} \theta_{f} (x_f),
 {% endmath %}
-where $$F$$ denote arbitary factors (e.g. the edge potentials in a pairwise MRF){% sidenote 1 "These short notes are roughly based on the tutorial by [Sontag et al.](http://cs.nyu.edu/~dsontag/papers/SonGloJaa_optbook.pdf), to which we refer the reader for a full discussion."%}. Let us use $$p^*$$ to denote the optimal value of this objective and let $$x^*$$ denote the optimal assignment.
+where $$F$$ denote arbitrary factors (e.g. the edge potentials in a pairwise MRF){% sidenote 1 "These short notes are roughly based on the tutorial by [Sontag et al.](http://cs.nyu.edu/~dsontag/papers/SonGloJaa_optbook.pdf), to which we refer the reader for a full discussion."%}. Let us use $$p^*$$ to denote the optimal value of this objective and let $$x^*$$ denote the optimal assignment.
 
 The above objective is difficult to optimize because the potentials are coupled. Consider for a moment an alternative objective where we optimize the potentials separately:
 {% math %}
@@ -173,7 +173,7 @@ In order to get the tightest such bound, we may optimize $$L(\delta)$$ over $$\d
 L(\delta^*) =  p^*.
 {% endmath %}
 
-It is actually not hard to prove this in our particualr setting.
+It is actually not hard to prove this in our particular setting.
 To see that, note that we can reparametrize the Lagrangian as:
 {% math %}
 \begin{align*}
@@ -198,18 +198,18 @@ which implies that $$L(\bar\delta) = p^*$$.
 This argument has shown two things:
 
 - The bound given by the Lagrangian can be made tight for the right choice of $$\delta$$.
-- To compute $$p^*$$, it sufficies to find a $$\delta$$ at which the local sub-problems agree with each other. This happens surprisingly often in practice.
+- To compute $$p^*$$, it suffices to find a $$\delta$$ at which the local sub-problems agree with each other. This happens surprisingly often in practice.
 
 
 ### Minimizing the objective
 
 There exist several ways of computing $$L(\delta^*)$$, of which we will give a brief overview. 
 
-Since the objective $$L(\delta)$$ is continous and convex{% sidenote 1 "The objective is a pointwise max of a set of affine functions."%}, we may minimize it using subgradient descent. Let $$\bar x_i \in \arg\max_{x_i} \bar \theta_{i}^{\delta} (x_i)$$ and let $$\bar x^f \in \arg\max_{x^f} \bar \theta_{f}^\delta (x^f)$$. It can be shown that the gradient $$g_{fi}(x_i)$$ of $$L(\delta)$$ w.r.t. $$\delta_{fi}(x_i)$$ equals $$1$$ if $$\bar x_i^f \neq \bar x_i$$ and zero otherwise; similarly, $$g_{fi}(x_i^f)$$ equals $$-1$$ if $$\bar x_i^f \neq \bar x_i$$ and zero otherwise. This expression has the effect of decreasing $$\bar \theta_{i}^{\delta} (\bar x_i)$$ and increasing $$\bar \theta_{f}^\delta (\bar x^f)$$, thus bringing them closer to each other.
+Since the objective $$L(\delta)$$ is continuous and convex{% sidenote 1 "The objective is a pointwise max of a set of affine functions."%}, we may minimize it using subgradient descent. Let $$\bar x_i \in \arg\max_{x_i} \bar \theta_{i}^{\delta} (x_i)$$ and let $$\bar x^f \in \arg\max_{x^f} \bar \theta_{f}^\delta (x^f)$$. It can be shown that the gradient $$g_{fi}(x_i)$$ of $$L(\delta)$$ w.r.t. $$\delta_{fi}(x_i)$$ equals $$1$$ if $$\bar x_i^f \neq \bar x_i$$ and zero otherwise; similarly, $$g_{fi}(x_i^f)$$ equals $$-1$$ if $$\bar x_i^f \neq \bar x_i$$ and zero otherwise. This expression has the effect of decreasing $$\bar \theta_{i}^{\delta} (\bar x_i)$$ and increasing $$\bar \theta_{f}^\delta (\bar x^f)$$, thus bringing them closer to each other.
 
 To compute these gradients we need to perform the operations $$\bar x_i \in \arg\max_{x_i} \bar \theta_{i}^{\delta} (x_i)$$ and $$\bar x^f \in \arg\max_{x^f} \bar \theta_{f}^\delta (x^f)$$. This is possible if the scope of the factors is small, if the graph has small tree width, if the factors are constant on most of their domain, and in many other useful special cases.
 
-An alternative way of minimizing $$L(\delta)$$ is via block coordinate descent. A typical way of forming blocks is to consider all the variables $$\delta_{fi}(x_i)$$ associated with a fixed factor $$f$$. This results in updates that are very similar to loopy max-product belief propagation. In practice, this method may be faster than subgradient descent, is garanteed to decrease the objective at every step, and does not require tuning a step-size parameter. Its drawback is that it does not find the global minimum (since the objective is not *strongly* convex).
+An alternative way of minimizing $$L(\delta)$$ is via block coordinate descent. A typical way of forming blocks is to consider all the variables $$\delta_{fi}(x_i)$$ associated with a fixed factor $$f$$. This results in updates that are very similar to loopy max-product belief propagation. In practice, this method may be faster than subgradient descent, is guaranteed to decrease the objective at every step, and does not require tuning a step-size parameter. Its drawback is that it does not find the global minimum (since the objective is not *strongly* convex).
 
 ### Recovering the MAP assignment
 

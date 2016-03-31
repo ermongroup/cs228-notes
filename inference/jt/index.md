@@ -4,7 +4,7 @@ title: Junction Tree Algorithm
 ---
 We have seen how the variable elimination (VE) algorithm can answer marginal queries of the form $$P(Y \mid E = e)$$ for both directed and undirected networks.
 
-However, this algorithm still has an important shortcomming: if we want to ask the model for another query, e.g. $$P(Y_2 \mid E_2 = e_2)$$, we need to restart the algorithm from scratch. This is very wasteful and computationally burdensome.
+However, this algorithm still has an important shortcoming: if we want to ask the model for another query, e.g. $$P(Y_2 \mid E_2 = e_2)$$, we need to restart the algorithm from scratch. This is very wasteful and computationally burdensome.
 
 Fortunately, it turns out that this problem is also easily avoidable. When computing marginals, VE produces many intermediate factors $$\tau$$ as a side-product of the main computation; these factors turn out to be the same as the ones that we need to answer other marginal queries. By caching them after a first run of VE, we can easily answer new marginal queries at essentially no additional cost.
 
@@ -21,7 +21,7 @@ First, consider what happens if we run the VE algorithm on a tree in order to co
 This ordering is optimal because the largest clique that formed during VE will be of size 2. At each step, we will eliminate $$x_j$$; this will involve computing the factor $$\tau_k(x_k) = \sum_{x_j} \phi(x_k, x_j) \tau_j(x_j)$$, where $$x_k$$ is the parent of $$x_j$$ in the tree. At a later step, $$x_k$$ will be eliminated, and $$\tau_k(x_k)$$ will be passed up the tree to the parent $$x_l$$ of $$x_k$$ in order to be multiplied by the factor $$\phi(x_l, x_k)$$ before being marginalized out. We can visualize this transfer of information using arrows on a tree.
 {% marginfigure 'mp1' 'assets/img/mp1.png' 'Message passing order when using VE to compute $$p(x_3)$$ on a small tree.'%}
 
-In a sense, when $$x_k$$ is marginalized out, it receives all the signal from variables underneath it from the tree. Because of the tree structure (variables affect each other only through their direct neighbors), this signal can be completely summarized in a factor $$\tau(x_j)$$. Thus, it makes sense to think of the $$\tau(x_j)$$ as a message that $$x_j$$ sends to $$x_k$$ to summarize all it knows about its childen variables.
+In a sense, when $$x_k$$ is marginalized out, it receives all the signal from variables underneath it from the tree. Because of the tree structure (variables affect each other only through their direct neighbors), this signal can be completely summarized in a factor $$\tau(x_j)$$. Thus, it makes sense to think of the $$\tau(x_j)$$ as a message that $$x_j$$ sends to $$x_k$$ to summarize all it knows about its children variables.
 
 At the end of the VE run, $$x_i$$ receives messages from all of its immediate children, marginalizes them out, and we obtain the final marginal.
 
@@ -76,7 +76,7 @@ To compute the mode $$\tp^*$$ of $$\tp(x_1,...,x_n)$$, we simply replace sums wi
 \end{align*}
 {% endmath %}
 
-The key property that makes this work is the distributivity of both the sum and the max operator over products. Since both problems are essentially equivalent (after swapping the corresponding operators), we may reuse all of the machinery developed for marginal inference and apply it directly to MAP infernece.
+The key property that makes this work is the distributivity of both the sum and the max operator over products. Since both problems are essentially equivalent (after swapping the corresponding operators), we may reuse all of the machinery developed for marginal inference and apply it directly to MAP inference.
 
 There is a small caveat in that we often want not just the mode of a distribution, but also its most probable assignment. This problem can be easily solved by keeping *back-pointers* during the optimization procedure. For instance, in the above example, we would keep a backpointer to the best assignment to $$x_1$$ given each assignment to $$x_2$$, a pointer to the best assignment to $$x_2$$ given each assignment to $$x_3$$, and so on.
 
@@ -95,10 +95,10 @@ Suppose that we are performing marginal inference and that we are given an MRF o
 p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c),
 {% endmath %}
 
-Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, ..., x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the patth between $$x_c^{(i)}$$ and $$x_c^{(j)}$$. We refer to this assumption as the *running intersection* (RIP) property.
+Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, ..., x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(i)}$$ and $$x_c^{(j)}$$. We refer to this assumption as the *running intersection* (RIP) property.
 {% maincolumn 'assets/img/junctionpath.png' 'A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicates sepsets, which are variables forming the intersection of the scopes of two neighboring cliques'%}
 
-Suppose that we are interesteded in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to 
+Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to 
 ``push in" certain variables deeper into the product of cluster potentials:
 {% math %}
 \begin{align*}
@@ -137,7 +137,7 @@ A special case when we *can* find the optimal junction tree is when $$G$$ itself
 
 Let us now define the junction tree algorithm, and then explain why it works. At a high-level, this algorithm implements a form of message passing on the junction tree, which will be equivalent to variable elimination for the same reasons that BP was equivalent to VE.
 
-More precisely, let us define the potential $$\psi_c(x_c)$$ of each cluster $$c$$ as the product of all the factors $$\phi$$ in $$G$$ that have been assigned to $$x_c$$. By the family preseravtion property, this is well-defined, and we may assume that our distribution is in the form
+More precisely, let us define the potential $$\psi_c(x_c)$$ of each cluster $$c$$ as the product of all the factors $$\phi$$ in $$G$$ that have been assigned to $$x_c$$. By the family preservation property, this is well-defined, and we may assume that our distribution is in the form
 {% math %}
 p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \psi_c(x_c).
 {% endmath %}
@@ -147,7 +147,7 @@ Then, at each step of the algorithm, we choose a pair of adjacent clusters $$c^{
 m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi(x_c \backslash S_{ij}) \prod_{\ell \in N(i) \backslash j} m_{\ell \to i}(S_{\ell i}).
 {% endmath %}
 
-We choose $$c^{(i)}, c^{(j)}$$ only if $$c^{(i)}$$ has received messages from all of its neighbors except $$c^{(j)}$$. Just as in belief propagation, this procedure will terminate in exactly {%m%}2|E_T|{%em%} steps. After it terimantes, we will define the belief of each cluster based on all the messages that it receives
+We choose $$c^{(i)}, c^{(j)}$$ only if $$c^{(i)}$$ has received messages from all of its neighbors except $$c^{(j)}$$. Just as in belief propagation, this procedure will terminate in exactly {%m%}2|E_T|{%em%} steps. After it terminates, we will define the belief of each cluster based on all the messages that it receives
 {% math %}
 \beta_c(x_c) = \psi(x_c) \prod_{\ell \in N(i)} m_{\ell \to i}(S_{\ell i}).
 {% endmath %}
@@ -167,7 +167,7 @@ Why does this method work? First, let us convince ourselves that running variabl
 Suppose we are performing variable elimination to compute $$\tp(x')$$ for some variable $$x'$$, where $$\tp = \prod_{c \in C} \psi_c$$. Let $$c^{(i)}$$ be a cluster containing $$x'$$; we will perform VE with the ordering given by the structure of the tree rooted at $$c^{(i)}$$. In the example below, say that we choose to eliminate the $$b$$ variable, and we set $$(a,b,c)$$ as the root cluster.
 {% maincolumn 'assets/img/junctiontree.png' 'An MRF with graph G and its junction tree T.'%}
 
-First, we pick a set of variables $$x_{-k}$$ in a leaf $$c^{(j)}$$ of $$T$$ that does not appear in the sepset $$S_{kj}$$ between $$c^{(j)}$$ and its parent $$c^{(k)}$$ (if there is no such variable, we may multply $$\psi(x_c^{(j)})$$ and $$\psi(x_c^{(k)})$$ into a new factor with a scope not larger than that of the initial factors). In our example, we may pick the variable $$f$$ in the factor $$(b,e,f)$$.
+First, we pick a set of variables $$x_{-k}$$ in a leaf $$c^{(j)}$$ of $$T$$ that does not appear in the sepset $$S_{kj}$$ between $$c^{(j)}$$ and its parent $$c^{(k)}$$ (if there is no such variable, we may multiply $$\psi(x_c^{(j)})$$ and $$\psi(x_c^{(k)})$$ into a new factor with a scope not larger than that of the initial factors). In our example, we may pick the variable $$f$$ in the factor $$(b,e,f)$$.
 
 Then we marginalize out $$x_{-k}$$ to obtain a factor $$m_{j \to k}(S_{ij})$$. We multiply $$m_{j \to k}(S_{ij})$$ with $$\psi(x_c^{(k)})$$ to obtain a new factor $$\tau(x_c^{(k)})$$. Doing so, we have effectively eliminated the factor $$\psi(x_c^{(j)})$$ and the unique variables it contained. In the running example, we may sum our $$f$$ and the resulting factor over $$(b, e)$$ may be folded into $$(b,c,e)$$. 
 
@@ -181,7 +181,7 @@ The important thing to note is that if we now set $$c^{(k)}$$ to be the root of 
 
 ### Finding a good junction tree
 
-The last topic that we need to address is the qeustion of constructing good junction trees.
+The last topic that we need to address is the question of constructing good junction trees.
 
 - *By hand*: Typically, our models will have a very regular structure, for which there will be an obvious solution. For example, very often our model is a grid, in which case clusters will be associated with pairs of adjacent rows (or columns) in the grid.
 - *Using variable elimination*: One can show that running the VE elimination algorithm implicitly generates a junction tree over the variables. Thus it is possible to use the heuristics we previously discuss to define this ordering.
@@ -196,7 +196,7 @@ Loopy belief propagation (LBP) is another technique for performing inference on 
 
 ### Definition for pairwise models
 
-Suppose that we a griven an MRF with pairwise potentials{% sidenote 1 'Arbitrary potentials can be handled using an algorithm called LBP on *factor graphs*. We will include this material at some point in the future'%}.
+Suppose that we a given an MRF with pairwise potentials{% sidenote 1 'Arbitrary potentials can be handled using an algorithm called LBP on *factor graphs*. We will include this material at some point in the future'%}.
 The main idea of LBP is to disregard loops in the graph and perform message passing anyway. In other words, given an ordering on the edges, at each time $$t$$ we iterate over a pair of adjacent variables $$x_i, x_j$$ in that order and simply perform the update
 {% math %}
 m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \\ j} m^{t}_{\ell \to i}(x_i).

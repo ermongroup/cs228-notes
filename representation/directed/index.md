@@ -3,7 +3,7 @@ layout: post
 title: Bayesian networks
 ---
 We begin our study of probabilistic graphical models with the topic of *representation*.
-The main quesiton we want to address is the following: how do we define a probability distribution that models some real-world phenomenon of interest? This is not a trivial problem: we have seen that a naive model for classifying spam messages with $$n$$ possible words involves potentially up to $$O(2^n)$$ parameters. 
+The main question we want to address is the following: how do we define a probability distribution that models some real-world phenomenon of interest? This is not a trivial problem: we have seen that a naive model for classifying spam messages with $$n$$ possible words involves potentially up to $$O(2^n)$$ parameters. 
 
 In this chapter, we will:
 
@@ -35,14 +35,14 @@ When the variables are discrete (which will be often be the case in the problem 
 
 Distributions of this form can be naturally expressed as *directed acyclic graphs*, in which vertices correspond to variables $$x_i$$ and edges indicate dependency relationships. In particular we set the parents of each node to $$x_i$$ to its ancestors $$x_{A_i}$$. 
 
-As an example, consider a model of a student's grade $$g$$ on an exam; in addition to $$g$$, we also model other aspects of the problem, such as the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$, and the quality $$l$$ of a reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values.{% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distirbutions specified by tables. The form of these distributions is described by edges in the graph.'%} The joint probability distribution over the 5 variables naturally factorizes as follows:
+As an example, consider a model of a student's grade $$g$$ on an exam; in addition to $$g$$, we also model other aspects of the problem, such as the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$, and the quality $$l$$ of a reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values.{% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.'%} The joint probability distribution over the 5 variables naturally factorizes as follows:
 {% math %}
 p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
 {% endmath %}
 The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student's intelligence and the difficulty of the exam.
 
 Another way to interpret directed graphs is in terms of stories for how the data was generated.
-In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student's grade is sampled given these parameters; finally, the recomendation letter is generated based on that grade.
+In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student's grade is sampled given these parameters; finally, the recommendation letter is generated based on that grade.
 In the previous spam classification example, we implicitly postulated that email is generated according to a two-step process:
 first, we choose a spam/non-spam label $$y$$; then we sample independently whether each word is present, conditioned on that label.
 
@@ -53,7 +53,7 @@ Formally, a Bayesian network is a directed graph $$G = (V,E)$$ together with
 - A random variable $$x_i$$ for each node $$i \in V$$.
 - One conditional probability distribution (CPD) {%m%}p(x_i \mid  x_{A_i}){%em%} per node, specifying the probability of $$x_i$$ conditioned on its parents' values.
 
-Thus, a Bayesian network defines a probability distirbution $$p$$.
+Thus, a Bayesian network defines a probability distribution $$p$$.
 Conversely, we say that a probability $$p$$ *factorizes* over a DAG $$G$$ if it can be decomposed into a product of factors, as specified by $$G$$.
 
 It is not hard to see that a probability represented by a Bayesian network will be valid: clearly, it will be non-negative and one can show using an induction argument (and using the fact that the CPDs are valid probabilities) that the sum over all variable assignments will be one.
@@ -97,7 +97,7 @@ For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $
 The notion of $$d$$-separation is  useful, because it lets us describe a large fraction of the dependencies that hold in our model.
 Let {%m%}I(G) = \{(X \perp Y \mid  Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}{%em%} be a set of variables that are $$d$$-separated in $$G$$.
 
-**Fact**{% sidenote 1 'We will not formaly prove this, but the intuition is that if $$X,Y$$ and $$Y,Z$$ are mutually dependent, so are $$X,Z$$. Thus we can look at adjacent nodes and propagate dependencies according to the local dependency structures outlined above.'%}:
+**Fact**{% sidenote 1 'We will not formally prove this, but the intuition is that if $$X,Y$$ and $$Y,Z$$ are mutually dependent, so are $$X,Z$$. Thus we can look at adjacent nodes and propagate dependencies according to the local dependency structures outlined above.'%}:
 If $$p$$ factorizes over $$G$$, then $$I(G) \subseteq I(p)$$. In this case, we say that $$G$$ is an $$I$$-map (independence map) for $$p$$
 
 In other words, all the independencies encoded in $$G$$ are sound: variables that are $$d$$-separated in $$G$$ are truly independent in $$p$$. However, the converse is not true: a distribution may factorize over $$G$$, yet have independencies that are not captured in $$G$$. 
@@ -108,15 +108,15 @@ In a way this is almost a trivial statement. If $$p(x,y) = p(x)p(y)$$, then this
 
 This raises our last and perhaps most important question: can directed graphs express all the independencies of any distribution $$p$$? More formally, given a distribution $$p$$, can we construct a graph $$G$$ such that $$I(G) = I(p)$$?
 
-First, note that it is very easy to construct a $$G$$ such that $$I(G) \subseteq I(p)$$. A fully connected DAG $$G$$ is an I-map for any distribution since $$I(G) = \emptyset$$. {% marginfigure 'dp1' 'assets/img/full-bayesnet.png' 'A fully connected Bayesian network over four variables. There are no independecies in this model, and it is an I-map for any distribution.' %}
+First, note that it is very easy to construct a $$G$$ such that $$I(G) \subseteq I(p)$$. A fully connected DAG $$G$$ is an I-map for any distribution since $$I(G) = \emptyset$$. {% marginfigure 'dp1' 'assets/img/full-bayesnet.png' 'A fully connected Bayesian network over four variables. There are no independencies in this model, and it is an I-map for any distribution.' %}
 
 A more interesting question is can we find a *minimal* $$I$$-map $$G$$ for $$p$$, i.e. an $$I$$-map $$G$$ such that the removal of even a single edge from $$G$$ will result in it no longer being an $$I$$-map. This is quite easy: we may start with a fully connected $$G$$ and remove edges until $$G$$ is no longer an $$I$$-map. One way to do this is by following the natural topological ordering of the graph, and removing node ancestors until this is no longer possible; we will revisit this pruning method towards the end of course when performing structure learning.
 
-However, what we are truly interested in is to determine whether the probability $$p$$ admits a *perfect* map $$G$$ for which $$I(p)=I(G)$$. Unfortunately, the answer is no. For example, consider the following distirbution $$p$$ over three variables $$X,Y,Z$$: we sample $$X,Y \sim \text{Ber}(0.5)$$ from a Bernoulli distribution, and we set $$Z = X \;\text{ xor }\; Y$$ (we call this the noisy-xor example). One can check using some algebra $$\{X \perp Y, Z \perp Y, X \perp Z\} \in I(p)$$ but $$Z \perp \{Y,X\} \not\in I(p)$$. Thus, $$ X \rightarrow Z \leftarrow Y $$ is an I-map for $$p$$, but none of the 3-node graph structures that we discussed perfectly describes $$I(p)$$, and hence this distribution doesn't have a perfect map.
+However, what we are truly interested in is to determine whether the probability $$p$$ admits a *perfect* map $$G$$ for which $$I(p)=I(G)$$. Unfortunately, the answer is no. For example, consider the following distribution $$p$$ over three variables $$X,Y,Z$$: we sample $$X,Y \sim \text{Ber}(0.5)$$ from a Bernoulli distribution, and we set $$Z = X \;\text{ xor }\; Y$$ (we call this the noisy-xor example). One can check using some algebra $$\{X \perp Y, Z \perp Y, X \perp Z\} \in I(p)$$ but $$Z \perp \{Y,X\} \not\in I(p)$$. Thus, $$ X \rightarrow Z \leftarrow Y $$ is an I-map for $$p$$, but none of the 3-node graph structures that we discussed perfectly describes $$I(p)$$, and hence this distribution doesn't have a perfect map.
 
-A related question is whether perfect maps are unique when they exist. Again, this is not the case, as $$X \rightarrow Y$$ and $$X \leftarrow Y$$ encode the same independencies, yet form different graphs. More generally, we say that two Bayes nets $$G_1, G_2$$ are I-equiavalent if they encode the same dependencies $$I(G_1) = I(G_2)$$.
+A related question is whether perfect maps are unique when they exist. Again, this is not the case, as $$X \rightarrow Y$$ and $$X \leftarrow Y$$ encode the same independencies, yet form different graphs. More generally, we say that two Bayes nets $$G_1, G_2$$ are I-equivalent if they encode the same dependencies $$I(G_1) = I(G_2)$$.
 
-When are two Bayesian nets I-equiivalent? To answer this, let's return to a simple example with three variables. We say that each of the graphs below have the same *skeleton*, meaning that if we drop the directionality of the arrows, we obtain the same undirected graph in each case.
+When are two Bayesian nets I-equivalent? To answer this, let's return to a simple example with three variables. We say that each of the graphs below have the same *skeleton*, meaning that if we drop the directionality of the arrows, we obtain the same undirected graph in each case.
 {% maincolumn 'assets/img/3node-bayesnets.png' 'Bayesian networks over three variables' %}
 The cascade-type structures (a,b) are clearly symmetric and the directionality of arrows does not matter. In fact, (a,b,c) encode exactly the same dependencies. We can change the directions of the arrows as long as we don't turn them into a V-structure (d). When we do have a V-structure, however, we cannot change any arrows: structure (d) is the only one that describes the dependency $$X \not\perp Y \mid Z$$. These examples provide intuitions of the following general results on I-equivalence.
 

@@ -2,17 +2,17 @@
 layout: post
 title: Sampling methods
 ---
-In previous sections, we have mostly discussed *exact* inference algorithms. From now on, we will focus on approximate methods; such methods are exteremly important in practice because the majority of models we use in practice do not admit efficient exact solutions. Approximate inference is therefore one of the largest subfields of machine learning.
+In previous sections, we have mostly discussed *exact* inference algorithms. From now on, we will focus on approximate methods; such methods are extremely important in practice because the majority of models we use in practice do not admit efficient exact solutions. Approximate inference is therefore one of the largest subfields of machine learning.
 
-There exist two main families of approximate methods: *variational inference*{% sidenote 1 'Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments.'%} algorithms, which formulate inference as an optimization problem, as well as *sampling* methods, which produce answers by repeadly generating random numbers from a distribution of interest.
+There exist two main families of approximate methods: *variational inference*{% sidenote 1 'Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments.'%} algorithms, which formulate inference as an optimization problem, as well as *sampling* methods, which produce answers by repeatedly generating random numbers from a distribution of interest.
 
-Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can be used to compute various quantities of interest, such as expectations $$\Exp[f(X)]$$ with respect to random variables disitribted according to the graphical model. Sampling methods have historically represented the main way of performing approximate inference, although during the past 15 years variational methods have proven to be strong alternatives.
+Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can be used to compute various quantities of interest, such as expectations $$\Exp[f(X)]$$ with respect to random variables distributed according to the graphical model. Sampling methods have historically represented the main way of performing approximate inference, although during the past 15 years variational methods have proven to be strong alternatives.
 
 ## Sampling from a probability distribution
 
-To first get our feet wet, let's think for a second how to sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilitites $$\theta_1,...,\theta_k$$.
+To first get our feet wet, let's think for a second how to sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1,...,\theta_k$$.
 
-Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% sidenote 1 'Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indisinguishable form a truly random one. We refer to such sequences as pseudo-random.'%}, such as the uniform distribution over $$[0,1]$$.
+Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% sidenote 1 'Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable form a truly random one. We refer to such sequences as pseudo-random.'%}, such as the uniform distribution over $$[0,1]$$.
 Thus all sampling techniques involve calling these simple subroutines multiple times in a clever way.
 
 In our case, we may reduce sampling from a multinomial variables by subdividing a unit interval into $$d$$ regions with region $$i$$ having size $$\theta_i$$. We may then sample a uniform variable and return the value of the interval in which it falls.
@@ -22,7 +22,7 @@ In our case, we may reduce sampling from a multinomial variables by subdividing 
 
 Our technique from sampling from multinomials naturally extends to sampling from a Bayesian network with multinomial variables, which is just a distribution over multiple dependent multinomial variable.
 
-{% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distirbutions specified by tables.'%}
+{% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables.'%}
 Our technique for sampling from multinomial distributions is called *ancestral* (or *forward*) sampling. Given a probability $$p(x_1,..,x_n)$$ specified by a Bayes net, we sample variables in topological order, starting from the top of the DAG; once we have sampled variables at the top levels (ones that have to parents), we sample from the next generation by conditioning these variables' CPDs to values sampled at the first step. We proceed like this until the $$n$$ variables have been sampled.
 
 In our earlier model of a student's grade, we would first sample an exam difficulty $$d'$$ and an intelligence level $$i'$$. Then, once we have samples, $$d', i'$$ we generate a student grade $$g'$$ from $$p(g \mid d', i')$$. At each step, we simply perform standard multinomial sampling.
@@ -33,7 +33,7 @@ Sampling from a distribution lets us perform many useful tasks, including margin
 {% math %}
 \Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
 {% endmath %}
-If $$g$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of sampleds from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomin bomb as part of the secret Manhattam project.'%}.
+If $$g$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
 
 Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
 This technique approximates a target expectation with
@@ -42,18 +42,18 @@ This technique approximates a target expectation with
 {% endmath %}
 where $$x^1,...,x^T$$ are samples drawn according to $$p$$.
 
-It easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(g(x))/T$$, which can be made arbitraily small with $$T$$. 
+It easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(g(x))/T$$, which can be made arbitrarily small with $$T$$. 
 
 ### Rejection sampling
 
 {% marginfigure 'nb1' 'assets/img/rejection-sampling.png' 'Graphical illustration of rejection sampling. We may compute the area of circle by drawing uniform samples from the square; the fraction of points that fall in the circle represents its area. This method breaks down if the size of the circle is small relative to the size of the square.'%}
 A special case of Monte Carlo integration is rejection sampling. We may use it to compute the area of a region $$R$$ by sampling in a larger region with a known area and recording the fraction of samples that falls within $$R$$.
 
-For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x')$$: we may write this probability as $$\Exp_{x\sim p}[\Ind(x=x')]$$ and then take the the Monte Carlo apprixmation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
+For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x')$$: we may write this probability as $$\Exp_{x\sim p}[\Ind(x=x')]$$ and then take the the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
 
 ### Importance sampling
 
-Unfortunately, this procedure is very wastefull. If $$p(x=x')$$ equals, say, 1%, then we will discard 99% of all samples.
+Unfortunately, this procedure is very wasteful. If $$p(x=x')$$ equals, say, 1%, then we will discard 99% of all samples.
 
 A better way of computing such integrals is via an approach called *importance sampling*. The main idea is to sample from a distribution $$q$$ (hopefully roughly proportional to $$f \cdot p$$), and then *reweigh* the samples in a principled way, so that their sum still approximates the desired integral.
 
@@ -137,9 +137,9 @@ Note that this chain alternates forever between states 1 and 2 without ever sett
 
 **Fact**: An irreducible and aperiodic finite-state Markov chain has a stationary distribution.
 
-In the contex of continuous varibles, the Markov chain must be *ergodic*, which is slightly stronger condition than the above (and which requires irreducibility and aperiodicity). For the sake of generality, we will simply require our Markov Chain to be ergodic.
+In the context of continuous variables, the Markov chain must be *ergodic*, which is slightly stronger condition than the above (and which requires irreducibility and aperiodicity). For the sake of generality, we will simply require our Markov Chain to be ergodic.
 
-### Markov Chain Mone Carlo
+### Markov Chain Monte Carlo
 
 As we said, the idea of MCMC algorithms is to construct a Markov chain over the assignments to a probability function $$p$$; the chain will have a stationary distribution equal to $$p$$ itself; by running the chain for some number of time, we will thus sample from $$p$$.
 
@@ -212,10 +212,10 @@ T = \left[
 \end{matrix}
 \right],
 {% endmath %}
-then for small $$\e$$ it will take a very long time to reach the stationary distribution, which is close to $$(0.5, 0.5)$$. At each step, we will stay in the same state with overwhelming probability; very rarely, we will transition to another state, and then thay there for a very long time. The average of these states will converge to $$(0.5, 0.5)$$, but the convergence will be very slow.
+then for small $$\e$$ it will take a very long time to reach the stationary distribution, which is close to $$(0.5, 0.5)$$. At each step, we will stay in the same state with overwhelming probability; very rarely, we will transition to another state, and then stay there for a very long time. The average of these states will converge to $$(0.5, 0.5)$$, but the convergence will be very slow.
 
 This problem will also occur with complicated distributions that have two distinct and narrow modes; with high probability the algorithm will sample from a given mode for a very long time. These examples are indications that sampling is a hard problem in general, and MCMC does not give us a free lunch. Nonetheless, for many real-world distributions, sampling will produce very useful solutions.
 
-Another, perhaps more important problem, is that we may not know when to end the burn-in period, even if it is theoretically not too long. There exist many heuristics to determine whether a Markov chain has *mixed*; however, typically these heuristics involve plotting certain quantities and estimating them by eye; even the quantitive measures are not significantly more reliable than this approach. 
+Another, perhaps more important problem, is that we may not know when to end the burn-in period, even if it is theoretically not too long. There exist many heuristics to determine whether a Markov chain has *mixed*; however, typically these heuristics involve plotting certain quantities and estimating them by eye; even the quantitative measures are not significantly more reliable than this approach. 
 
 In summary, even though MCMC is able to sample from the right distribution (which in turn can be used to solve any inference problem), doing so may sometimes require a very long time, and there is no easy way to judge the amount of computation that we need to spend to find a good solution.
