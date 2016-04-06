@@ -2,15 +2,15 @@
 layout: post
 title: Sampling methods
 ---
-In previous sections, we have mostly discussed *exact* inference algorithms. From now on, we will focus on approximate methods; such methods are extremely important in practice because the majority of models we use in practice do not admit efficient exact solutions. Approximate inference is therefore one of the largest subfields of machine learning.
+In practice, the probabilistic models that we use are often quite complex, and simple algorithms like variable elimination may be too slow for them. In fact, many interesting classes of models may not admit exact polynomial-time solutions at all, and for this reason, much research effort in machine learning is spent on developing algorithms that yield *approximate* solutions to the inference problem. This section begins our study of such algorithms.
 
-There exist two main families of approximate methods: *variational inference*{% sidenote 1 'Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments.'%} algorithms, which formulate inference as an optimization problem, as well as *sampling* methods, which produce answers by repeatedly generating random numbers from a distribution of interest.
+There exist two main families of approximate algorithms: *variational* methods{% sidenote 1 'Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments.'%}, which formulate inference as an optimization problem, as well as *sampling* methods, which produce answers by repeatedly generating random numbers from a distribution of interest.
 
-Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can be used to compute various quantities of interest, such as expectations $$\Exp[f(X)]$$ with respect to random variables distributed according to the graphical model. Sampling methods have historically represented the main way of performing approximate inference, although during the past 15 years variational methods have proven to be strong alternatives.
+Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can compute various interesting quantities, such as expectations $$\Exp[f(X)]$$ of random variables distributed according to a given probabilistic model. Sampling methods have historically been the main way of performing approximate inference, although over the past 15 years variational methods have emerged as viable (and often superior) alternatives.
 
 ## Sampling from a probability distribution
 
-To first get our feet wet, let's think for a second how to sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1,...,\theta_k$$.
+As a warm-up, let's think for a minute how we might sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1,...,\theta_k$$.
 
 Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% sidenote 1 'Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable form a truly random one. We refer to such sequences as pseudo-random.'%}, such as the uniform distribution over $$[0,1]$$.
 Thus all sampling techniques involve calling these simple subroutines multiple times in a clever way.
