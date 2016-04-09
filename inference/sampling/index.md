@@ -12,18 +12,16 @@ Sampling methods can be used to perform both marginal and MAP inference queries;
 
 As a warm-up, let's think for a minute how we might sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1,...,\theta_k$$.
 
-Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% sidenote 1 'Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable form a truly random one. We refer to such sequences as pseudo-random.'%}, such as the uniform distribution over $$[0,1]$$.
-Thus all sampling techniques involve calling these simple subroutines multiple times in a clever way.
+Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% sidenote 1 'Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable form a truly random one. We call such sequences *pseudorandom*.'%}, such as the uniform distribution over $$[0,1]$$.
+All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.
 
-In our case, we may reduce sampling from a multinomial variables by subdividing a unit interval into $$d$$ regions with region $$i$$ having size $$\theta_i$$. We may then sample a uniform variable and return the value of the interval in which it falls.
+In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$d$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$[0,1]$$ and return the value of the region in which our sample falls.
 {% maincolumn 'assets/img/multinomial-sampling.png' 'Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1].'%}
 
 ### Sampling from directed graphical models
 
-Our technique from sampling from multinomials naturally extends to sampling from a Bayesian network with multinomial variables, which is just a distribution over multiple dependent multinomial variable.
-
 {% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables.'%}
-Our technique for sampling from multinomial distributions is called *ancestral* (or *forward*) sampling. Given a probability $$p(x_1,..,x_n)$$ specified by a Bayes net, we sample variables in topological order, starting from the top of the DAG; once we have sampled variables at the top levels (ones that have to parents), we sample from the next generation by conditioning these variables' CPDs to values sampled at the first step. We proceed like this until the $$n$$ variables have been sampled.
+Our technique for sampling from multinomials naturally extends to Bayesian networks with multinomial variables, via a method called *ancestral* (or *forward*) sampling. Given a probability $$p(x_1,...,x_n)$$ specified by a Bayes net, we sample variables in topological order. In other words, we start by sampling the variables with no parents; then we sample from the next generation by conditioning these variables' CPDs to values sampled at the first step. We proceed like this until the $$n$$ variables have been sampled.
 
 In our earlier model of a student's grade, we would first sample an exam difficulty $$d'$$ and an intelligence level $$i'$$. Then, once we have samples, $$d', i'$$ we generate a student grade $$g'$$ from $$p(g \mid d', i')$$. At each step, we simply perform standard multinomial sampling.
 
