@@ -2,13 +2,12 @@
 layout: post
 title: Contents
 ---
-{% newthought 'These notes'%} form a concise introductory course on probabilistic graphical modeling{% sidenote 1 'Probabilistic graphical modeling is a subfield of AI that studies how to model the world with probability distributions.'%}.
-They accompany the material of [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), the graphical models course at Stanford University, taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and are written and maintained by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov).
-
+{% newthought 'These notes'%} form a concise introductory course on probabilistic graphical models{% sidenote 1 'Probabilistic graphical models are a subfield of machine learning that studies how to describe and reason about the world in terms of probabilities.'%}.
+They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and are written and maintained by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov).
 {% marginnote 'mn-id-whatever' 'These notes are still **under construction**!
 They are about 70% complete, and probably contain a lot of typos.
 We are in the process of finalizing them; in the meantime feel free to submit your fixes on [Github](https://github.com/kuleshov/cs228-notes).'%}
-Please send any feedback to [Volodymyr](http://www.stanford.edu/~kuleshov); also, free to contribute your improvements on [Github](https://github.com/kuleshov/cs228-notes).
+Free to contribute your improvements on [Github](https://github.com/kuleshov/cs228-notes).
 
 ## Preliminaries
 
@@ -16,7 +15,7 @@ Please send any feedback to [Volodymyr](http://www.stanford.edu/~kuleshov); also
 
 2. Review of probability theory: Probability distributions. Conditional probability. Random variables.
 
-2. Examples of real-world applications: Image denoising. RNA structure prediciton. Lexical analyses of sentences. Optical character recogition.
+2. Examples of real-world applications: Image denoising. RNA structure prediciton. Syntactic analysis of sentences. Optical character recogition.
 
 ## Representation
 
