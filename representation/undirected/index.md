@@ -2,19 +2,21 @@
 layout: post
 title: Markov random fields
 ---
-Bayesian networks are a very useful framework for compactly representing probability distributions. However, we have seen that some distributions cannot be perfectly represented by a Bayes net. In such cases, if we don't want to introduce false independencies into our model, we must choose a less compact representation (represented by a graph with more edges); this in turn could lead to inefficiencies with regard to the total number of model parameters.
+Bayesian networks are a class of models that can compactly represent many interesting probability distributions. However, we have seen in the previous chapter that some distributions cannot be perfectly represented by a Bayes network. 
 
-There exists another technique for compactly representing and visualizing a probability distribution that is based on the language of *undirected* graphs. This class of models (known as Markov Random Fields or MRFs)) can compactly represent distributions that directed models cannot represent. We will explore the advantages and drawbacks of these methods in this chapter.
+In such cases, unless we want to introduce false independencies among the variables of our model, we must fall back to a less compact representation (which can be viewed as a graph with additional, unnecessary edges). This leads to extra, unnecessary parameters in the model, and makes it more difficult to learn these parameters and to make predictions.
+
+There exists, however, another technique for compactly representing and visualizing a probability distribution that is based on the language of *undirected* graphs. This class of models (known as Markov Random Fields or MRFs) can compactly represent distributions that directed models cannot represent. We will explore the advantages and drawbacks of these methods in this chapter.
 
 ## Markov Random Fields
 
-{% marginfigure 'nb1' 'assets/img/mrf.png' 'Undirected graphical representation of a joint probability of voting preferences over four individuals. The figure on the right illustrates the pairwise factors present in the model.'%} As a motivating example, suppose that we model the distribution of political voting preferences among persons $$A,B,C,D$$. Let's say that $$(A,B)$$, $$(B,C)$$, $$(C,D)$$, and $$(D,A)$$ are friends, and friends tend to have similar voting preferences. These influences can be naturally represented by a directed graph
+{% marginfigure 'nb1' 'assets/img/mrf.png' 'Undirected graphical representation of a joint probability of voting preferences over four individuals. The figure on the right illustrates the pairwise factors present in the model.'%} As a motivating example, suppose that we are modeling voting preferences among persons $$A,B,C,D$$. Let's say that $$(A,B)$$, $$(B,C)$$, $$(C,D)$$, and $$(D,A)$$ are friends, and friends tend to have similar voting preferences. These influences can be naturally represented by an undirected graph.
 
 One way to define a probability over the joint voting decision of $$A,B,C,D$$ is to assign scores to each assignment to these variables and then define a probability as a normalized score. A score can be any function, but in our case, we will define it to be of the form
 {% math %} 
 \tilde p(A,B,C,D) = \phi(A,B)\phi(B,C)\phi(C,D)\phi(D,A), 
 {% endmath %}
-where $$\phi(X,Y)$$ is a factor that assigns weights more consistent votes between friends $$X,Y$$, for example:
+where $$\phi(X,Y)$$ is a factor that assigns more weight to consistent votes among friends $$X,Y$$, e.g.:
 {% math %} 
 \begin{align*}
 \phi(A,B) = 
@@ -32,9 +34,9 @@ p(A,B,C,D) = \frac{1}{Z} \tilde p(A,B,C,D),
 {% endmath %}
 where $$ Z = \sum_{A,B,C,D} \tilde p(A,B,C,D) $$ is a normalizing constant that ensures that the distribution sums to one.
 
-When normalized, we can view $$\phi(A,B)$$ as an interaction term between friends that pushes them $$B$$'s vote closer to that of $$A$$. The term $$\phi(B,C)$$ pushes $$B$$'s vote closer to $$C$$, and the most likely vote will require reconciling these potentially conflicting influences.
+When normalized, we can view $$\phi(A,B)$$ as an interaction that pushes them $$B$$'s vote closer to that of $$A$$. The term $$\phi(B,C)$$ pushes $$B$$'s vote closer to $$C$$, and the most likely vote will require reconciling these conflicting influences.
 
-Note that compared to the directed case, we are no longer describing how one variable is generated from another set of variables (as a conditional probability distribution would do); we simply indicate a relative coupling strength between dependent neighbors in the graph. In a sense, this requires less prior knowledge from our part, as we no longer have to specify a full generative story (via a probability) of how the vote of $$B$$ is constructed from the vote of $$A$$ (which we would need to do if we had a $$P(B\mid A)$$ factor). Instead, we simply identify dependent variables, define the strength of their interactions via arbitrary couplings, which in turn defines an energy landscape over the space of possible assignments; finally we convert this energy to a probability via a normalization constant.
+Note that unlike in the directed case, we are not saying anything about how one variable is generated from another set of variables (as a conditional probability distribution would do). We simply indicate a level of coupling between dependent variables in the graph. In a sense, this requires less prior knowledge, as we no longer have to specify a full generative story of how the vote of $$B$$ is constructed from the vote of $$A$$ (which we would need to do if we had a $$P(B\mid A)$$ factor). Instead, we simply identify dependent variables and define the strength of their interactions; this in turn defines an energy landscape over the space of possible assignments and we convert this energy to a probability via the normalization constant.
 
 ### Formal definition
 
@@ -50,24 +52,24 @@ Z = \sum_{x_1,..,x_n}\prod_{c \in C} \phi_c(x_c)
 {% endmath %}
 is a normalizing constant that ensures that the distribution sums to one.
 
-Thus, given a graph $$G$$, our probability distribution may contain factors whose scope is any clique in $$G$$, which can be a single node, an edge, a triangle, etc. Note that we do not need to specify a factor for each clique. In our above example, we defined a factor over each edge (which is a clique of two nodes). However, we chose not to specify any unary potentials i.e. cliques over single nodes (although they can be easily incorporated within e.g. edge cliques).
+Thus, given a graph $$G$$, our probability distribution may contain factors whose scope is any clique in $$G$$, which can be a single node, an edge, a triangle, etc. Note that we do not need to specify a factor for each clique. In our above example, we defined a factor over each edge (which is a clique of two nodes). However, we chose not to specify any unary potentials i.e. cliques over single nodes.
 
 ### Comparison to Bayesian networks
 
 {% marginfigure 'nb1' 'assets/img/mrf2.png' 'Examples of directed models for our four-variable voting example. None of them can accurately express our prior knowledge about the dependency structure among the variables.'%}
 In our earlier voting example, we had a distribution over $$A,B,C,D$$ that satisfied $$A \perp C \mid  \{B,D\}$$ and $$B \perp D \mid  \{A,C\}$$ (because only friends directly influence a person's vote). We can easily check by counter-example that these independencies cannot be perfectly represented by a Bayesian network.
-However, the MRF will turn out to a perfect map for this distribution.
+However, the MRF turns out to a perfect map for this distribution.
 
 More generally, MRFs have several advantages over directed models:
 
 - They can be applied to a wider range of problems in which there is no natural directionality associated with variable dependencies.
-- Undirected graph can succinctly express certain dependencies that Bayesian nets cannot easily describe (although the converse is also true)
+- Undirected graphs can succinctly express certain dependencies that Bayesian nets cannot easily describe (although the converse is also true)
 
 They also possess several important drawbacks:
 
 - Computing the normalization constant $$Z$$ requires summing over a potentially exponential number of assignments. We will see that in the general case, this will be NP-hard; thus many undirected models will be intractable and will require approximation techniques.
 - Undirected models may be difficult to interpret.
-- It is much easier to generate data from a Bayesian network, which is important for some applications, and appears as a subroutine in some optimization algorithms.
+- It is much easier to generate data from a Bayesian network, which is important in some applications.
 
 It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique potential (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called *moralization*.
 {% maincolumn 'assets/img/moralization.png' 'A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.' %}
@@ -85,9 +87,9 @@ In particular, if a set of observed variables forms a cutset between two halves 
 
 {% maincolumn 'assets/img/cutset.png' '' %}
 
-Formally, we define the *Markov blanket* $$U$$ of variable $$X$$ as the minimal set of nodes such that $$X$$ is independent from the rest of the graph if $$U$$ is observed, i.e. $$X \perp (\mathcal{X} - \{X\} - U) \mid  U$$. This notion holds for both directed and undirected models, but in the undirected case the Markov blanket turns out to simply equal a node's neighborhood.
+Formally, we define the *Markov blanket* $$U$$ of a variable $$X$$ as the minimal set of nodes such that $$X$$ is independent from the rest of the graph if $$U$$ is observed, i.e. $$X \perp (\mathcal{X} - \{X\} - U) \mid  U$$. This notion holds for both directed and undirected models, but in the undirected case the Markov blanket turns out to simply equal a node's neighborhood.
 
-In the undirected case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$p$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
+In the directed case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$p$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
 
 {% maincolumn 'assets/img/mrf-bn-comparison.png' 'Examples of probability distributions that have a perfect directed graphical representation but no indirected representation, and vice-versa.' %}
 

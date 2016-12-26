@@ -21,26 +21,25 @@ In our case, we may reduce sampling from a multinomial variable to sampling a si
 ### Sampling from directed graphical models
 
 {% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables.'%}
-Our technique for sampling from multinomials naturally extends to Bayesian networks with multinomial variables, via a method called *ancestral* (or *forward*) sampling. Given a probability $$p(x_1,...,x_n)$$ specified by a Bayes net, we sample variables in topological order. In other words, we start by sampling the variables with no parents; then we sample from the next generation by conditioning these variables' CPDs to values sampled at the first step. We proceed like this until the $$n$$ variables have been sampled.
+Our technique for sampling from multinomials enables us to also sample from Bayesian networks with multinomial variables using an approach called *ancestral* (or *forward*) sampling. Given a probability $$p(x_1,...,x_n)$$ specified by a Bayes net, we sample variables in topological order. In other words, we start by sampling the variables with no parents; then we sample from the next generation by conditioning these variables' CPDs to values sampled at the first step. We proceed like this until the $$n$$ variables have been sampled.
 
-In our earlier model of a student's grade, we would first sample an exam difficulty $$d'$$ and an intelligence level $$i'$$. Then, once we have samples, $$d', i'$$ we generate a student grade $$g'$$ from $$p(g \mid d', i')$$. At each step, we simply perform standard multinomial sampling.
+In our earlier model of a student's grade, we would first sample an exam difficulty $$d'$$ and an intelligence level $$i'$$. Then, we generate a student grade $$g'$$ from $$p(g \mid d', i')$$. At each step, we use our earlier multinomial sampling algorithm.
 
 ## Monte Carlo estimation
 
-Sampling from a distribution lets us perform many useful tasks, including marginal and MAP inference, as well as computing integrals of the form
+Sampling from a probability distribution enables us to perform both marginal and MAP inference. For instance, to compute a marginal $$p(x_i)$$, we may sample many $$x$$'s from $$p$$ and look at the fraction which takes a certain value at $$x_i$$. We may also estimate the MAP assignment by taking the sample with the highest probability.
+
+Our method for computing marginals can be seen as a special case of a general technique called *Monte Carlo* estimation{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}., which in its most general form lets us compute integrals of the form
 {% math %}
 \Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
 {% endmath %}
-If $$g$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
-
-Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
-This technique approximates a target expectation with
+If $$g$$ does not match the structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Monte Carlo methods try to approximate this integral with
 {% math %}
-\Exp_{x \sim p}[f(x)] \approx \frac{1}{T} \sum_{t=1}^T f(x^t),
+\Exp_{x \sim p}[f(x)] \approx \frac{1}{T} \sum_{t=1}^T f(x^t) := I_T,
 {% endmath %}
 where $$x^1,...,x^T$$ are samples drawn according to $$p$$.
 
-It easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(g(x))/T$$, which can be made arbitrarily small with $$T$$. 
+It easy to show that the expected value of the MC estimate $$I_T$$ equals the true integral; we say that it is an *unbiased* estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(g(x))/T$$, which can be made arbitrarily small with $$T$$. 
 
 ### Rejection sampling
 

@@ -2,9 +2,10 @@
 layout: post
 title: Introduction
 ---
-Probabilistic graphical modeling is a branch of machine learning that studies how to model real-world phenomena using probability distributions and use these models to make useful predictions about the future.
+Probabilistic graphical modeling is a branch of machine learning that studies how to use probability distributions to describe the world and to make useful predictions about it.
 
-Building probabilistic models turns out to be a complex and fascinating problem. From a theoretical point of view, this field is built on an elegant foundation that bridges two very different fields of mathematics: probability theory --- which, along with statistics, forms the core of modern machine learning and data analysis --- as well as discrete math --- particularly graph theory and combinatorics. The field also has intriguing connections to philosophy, especially the question of causality.
+There are dozens of reasons to learn about probabilistic modeling.
+For one, it is a fascinating scientific field with a beautiful theory that bridges in surprising ways two very different branches of mathematics: probability and graph theory. Probabilistic modeling also has intriguing connections to information theory and to philosophy, particularly the question of causality.
 
 Probabilistic modeling is also deeply grounded in reality and has countless real-world applications in fields as diverse as medicine, language processing, vision, and physics.
 Most likely, there are several applications currently running on your computer that make use of graphical models. 
@@ -73,11 +74,11 @@ The take-away point we want to get across is that there is an intimate connectio
 
 ## A bird's eye overview of the course
 
-Our discussion of graphical models will be divided into three major parts: representation (how to specify a model), inference (how to ask the model questions), and learning (how to fit a model to real-world data). These three themes will also be closely linked: to derive efficient inference and learning algorithms, the model will need to be adequately represented; furthermore, learning models will require inference as a subroutine. Thus, it will best to always keep the three tasks in mind, rather than focusing on them in isolation{% sidenote 1 'For a more detailed overview, see this [writeup](https://docs.google.com/file/d/0B_hicYJxvbiOc1ViZTRxbnhSU1cza1VhOFlhRlRuQQ/edit) by Neal Parikh; this part of the notes is based on it.'%}.
+Our discussion of graphical models will be divided into three major parts: representation (how to specify a model), inference (how to ask the model questions), and learning (how to fit a model to real-world data). These three themes will also be closely linked: to derive efficient inference and learning algorithms, the model needs to be adequately represented; furthermore, learning algorithms will use inference as a subroutine. Thus, it will best to always keep the three tasks in mind, rather than focusing on them in isolation{% sidenote 1 'For a more detailed overview, see this [writeup](https://docs.google.com/file/d/0B_hicYJxvbiOc1ViZTRxbnhSU1cza1VhOFlhRlRuQQ/edit) by Neal Parikh; this part of the notes is based on it.'%}.
 
 ### Representation
 
-How do we express a probability distribution that models some real-world phenomenon? This is not a trivial problem: we have seen that a naive model for classifying spam messages with $$n$$ possible words requires us in general to specify $$O(2^n)$$ parameters. We will address this difficulty via general techniques for constructing tractable models. These recipes will make heavy use of graph theory; probabilities will be described by graphs whose properties (e.g. connectivity, tree-width) will reveal probabilistic and algorithmic features of the model (e.g., independence, learning complexity).
+How do we express a probability distribution that models some real-world phenomenon? This is not a trivial problem: we have seen that a naive model for classifying spam messages with $$n$$ possible words requires us in general to specify $$O(2^n)$$ parameters. We will address this difficulty via general techniques for constructing tractable models. These recipes will make heavy use of graph theory; probabilities will be described by graphs whose properties (e.g. connectivity, tree-width) will tell us interesting things about the probabilistic and algorithmic features of the model (e.g., independence, learning complexity).
 
 ### Inference 
 

@@ -2,23 +2,24 @@
 layout: post
 title: Bayesian networks
 ---
-We begin our study of probabilistic graphical models with the topic of *representation*.
-The main question we want to address is the following: how do we define a probability distribution that models some real-world phenomenon of interest? This is not a trivial problem: we have seen that a naive model for classifying spam messages with $$n$$ possible words involves potentially up to $$O(2^n)$$ parameters. 
+We begin with the topic of *representation*: how do we choose a probability distribution to model some interesting aspect of the world? 
+Coming up with a good model is not always easy: we have seen in the introduction that a naive model for spam classification would require us to specify a number of parameters that is exponential in the number of words in the English language!
 
-In this chapter, we will:
+In this chapter, we will learn about one way to avoid these kinds of complications.
+We are going to:
 
-- Propose a general approach for parametrizing probability distributions using only a few parameters.
-- Introduce a visual language for describing and representing these distributions via *directed acyclic graphs* (DAGs). 
-- Study how our graphical representation describes properties of the probability distribution; this will enable to us to accurately understand our modeling assumptions and will later help designing efficient inference algorithms.
+- Learn an effective and general technique for parameterizing probability distributions using only a few parameters.
+- See how the resulting models can be elegantly described via *directed acyclic graphs* (DAGs). 
+- Study connections between the structure of a DAG and the modeling assumptions made by distribution that it describes; this will not only make these modeling assumptions more obvious, but will also help us design more efficient inference algorithms.
 
-We will later see that there are two general approaches to representing probabilities.
-The first approach, which we will see here, describes probabilities using directed graphs, also referred to as *Bayesian networks*. The second approach, covered in the next chapter, will involve undirected graphs, which are also called *Markov random fields*.
+The kinds of models that we will see here are referred to as *Bayesian networks*. In the next chapter, we will also see a second approach, which involves *undirected* graphs, also known as *Markov random fields*.
 
 
 ## Probabilistic modeling with Bayesian networks
 
-Directed graphical models (also known as Bayesian networks) are a class of probability distributions that admit a particular compact parametrization that can be elegantly described using directed graphs. The general idea behind this parametrization is that each variable depends only on a small number of *ancestor* variables.
+Directed graphical models (a.k.a. Bayesian networks) are a family of probability distributions that have a compact parametrization that can be naturally described using a directed graph. 
 
+The general idea behind this parametrization is surprisingly simple.
 Recall that by the chain rule, we can write any probability $$p$$ as:
 {% math %}
 p(x_1,x_2,...,x_n) = p(x_1) p(x_2\mid x_1) \cdots p(x_n\mid x_{n-1},...,x_2,x_1).
@@ -35,14 +36,15 @@ When the variables are discrete (which will be often be the case in the problem 
 
 Distributions of this form can be naturally expressed as *directed acyclic graphs*, in which vertices correspond to variables $$x_i$$ and edges indicate dependency relationships. In particular we set the parents of each node to $$x_i$$ to its ancestors $$x_{A_i}$$. 
 
-As an example, consider a model of a student's grade $$g$$ on an exam; in addition to $$g$$, we also model other aspects of the problem, such as the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$, and the quality $$l$$ of a reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values.{% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.'%} The joint probability distribution over the 5 variables naturally factorizes as follows:
+As an example, consider a model of a student's grade $$g$$ on an exam; this grade depends on several factors: the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$; it also affects the quality $$l$$ of the reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values.{% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.'%} The joint probability distribution over the 5 variables naturally factorizes as follows:
 {% math %}
 p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
 {% endmath %}
 The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student's intelligence and the difficulty of the exam.
 
 Another way to interpret directed graphs is in terms of stories for how the data was generated.
-In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student's grade is sampled given these parameters; finally, the recommendation letter is generated based on that grade.
+In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student's grade is sampled given these parameters; finally, the recommendation letter is generated based on the grade.
+
 In the previous spam classification example, we implicitly postulated that email is generated according to a two-step process:
 first, we choose a spam/non-spam label $$y$$; then we sample independently whether each word is present, conditioned on that label.
 
@@ -79,7 +81,7 @@ For simplicity, let's start by looking at a Bayes net $$G$$ with three nodes: $$
 - *Cascade*: If $$G$$ equals $$A \rightarrow B \rightarrow C$$, and $$B$$ is again observed, then, again {%m%}A \perp C \mid  B{%em%}. However, if $$B$$ is unobserved, then $$A \not\perp C$$. Here, the intuition is again that $$B$$ holds all the information that determines the outcome of $$C$$; thus, it does not matter what value $$A$$ takes.
 - *V-structure* (also known as *explaining away*): If $$G$$ is $$A \rightarrow C \leftarrow B$$, then knowing $$C$$ couples $$A$$ and $$B$$. In other words, $$A \perp B$$ if $$C$$ is unobserved, but {%m%}A \not\perp B \mid  C{%em%} if $$C$$ is observed.
 
-The latter case requires additional explanation. Suppose that $$C$$ is a Boolean variable that indicates whether our lawn is wet one morning; $$A$$ and $$B$$ are two explanation for it being wet: either it rained (indicated by $$A$$), or the sprinkler turned on (indicated by $$B$$). If we know that the grass is wet ($$C$$ is true) and the sprinkler didn't go on ($$B$$ is false), then the probability that $$A$$ is true must be one, because that is the only other possible explanation. Hence, $$C$$ and $$A$$ are not independent given $$B$$.
+The latter case requires additional explanation. Suppose that $$C$$ is a Boolean variable that indicates whether our lawn is wet one morning; $$A$$ and $$B$$ are two explanations for why it is wet: either it rained (indicated by $$A$$), or the sprinkler turned on (indicated by $$B$$). If we know that the grass is wet ($$C$$ is true) and the sprinkler didn't go on ($$B$$ is false), then the probability that $$A$$ is true must be one, because that is the only other possible explanation. Hence, $$C$$ and $$A$$ are not independent given $$B$$.
 
 These structures clearly describe the independencies encoded by a three-variable Bayesian net. We can extend them to general networks by applying them recursively over any larger graph. This leads to a notion called $$d$$-separation (where $$d$$ stands for directed).
 
