@@ -33,7 +33,7 @@ Free to contribute your improvements on [Github](https://github.com/kuleshov/cs2
 
 4. [Sampling-based inference](inference/sampling/): Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.
 
-5. Variational inference: Variational lower bounds. Mean Field. Marginal polytope and its relaxations.
+5. [Variational inference](inference/variational/): Variational lower bounds. Mean Field. Marginal polytope and its relaxations.
 
 ## Learning
 
