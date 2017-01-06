@@ -37,7 +37,7 @@ Free to contribute your improvements on [Github](https://github.com/kuleshov/cs2
 
 ## Learning
 
-1. Learning in directed models: Maximum likelihood estimation. Learning theory basics. Maximum likelihood estimators for Bayesian networks.
+1. [Learning in directed models](learning/directed/): Maximum likelihood estimation. Learning theory basics. Maximum likelihood estimators for Bayesian networks.
 
 2. Learning in undirected models: Exponential families. Gradient descent maximum likelihood estimation.
 
