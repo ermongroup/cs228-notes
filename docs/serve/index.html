@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Contents</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="/cs228-notes/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/kuleshov/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Contents</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>{% newthought &#8216;These notes&#8217;%} form a concise introductory course on probabilistic graphical models{% sidenote 1 &#8216;Probabilistic graphical models are a subfield of machine learning that studies how to describe and reason about the world in terms of probabilities.&#8217;%}. They are based on Stanford <a href='http://cs.stanford.edu/~ermon/cs228/index.html'>CS228</a>, taught by <a href='http://cs.stanford.edu/~ermon/'>Stefano Ermon</a>, and are written and maintained by <a href='http://www.stanford.edu/~kuleshov'>Volodymyr Kuleshov</a>. {% marginnote &#8216;mn-id-whatever&#8217; &#8216;These notes are still <strong>under construction</strong>! They are about 70% complete, and probably contain a lot of typos. We are in the process of finalizing them; in the meantime feel free to submit your fixes on <a href='https://github.com/kuleshov/cs228-notes'>Github</a>.&#8217;%} Free to contribute your improvements on <a href='https://github.com/kuleshov/cs228-notes'>Github</a>.</p>
+
+<h2 id='preliminaries'>Preliminaries</h2>
+
+<ol>
+<li>
+<p><a href='preliminaries/introduction/'>Introduction</a> What is probabilistic graphical modeling? Overview of the course.</p>
+</li>
+
+<li>
+<p>Review of probability theory: Probability distributions. Conditional probability. Random variables.</p>
+</li>
+
+<li>
+<p>Examples of real-world applications: Image denoising. RNA structure prediciton. Syntactic analysis of sentences. Optical character recogition.</p>
+</li>
+</ol>
+
+<h2 id='representation'>Representation</h2>
+
+<ol>
+<li>
+<p><a href='representation/directed/'>Bayesian networks</a>: Definitions. Representations via directed graphs. Independencies in directed models.</p>
+</li>
+
+<li>
+<p><a href='representation/undirected/'>Markov random fields</a>: Undirected vs directed models. Independencies in undirected models. Conditional random fields.</p>
+</li>
+</ol>
+
+<h2 id='inference'>Inference</h2>
+
+<ol>
+<li>
+<p><a href='inference/ve/'>Variable elimination</a> The inference problem. Variable elimination. Complexity of inference.</p>
+</li>
+
+<li>
+<p><a href='inference/jt/'>Belief propagation</a>: The junction tree algorithm. Exact inference in arbitrary graphs. Loopy Belief Propagation.</p>
+</li>
+
+<li>
+<p><a href='inference/map/'>MAP inference</a>: Max-sum message passing. Graphcuts. Linear programming relaxations. Dual decomposition.</p>
+</li>
+
+<li>
+<p><a href='inference/sampling/'>Sampling-based inference</a>: Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.</p>
+</li>
+
+<li>
+<p>Variational inference: Variational lower bounds. Mean Field. Marginal polytope and its relaxations.</p>
+</li>
+</ol>
+
+<h2 id='learning'>Learning</h2>
+
+<ol>
+<li>
+<p>Learning in directed models: Maximum likelihood estimation. Learning theory basics. Maximum likelihood estimators for Bayesian networks.</p>
+</li>
+
+<li>
+<p>Learning in undirected models: Exponential families. Gradient descent maximum likelihood estimation.</p>
+</li>
+
+<li>
+<p>Learning in latent-variable models: Gaussian mixture models. Expectation maximization.</p>
+</li>
+
+<li>
+<p>Bayesian learning: Bayesian paradigm. Conjugate priors. Examples.</p>
+</li>
+
+<li>
+<p>Structure learning: Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning.</p>
+</li>
+</ol>
+
+
+    </article>
+    <span class="print-footer">Contents - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2017 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2017</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

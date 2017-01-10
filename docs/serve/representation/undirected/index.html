@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Markov random fields</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="/cs228-notes/representation/undirected/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/kuleshov/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Markov random fields</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>Bayesian networks are a very useful framework for compactly representing probability distributions. However, we have seen that some distributions cannot be perfectly represented by a Bayes net. In such cases, if we don&#8217;t want to introduce false independencies into our model, we must choose a less compact representation (represented by a graph with more edges); this in turn could lead to inefficiencies with regard to the total number of model parameters.</p>
+
+<p>There exists another technique for compactly representing and visualizing a probability distribution that is based on the language of <em>undirected</em> graphs. This class of models (known as Markov Random Fields or MRFs)) can compactly represent distributions that directed models cannot represent. We will explore the advantages and drawbacks of these methods in this chapter.</p>
+
+<h2 id='markov_random_fields'>Markov Random Fields</h2>
+<label class='margin-toggle' for='nb1'>&#8853;</label>
+<p>One way to define a probability over the joint voting decision of $$A,B,C,D$$ is to assign scores to each assignment to these variables and then define a probability as a normalized score. A score can be any function, but in our case, we will define it to be of the form <div class='mathblock'><script type='math/tex; mode=display'> 
+\tilde p(A,B,C,D) = \phi(A,B)\phi(B,C)\phi(C,D)\phi(D,A), 
+</script></div> where $$\phi(X,Y)$$ is a factor that assigns weights more consistent votes between friends $$X,Y$$, for example: <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt; 
+\begin{align*}
+\phi(A,B) = 
+\begin{cases}
+10 &amp; \text{ if}\; X = Y = 1 \\
+5 &amp; \text{ if}\; X = Y = 0 \\
+1 &amp; \text{ otherwise}.
+\end{cases}
+\end{align*}
+&lt;/script&gt;&lt;/div&gt;</pre> The factors in the unnormalized distribution are often referred to as <em>potentials</em>. The final probability is then defined as <div class='mathblock'><script type='math/tex; mode=display'>
+p(A,B,C,D) = \frac{1}{Z} \tilde p(A,B,C,D),
+</script></div> where $$ Z = \sum_{A,B,C,D} \tilde p(A,B,C,D) $$ is a normalizing constant that ensures that the distribution sums to one.</p>
+
+<p>When normalized, we can view $$\phi(A,B)$$ as an interaction term between friends that pushes them $$B$$&#8217;s vote closer to that of $$A$$. The term $$\phi(B,C)$$ pushes $$B$$&#8217;s vote closer to $$C$$, and the most likely vote will require reconciling these potentially conflicting influences.</p>
+
+<p>Note that compared to the directed case, we are no longer describing how one variable is generated from another set of variables (as a conditional probability distribution would do); we simply indicate a relative coupling strength between dependent neighbors in the graph. In a sense, this requires less prior knowledge from our part, as we no longer have to specify a full generative story (via a probability) of how the vote of $$B$$ is constructed from the vote of $$A$$ (which we would need to do if we had a $$P(B\mid A)$$ factor). Instead, we simply identify dependent variables, define the strength of their interactions via arbitrary couplings, which in turn defines an energy landscape over the space of possible assignments; finally we convert this energy to a probability via a normalization constant.</p>
+
+<h3 id='formal_definition'>Formal definition</h3>
+
+<p>A Markov Random Field (MRF) is a probability distribution $$p$$ over variables $$x_1,&#8230;,x_n$$ defined by an <em>undirected</em> graph $$G$$ in which nodes correspond to variables $$x_i$$. The probability $$p$$ has the form <div class='mathblock'><script type='math/tex; mode=display'>
+p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c),
+</script></div> where $$C$$ denotes the set of <em>cliques</em> (i.e. fully connected subgraphs) of $$G$$. The value <div class='mathblock'><script type='math/tex; mode=display'> 
+Z = \sum_{x_1,..,x_n}\prod_{c \in C} \phi_c(x_c) 
+</script></div> is a normalizing constant that ensures that the distribution sums to one.</p>
+
+<p>Thus, given a graph $$G$$, our probability distribution may contain factors whose scope is any clique in $$G$$, which can be a single node, an edge, a triangle, etc. Note that we do not need to specify a factor for each clique. In our above example, we defined a factor over each edge (which is a clique of two nodes). However, we chose not to specify any unary potentials i.e. cliques over single nodes (although they can be easily incorporated within e.g. edge cliques).</p>
+
+<h3 id='comparison_to_bayesian_networks'>Comparison to Bayesian networks</h3>
+<label class='margin-toggle' for='nb1'>&#8853;</label>
+<p>In our earlier voting example, we had a distribution over $$A,B,C,D$$ that satisfied $$A \perp C \mid {B,D}$$ and $$B \perp D \mid {A,C}$$ (because only friends directly influence a person&#8217;s vote). We can easily check by counter-example that these independencies cannot be perfectly represented by a Bayesian network. However, the MRF will turn out to a perfect map for this distribution.</p>
+
+<p>More generally, MRFs have several advantages over directed models:</p>
+
+<ul>
+<li>They can be applied to a wider range of problems in which there is no natural directionality associated with variable dependencies.</li>
+
+<li>Undirected graph can succinctly express certain dependencies that Bayesian nets cannot easily describe (although the converse is also true)</li>
+</ul>
+
+<p>They also possess several important drawbacks:</p>
+
+<ul>
+<li>Computing the normalization constant $$Z$$ requires summing over a potentially exponential number of assignments. We will see that in the general case, this will be NP-hard; thus many undirected models will be intractable and will require approximation techniques.</li>
+
+<li>Undirected models may be difficult to interpret.</li>
+
+<li>It is much easier to generate data from a Bayesian network, which is important for some applications, and appears as a subroutine in some optimization algorithms.</li>
+</ul>
+
+<p>It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique potential (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called <em>moralization</em>. <figure><figcaption>A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.</figcaption><img src='/cs228-notes/assets/img/moralization.png' /></figure></p>
+
+<p>Thus MRFs have more power than Bayes net, but are more difficult to deal with computationally. A general rule of thumb is to use Bayes nets whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).</p>
+
+<h2 id='independencies_in_markov_random_fields'>Independencies in Markov Random Fields</h2>
+
+<p>Recall that in the case of Bayesian networks, we defined a set of independencies $$I(G)$$ that were described by a directed graph $$G$$, and showed how these describe true independencies that must hold in a distribution $$p$$ that factorizes over the directed graph, i.e. $$I(G) \subseteq I(p)$$.</p>
+<label class='margin-toggle' for='markovblanket'>&#8853;</label>
+<p>What independencies can be then described by an undirected MRF? The answer here is very simple and intuitive: variables $$x,y$$ are dependent if they are connected by a path of unobserved variables. However, if $$x$$&#8217;s neighbors are all observed, then $$x$$ is independent of all the other variables, since they influence $$x$$ only via its neighbors.</p>
+
+<p>In particular, if a set of observed variables forms a cutset between two halves of the graph, then variables in one half are independent from ones in the other.</p>
+<figure><figcaption /><img src='/cs228-notes/assets/img/cutset.png' /></figure>
+<p>Formally, we define the <em>Markov blanket</em> $$U$$ of variable $$X$$ as the minimal set of nodes such that $$X$$ is independent from the rest of the graph if $$U$$ is observed, i.e. $$X \perp (\mathcal{X} - {X} - U) \mid U$$. This notion holds for both directed and undirected models, but in the undirected case the Markov blanket turns out to simply equal a node&#8217;s neighborhood.</p>
+
+<p>In the undirected case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$p$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.</p>
+<figure><figcaption>Examples of probability distributions that have a perfect directed graphical representation but no indirected representation, and vice-versa.</figcaption><img src='/cs228-notes/assets/img/mrf-bn-comparison.png' /></figure>
+<h2 id='conditional_random_fields'>Conditional Random Fields</h2>
+
+<p>An important special case of Markov Random Fields arises when they are applied to model a conditional probability distribution $$p(y\mid x)$$. In this case, $$x \in \mathcal{X}$$ and $$y \in \mathcal{Y}$$ are vector-valued variables; we are typically given $$x$$ and want to say something interesting for $$y$$. Typically, distributions of this sort will arise in a supervised learning setting, where $$y$$ will be a vector-valued label that we will be trying to predict. This setting is typically referred to as <em>structured prediction</em>.</p>
+
+<h3 id='example'>Example</h3>
+
+<p>As a motivating example, consider the problem of recognizing a word from a sequence of character images $$x_i \in <span>0, 1</span>^{d\times d}$$ given to us in the form of pixel matrices. The output of our predictor will be a sequence of alphabet letters $$y_i \in {&#8217;a&#8217;,&#8217;b&#8217;,&#8230;,&#8217;z&#8217;}$$.</p>
+<figure><figcaption>Chain-structured conditional random field for optical character recognition.</figcaption><img src='/cs228-notes/assets/img/ocr.png' /></figure>
+<p>We could in principle train a classifier to separately predict each $$y_i$$ from its $$x_i$$. However, since the letters together form a word, the predictions across different $$i$$ ought to inform each other. In the above example, the second letter by itself could be either a ’U’ or a ’V’; however, since we can tell with high confidence that its neighbors are ’Q’ and ’E’, we can infer that ’U’ is the most likely true label. CRFs will be a tool that will enable us to perform this prediction jointly.</p>
+
+<h3 id='formal_definition'>Formal definition</h3>
+
+<p>Formally, a CRF is a Markov network over variables $$\mathcal X \cup \mathcal Y$$ which specifies a conditional distribution <div class='mathblock'><script type='math/tex; mode=display'> 
+P(y\mid x) = \frac{1}{Z(x)} \prod_{c \in C} \phi_c(x_c,y_c) 
+</script></div> with partition function <div class='mathblock'><script type='math/tex; mode=display'> 
+Z(x) = \sum_{y \in \mathcal{Y}} \prod_{c \in C} \phi_c(x_c,y_c). 
+</script></div></p>
+
+<p>Note that in this case, the partition constant now depends on $$x$$ (therefore, we say that it is a function), which is not surprising: $$p(y\mid x)$$ is a probability over $$y$$ that is parametrized by $$x$$, i.e. it encodes a different probability function for each $$x$$. In that sense, a conditional random field results in an instantiation of a new Markov Random Field for each input $$x$$.</p>
+
+<h3 id='example_continued'>Example (continued)</h3>
+
+<p>More formally, suppose $$p(y\mid x)$$ is a chain CRF with two types of potentials: image potentials $$\phi(x_i, y_i)$$ for $$i = 1, &#8230;, n$$ — which assign higher values to $$y_i$$ that are consistent with an input $$x_i$$ — as well as pairwise potentials $$\phi(y_i, y_{i+1})$$ for $$i = 1, &#8230;, n-1$$. We may also think of the $$\phi(x_i,y_i)$$ as probabilities $$p(y_i\mid x_i)$$ given by, say, standard (unstructured) softmax regression; the $$\phi(y_i, y_{i+1})$$ can be seen as empirical frequencies of letter co-occurrences obtained from a large corpus of English text (e.g. Wikipedia).</p>
+
+<p>Given a model of this form, we can jointly infer the structured label $$y$$ using MAP inference: <div class='mathblock'><script type='math/tex; mode=display'> 
+\arg \max_y \phi_1(y_1, x_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi(y_i, x_i). 
+</script></div></p>
+
+<h3 id='crf_features'>CRF features</h3>
+
+<p>In most practical applications, we further assume that the potentials $$\phi_c(x_c,y_c)$$ are of the form <div class='mathblock'><script type='math/tex; mode=display'>
+\phi_c(x_c,y_c) = \exp(w_c^T f_c(x_c, y_c)),
+</script></div> where $$f_c(x_c, y_c)$$ can be an arbitrary set of features describing the compatibility between $$x_c$$ and $$y_c$$.</p>
+
+<p>In our OCR example, we may introduce features $$f(x_i, y_i)$$; that encode the compatibility of the letter $$y_i$$ with the pixels $$x_i$$. For example, $$f(x_i, y_i)$$; may be the probability of letter $$y_i$$ produced by logistic regression (or a deep neural network) evaluated on pixels $$x_i$$. In addition, we introduce features $$f(y_i, y_{i+1})$$ between adjacent letters. These may be indicators of the form $$f(y_i, y_{i+1}) = \Ind(y_i = \ell_1, y_{i+1} == \ell_2)$$, where $$\ell_1, \ell_2$$ are two letters of the alphabet. The CRF would then learn weights $$w$$ that would assign more weight to more common probability of consecutive letters $$(\ell_1, \ell_2)$$, while at the same time making sure that the predicted $$y_i$$ are consistent with the input $$x_i$$; this process would let us determine $$y_i$$ in cases where $$x_i$$ is ambiguous, like in our above example.</p>
+
+<p>The most important realization that need to be made about CRF features is that they can be arbitrarily complex. In fact, we may define an OCR model with potentials $$\phi_i(x,y_i) = \exp(w_i^T f(x, y_i))$$, that depend on the entire input $$x$$. This will not affect computational performance at all, because at inference time, the $$x$$ will be always observed, and our decoding problem will involve maximizing <div class='mathblock'><script type='math/tex; mode=display'> 
+\phi_1(y_1, x) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi(y_i, x) = \phi_1'(y_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi'(y_i),
+</script></div> where $$\phi&#8217;_i(y_i) = \phi_i(x,y_i)$$. Using global features only changes the values of the factors, but not their scope, which possesses the same type of chain structure. We will see in the next section that this structure is all that is needed to ensure we can solve this optimization problem tractably.</p>
+
+<p>This observation may be interpreted in a slightly more general form. If we were to model $$p(x,y)$$ using an MRF (viewed as a single model over $$x, y$$ with normalizing constant $$Z = \sum_{x,y} \tp(x,y)$$), then we need to fit two distributions to the data: $$p(y\mid x)$$ and $$p(x)$$. However, if all we are interested in is predicting $$y$$ given $$x$$, then modeling $$p(x)$$ is unnecessary. In fact, it may be disadvantageous to do so statistically (e.g. we may not have enough data to fit both $$p(y\mid x)$$ and $$p(x)$$; since the models have shared parameters, fitting one may result in the best parameters for othe other) and it may not be a good idea computationally (we need to make simplifying assumptions in the distribution so that $$p(x)$$ can be handled tractably). CRFs forgo of this assumption, and often perform better on prediction tasks.</p>
+
+
+    </article>
+    <span class="print-footer">Markov random fields - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2017 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2017</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

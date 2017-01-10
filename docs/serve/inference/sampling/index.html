@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Sampling methods</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="/cs228-notes/inference/sampling/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/kuleshov/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Sampling methods</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>In practice, the probabilistic models that we use are often quite complex, and simple algorithms like variable elimination may be too slow for them. In fact, many interesting classes of models may not admit exact polynomial-time solutions at all, and for this reason, much research effort in machine learning is spent on developing algorithms that yield <em>approximate</em> solutions to the inference problem. This section begins our study of such algorithms.</p>
+
+<p>There exist two main families of approximate algorithms: <em>variational</em> methods<label class='margin-toggle sidenote-number' for='1' /><input class='margin-toggle' id='1' type='checkbox' /><span class='sidenote'>Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments. </span>, which formulate inference as an optimization problem, as well as <em>sampling</em> methods, which produce answers by repeatedly generating random numbers from a distribution of interest.</p>
+
+<p>Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can compute various interesting quantities, such as expectations $$\Exp<span>f(X)</span>$$ of random variables distributed according to a given probabilistic model. Sampling methods have historically been the main way of performing approximate inference, although over the past 15 years variational methods have emerged as viable (and often superior) alternatives.</p>
+
+<h2 id='sampling_from_a_probability_distribution'>Sampling from a probability distribution</h2>
+
+<p>As a warm-up, let&#8217;s think for a minute how we might sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1,&#8230;,\theta_k$$.</p>
+
+<p>Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions<label class='margin-toggle sidenote-number' for='1' /><input class='margin-toggle' id='1' type='checkbox' /><span class='sidenote'>Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable form a truly random one. We call such sequences *pseudorandom*. </span>, such as the uniform distribution over $$<span>0,1</span>$$. All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.</p>
+
+<p>In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$d$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$<span>0,1</span>$$ and return the value of the region in which our sample falls. <figure><figcaption>Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1].</figcaption><img src='/cs228-notes/assets/img/multinomial-sampling.png' /></figure></p>
+
+<h3 id='sampling_from_directed_graphical_models'>Sampling from directed graphical models</h3>
+<label class='margin-toggle' for='nb1'>&#8853;</label>
+<p>Our technique for sampling from multinomials naturally extends to Bayesian networks with multinomial variables, via a method called <em>ancestral</em> (or <em>forward</em>) sampling. Given a probability $$p(x_1,&#8230;,x_n)$$ specified by a Bayes net, we sample variables in topological order. In other words, we start by sampling the variables with no parents; then we sample from the next generation by conditioning these variables&#8217; CPDs to values sampled at the first step. We proceed like this until the $$n$$ variables have been sampled.</p>
+
+<p>In our earlier model of a student&#8217;s grade, we would first sample an exam difficulty $$d&#8217;$$ and an intelligence level $$i&#8217;$$. Then, once we have samples, $$d&#8217;, i&#8217;$$ we generate a student grade $$g&#8217;$$ from $$p(g \mid d&#8217;, i&#8217;)$$. At each step, we simply perform standard multinomial sampling.</p>
+
+<h2 id='monte_carlo_estimation'>Monte Carlo estimation</h2>
+
+<p>Sampling from a distribution lets us perform many useful tasks, including marginal and MAP inference, as well as computing integrals of the form <div class='mathblock'><script type='math/tex; mode=display'>
+\Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
+</script></div> If $$g$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods<label class='margin-toggle sidenote-number' for='1' /><input class='margin-toggle' id='1' type='checkbox' /><span class='sidenote'>The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project. </span>.</p>
+
+<p>Monte Carlo integration is an important instantiation of the general Monte Carlo principle. This technique approximates a target expectation with <div class='mathblock'><script type='math/tex; mode=display'>
+\Exp_{x \sim p}[f(x)] \approx \frac{1}{T} \sum_{t=1}^T f(x^t),
+</script></div> where $$x^1,&#8230;,x^T$$ are samples drawn according to $$p$$.</p>
+
+<p>It easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}<span>f(x)</span>$$. Moreover as $$I_T \to \Exp_{x \sim p}<span>f(x)</span>$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(g(x))/T$$, which can be made arbitrarily small with $$T$$.</p>
+
+<h3 id='rejection_sampling'>Rejection sampling</h3>
+<label class='margin-toggle' for='nb1'>&#8853;</label>
+<p>A special case of Monte Carlo integration is rejection sampling. We may use it to compute the area of a region $$R$$ by sampling in a larger region with a known area and recording the fraction of samples that falls within $$R$$.</p>
+
+<p>For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x&#8217;)$$: we may write this probability as $$\Exp_{x\sim p}<span>\Ind(x=x&#8217;)</span>$$ and then take the the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.</p>
+
+<h3 id='importance_sampling'>Importance sampling</h3>
+
+<p>Unfortunately, this procedure is very wasteful. If $$p(x=x&#8217;)$$ equals, say, 1%, then we will discard 99% of all samples.</p>
+
+<p>A better way of computing such integrals is via an approach called <em>importance sampling</em>. The main idea is to sample from a distribution $$q$$ (hopefully roughly proportional to $$f \cdot p$$), and then <em>reweigh</em> the samples in a principled way, so that their sum still approximates the desired integral.</p>
+
+<p>More formally, suppose we are interested in computing $$\Exp_{x \sim p}<span>f(x)</span>$$. We may rewrite this integral as <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\begin{align*}
+\Exp_{x \sim p}[f(x)] 
+&amp; = \sum_{x} f(x) p(x) \\
+&amp; = \sum_{x} f(x) \frac{p(x)}{q(x)} q(x) \\
+&amp; = \Exp_{x \sim q}[f(x)w(x)] \\
+&amp; \approx \frac{1}{T} \sum_{t=1}^T f(x^t) w(x^t) \\
+\end{align*}
+&lt;/script&gt;&lt;/div&gt;</pre> where $$w(x) = \frac{p(x)}{q(x)}$$. In other words, we may instead take samples from $$q$$ and reweigh them with $$w(x)$$; the expected value of this Monte Carlo approximation will be the original integral.</p>
+
+<p>Now the variance of this new estimator equals <div class='mathblock'><script type='math/tex; mode=display'>
+\text{var}_{x \sim q}(f(x)w(x)) = \Exp_q (f^2(x) w^2(x)) - \Exp_q (f(x) w(x))^2 \geq 0
+</script></div> Note that we can set the variance to zero by choosing <span>&#8203;<script type='math/tex'>q(x) = \frac{|f(x)|p(x)}{\int |f(x)|p(x) dx}</script></span>; this means that if we can sample from this $$q$$ (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a $$q$$ would be NP-hard in general, but this at least gives us an indication for what to strive for.</p>
+
+<p>In the context of our previous example for computing $$p(x=x&#8217;) = \Exp_z<span>p(z,x&#8217;)</span>$$, we may take $$q$$ to be uniform distribution apply importance sampling as follows: <div class='mathblock'><script type='math/tex; mode=display'>
+\Exp_z[p(z,x')] \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)}.
+</script></div> Unlike rejection sampling, this will use all the examples; if $$p(z | x&#8217;)$$ is not too far from uniform, this will converge to the true probability after only a very small number of samples.</p>
+
+<h2 id='markov_chain_monte_carlo'>Markov chain Monte Carlo</h2>
+
+<p>Let us now turn our attention from computing expectations to performing marginal and MAP inference using sampling. We will solve these problems using a very powerful technique called Markov chain Monte Carlo<label class='margin-toggle sidenote-number' for='1' /><input class='margin-toggle' id='1' type='checkbox' /><span class='sidenote'>Markov chain Monte Carlo is another algorithm that was developed during the Manhattan project and eventually republished in the scientific literature some decades later. It is so important, that is was recently named as one of the [10 most important algorithms](https://www.siam.org/pdf/news/637.pdf) of the XXth century. </span> (MCMC).</p>
+
+<h3 id='markov_chain'>Markov Chain</h3>
+
+<p>A key concept in MCMC is that of a <em>Markov chain</em>. A (discrete-time) Markov chain is a sequence of random variables $$S_0, S_1, S_2, &#8230;$$ with each random variable $$S_i \in {1,2,&#8230;,d}$$ taking one of $$d$$ possible values, intuitively representing the state of a system. The initial state is distributed according to a probability $$P(S_0)$$; all subsequent states are generated from a conditional probability distribution that depends only on the previous random state, i.e. $$S_i$$ is distributed according to $$P(S_i \mid S_{i-1})$$.</p>
+
+<p>The probability $$P(S_i \mid S_{i-1})$$ is the same at every step $$i$$; this means that the transition probabilities at any time in the entire process depend only on the given state and not on the history of how we got there. This is called the <em>Markov</em> assumption.</p>
+<label class='margin-toggle' for='mc'>&#8853;</label>
+<p>It is very convenient to represent the transition probability as a $$d \times d$$ matrix <div class='mathblock'><script type='math/tex; mode=display'>
+T_{ij} = P(S_\text{new} = i \mid S_\text{prev} = j),
+</script></div> where $$T^t$$ denotes matrix exponentiation (we apply the matrix operator $$t$$ times).</p>
+
+<p>If the inital state $$S_0$$ is drawn from a vector probabilities $$p_0$$, we may represent the probability $$p_t$$ of ending up in each state after $$t$$ steps as <div class='mathblock'><script type='math/tex; mode=display'>
+p_t = T^t p_0.
+</script></div></p>
+
+<p>The limit $$\pi = \lim_{t \to \infty} p_t$$ (when it exists) is called a <em>stationary distribution</em> of the Markov chain. We will construct below Markov chain with a stationary distribution $$\pi$$ that exists and is the same for all $$p_0$$; we will refer to such $$\pi$$ as <em>the</em> stationary distribution* of the chain.</p>
+
+<p>A necessary condition that must be satisfied by a stationary distribution is called <em>detailed balance</em>: <div class='mathblock'><script type='math/tex; mode=display'>
+\pi(x') T(x \mid x') = \pi(x) T(x' \mid x) \;\text{for all x}
+</script></div> It is easy to show that such a $$\pi$$ must form a stationary distribution (just sum both sides of the equation over $$x$$ and simplify).</p>
+
+<h3 id='existence_of_a_stationary_distribution'>Existence of a stationary distribution</h3>
+
+<p>The high-level idea of MCMC will be construct a Markov chain whose states will be joint assignments to the variables in the model and whose stationary distribution will equal the model probability $$p$$.</p>
+
+<p>In order to construct such a chain, we first need to understand when stationary distributions exist. This turns out to be true under two sufficient conditions:</p>
+
+<ul>
+<li><em>Irreducibility</em>: It is possible to get from any state $$x$$ to any other state $$x&#8217;$$ with probability &gt; 0 in a finite number of steps.</li>
+
+<li><em>Aperiodicity</em>: It is possible to return to any state at any time, i.e. there exists an $$n$$ such that for all $$i$$ and all $$n&#8217; \geq n$$, $$P(s_{n&#8217;}=i \mid s_0 = i) &gt; 0$$.</li>
+</ul>
+
+<p>The first condition is meant to prevent <em>absorbing states</em>, i.e. states from which we can never leave. In the example below, if we start in states $$1,2$$, we will never reach state 4. Conversely, if we start in state 4, then we will never each states 1,2. If we start the chain in the middle (in state 3), then clearly it cannot have a single limiting distribution. <figure><figcaption>A reducible Markov Chain over four states.</figcaption><img src='/cs228-notes/assets/img/reducible-chain.png' /></figure></p>
+
+<p>The second condition is necessary to rule out transition operators such as <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+T = \left[
+\begin{matrix}
+0 &amp; 1 \\
+1 &amp; 0
+\end{matrix}
+\right].
+&lt;/script&gt;&lt;/div&gt;</pre> Note that this chain alternates forever between states 1 and 2 without ever settling in a stationary distribution.</p>
+
+<p><strong>Fact</strong>: An irreducible and aperiodic finite-state Markov chain has a stationary distribution.</p>
+
+<p>In the context of continuous variables, the Markov chain must be <em>ergodic</em>, which is slightly stronger condition than the above (and which requires irreducibility and aperiodicity). For the sake of generality, we will simply require our Markov Chain to be ergodic.</p>
+
+<h3 id='markov_chain_monte_carlo'>Markov Chain Monte Carlo</h3>
+
+<p>As we said, the idea of MCMC algorithms is to construct a Markov chain over the assignments to a probability function $$p$$; the chain will have a stationary distribution equal to $$p$$ itself; by running the chain for some number of time, we will thus sample from $$p$$.</p>
+
+<p>At a high level, MCMC algorithms will have the following structure. They take as argument a transition operator $$T$$ specifying a Markov chain whose stationary distribution is $$p$$, and an initial assignment $$x_0$$ to the variables of $$p$$. An MCMC algorithm then perform the following steps.</p>
+
+<ol>
+<li>Run the Markov chain from $$x_0$$ for $$B$$ <em>burn-in</em> steps.</li>
+
+<li>Run the Markov chain from $$x_0$$ for $$N$$ <em>sampling</em> steps and collect all the states that it visits.</li>
+</ol>
+
+<p>Assuming $$B$$ is sufficiently large, the latter collection of states will form samples from $$p$$. We may then use these samples for Monte Carlo integration (or in importance sampling). We may also use them to produce Monte Carlo estimates of marginal probabilities. Finally, we may take the sample with the highest probability and use it as an estimate of the mode (i.e. perform MAP inference).</p>
+
+<h3 id='metropolishastings_algorithm'>Metropolis-Hastings algorithm</h3>
+
+<p>The Metropolis-Hastings (MH) algorithm is our first way to construct Markov chains within MCMC. The MH method constructs a transition operator $$T(x&#8217; \mid x)$$ from two components:</p>
+
+<ul>
+<li>A transition kernel $$Q(x&#8217;\mid x)$$, specified by the user</li>
+
+<li>An acceptance probability for moves proposed by $$Q$$, specified by the algorithm as <div class='mathblock'><script type='math/tex; mode=display'>
+A(x' \mid x) = \min \left(1, \frac{P(x')Q(x \mid x')}{P(x)Q(x' \mid x)} \right).
+</script></div></li>
+</ul>
+
+<p>At each step of the Markov chain, we choose a new point $$x&#8217;$$ according to $$Q$$. Then, we either accept this proposed change (with probability $$\alpha$$), or with probability $$1-\alpha$$ we remain at our current state.</p>
+
+<p>Notice that the acceptance probability encourages us to move towards more likely points in the distribution (imagine for example that $$Q$$ is uniform); when $$Q$$ suggests that we move is a low-probability region, we follow that move only a certain fraction of the time.</p>
+
+<p>In practice, the distribution $$Q$$ is taken to be something simple, like a Gaussian centered at $$x$$ if we are dealing with continuous variables.</p>
+
+<p>Given any $$Q$$ the MH algorithm will ensure that $$P$$ will be a stationary distribution of the resulting Markov Chain. More precisely, $$P$$ wil satisfy the detailed balance condition with respect to the MH Markov chain.</p>
+
+<p>To see that, first observe that if $$A(x&#8217; \mid x) &lt; 1$$, then $$\frac{P(x)Q(x&#8217; \mid x)}{P(x&#8217;)Q(x \mid x&#8217;)} &gt; 1$$ and thus $$A(x \mid x&#8217;) = 1$$. When $$A(x&#8217; \mid x) &lt; 1$$, this lets us write: <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\begin{align*}
+A(x&apos; \mid x) &amp; =  \frac{P(x&apos;)Q(x \mid x&apos;)}{P(x)Q(x&apos; \mid x)} \\
+P(x&apos;)Q(x \mid x&apos;) A(x&apos; \mid x) &amp; =  P(x)Q(x&apos; \mid x) A(x&apos; \mid x) \\
+P(x&apos;)T(x \mid x&apos;) &amp; =  P(x)T(x&apos; \mid x),
+\end{align*}
+&lt;/script&gt;&lt;/div&gt;</pre> which is simply the detailed balance condition. We used $$T(x \mid x&#8217;)$$ to denote the full transition operator of MH (obtained by applying both $$Q$$ and $$A$$). Thus, if the MH Markov chain is ergodic, its stationary distribution will be $$P$$.</p>
+
+<h3 id='gibbs_sampling'>Gibbs sampling</h3>
+
+<p>A widely-used special case of teh Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables $$x_1,&#8230;,x_n$$ and a starting configuration $$x^0 = (x_1^0,&#8230;,x_n^0)$$, we iterate through the variables one at a time; at each time step $$t$$, we:</p>
+
+<ol>
+<li>Sample $$x_i&#8217; \sim p(x_i \mid x_{-i}^t)$$</li>
+
+<li>Set $$x^{t+1} = (x_1^t, &#8230;, x_i&#8217;, &#8230;, x_n^0).$$</li>
+</ol>
+
+<p>We use $$x_{-i}^t$$ to denote all variables in $$x^t$$ except $$x_i$$. It is often very easy to performing this sampling step, since we only need to condition $$x_i$$ on its Markov blanket, which is typically small.</p>
+
+<p>Gibbs sampling can be seen as a special case of MH with proposal $$ Q(x_i&#8217;, x_{-i} \mid x_i, x_{-i}) = P(x_i&#8217; \mid x_{-i}). $$ It is easy check that in the acceptance probability simplifies to one.</p>
+
+<p>Assuming the right transition operator, both Gibbs sampling and MH will eventually produce samples from their stationary distribution, which by construction is $$P$$.</p>
+
+<p>There exists simple ways of ensuring that this will be the case</p>
+
+<ul>
+<li>To ensure irreducibility, the transition operator $$Q$$ with MH should be able to potentially move to every state. In the case of Gibbs sampling, we would like to make sure that every $$x_i&#8217;$$ can get sampled from $$p(x_i \mid x_{-i}^t)$$.</li>
+
+<li>To ensure aperiodicity, it is enough to make let the chain transition stay in its state with some probability.</li>
+</ul>
+
+<p>In practice, it is not difficult to ensure these requirements are met.</p>
+
+<h3 id='running_time_of_mcmc'>Running time of MCMC</h3>
+
+<p>A key parameter to this algorithm in the number of burn-in steps $$B$$. Intuitively, this corresponds to the number of steps needed to converge to our limit (stationary) distribution. This is called the <em>mixing time</em> of the Markov chain<label class='margin-toggle sidenote-number' for='1' /><input class='margin-toggle' id='1' type='checkbox' /><span class='sidenote'>There is a technical definition of this quantity, which we will not cover here. </span>. Unfortunately, this time may vary dramatically, and may sometimes take essentially forever. For example, if the transition matrix is <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+T = \left[
+\begin{matrix}
+1 -\e &amp; \e \\
+\e &amp; 1 -\e
+\end{matrix}
+\right],
+&lt;/script&gt;&lt;/div&gt;</pre> then for small $$\e$$ it will take a very long time to reach the stationary distribution, which is close to $$(0.5, 0.5)$$. At each step, we will stay in the same state with overwhelming probability; very rarely, we will transition to another state, and then stay there for a very long time. The average of these states will converge to $$(0.5, 0.5)$$, but the convergence will be very slow.</p>
+
+<p>This problem will also occur with complicated distributions that have two distinct and narrow modes; with high probability the algorithm will sample from a given mode for a very long time. These examples are indications that sampling is a hard problem in general, and MCMC does not give us a free lunch. Nonetheless, for many real-world distributions, sampling will produce very useful solutions.</p>
+
+<p>Another, perhaps more important problem, is that we may not know when to end the burn-in period, even if it is theoretically not too long. There exist many heuristics to determine whether a Markov chain has <em>mixed</em>; however, typically these heuristics involve plotting certain quantities and estimating them by eye; even the quantitative measures are not significantly more reliable than this approach.</p>
+
+<p>In summary, even though MCMC is able to sample from the right distribution (which in turn can be used to solve any inference problem), doing so may sometimes require a very long time, and there is no easy way to judge the amount of computation that we need to spend to find a good solution.</p>
+
+
+    </article>
+    <span class="print-footer">Sampling methods - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2017 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2017</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
