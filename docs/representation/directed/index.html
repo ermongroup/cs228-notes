@@ -14,7 +14,11 @@
 
   <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
   
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
   <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
   <script>
@@ -28,8 +32,8 @@
 
   </script>
 
-  <link rel="canonical" href="/cs228-notes/representation/directed/">
-  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="/cs228-notes/feed.xml" />
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/representation/directed/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
 </head>
 
   <body>
@@ -73,121 +77,135 @@
 </script>
 
 
-<p>We begin our study of probabilistic graphical models with the topic of <em>representation</em>. The main question we want to address is the following: how do we define a probability distribution that models some real-world phenomenon of interest? This is not a trivial problem: we have seen that a naive model for classifying spam messages with $$n$$ possible words involves potentially up to $$O(2^n)$$ parameters.</p>
+<p>We begin our study of probabilistic graphical models with the topic of <em>representation</em>.
+The main question we want to address is the following: how do we define a probability distribution that models some real-world phenomenon of interest? This is not a trivial problem: we have seen that a naive model for classifying spam messages with <script type="math/tex">n</script> possible words involves potentially up to <script type="math/tex">O(2^n)</script> parameters.</p>
 
 <p>In this chapter, we will:</p>
 
 <ul>
-<li>Propose a general approach for parametrizing probability distributions using only a few parameters.</li>
-
-<li>Introduce a visual language for describing and representing these distributions via <em>directed acyclic graphs</em> (DAGs).</li>
-
-<li>Study how our graphical representation describes properties of the probability distribution; this will enable to us to accurately understand our modeling assumptions and will later help designing efficient inference algorithms.</li>
+  <li>Propose a general approach for parametrizing probability distributions using only a few parameters.</li>
+  <li>Introduce a visual language for describing and representing these distributions via <em>directed acyclic graphs</em> (DAGs).</li>
+  <li>Study how our graphical representation describes properties of the probability distribution; this will enable to us to accurately understand our modeling assumptions and will later help designing efficient inference algorithms.</li>
 </ul>
 
-<p>We will later see that there are two general approaches to representing probabilities. The first approach, which we will see here, describes probabilities using directed graphs, also referred to as <em>Bayesian networks</em>. The second approach, covered in the next chapter, will involve undirected graphs, which are also called <em>Markov random fields</em>.</p>
+<p>We will later see that there are two general approaches to representing probabilities.
+The first approach, which we will see here, describes probabilities using directed graphs, also referred to as <em>Bayesian networks</em>. The second approach, covered in the next chapter, will involve undirected graphs, which are also called <em>Markov random fields</em>.</p>
 
-<h2 id='probabilistic_modeling_with_bayesian_networks'>Probabilistic modeling with Bayesian networks</h2>
+<h2 id="probabilistic-modeling-with-bayesian-networks">Probabilistic modeling with Bayesian networks</h2>
 
 <p>Directed graphical models (also known as Bayesian networks) are a class of probability distributions that admit a particular compact parametrization that can be elegantly described using directed graphs. The general idea behind this parametrization is that each variable depends only on a small number of <em>ancestor</em> variables.</p>
 
-<p>Recall that by the chain rule, we can write any probability $$p$$ as: <div class='mathblock'><script type='math/tex; mode=display'>
+<p>Recall that by the chain rule, we can write any probability <script type="math/tex">p</script> as:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
 p(x_1,x_2,...,x_n) = p(x_1) p(x_2\mid x_1) \cdots p(x_n\mid x_{n-1},...,x_2,x_1).
-</script></div> A compact Bayesian network is a distribution in which each factor on the right hand side depends only on a small number of <em>ancestor variables</em> $$x_{A_i}$$: <div class='mathblock'><script type='math/tex; mode=display'> 
+</script></div>
+<p>A compact Bayesian network is a distribution in which each factor on the right hand side depends only on a small number of <em>ancestor variables</em> <script type="math/tex">x_{A_i}</script>:</p>
+<div class="mathblock"><script type="math/tex; mode=display"> 
 p(x_i \mid  x_{i-1}...x_1) = p(x_i \mid  x_{A_i}). 
-</script></div> For example, in a model with five variables, we may choose to approximate the factor <span>&#8203;<script type='math/tex'>p(x_5\mid x_4, x_3, x_2, x_1)</script></span> with <span>&#8203;<script type='math/tex'>p(x_5 \mid  x_4, x_3)</script></span>. In this case, we write $$x_{A_i} = {x_4, x_3}$$.</p>
+</script></div>
+<p>For example, in a model with five variables, we may choose to approximate the factor <span>​<script type="math/tex">p(x_5\mid x_4, x_3, x_2, x_1)</script></span> with <span>​<script type="math/tex">p(x_5 \mid  x_4, x_3)</script></span>. In this case, we write <script type="math/tex">x_{A_i} = \{x_4, x_3\}</script>.</p>
 
-<p>When the variables are discrete (which will be often be the case in the problem we will consider), we may think of the factors <span>&#8203;<script type='math/tex'>p(x_i\mid x_{A_i})</script></span> as <em>probability tables</em>, in which columns correspond to assignments to $$x_{A_i}$$ and rows correspond to values of $$x_i$$; the entries contain the actual probabilities <span>&#8203;<script type='math/tex'>p(x_i\mid x_{A_i})</script></span>. If each variable takes $$d$$ values and has at most $$k$$ ancestors, then the entire table will contain at most $$O(d^{k+1})$$ entries. Since we have one table per variable, the entire probability distribution can be compactly described with only $$O(nd^k)$$ parameters (compared to $$O(d^n)$$ with a naive approach).</p>
+<p>When the variables are discrete (which will be often be the case in the problem we will consider), we may think of the factors <span>​<script type="math/tex">p(x_i\mid x_{A_i})</script></span> as <em>probability tables</em>, in which columns correspond to assignments to <script type="math/tex">x_{A_i}</script> and rows correspond to values of <script type="math/tex">x_i</script>; the entries contain the actual probabilities <span>​<script type="math/tex">p(x_i\mid x_{A_i})</script></span>. If each variable takes <script type="math/tex">d</script> values and has at most <script type="math/tex">k</script> ancestors, then the entire table will contain at most <script type="math/tex">O(d^{k+1})</script> entries. Since we have one table per variable, the entire probability distribution can be compactly described with only <script type="math/tex">O(nd^k)</script> parameters (compared to <script type="math/tex">O(d^n)</script> with a naive approach).</p>
 
-<h3 id='graphical_representation'>Graphical representation.</h3>
+<h3 id="graphical-representation">Graphical representation.</h3>
 
-<p>Distributions of this form can be naturally expressed as <em>directed acyclic graphs</em>, in which vertices correspond to variables $$x_i$$ and edges indicate dependency relationships. In particular we set the parents of each node to $$x_i$$ to its ancestors $$x_{A_i}$$.</p>
+<p>Distributions of this form can be naturally expressed as <em>directed acyclic graphs</em>, in which vertices correspond to variables <script type="math/tex">x_i</script> and edges indicate dependency relationships. In particular we set the parents of each node to <script type="math/tex">x_i</script> to its ancestors <script type="math/tex">x_{A_i}</script>.</p>
 
-<p>As an example, consider a model of a student&#8217;s grade $$g$$ on an exam; in addition to $$g$$, we also model other aspects of the problem, such as the exam&#8217;s difficulty $$d$$, the student&#8217;s intelligence $$i$$, his SAT score $$s$$, and the quality $$l$$ of a reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values.<label class='margin-toggle' for='nb1'>&#8853;</label><input class='margin-toggle' id='nb1' type='checkbox' /><span class='marginnote'><img class='fullwidth' src='/cs228-notes/assets/img/grade-model.png' /><br />Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.</span> The joint probability distribution over the 5 variables naturally factorizes as follows: <div class='mathblock'><script type='math/tex; mode=display'>
+<p>As an example, consider a model of a student’s grade <script type="math/tex">g</script> on an exam; in addition to <script type="math/tex">g</script>, we also model other aspects of the problem, such as the exam’s difficulty <script type="math/tex">d</script>, the student’s intelligence <script type="math/tex">i</script>, his SAT score <script type="math/tex">s</script>, and the quality <script type="math/tex">l</script> of a reference letter from the professor who taught the course. Each variable is binary, except for <script type="math/tex">g</script>, which takes 3 possible values.<label for="nb1" class="margin-toggle">⊕</label><input type="checkbox" id="nb1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/grade-model.png" /><br />Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.</span> The joint probability distribution over the 5 variables naturally factorizes as follows:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
 p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
-</script></div> The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student&#8217;s intelligence and the difficulty of the exam.</p>
+</script></div>
+<p>The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student’s intelligence and the difficulty of the exam.</p>
 
-<p>Another way to interpret directed graphs is in terms of stories for how the data was generated. In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student&#8217;s grade is sampled given these parameters; finally, the recommendation letter is generated based on that grade. In the previous spam classification example, we implicitly postulated that email is generated according to a two-step process: first, we choose a spam/non-spam label $$y$$; then we sample independently whether each word is present, conditioned on that label.</p>
+<p>Another way to interpret directed graphs is in terms of stories for how the data was generated.
+In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student’s grade is sampled given these parameters; finally, the recommendation letter is generated based on that grade.
+In the previous spam classification example, we implicitly postulated that email is generated according to a two-step process:
+first, we choose a spam/non-spam label <script type="math/tex">y</script>; then we sample independently whether each word is present, conditioned on that label.</p>
 
-<h3 id='formal_definition'>Formal definition.</h3>
+<h3 id="formal-definition">Formal definition.</h3>
 
-<p>Formally, a Bayesian network is a directed graph $$G = (V,E)$$ together with</p>
-
-<ul>
-<li>A random variable $$x_i$$ for each node $$i \in V$$.</li>
-
-<li>One conditional probability distribution (CPD) <span>&#8203;<script type='math/tex'>p(x_i \mid  x_{A_i})</script></span> per node, specifying the probability of $$x_i$$ conditioned on its parents&#8217; values.</li>
-</ul>
-
-<p>Thus, a Bayesian network defines a probability distribution $$p$$. Conversely, we say that a probability $$p$$ <em>factorizes</em> over a DAG $$G$$ if it can be decomposed into a product of factors, as specified by $$G$$.</p>
-
-<p>It is not hard to see that a probability represented by a Bayesian network will be valid: clearly, it will be non-negative and one can show using an induction argument (and using the fact that the CPDs are valid probabilities) that the sum over all variable assignments will be one. Conversely, we can also show by counter-example that when $$G$$ contains cycles, its associated probability may not sum to one.</p>
-
-<h2 id='the_dependencies_of_a_bayes_net'>The dependencies of a Bayes net</h2>
-
-<p>To summarize, Bayesian networks represent probability distributions that can be formed via products of smaller, local conditional probability distributions (one for each variable). By expressing a probability in this form, we are introducing into our model assumptions that certain variables are independent.</p>
-
-<p>This raises the question: which independence assumptions are we exactly making by using a model Bayesian network with a given structure described by $$G$$? This question important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.</p>
-
-<p>Let us use the notation $$I(p)$$ to denote the set of all conditional independencies that hold for a joint distribution $$p$$. For example, if $$p(x,y)=p(x)p(y)$$, then we say that $$x \perp y \in I(p)$$.</p>
-
-<h3 id='independencies_described_by_directed_graphs'>Independencies described by directed graphs</h3>
-
-<p>It turns our that a Bayesian network $$p$$ very elegantly describes many independencies in $$I(p)$$; these independencies can be recovered from the graph by looking at three types of structures.</p>
-
-<p>For simplicity, let&#8217;s start by looking at a Bayes net $$G$$ with three nodes: $$A$$, $$B$$, and $$C$$. In this case, $$G$$ essentially has only three possible structures, each of which leads to different independence assumptions. The interested reader can easily prove these results using a bit of algebra.</p>
+<p>Formally, a Bayesian network is a directed graph <script type="math/tex">G = (V,E)</script> together with</p>
 
 <ul>
-<li />
-
-<li><em>Cascade</em>: If $$G$$ equals $$A \rightarrow B \rightarrow C$$, and $$B$$ is again observed, then, again <span>&#8203;<script type='math/tex'>A \perp C \mid  B</script></span>. However, if $$B$$ is unobserved, then $$A \not\perp C$$. Here, the intuition is again that $$B$$ holds all the information that determines the outcome of $$C$$; thus, it does not matter what value $$A$$ takes.</li>
-
-<li><em>V-structure</em> (also known as <em>explaining away</em>): If $$G$$ is $$A \rightarrow C \leftarrow B$$, then knowing $$C$$ couples $$A$$ and $$B$$. In other words, $$A \perp B$$ if $$C$$ is unobserved, but <span>&#8203;<script type='math/tex'>A \not\perp B \mid  C</script></span> if $$C$$ is observed.</li>
+  <li>A random variable <script type="math/tex">x_i</script> for each node <script type="math/tex">i \in V</script>.</li>
+  <li>One conditional probability distribution (CPD) <span>​<script type="math/tex">p(x_i \mid  x_{A_i})</script></span> per node, specifying the probability of <script type="math/tex">x_i</script> conditioned on its parents’ values.</li>
 </ul>
 
-<p>The latter case requires additional explanation. Suppose that $$C$$ is a Boolean variable that indicates whether our lawn is wet one morning; $$A$$ and $$B$$ are two explanation for it being wet: either it rained (indicated by $$A$$), or the sprinkler turned on (indicated by $$B$$). If we know that the grass is wet ($$C$$ is true) and the sprinkler didn&#8217;t go on ($$B$$ is false), then the probability that $$A$$ is true must be one, because that is the only other possible explanation. Hence, $$C$$ and $$A$$ are not independent given $$B$$.</p>
+<p>Thus, a Bayesian network defines a probability distribution <script type="math/tex">p</script>.
+Conversely, we say that a probability <script type="math/tex">p</script> <em>factorizes</em> over a DAG <script type="math/tex">G</script> if it can be decomposed into a product of factors, as specified by <script type="math/tex">G</script>.</p>
 
-<p>These structures clearly describe the independencies encoded by a three-variable Bayesian net. We can extend them to general networks by applying them recursively over any larger graph. This leads to a notion called $$d$$-separation (where $$d$$ stands for directed).</p>
+<p>It is not hard to see that a probability represented by a Bayesian network will be valid: clearly, it will be non-negative and one can show using an induction argument (and using the fact that the CPDs are valid probabilities) that the sum over all variable assignments will be one.
+Conversely, we can also show by counter-example that when <script type="math/tex">G</script> contains cycles, its associated probability may not sum to one.</p>
 
-<p>We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed if they are connected by an <em>active path</em>. An undirected path in the Bayesian Network structure $$G$$ is called <em>active</em> given observed variables $$O$$ if for every consecutive triple of variables $$X,Y,Z$$ on the path, one of the following holds:</p>
+<h2 id="the-dependencies-of-a-bayes-net">The dependencies of a Bayes net</h2>
+
+<p>To summarize, Bayesian networks represent probability distributions that can be formed via products of smaller, local conditional probability distributions (one for each variable). 
+By expressing a probability in this form, we are introducing into our model assumptions that certain variables are independent.</p>
+
+<p>This raises the question: which independence assumptions are we exactly making by using a model Bayesian network with a given structure described by <script type="math/tex">G</script>?
+This question important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.</p>
+
+<p>Let us use the notation <script type="math/tex">I(p)</script> to denote the set of all conditional independencies that hold for a joint distribution <script type="math/tex">p</script>. For example, if <script type="math/tex">p(x,y)=p(x)p(y)</script>, then we say that <script type="math/tex">x \perp y \in I(p)</script>.</p>
+
+<h3 id="independencies-described-by-directed-graphs">Independencies described by directed graphs</h3>
+
+<p>It turns our that a Bayesian network <script type="math/tex">p</script> very elegantly describes many independencies in <script type="math/tex">I(p)</script>; these independencies can be recovered from the graph by looking at three types of structures.</p>
+
+<p>For simplicity, let’s start by looking at a Bayes net <script type="math/tex">G</script> with three nodes: <script type="math/tex">A</script>, <script type="math/tex">B</script>, and <script type="math/tex">C</script>. In this case, <script type="math/tex">G</script> essentially has only three possible structures, each of which leads to different independence assumptions. The interested reader can easily prove these results using a bit of algebra.</p>
 
 <ul>
-<li>$$X \leftarrow Y \leftarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$</li>
-
-<li>$$X \rightarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$</li>
-
-<li>$$X \leftarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$</li>
-
-<li>$$X \leftarrow Y \leftarrow Z$$, and $$Y$$ or any of its descendents are observed. <label class='margin-toggle' for='dp2'>&#8853;</label><input class='margin-toggle' id='dp2' type='checkbox' /><span class='marginnote'><img class='fullwidth' src='/cs228-notes/assets/img/dsep2.png' /><br />In this example, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$.</span><label class='margin-toggle' for='dp1'>&#8853;</label><input class='margin-toggle' id='dp1' type='checkbox' /><span class='marginnote'><img class='fullwidth' src='/cs228-notes/assets/img/dsep1.png' /><br />However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$. There is an active pass which passed through the V-structure created when $$X_6$$ is observed.</span></li>
+  <li><label for="bn" class="margin-toggle">⊕</label><input type="checkbox" id="bn" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/3node-bayesnets.png" /><br />Bayesian networks over three variables, encoding different types of dependencies: cascade (a,b), common parent (c), and v-structure (d).</span><em>Common parent.</em> If <script type="math/tex">G</script> is of the form <script type="math/tex">A \leftarrow B \rightarrow C</script>, and <script type="math/tex">B</script> is observed, then <span>​<script type="math/tex">A \perp C \mid  B</script></span>. However, if <script type="math/tex">B</script> is unobserved, then <script type="math/tex">A \not\perp C</script>. Intuitively this stems from the fact that <script type="math/tex">B</script> contains all the information that determines the outcomes of <script type="math/tex">A</script> and <script type="math/tex">C</script>; once it is observed, there is nothing else that affects these variables’ outcomes.</li>
+  <li><em>Cascade</em>: If <script type="math/tex">G</script> equals <script type="math/tex">A \rightarrow B \rightarrow C</script>, and <script type="math/tex">B</script> is again observed, then, again <span>​<script type="math/tex">A \perp C \mid  B</script></span>. However, if <script type="math/tex">B</script> is unobserved, then <script type="math/tex">A \not\perp C</script>. Here, the intuition is again that <script type="math/tex">B</script> holds all the information that determines the outcome of <script type="math/tex">C</script>; thus, it does not matter what value <script type="math/tex">A</script> takes.</li>
+  <li><em>V-structure</em> (also known as <em>explaining away</em>): If <script type="math/tex">G</script> is <script type="math/tex">A \rightarrow C \leftarrow B</script>, then knowing <script type="math/tex">C</script> couples <script type="math/tex">A</script> and <script type="math/tex">B</script>. In other words, <script type="math/tex">A \perp B</script> if <script type="math/tex">C</script> is unobserved, but <span>​<script type="math/tex">A \not\perp B \mid  C</script></span> if <script type="math/tex">C</script> is observed.</li>
 </ul>
 
-<p>For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_2, X_3$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$</p>
+<p>The latter case requires additional explanation. Suppose that <script type="math/tex">C</script> is a Boolean variable that indicates whether our lawn is wet one morning; <script type="math/tex">A</script> and <script type="math/tex">B</script> are two explanation for it being wet: either it rained (indicated by <script type="math/tex">A</script>), or the sprinkler turned on (indicated by <script type="math/tex">B</script>). If we know that the grass is wet (<script type="math/tex">C</script> is true) and the sprinkler didn’t go on (<script type="math/tex">B</script> is false), then the probability that <script type="math/tex">A</script> is true must be one, because that is the only other possible explanation. Hence, <script type="math/tex">C</script> and <script type="math/tex">A</script> are not independent given <script type="math/tex">B</script>.</p>
 
-<p>The notion of $$d$$-separation is useful, because it lets us describe a large fraction of the dependencies that hold in our model. Let <span>&#8203;<script type='math/tex'>I(G) = \{(X \perp Y \mid  Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}</script></span> be a set of variables that are $$d$$-separated in $$G$$.</p>
+<p>These structures clearly describe the independencies encoded by a three-variable Bayesian net. We can extend them to general networks by applying them recursively over any larger graph. This leads to a notion called <script type="math/tex">d</script>-separation (where <script type="math/tex">d</script> stands for directed).</p>
 
-<p><strong>Fact</strong><label class='margin-toggle sidenote-number' for='1' /><input class='margin-toggle' id='1' type='checkbox' /><span class='sidenote'>We will not formally prove this, but the intuition is that if $$X,Y$$ and $$Y,Z$$ are mutually dependent, so are $$X,Z$$. Thus we can look at adjacent nodes and propagate dependencies according to the local dependency structures outlined above. </span>: If $$p$$ factorizes over $$G$$, then $$I(G) \subseteq I(p)$$. In this case, we say that $$G$$ is an $$I$$-map (independence map) for $$p$$</p>
+<p>We say that <script type="math/tex">Q</script>, <script type="math/tex">W</script> are <script type="math/tex">d</script>-separated when variables <script type="math/tex">O</script> are observed if they are connected by an <em>active path</em>. An undirected path in the Bayesian Network structure <script type="math/tex">G</script> is called <em>active</em> given observed variables <script type="math/tex">O</script> if for every consecutive triple of variables <script type="math/tex">X,Y,Z</script> on the path, one of the following holds:</p>
 
-<p>In other words, all the independencies encoded in $$G$$ are sound: variables that are $$d$$-separated in $$G$$ are truly independent in $$p$$. However, the converse is not true: a distribution may factorize over $$G$$, yet have independencies that are not captured in $$G$$.</p>
+<ul>
+  <li><script type="math/tex">X \leftarrow Y \leftarrow Z</script>, and <script type="math/tex">Y</script> is unobserved <script type="math/tex">Y \not\in O</script></li>
+  <li><script type="math/tex">X \rightarrow Y \rightarrow Z</script>, and <script type="math/tex">Y</script> is unobserved <script type="math/tex">Y \not\in O</script></li>
+  <li><script type="math/tex">X \leftarrow Y \rightarrow Z</script>, and <script type="math/tex">Y</script> is unobserved <script type="math/tex">Y \not\in O</script></li>
+  <li><script type="math/tex">X \leftarrow Y \leftarrow Z</script>, and <script type="math/tex">Y</script> or any of its descendents are observed.
+<label for="dp2" class="margin-toggle">⊕</label><input type="checkbox" id="dp2" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/dsep2.png" /><br />In this example, <script type="math/tex">X_1</script> and <script type="math/tex">X_6</script> are <script type="math/tex">d</script>-separated given <script type="math/tex">X_2, X_3</script>.</span><label for="dp1" class="margin-toggle">⊕</label><input type="checkbox" id="dp1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/dsep1.png" /><br />However, <script type="math/tex">X_2, X_3</script> are not <script type="math/tex">d</script>-separated given <script type="math/tex">X_1, X_6</script>. There is an active pass which passed through the V-structure created when <script type="math/tex">X_6</script> is observed.</span></li>
+</ul>
 
-<p>In a way this is almost a trivial statement. If $$p(x,y) = p(x)p(y)$$, then this distribution still factorizes over the graph $$y \rightarrow x$$, since we can always write it as <span>&#8203;<script type='math/tex'>p(x,y) = p(x\mid y)p(y)</script></span> with a CPD <span>&#8203;<script type='math/tex'>p(x\mid y)</script></span> in which the probability of $$x$$ does not actually vary with $$y$$. However, we can construct a graph that matches the structure of $$p$$ by simply removing that unnecessary edge.</p>
+<p>For example, in the graph below, <script type="math/tex">X_1</script> and <script type="math/tex">X_6</script> are <script type="math/tex">d</script>-separated given <script type="math/tex">X_2, X_3</script>. However, <script type="math/tex">X_2, X_3</script> are not <script type="math/tex">d</script>-separated given <script type="math/tex">X_2, X_3</script>, because we can find an active path <script type="math/tex">(X_2, X_6, X_5, X_3)</script></p>
 
-<h3 id='the_representational_power_of_directed_graphs'>The representational power of directed graphs</h3>
+<p>The notion of <script type="math/tex">d</script>-separation is  useful, because it lets us describe a large fraction of the dependencies that hold in our model.
+Let <span>​<script type="math/tex">I(G) = \{(X \perp Y \mid  Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}</script></span> be a set of variables that are <script type="math/tex">d</script>-separated in <script type="math/tex">G</script>.</p>
 
-<p>This raises our last and perhaps most important question: can directed graphs express all the independencies of any distribution $$p$$? More formally, given a distribution $$p$$, can we construct a graph $$G$$ such that $$I(G) = I(p)$$?</p>
+<p><strong>Fact</strong><label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">We will not formally prove this, but the intuition is that if <script type="math/tex">X,Y</script> and <script type="math/tex">Y,Z</script> are mutually dependent, so are <script type="math/tex">X,Z</script>. Thus we can look at adjacent nodes and propagate dependencies according to the local dependency structures outlined above. </span>:
+If <script type="math/tex">p</script> factorizes over <script type="math/tex">G</script>, then <script type="math/tex">I(G) \subseteq I(p)</script>. In this case, we say that <script type="math/tex">G</script> is an <script type="math/tex">I</script>-map (independence map) for <script type="math/tex">p</script></p>
 
-<p>First, note that it is very easy to construct a $$G$$ such that $$I(G) \subseteq I(p)$$. A fully connected DAG $$G$$ is an I-map for any distribution since $$I(G) = \emptyset$$. <label class='margin-toggle' for='dp1'>&#8853;</label><input class='margin-toggle' id='dp1' type='checkbox' /><span class='marginnote'><img class='fullwidth' src='/cs228-notes/assets/img/full-bayesnet.png' /><br />A fully connected Bayesian network over four variables. There are no independencies in this model, and it is an I-map for any distribution.</span></p>
+<p>In other words, all the independencies encoded in <script type="math/tex">G</script> are sound: variables that are <script type="math/tex">d</script>-separated in <script type="math/tex">G</script> are truly independent in <script type="math/tex">p</script>. However, the converse is not true: a distribution may factorize over <script type="math/tex">G</script>, yet have independencies that are not captured in <script type="math/tex">G</script>.</p>
 
-<p>A more interesting question is can we find a <em>minimal</em> $$I$$-map $$G$$ for $$p$$, i.e. an $$I$$-map $$G$$ such that the removal of even a single edge from $$G$$ will result in it no longer being an $$I$$-map. This is quite easy: we may start with a fully connected $$G$$ and remove edges until $$G$$ is no longer an $$I$$-map. One way to do this is by following the natural topological ordering of the graph, and removing node ancestors until this is no longer possible; we will revisit this pruning method towards the end of course when performing structure learning.</p>
+<p>In a way this is almost a trivial statement. If <script type="math/tex">p(x,y) = p(x)p(y)</script>, then this distribution still factorizes over the graph <script type="math/tex">y \rightarrow x</script>, since we can always write it as <span>​<script type="math/tex">p(x,y) = p(x\mid y)p(y)</script></span> with a CPD <span>​<script type="math/tex">p(x\mid y)</script></span> in which the probability of <script type="math/tex">x</script> does not actually vary with <script type="math/tex">y</script>. However, we can construct a graph that matches the structure of <script type="math/tex">p</script> by simply removing that unnecessary edge.</p>
 
-<p>However, what we are truly interested in is to determine whether the probability $$p$$ admits a <em>perfect</em> map $$G$$ for which $$I(p)=I(G)$$. Unfortunately, the answer is no. For example, consider the following distribution $$p$$ over three variables $$X,Y,Z$$: we sample $$X,Y \sim \text{Ber}(0.5)$$ from a Bernoulli distribution, and we set $$Z = X \;\text{ xor }\; Y$$ (we call this the noisy-xor example). One can check using some algebra $${X \perp Y, Z \perp Y, X \perp Z} \in I(p)$$ but $$Z \perp {Y,X} \not\in I(p)$$. Thus, $$ X \rightarrow Z \leftarrow Y $$ is an I-map for $$p$$, but none of the 3-node graph structures that we discussed perfectly describes $$I(p)$$, and hence this distribution doesn&#8217;t have a perfect map.</p>
+<h3 id="the-representational-power-of-directed-graphs">The representational power of directed graphs</h3>
 
-<p>A related question is whether perfect maps are unique when they exist. Again, this is not the case, as $$X \rightarrow Y$$ and $$X \leftarrow Y$$ encode the same independencies, yet form different graphs. More generally, we say that two Bayes nets $$G_1, G_2$$ are I-equivalent if they encode the same dependencies $$I(G_1) = I(G_2)$$.</p>
+<p>This raises our last and perhaps most important question: can directed graphs express all the independencies of any distribution <script type="math/tex">p</script>? More formally, given a distribution <script type="math/tex">p</script>, can we construct a graph <script type="math/tex">G</script> such that <script type="math/tex">I(G) = I(p)</script>?</p>
 
-<p>When are two Bayesian nets I-equivalent? To answer this, let&#8217;s return to a simple example with three variables. We say that each of the graphs below have the same <em>skeleton</em>, meaning that if we drop the directionality of the arrows, we obtain the same undirected graph in each case. <figure><figcaption>Bayesian networks over three variables</figcaption><img src='/cs228-notes/assets/img/3node-bayesnets.png' /></figure> The cascade-type structures (a,b) are clearly symmetric and the directionality of arrows does not matter. In fact, (a,b,c) encode exactly the same dependencies. We can change the directions of the arrows as long as we don&#8217;t turn them into a V-structure (d). When we do have a V-structure, however, we cannot change any arrows: structure (d) is the only one that describes the dependency $$X \not\perp Y \mid Z$$. These examples provide intuitions of the following general results on I-equivalence.</p>
+<p>First, note that it is very easy to construct a <script type="math/tex">G</script> such that <script type="math/tex">I(G) \subseteq I(p)</script>. A fully connected DAG <script type="math/tex">G</script> is an I-map for any distribution since <script type="math/tex">I(G) = \emptyset</script>. <label for="dp1" class="margin-toggle">⊕</label><input type="checkbox" id="dp1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/full-bayesnet.png" /><br />A fully connected Bayesian network over four variables. There are no independencies in this model, and it is an I-map for any distribution.</span></p>
 
-<p><strong>Fact:</strong> If $$G,G&#8217;$$ have the same skeleton and the same v-structures, then $$I(G) = I(G&#8217;).$$</p>
+<p>A more interesting question is can we find a <em>minimal</em> <script type="math/tex">I</script>-map <script type="math/tex">G</script> for <script type="math/tex">p</script>, i.e. an <script type="math/tex">I</script>-map <script type="math/tex">G</script> such that the removal of even a single edge from <script type="math/tex">G</script> will result in it no longer being an <script type="math/tex">I</script>-map. This is quite easy: we may start with a fully connected <script type="math/tex">G</script> and remove edges until <script type="math/tex">G</script> is no longer an <script type="math/tex">I</script>-map. One way to do this is by following the natural topological ordering of the graph, and removing node ancestors until this is no longer possible; we will revisit this pruning method towards the end of course when performing structure learning.</p>
 
-<p>Again, it is easy to understand intuitively why this is true. Two graphs are I-equivalent is the $$d$$-separation between variables is the same. We can flip the directionality of any edge, unless it forms a v-structure, and the $$d$$-connectivity of the graph will be unchanged. We refer the reader to the textbook of Koller and Friedman for a full proof.</p>
+<p>However, what we are truly interested in is to determine whether the probability <script type="math/tex">p</script> admits a <em>perfect</em> map <script type="math/tex">G</script> for which <script type="math/tex">I(p)=I(G)</script>. Unfortunately, the answer is no. For example, consider the following distribution <script type="math/tex">p</script> over three variables <script type="math/tex">X,Y,Z</script>: we sample <script type="math/tex">X,Y \sim \text{Ber}(0.5)</script> from a Bernoulli distribution, and we set <script type="math/tex">Z = X \;\text{ xor }\; Y</script> (we call this the noisy-xor example). One can check using some algebra <script type="math/tex">\{X \perp Y, Z \perp Y, X \perp Z\} \in I(p)</script> but <script type="math/tex">Z \perp \{Y,X\} \not\in I(p)</script>. Thus, <script type="math/tex">X \rightarrow Z \leftarrow Y</script> is an I-map for <script type="math/tex">p</script>, but none of the 3-node graph structures that we discussed perfectly describes <script type="math/tex">I(p)</script>, and hence this distribution doesn’t have a perfect map.</p>
+
+<p>A related question is whether perfect maps are unique when they exist. Again, this is not the case, as <script type="math/tex">X \rightarrow Y</script> and <script type="math/tex">X \leftarrow Y</script> encode the same independencies, yet form different graphs. More generally, we say that two Bayes nets <script type="math/tex">G_1, G_2</script> are I-equivalent if they encode the same dependencies <script type="math/tex">I(G_1) = I(G_2)</script>.</p>
+
+<p>When are two Bayesian nets I-equivalent? To answer this, let’s return to a simple example with three variables. We say that each of the graphs below have the same <em>skeleton</em>, meaning that if we drop the directionality of the arrows, we obtain the same undirected graph in each case.</p>
+<figure><figcaption>Bayesian networks over three variables</figcaption><img src="/cs228-notes/assets/img/3node-bayesnets.png" /></figure>
+<p>The cascade-type structures (a,b) are clearly symmetric and the directionality of arrows does not matter. In fact, (a,b,c) encode exactly the same dependencies. We can change the directions of the arrows as long as we don’t turn them into a V-structure (d). When we do have a V-structure, however, we cannot change any arrows: structure (d) is the only one that describes the dependency <script type="math/tex">X \not\perp Y \mid Z</script>. These examples provide intuitions of the following general results on I-equivalence.</p>
+
+<p><strong>Fact:</strong>
+If <script type="math/tex">G,G'</script> have the same skeleton and the same v-structures, then <script type="math/tex">I(G) = I(G').</script></p>
+
+<p>Again, it is easy to understand intuitively why this is true. Two graphs are I-equivalent is the <script type="math/tex">d</script>-separation between variables is the same. We can flip the directionality of any edge, unless it forms a v-structure, and the <script type="math/tex">d</script>-connectivity of the graph will be unchanged. We refer the reader to the textbook of Koller and Friedman for a full proof.</p>
+
 
 
     </article>
@@ -196,6 +214,26 @@ p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
   <hr class="slender">
   <!-- <ul class="footer&#45;links"> -->
   <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
   <!--      -->
   <!-- </ul> -->
 <div class="credits">

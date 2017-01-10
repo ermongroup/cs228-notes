@@ -14,7 +14,11 @@
 
   <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
   
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
   <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
   <script>
@@ -28,8 +32,8 @@
 
   </script>
 
-  <link rel="canonical" href="/cs228-notes/">
-  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="/cs228-notes/feed.xml" />
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
 </head>
 
   <body>
@@ -73,83 +77,79 @@
 </script>
 
 
-<p>{% newthought &#8216;These notes&#8217;%} form a concise introductory course on probabilistic graphical models{% sidenote 1 &#8216;Probabilistic graphical models are a subfield of machine learning that studies how to describe and reason about the world in terms of probabilities.&#8217;%}. They are based on Stanford <a href='http://cs.stanford.edu/~ermon/cs228/index.html'>CS228</a>, taught by <a href='http://cs.stanford.edu/~ermon/'>Stefano Ermon</a>, and are written and maintained by <a href='http://www.stanford.edu/~kuleshov'>Volodymyr Kuleshov</a>. {% marginnote &#8216;mn-id-whatever&#8217; &#8216;These notes are still <strong>under construction</strong>! They are about 70% complete, and probably contain a lot of typos. We are in the process of finalizing them; in the meantime feel free to submit your fixes on <a href='https://github.com/kuleshov/cs228-notes'>Github</a>.&#8217;%} Free to contribute your improvements on <a href='https://github.com/kuleshov/cs228-notes'>Github</a>.</p>
+<p><span class="newthought">These notes</span>  form a concise introductory course on probabilistic graphical models<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Probabilistic graphical models are a subfield of machine learning that studies how to describe and reason about the world in terms of probabilities. </span>.
+They are based on Stanford <a href="http://cs.stanford.edu/~ermon/cs228/index.html">CS228</a>, taught by <a href="http://cs.stanford.edu/~ermon/">Stefano Ermon</a>, and are written and maintained by <a href="http://www.stanford.edu/~kuleshov">Volodymyr Kuleshov</a>.
+<label for="mn-id-whatever" class="margin-toggle"> ⊕</label><input type="checkbox" id="mn-id-whatever" class="margin-toggle" /><span class="marginnote">These notes are still <strong>under construction</strong>!
+They are about 70% complete, and probably contain a lot of typos.
+We are in the process of finalizing them; in the meantime feel free to submit your fixes on <a href="https://github.com/kuleshov/cs228-notes">Github</a>. </span>
+Free to contribute your improvements on <a href="https://github.com/kuleshov/cs228-notes">Github</a>.</p>
 
-<h2 id='preliminaries'>Preliminaries</h2>
-
-<ol>
-<li>
-<p><a href='preliminaries/introduction/'>Introduction</a> What is probabilistic graphical modeling? Overview of the course.</p>
-</li>
-
-<li>
-<p>Review of probability theory: Probability distributions. Conditional probability. Random variables.</p>
-</li>
-
-<li>
-<p>Examples of real-world applications: Image denoising. RNA structure prediciton. Syntactic analysis of sentences. Optical character recogition.</p>
-</li>
-</ol>
-
-<h2 id='representation'>Representation</h2>
+<h2 id="preliminaries">Preliminaries</h2>
 
 <ol>
-<li>
-<p><a href='representation/directed/'>Bayesian networks</a>: Definitions. Representations via directed graphs. Independencies in directed models.</p>
-</li>
-
-<li>
-<p><a href='representation/undirected/'>Markov random fields</a>: Undirected vs directed models. Independencies in undirected models. Conditional random fields.</p>
-</li>
+  <li>
+    <p><a href="preliminaries/introduction/">Introduction</a> What is probabilistic graphical modeling? Overview of the course.</p>
+  </li>
+  <li>
+    <p>Review of probability theory: Probability distributions. Conditional probability. Random variables.</p>
+  </li>
+  <li>
+    <p>Examples of real-world applications: Image denoising. RNA structure prediciton. Syntactic analysis of sentences. Optical character recogition.</p>
+  </li>
 </ol>
 
-<h2 id='inference'>Inference</h2>
+<h2 id="representation">Representation</h2>
 
 <ol>
-<li>
-<p><a href='inference/ve/'>Variable elimination</a> The inference problem. Variable elimination. Complexity of inference.</p>
-</li>
-
-<li>
-<p><a href='inference/jt/'>Belief propagation</a>: The junction tree algorithm. Exact inference in arbitrary graphs. Loopy Belief Propagation.</p>
-</li>
-
-<li>
-<p><a href='inference/map/'>MAP inference</a>: Max-sum message passing. Graphcuts. Linear programming relaxations. Dual decomposition.</p>
-</li>
-
-<li>
-<p><a href='inference/sampling/'>Sampling-based inference</a>: Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.</p>
-</li>
-
-<li>
-<p>Variational inference: Variational lower bounds. Mean Field. Marginal polytope and its relaxations.</p>
-</li>
+  <li>
+    <p><a href="representation/directed/">Bayesian networks</a>: Definitions. Representations via directed graphs. Independencies in directed models.</p>
+  </li>
+  <li>
+    <p><a href="representation/undirected/">Markov random fields</a>: Undirected vs directed models. Independencies in undirected models. Conditional random fields.</p>
+  </li>
 </ol>
 
-<h2 id='learning'>Learning</h2>
+<h2 id="inference">Inference</h2>
 
 <ol>
-<li>
-<p>Learning in directed models: Maximum likelihood estimation. Learning theory basics. Maximum likelihood estimators for Bayesian networks.</p>
-</li>
-
-<li>
-<p>Learning in undirected models: Exponential families. Gradient descent maximum likelihood estimation.</p>
-</li>
-
-<li>
-<p>Learning in latent-variable models: Gaussian mixture models. Expectation maximization.</p>
-</li>
-
-<li>
-<p>Bayesian learning: Bayesian paradigm. Conjugate priors. Examples.</p>
-</li>
-
-<li>
-<p>Structure learning: Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning.</p>
-</li>
+  <li>
+    <p><a href="inference/ve/">Variable elimination</a> The inference problem. Variable elimination. Complexity of inference.</p>
+  </li>
+  <li>
+    <p><a href="inference/jt/">Belief propagation</a>: The junction tree algorithm. Exact inference in arbitrary graphs. Loopy Belief Propagation.</p>
+  </li>
+  <li>
+    <p><a href="inference/map/">MAP inference</a>: Max-sum message passing. Graphcuts. Linear programming relaxations. Dual decomposition.</p>
+  </li>
+  <li>
+    <p><a href="inference/sampling/">Sampling-based inference</a>: Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.</p>
+  </li>
+  <li>
+    <p>Variational inference: Variational lower bounds. Mean Field. Marginal polytope and its relaxations.</p>
+  </li>
 </ol>
+
+<h2 id="learning">Learning</h2>
+
+<ol>
+  <li>
+    <p>Learning in directed models: Maximum likelihood estimation. Learning theory basics. Maximum likelihood estimators for Bayesian networks.</p>
+  </li>
+  <li>
+    <p>Learning in undirected models: Exponential families. Gradient descent maximum likelihood estimation.</p>
+  </li>
+  <li>
+    <p>Learning in latent-variable models: Gaussian mixture models. Expectation maximization.</p>
+  </li>
+  <li>
+    <p>Bayesian learning: Bayesian paradigm. Conjugate priors. Examples.</p>
+  </li>
+  <li>
+    <p>Structure learning: Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning.</p>
+  </li>
+</ol>
+
+
 
 
     </article>
@@ -158,6 +158,26 @@
   <hr class="slender">
   <!-- <ul class="footer&#45;links"> -->
   <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
   <!--      -->
   <!-- </ul> -->
 <div class="credits">

@@ -14,7 +14,11 @@
 
   <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
   
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
   <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
   <script>
@@ -28,8 +32,8 @@
 
   </script>
 
-  <link rel="canonical" href="/cs228-notes/learning/directed/">
-  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="/cs228-notes/feed.xml" />
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/learning/directed/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
 </head>
 
   <body>
@@ -73,9 +77,12 @@
 </script>
 
 
+<p>We now turn our attention to the third and last part of the course: <em>learning</em>. Given a dataset, we would like to fit a model that will make useful prediction on various tasks that we care about.</p>
+
 <p>We will consider this problem in two types of models: directed and undirected. It turns out that the former will admit easy, closed form solutions, while the latter will involve potentially intractable numerical optimization techniques. In later section, we will look at latent variable models (which contain unobserved latent variables that succinctly model the event of interest) as well as Bayesian learning, a general approach to statistics that offers certain advantages to more standard approaches.</p>
 
-<p>Before, we start our discussion of learning, let&#8217;s first reflect on what it means it fit a model, and what is a desirable objective for this task.</p>
+<p>Before, we start our discussion of learning, let’s first reflect on what it means it fit a model, and what is a desirable objective for this task.</p>
+
 
 
     </article>
@@ -84,6 +91,26 @@
   <hr class="slender">
   <!-- <ul class="footer&#45;links"> -->
   <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
   <!--      -->
   <!-- </ul> -->
 <div class="credits">
