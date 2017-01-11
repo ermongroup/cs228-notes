@@ -13,9 +13,9 @@ Free to contribute your improvements on [Github](https://github.com/ermongroup/c
 
 1. [Introduction](preliminaries/introduction/) What is probabilistic graphical modeling? Overview of the course.
 
-2. Review of probability theory: Probability distributions. Conditional probability. Random variables.
+2. [Review of probability theory](preliminaries/probabilityreview): Probability distributions. Conditional probability. Random variables.
 
-2. Examples of real-world applications: Image denoising. RNA structure prediciton. Syntactic analysis of sentences. Optical character recogition.
+2. [Examples of real-world applications](preliminaries/applications): Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recogition.
 
 ## Representation
 
