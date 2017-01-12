@@ -65,7 +65,7 @@ To summarize, Bayesian networks represent probability distributions that can be 
 By expressing a probability in this form, we are introducing into our model assumptions that certain variables are independent.
 
 This raises the question: which independence assumptions are we exactly making by using a model Bayesian network with a given structure described by $$G$$?
-This question important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
+This question is important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
 
 Let us use the notation $$I(p)$$ to denote the set of all conditional independencies that hold for a joint distribution $$p$$. For example, if $$p(x,y)=p(x)p(y)$$, then we say that $$x \perp y \in I(p)$$.
 
@@ -91,7 +91,7 @@ We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed i
 - $$X \leftarrow Y \leftarrow Z$$, and $$Y$$ or any of its descendents are observed.
 {% marginfigure 'dp2' 'assets/img/dsep2.png' 'In this example, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$.' %}{% marginfigure 'dp1' 'assets/img/dsep1.png' 'However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$. There is an active pass which passed through the V-structure created when $$X_6$$ is observed.' %}
 
-For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_2, X_3$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
+For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
 
 
 The notion of $$d$$-separation is  useful, because it lets us describe a large fraction of the dependencies that hold in our model.
