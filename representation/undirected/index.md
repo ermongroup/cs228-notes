@@ -8,7 +8,7 @@ There exists another technique for compactly representing and visualizing a prob
 
 ## Markov Random Fields
 
-{% marginfigure 'nb1' 'assets/img/mrf.png' 'Undirected graphical representation of a joint probability of voting preferences over four individuals. The figure on the right illustrates the pairwise factors present in the model.'%} As a motivating example, suppose that we model the distribution of political voting preferences among persons $$A,B,C,D$$. Let's say that $$(A,B)$$, $$(B,C)$$, $$(C,D)$$, and $$(D,A)$$ are friends, and friends tend to have similar voting preferences. These influences can be naturally represented by a directed graph
+{% marginfigure 'nb1' 'assets/img/mrf.png' 'Undirected graphical representation of a joint probability of voting preferences over four individuals. The figure on the right illustrates the pairwise factors present in the model.'%} As a motivating example, suppose that we model the distribution of political voting preferences among persons $$A,B,C,D$$. Let's say that $$(A,B)$$, $$(B,C)$$, $$(C,D)$$, and $$(D,A)$$ are friends, and friends tend to have similar voting preferences. These influences can be naturally represented by a undirected graph.
 
 One way to define a probability over the joint voting decision of $$A,B,C,D$$ is to assign scores to each assignment to these variables and then define a probability as a normalized score. A score can be any function, but in our case, we will define it to be of the form
 {% math %} 
@@ -32,7 +32,7 @@ p(A,B,C,D) = \frac{1}{Z} \tilde p(A,B,C,D),
 {% endmath %}
 where $$ Z = \sum_{A,B,C,D} \tilde p(A,B,C,D) $$ is a normalizing constant that ensures that the distribution sums to one.
 
-When normalized, we can view $$\phi(A,B)$$ as an interaction term between friends that pushes them $$B$$'s vote closer to that of $$A$$. The term $$\phi(B,C)$$ pushes $$B$$'s vote closer to $$C$$, and the most likely vote will require reconciling these potentially conflicting influences.
+When normalized, we can view $$\phi(A,B)$$ as an interaction term between friends that pushes $$B$$'s vote closer to that of $$A$$. The term $$\phi(B,C)$$ pushes $$B$$'s vote closer to $$C$$'s, and the most likely vote will require reconciling these potentially conflicting influences.
 
 Note that compared to the directed case, we are no longer describing how one variable is generated from another set of variables (as a conditional probability distribution would do); we simply indicate a relative coupling strength between dependent neighbors in the graph. In a sense, this requires less prior knowledge from our part, as we no longer have to specify a full generative story (via a probability) of how the vote of $$B$$ is constructed from the vote of $$A$$ (which we would need to do if we had a $$P(B\mid A)$$ factor). Instead, we simply identify dependent variables, define the strength of their interactions via arbitrary couplings, which in turn defines an energy landscape over the space of possible assignments; finally we convert this energy to a probability via a normalization constant.
 
@@ -69,7 +69,7 @@ They also possess several important drawbacks:
 - Undirected models may be difficult to interpret.
 - It is much easier to generate data from a Bayesian network, which is important for some applications, and appears as a subroutine in some optimization algorithms.
 
-It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique potential (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called *moralization*.
+It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique potential (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges among all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called *moralization*.
 {% maincolumn 'assets/img/moralization.png' 'A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.' %}
 
 Thus MRFs have more power than Bayes net, but are more difficult to deal with computationally. A general rule of thumb is to use Bayes nets whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).
@@ -78,7 +78,7 @@ Thus MRFs have more power than Bayes net, but are more difficult to deal with co
 
 Recall that in the case of Bayesian networks, we defined a set of independencies $$I(G)$$ that were described by a directed graph $$G$$, and showed how these describe true independencies that must hold in a distribution $$p$$ that factorizes over the directed graph, i.e. $$I(G) \subseteq I(p)$$.
 
-{% marginfigure 'markovblanket' 'assets/img/markovblanket.png' 'In an MRF, a node $$X$$ is independent from the rest of the graph given its neighbors (which are reffered to at the Markov blanket of $$X$$.'%} 
+{% marginfigure 'markovblanket' 'assets/img/markovblanket.png' 'In an MRF, a node $$X$$ is independent from the rest of the graph given all its neighbors (which are reffered to at the Markov blanket of $$X$$.'%} 
 What independencies can be then described by an undirected MRF? The answer here is very simple and intuitive: variables $$x,y$$ are dependent if they are connected by a path of unobserved variables. However, if $$x$$'s neighbors are all observed, then $$x$$ is independent of all the other variables, since they influence $$x$$ only via its neighbors.
 
 In particular, if a set of observed variables forms a cutset between two halves of the graph, then variables in one half are independent from ones in the other.
@@ -87,12 +87,12 @@ In particular, if a set of observed variables forms a cutset between two halves 
 
 Formally, we define the *Markov blanket* $$U$$ of variable $$X$$ as the minimal set of nodes such that $$X$$ is independent from the rest of the graph if $$U$$ is observed, i.e. $$X \perp (\mathcal{X} - \{X\} - U) \mid  U$$. This notion holds for both directed and undirected models, but in the undirected case the Markov blanket turns out to simply equal a node's neighborhood.
 
-In the undirected case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$p$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
+In the directed case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$p$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
 
 {% maincolumn 'assets/img/mrf-bn-comparison.png' 'Examples of probability distributions that have a perfect directed graphical representation but no indirected representation, and vice-versa.' %}
 
 
-## Conditional Random Fields
+## Conditional Random Fields (CRF)
 
 An important special case of Markov Random Fields arises when they are applied to model a conditional probability distribution $$p(y\mid x)$$. In this case, $$x \in \mathcal{X}$$ and $$y \in \mathcal{Y}$$ are vector-valued variables; we are typically given $$x$$ and want to say something interesting for $$y$$. Typically, distributions of this sort will arise in a supervised learning setting, where $$y$$ will be a vector-valued label that we will be trying to predict. This setting is typically referred to as *structured prediction*.
 
@@ -100,9 +100,9 @@ An important special case of Markov Random Fields arises when they are applied t
 
 As a motivating example, consider the problem of recognizing a word from a sequence of character images $$x_i \in [0, 1]^{d\times d}$$ given to us in the form of pixel matrices. The output of our predictor will be a sequence of alphabet letters $$y_i \in \{'a','b',...,'z'\}$$.
 
-{% maincolumn 'assets/img/ocr.png' 'Chain-structured conditional random field for optical character recognition.' %}
+{% maincolumn 'assets/img/ocr.png' 'Chain-structured conditional random field for optical character recognition (OCR).' %}
 
-We could in principle train a classifier to separately predict each $$y_i$$  from its $$x_i$$. However, since the letters together form a word, the predictions across different $$i$$ ought to inform each other. In the above example, the second letter by itself could be either a ’U’ or a ’V’; however, since we can tell with high confidence that its neighbors are ’Q’ and ’E’, we can infer that ’U’ is the most likely true label. CRFs will be a tool that will enable us to perform this prediction jointly.
+We could in principle train a classifier to separately predict each $$y_i$$  from its $$x_i$$. However, since the letters together form a word, the predictions across different $$i$$ ought to inform each other. In the above example, the second letter by itself could be either a ’U’ or a ’V’; however, since we can tell with high confidence that its neighbors are ’Q’ and ’E’, we can infer that ’U’ is the most likely true label. Conditional random fields (CRFs) will be a tool that will enable us to perform this prediction jointly.
 
 ### Formal definition
 
