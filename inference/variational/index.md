@@ -84,7 +84,7 @@ Crucially, the difference between $$\log Z(\theta)$$ and $$J(q)$$ is precisely {
 
 To recap, we have just defined an optimization objective for variational inference (the variational lower bound) and we have shown that maximizing the lower bound leads to minimizing the divergence {%m%}KL(q||p){%em%}.
 
-Recall how me mentioned earlier that {%m%}KL(q||p) != KL(p||q){%em%}; both divergences equal zero when $$q = p$$, but assign different penalties when $$q \neq p$$. This raises the question: why do we choose one over the other and how do they differ?
+Recall how we said earlier that {%m%}KL(q||p) \neq KL(p||q){%em%}; both divergences equal zero when $$q = p$$, but assign different penalties when $$q \neq p$$. This raises the question: why did we choose one over the other and how do they differ?
 
 Perhaps the most important difference is computational: optimizing {%m%}KL(q||p){%em%} involves an expectation with respect to $$q$$, while {%m%}KL(p||q){%em%} requires computing expectations with respect to $$p$$, which is typically intractable even to evaluate.
 
@@ -105,4 +105,79 @@ Due to the properties that we just described, we often call {%m%}KL(p||q){%em%} 
 
 ## Mean-field inference
 
+The next step in our development of variational inference concerns the choice of approximating family $$\mathcal{Q}$$. The machine learning literature contains dozens of proposed ways to parametrize this class of distributions; these include exponential families, neural networks, Gaussian processes, latent variable models, and many others types of models.
+
+However, one of the most widely used classes of distributions is simply the set of fully-factored $$q(x) = q_1(x_1) q_2(x_2) \cdots q_n(x_n)$$; here each $$q_i(x_i)$$ is categorical distribution over a one-dimensional discrete variable, which can be described as a one-dimensional table.
+
+This choice of $$\mathcal{Q}$$ turns out to be easy to optimize over and works surprisingly well. It is perhaps the most popular choice when optimizing the variational bound; variational inference with this choice of $$\mathcal{Q}$$ is called *mean-field* inference. It consists in solving the following optimization problem:
+{% math %}
+\min_{q_1, \cdots, q_n} J(q).
+{% endmath %}
+
+The standard way of performing this optimization problem is via coordinate descent over the $$q_j$$: we iterate over $$j=1,2,...,n$$ and for each $$j$$ we optimize {%m%}KL(q||p){%em%} over $$q_j$$ while keeping the other "coordinates" $$q_{-j} = \prod_{i \neq j} q_i$$ fixed.
+
+Interestingly, the optimization problem for one coordinate has a simple closed form solution:
+{% math %}
+\begin{align*}
+\log q_j(x_j) \gets \mathbb{E}_{q_{-j}} \left[ \log \tilde p (x) \right] + \textrm{const.}
+\end{align*}
+{% endmath %}
+
+Notice that both sides of the above equation contain univariate functions of $$x_j$$: we are thus replacing $$q(x_j)$$ with another function of the same form.
+The constant term is a normalization constant for the new distribution.
+
+Notice also that on right-hand side, we are taking an expectation of a sum of factors
+{% math %}
+\log \tilde p (x) = \sum_k \log \phi(x_k)
+{% endmath %}
+Of these, only factors belonging to the Markov blanket of $$x_j$$ are a function of $$x_j$$ (simply by the definition of the Markov blanket); the rest are constant with respect to $$x_j$$ and can be pushed into the constant term. 
+
+This leaves us with an expectation over a much smaller number of factors; if the Markov blanket of $$x_j$$ is small (as is often the case), we are able to analytically compute $$q(x_j)$$. For example, if the variables are discrete with $$K$$ possible values, and there are $$F$$ factors and $$N$$ variables in the Markov blanket of $$x_j$$, then computing the expectation takes $$O(K F N^K)$$ time: for each value of $$x_j$$ we sum over all $$N^K$$ assignments of the $$N$$ variables, and in each case, we sum over the $$F$$ factors.
+
+The result of this is a procedure that iteratively fits a fully-factored $$q(x) = q_1(x_1) q_2(x_2) \cdots q_n(x_n)$$ that approximates $$p$$ in terms of {%m%}KL(q||p){%em%}. After each step of coordinate descent, we increase the variational lower bound, tightening it around $$\log Z(\theta)$$.
+
+In the end, the factors $$q_j(x_j)$$ will not quite equal the true marginal distributions $$p(x_j)$$, but they will often be good enough for many practical purposes, such as determining $$\max_{x_j} p(x_j)$$.
+
+<!---
+The notes below are incomplete and under construction
 ## The marginal polytope
+
+A natural question to ask, given what we've seen, is how exactly do the mean-field marginals approximate $$p(x)$$, and what makes them "good enough".
+
+To answer this question, we will take a step back, and define a more general framework for thinking about variational inference. We will then see how mean field and, interestingly, loopy belief propagation (LBP) both fall into this framework and how exactly their approximations differ. As a result, we will also see how LBP is also a form of variational inference, something we have alluded to earlier.
+
+First, recall that we have assumed that the distribution $$p$$ is of the form 
+{% math %}
+p(x_1,..,x_n; \theta) = \frac{\tilde p(x_1,...,x_n ; \theta)}{Z(\theta)} =\frac{1}{Z(\theta)} \prod_{k} \phi_k(x_k; \theta).
+{% endmath %}
+When the variables are discrete, we can further rewrite this as 
+{% math %}
+p(x_1,..,x_n; \theta) = \frac{\exp(\sum_k \theta^T \psi(x))}{Z(\theta)},
+{% endmath %}
+where $$\theta_{k, x_k} = \phi_k(x_k)$$ is now a vector of factor values (one for each variable assignment), and $$\psi_{k, x_k}(x') = \mathbb{I(x'_k = x_k)}($$ is a vector of indicator values for each assignment, given an input $$x'$$. The vector $$\psi_k$$ simply "picks out" the appropriate entries of $$\theta$$.
+
+Given this notation, we can write our objective as
+{% math %}
+\begin{align*}
+-J(x) 
+& = \mathbb{E}_{q(x)} \left[ \theta^T \psi(x) - \log q(x) \right] \\
+& = \theta^T \mu - H(\mu),
+\end{align*}
+{% endmath %}
+where $$H(\mu) = \mathbb{E}_{q(x)} \log q(x)$$ denotes the entropy of $$q(x)$$ and $$\mu = \mathbb{E}_{q(x)} \psi(x)$$ is called the vector of moments. The key observation here is that instead of optimizing over $$q$$, we can equivalently optimize over the set of *valid moments* $$\mu$$.
+
+But which moments are valid? These are the ones that correspond to some probability distribution, i.e. they are in the set
+{% math %}
+\mathbb{M} = \{ \mu : \exists p \text{ s.t. } \mu = \sum_x \psi(x)p(x) \text{ for some $p(x) \geq 0$ that sums to 1} \}
+{% endmath %}
+
+Notice that $$\mathbb{M}$$ is the intersection of a set of linear constraints: hence it forms a convex set, that we will refer to as the *marginal polytope*. We can thus write the variational inference problem as
+{% math %}
+\max_\mu \theta^T \mu - H(\mu) \text{ subject to } \mu \in \mathbb{M}.
+{% endmath %}
+
+However, this by itself is not very useful. Although \mathbb{M} is convex, it is hard to describe in general (it is formed by the intersection of an exponential number of hyper-planes). Furthermore, $$H(\mu)$$ may be difficult to compute in general.
+
+We will make this problem feasible by replacing 
+
+-->
