@@ -182,7 +182,7 @@ E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) 
 
 ### Discrete random variables
 • **$$X$$ ∼ Bernoulli(p)** (where 0 \leq p \leq 1): one if a coin with heads probability p comes up heads, zero otherwise. \begin{equation} p(x)=\begin{cases}
-p, & \text{if $$p = 1$$}.\\
+p, & \text{if $$p = 1$$}. 
 1-p, & \text{if $$p = 0$$}.
 \end{cases}
 \end{equation}
