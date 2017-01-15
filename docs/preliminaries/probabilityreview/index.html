@@ -199,16 +199,16 @@ f_X(x)  = \frac{dF_X(x)}{dx}.
 <p>Suppose that <script type="math/tex">X</script> is a discrete random variable with <strong>PMF</strong> <script type="math/tex">p_X(x)</script> and <script type="math/tex">g : I\!R \rightarrow I\!R</script> is an arbitrary function. In this case, <script type="math/tex">g(X)</script> can be considered a random variable, and we define the expectation or expected value of <script type="math/tex">g(X)</script> as:</p>
 
 <p>\begin{equation}
-E[g(X)] = \sum_{x∈Val(X)} g(x)p_X(x).
+E[g(X)] = \sum_{x \in Val(X)} g(x)p_X(x).
 \end{equation}</p>
 
 <p>If X is a continuous random variable with PDF <script type="math/tex">f_X(x)</script>, then the expected value of g(X) is defined as,</p>
 
 <p>\begin{equation}
-E[g(X)] = \int^{\infty}_{-\infty} g(x)fX(x)dx.
-\end{equation}</p>
+E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx
+\end{equation}.</p>
 
-<p>Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by pX(x) or fX(x). As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.</p>
+<p>Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by <script type="math/tex">p_X(x)</script> or <script type="math/tex">f_X(x)</script>. As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.</p>
 
 <h3 id="properties-4"><strong>Properties</strong>:</h3>
 <ul>
@@ -225,7 +225,10 @@ E[g(X)] = \int^{\infty}_{-\infty} g(x)fX(x)dx.
 <p>Using the <strong>properties</strong> in the previous section, we can derive an alternate expression for the variance:</p>
 
 <p>\begin{equation}
-E[(X − E[X])^2] = E[X^2 − 2E[X]X + E[X]^2] = E[X^2] − 2E[X]E[X] + E[X]^2 = E[X^2] − E[X]^2
+E[(X − E[X])^2] <br />
+= E[X^2 − 2E[X]X + E[X]^2] <br />
+= E[X^2] − 2E[X]E[X] + E[X]^2 <br />
+= E[X^2] − E[X]^2
 \end{equation}</p>
 
 <p>where the second equality follows from linearity of expectations and the fact that <script type="math/tex">E[X]</script> is actually a
@@ -249,11 +252,13 @@ constant with respect to the outer expectation.</p>
 
 <h3 id="discrete-case"><strong>Discrete case</strong>:</h3>
 
-<script type="math/tex; mode=display">E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x∈A} P_X(x)dx = P(x \in A)</script>
+<p>\begin{equation}E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x \in A)
+\end{equation}.</p>
 
 <h3 id="continuous-case"><strong>Continuous case</strong>:</h3>
 
-<p><script type="math/tex">E[g(X)] = \int^{\infty}_{-\infty} 1{x ∈ A}f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)</script>.</p>
+<p>\begin{equation}E[g(X)] = \int^{\infty}<em>{-\infty} 1{x ∈ A}f_X(x)dx = \int</em>{x \in A} f_X(x)dx = P(x \in A)$$
+\end{equation}.</p>
 
 <h2 id="26-some-common-random-variables">2.6 Some common random variables</h2>
 
@@ -302,9 +307,7 @@ f(x)=\begin{cases}  <br />
 <p>• <strong><script type="math/tex">X</script> ∼ Normal(<script type="math/tex">\mu</script>, <script type="math/tex">\sigma^2</script>)</strong>: also known as the Gaussian distribution
 \begin{equation}
 \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2\sigma^2}(x-\mu)^2}
-\end{equation}
-<!--Figure 2: PDF and CDF of a couple of random variables.
-The shape of the PDFs and CDFs of some of these random variables are shown in Figure ??.--></p>
+\end{equation}</p>
 
 <h2 id="31-joint-and-marginal-distributions">3.1 Joint and marginal distributions</h2>
 
@@ -362,7 +365,7 @@ may be greater than 1. Nonetheless, it must be the case that <script type="math/
 
 <p>Analagous to the discrete case, we define
 \begin{equation}
-f_X(x) = \int^{\infty}<em>{-\infty} f</em>{XY} (x, y)dy,
+f_X(x) = \int^{\infty}<em>{-\infty} f</em>{XY} (x, y)dy
 \end{equation}
 as the <strong>marginal probability density function</strong> (or <strong>marginal density</strong>) of X, and similarly for <script type="math/tex">f_Y (y)</script>.</p>
 

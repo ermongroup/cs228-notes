@@ -117,16 +117,16 @@ Both CDFs and PDFs (when they exist!) can be used for calculating the probabilit
 Suppose that $$X$$ is a discrete random variable with **PMF** $$p_X(x)$$ and $$g : I\!R \rightarrow I\!R$$ is an arbitrary function. In this case, $$g(X)$$ can be considered a random variable, and we define the expectation or expected value of $$g(X)$$ as:
 
 \begin{equation}
-E[g(X)] = \sum_{x∈Val(X)} g(x)p_X(x).
+E[g(X)] = \sum_{x \in Val(X)} g(x)p_X(x).
 \end{equation}
 
 If X is a continuous random variable with PDF $$f_X(x)$$, then the expected value of g(X) is defined as,
 
 \begin{equation}
-E[g(X)] = \int^{\infty}_{-\infty} g(x)fX(x)dx.
-\end{equation}
+E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx
+\end{equation}.
 
-Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by pX(x) or fX(x). As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.
+Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by $$p_X(x)$$ or $$f_X(x)$$. As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.
 
 ### **Properties**:
 - $$E[a] = a$$ for any constant $$a \in I\!R$$.
@@ -142,7 +142,10 @@ The variance of a random variable X is a measure of how concentrated the distrib
 Using the **properties** in the previous section, we can derive an alternate expression for the variance:
 
 \begin{equation}
-E[(X − E[X])^2] = E[X^2 − 2E[X]X + E[X]^2] = E[X^2] − 2E[X]E[X] + E[X]^2 = E[X^2] − E[X]^2
+E[(X − E[X])^2] \\
+= E[X^2 − 2E[X]X + E[X]^2] \\
+= E[X^2] − 2E[X]E[X] + E[X]^2 \\
+= E[X^2] − E[X]^2
 \end{equation}
 
 where the second equality follows from linearity of expectations and the fact that $$E[X]$$ is actually a
@@ -164,11 +167,13 @@ $$Var[X] = E[X^2] - E[X]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}$$
 
 ### **Discrete case**:
 
-$$E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x∈A} P_X(x)dx = P(x \in A)$$
+\begin{equation}E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x \in A)
+\end{equation}.
 
 ### **Continuous case**:
 
-$$E[g(X)] = \int^{\infty}_{-\infty} 1{x ∈ A}f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)$$.
+\begin{equation}E[g(X)] = \int^{\infty}_{-\infty} 1{x ∈ A}f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)$$
+\end{equation}.
 
 
 ## 2.6 Some common random variables
@@ -218,8 +223,7 @@ f(x)=\begin{cases}
 \begin{equation}
 \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2\sigma^2}(x-\mu)^2}
 \end{equation}
-<!--Figure 2: PDF and CDF of a couple of random variables.
-The shape of the PDFs and CDFs of some of these random variables are shown in Figure ??.-->
+
 
 
 ## 3.1 Joint and marginal distributions
@@ -276,7 +280,7 @@ may be greater than 1. Nonetheless, it must be the case that $$\int^{\infty}_{-\
 
 Analagous to the discrete case, we define
 \begin{equation}
-f_X(x) = \int^{\infty}_{-\infty} f_{XY} (x, y)dy,
+f_X(x) = \int^{\infty}_{-\infty} f_{XY} (x, y)dy
 \end{equation}
 as the **marginal probability density function** (or **marginal density**) of X, and similarly for $$f_Y (y)$$.
 
