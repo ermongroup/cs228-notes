@@ -282,9 +282,9 @@ Note that the values of the probability density function f_{XY}(x, y) are always
 may be greater than 1. Nonetheless, it must be the case that $$\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1$$
 
 Analagous to the discrete case, we define
-\begin{equation}
+{% math %}
 f_X(x) = \int^{\infty}_{-\infty} f_{XY} (x, y)dy
-\end{equation}
+{% endmath %}
 as the **marginal probability density function** (or **marginal density**) of X, and similarly for $$f_Y (y)$$.
 
 
@@ -309,9 +309,9 @@ A useful formula that often arises when trying to derive expression for the cond
 one variable given another, is **Bayes’s rule**.
 
 In the case of discrete random variables X and Y ,
-\begin{equation}
+{% math %}
 P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y' \in Val(Y) P_{X \mid Y} (x \mid y') P_Y(y')}}
-\end{equation}
+{% endmath %}
 
 If the random variables X and Y are continuous,
 \begin{equation}
@@ -347,9 +347,9 @@ E[g(X, Y)] = \int^{\infty}_{-\infty} \int^{\infty}_{-\infty} g(x, y)f_{XY}(x, y)
 \end{equation}
 
 We can use the concept of expectation to study the relationship of two random variables with each other. In particular, the covariance of two random variables X and Y is defined as
-\begin {equation}
+{% math %}
 Cov[X, Y] = E[(X − E[X])(Y − E[Y])]
-\end{equation}
+{% endmath %}
 
 Using an argument similar to that for variance, we can rewrite this as,
 \begin{equation}
