@@ -5,14 +5,14 @@ title: Probability Review
 We will go through a review of probability concepts over here, all of review the material have been adapted from [CS229 Probability Notes](http://cs229.stanford.edu/section/cs229-prob.pdf).
 
 
-#### 1. Elements of probability
+# 1. Elements of probability
 In order to define a probability on a set we need a few basic elements,
 * **Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
 * **Set of events (or event space) F**: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
 * **Probability measure**: A function P : F → R that satisfies the following properties, 
     - P(A) ≥ 0, for all A ∈ F
     - P(Ω) = 1
-    - If $A_1$, $A_2$, . . . are disjoint events $(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$, then $P(∪_iA_i) = \sum_i P(A_i)$
+    - If $A_1$, $A_2$, . . . are disjoint events $(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$, then $$P(∪_iA_i) = \sum_i P(A_i)$$
 
 These three properties are called the **Axioms of Probability**.
 
@@ -27,7 +27,7 @@ These three properties are called the **Axioms of Probability**.
 $\bigcup^k_{i=1} A_i = \Omega$ then $\sum^k_{i=1} P(A_k) = 1.$
 
 
-#### 1.1 Conditional probability and independence
+# 1.1 Conditional probability and independence
 
 Let B be an event with non-zero probability. The conditional probability of any event A given B is defined as
 $ P(A \mid B) = \frac {P(A \cap B)}{P(B)}$
@@ -36,7 +36,7 @@ event B. Two events are called independent if and only if $P(A \cap B) = P(A)P(B
 $P(A \mid B) = P(A)$). Therefore, independence is equivalent to saying that observing B does not have
 any effect on the probability of A.
 
-#### 2. Random variables
+# 2. Random variables
 
 Consider an experiment in which we flip 10 coins, and we want to know the number of coins that
 come up heads. Here, the elements of the sample space Ω are 10-length sequences of heads and
