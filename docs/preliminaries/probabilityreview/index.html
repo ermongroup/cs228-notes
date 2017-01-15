@@ -80,28 +80,16 @@
 <p>We will go through a review of probability concepts over here, all of review the material have been adapted from <a href="http://cs229.stanford.edu/section/cs229-prob.pdf">CS229 Probability Notes</a>.</p>
 
 <h1 id="1-elements-of-probability">1. Elements of probability</h1>
-<p>In order to define a probability on a set we need a few basic elements,</p>
+<p>In order to define a probability on a set we need a few basic elements,
+<strong>Sample space</strong> Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
+<strong>Set of events (or event space) F</strong>: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
+<strong>Probability measure</strong>: A function <script type="math/tex">P : F \rightarrow I\!R</script> that satisfies the following <strong>properties</strong></p>
 <ul>
-  <li><strong>Sample space</strong> Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.</li>
-  <li><strong>Set of events (or event space) F</strong>: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)</li>
-  <li><strong>Probability measure</strong>: A function <script type="math/tex">P : F \rightarrow I\!R</script> that satisfies the following <strong>properties</strong></li>
+  <li><script type="math/tex">P(A) \geq 0</script>, for all <script type="math/tex">A \in F</script></li>
   <li>
-    <ul>
-      <li><script type="math/tex">P(A) \geq 0</script>, for all <script type="math/tex">A \in F</script></li>
-    </ul>
+    <script type="math/tex; mode=display">P(\Omega) = 1</script>
   </li>
-  <li>
-    <ul>
-      <li>
-        <script type="math/tex; mode=display">P(\Omega) = 1</script>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <ul>
-      <li>If <script type="math/tex">A_1</script>, <script type="math/tex">A_2</script>, . . . are disjoint events <script type="math/tex">(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)</script>, then <script type="math/tex">P(∪_iA_i) = \sum_i P(A_i)</script></li>
-    </ul>
-  </li>
+  <li>If <script type="math/tex">A_1</script>, <script type="math/tex">A_2</script>, . . . are disjoint events <script type="math/tex">(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)</script>, then <script type="math/tex">P(∪_iA_i) = \sum_i P(A_i)</script></li>
 </ul>
 
 <p>These three <strong>properties</strong> are called the <strong>Axioms of Probability</strong>.</p>
