@@ -173,11 +173,11 @@ E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x
 
 ### **Continuous case**:
 \begin{equation}
-p = a E[g(X)] = \int^{\infty}_{-\infty} 1{x \in A} f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)
+p = a E[g(X)] \int^{\infty}_{-\infty}
 \end{equation}.
 
 \begin{equation}
-
+E[g(X)] = \int^{\infty}_{-\infty} 1{x \in A} f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)
 \end{equation}.
 
 
