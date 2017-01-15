@@ -9,7 +9,7 @@ In order to define a probability on a set we need a few basic elements,
 
 **Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω  \in  Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
 
-**Set of events (or event space) F**: A set whose elements A  \in  F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
+**Set of events (or event space) F**: A set whose elements $$A  \in  F$$ (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
 
 **Probability measure**: A function $$P : F \rightarrow I\!R$$ that satisfies the following **properties** 
 * $$P(A) \geq 0$$, for all $$A \in F$$ 
@@ -181,7 +181,7 @@ E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) 
 ## 2.6 Some common random variables
 
 ### Discrete random variables
-• **$$X$$ ∼ Bernoulli(p)** (where 0 \leq p \leq 1): one if a coin with heads probability p comes up heads, zero otherwise. 
+• **$$X$$ ∼ Bernoulli(p)** (where $$0 \leq p \leq 1$$): one if a coin with heads probability p comes up heads, zero otherwise. 
 {% math %}
 p(x)=\begin{cases}
 p, & \text{if $$p = 1$$}. \\
