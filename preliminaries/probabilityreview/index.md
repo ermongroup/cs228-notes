@@ -89,7 +89,7 @@ In the case of discrete random variable, we use the notation V al(X) for the set
 ### **Properties**:
 - $$0 \leq p_X(x) \leq 1$$.
 - $$\sum_{x \in Val(X)} p_X(x) = 1$$.
-- $$\sum{x \in A} p_X(x) = P(X \in A)$$.
+- $$\sum_{x \in A} p_X(x) = P(X \in A)$$.
 
 ## 2.3 Probability density functions
 For some continuous random variables, the cumulative distribution function FX(x) is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,
