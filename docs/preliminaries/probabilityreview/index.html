@@ -267,7 +267,7 @@ E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) 
 <p>• <strong><script type="math/tex">X</script> ∼ Bernoulli(p)</strong> (where 0 \leq p \leq 1): one if a coin with heads probability p comes up heads, zero otherwise.</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 p(x)=\begin{cases}
-p, & \text{if $$p = 1$$}. 
+p, & \text{if $$p = 1$$}. \\
 1-p, & \text{if $$p = 0$$}.
 \end{cases}
 </script></div>
@@ -290,21 +290,21 @@ p(x) = e^{\lambda} \frac{\lambda^x}{x!}
 <h3 id="continuous-random-variables">Continuous random variables</h3>
 
 <p>• <strong><script type="math/tex">X</script> ∼ Uniform(a, b)</strong> (where <script type="math/tex">% <![CDATA[
-a < b %]]></script>): equal probability density to every value between a and b on the real line. 
-\begin{equation}
-f(x)=\begin{cases}  <br />
-\frac{1}{b-a}, &amp; \text{if <script type="math/tex">a \leq b</script>}.<br />
-0, &amp; \text{otherwise}.
+a < b %]]></script>): equal probability density to every value between a and b on the real line.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+f(x)=\begin{cases}    
+\frac{1}{b-a}, & \text{if $$a \leq b$$}.\\
+0, & \text{otherwise}.
 \end{cases}
-\end{equation}</p>
+</script></div>
 
-<p>• <strong><script type="math/tex">X</script> ∼ Exponential(λ)</strong> (where λ &gt; 0): decaying probability density over the nonnegative reals.
-\begin{equation}
+<p>• <strong><script type="math/tex">X</script> ∼ Exponential(λ)</strong> (where λ &gt; 0): decaying probability density over the nonnegative reals.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
   f(x)=\begin{cases}
-    \lambda e^{-\lambda x}, &amp; \text{if <script type="math/tex">x \geq 0</script>}.<br />
-    0, &amp; \text{otherwise}.
+    \lambda e^{-\lambda x}, & \text{if $$x \geq 0$$}.\\
+    0, & \text{otherwise}.
   \end{cases}
-\end{equation}</p>
+</script></div>
 
 <p>• <strong><script type="math/tex">X</script> ∼ Normal(<script type="math/tex">\mu</script>, <script type="math/tex">\sigma^2</script>)</strong>: also known as the Gaussian distribution
 \begin{equation}
@@ -439,7 +439,7 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])]
 <div class="mathblock"><script type="math/tex; mode=display">
 Cov[X, Y] = E[(X − E[X])(Y − E[Y])] \\
 = E[XY − XE[Y] − Y E[X] + E[X]E[Y]] \\
-= E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y]] \\
+= E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y] \\
 = E[XY] − E[X]E[Y].
 </script></div>
 

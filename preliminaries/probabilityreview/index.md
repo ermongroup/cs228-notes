@@ -184,7 +184,7 @@ E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) 
 • **$$X$$ ∼ Bernoulli(p)** (where 0 \leq p \leq 1): one if a coin with heads probability p comes up heads, zero otherwise. 
 {% math %}
 p(x)=\begin{cases}
-p, & \text{if $$p = 1$$}. 
+p, & \text{if $$p = 1$$}. \\
 1-p, & \text{if $$p = 0$$}.
 \end{cases}
 {% endmath %}
@@ -207,20 +207,20 @@ p(x) = e^{\lambda} \frac{\lambda^x}{x!}
 ### Continuous random variables
 
 • **$$X$$ ∼ Uniform(a, b)** (where $$a < b$$): equal probability density to every value between a and b on the real line. 
-\begin{equation}
+{% math %}
 f(x)=\begin{cases}    
 \frac{1}{b-a}, & \text{if $$a \leq b$$}.\\
 0, & \text{otherwise}.
 \end{cases}
-\end{equation}
+{% endmath %}
 
 • **$$X$$ ∼ Exponential(λ)** (where λ > 0): decaying probability density over the nonnegative reals.
-\begin{equation}
+{% math %}
   f(x)=\begin{cases}
     \lambda e^{-\lambda x}, & \text{if $$x \geq 0$$}.\\
     0, & \text{otherwise}.
   \end{cases}
-\end{equation}
+{% endmath %}
 
 • **$$X$$ ∼ Normal($$\mu$$, $$\sigma^2$$)**: also known as the Gaussian distribution
 \begin{equation}
@@ -355,7 +355,7 @@ Using an argument similar to that for variance, we can rewrite this as,
 {% math %}
 Cov[X, Y] = E[(X − E[X])(Y − E[Y])] \\
 = E[XY − XE[Y] − Y E[X] + E[X]E[Y]] \\
-= E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y]] \\
+= E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y] \\
 = E[XY] − E[X]E[Y].
 {% endmath %}
 
