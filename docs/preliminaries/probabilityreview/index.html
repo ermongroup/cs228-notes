@@ -82,9 +82,9 @@
 <h1 id="1-elements-of-probability">1. Elements of probability</h1>
 <p>In order to define a probability on a set we need a few basic elements,</p>
 
-<p><strong>Sample space</strong> Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.</p>
+<p><strong>Sample space</strong> Ω: The set of all the outcomes of a random experiment. Here, each outcome ω  \in  Ω can be thought of as a complete description of the state of the real world at the end of the experiment.</p>
 
-<p><strong>Set of events (or event space) F</strong>: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)</p>
+<p><strong>Set of events (or event space) F</strong>: A set whose elements A  \in  F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)</p>
 
 <p><strong>Probability measure</strong>: A function <script type="math/tex">P : F \rightarrow I\!R</script> that satisfies the following <strong>properties</strong></p>
 <ul>
@@ -240,7 +240,7 @@ constant with respect to the outer expectation.</p>
   <li><script type="math/tex">Var[af(X)] = a^2 Var[f(X)]</script> for any constant <script type="math/tex">a \in I\!R</script>.</li>
 </ul>
 
-<p><strong>Example</strong> Calculate the mean and the variance of the uniform random variable X with PDF <script type="math/tex">f_X(x) = 1, ∀x ∈ [0, 1], 0</script> elsewhere.</p>
+<p><strong>Example</strong> Calculate the mean and the variance of the uniform random variable X with PDF <script type="math/tex">f_X(x) = 1, ∀x  \in  [0, 1], 0</script> elsewhere.</p>
 
 <script type="math/tex; mode=display">E[X] = \int^{\infty}_{-\infty} x f_x(x) dx = \int^1_0 x dx = \frac{1}{2}</script>
 
@@ -259,7 +259,7 @@ E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x
 <h3 id="continuous-case"><strong>Continuous case</strong>:</h3>
 
 <p>\begin{equation}
-E[g(X)] = \int^{\infty}<em>{-\infty} 1{x ∈ A}f_X(x)dx = \int</em>{x \in A} f_X(x)dx = P(x \in A)
+E[g(X)] = \int^{\infty}<em>{-\infty} 1{x \in A}f_X(x)dx = \int</em>{x \in A} f_X(x)dx = P(x \in A)
 \end{equation}.</p>
 
 <h2 id="26-some-common-random-variables">2.6 Some common random variables</h2>
@@ -360,7 +360,7 @@ f_{XY}(x, y) = \frac{∂2F_{XY}(x, y)}{∂x∂y}
 
 <p>Like in the single-dimensional case, <script type="math/tex">f_{XY} (x, y) \neq P(X = x, Y = y)</script>, but rather
 \begin{equation}
-\int \int_{x∈A} f_{XY} (x, y)dx dy = P((X, Y ) \in A).
+\int \int_{x \in A} f_{XY} (x, y)dx dy = P((X, Y ) \in A).
 \end{equation}
 Note that the values of the probability density function f_{XY}(x, y) are always nonnegative, but they
 may be greater than 1. Nonetheless, it must be the case that <script type="math/tex">\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1</script></p>

@@ -7,9 +7,9 @@ We will go through a review of probability concepts over here, all of review the
 # 1. Elements of probability
 In order to define a probability on a set we need a few basic elements,
 
-**Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
+**Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω  \in  Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
 
-**Set of events (or event space) F**: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
+**Set of events (or event space) F**: A set whose elements A  \in  F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
 
 **Probability measure**: A function $$P : F \rightarrow I\!R$$ that satisfies the following **properties** 
 * $$P(A) \geq 0$$, for all $$A \in F$$ 
@@ -155,7 +155,7 @@ constant with respect to the outer expectation.
 - $$Var[a] = 0$$ for any constant $$a \in I\!R$$.
 - $$Var[af(X)] = a^2 Var[f(X)]$$ for any constant $$a \in I\!R$$.
 
-**Example** Calculate the mean and the variance of the uniform random variable X with PDF $$f_X(x) = 1, ∀x ∈ [0, 1], 0$$ elsewhere.
+**Example** Calculate the mean and the variance of the uniform random variable X with PDF $$f_X(x) = 1, ∀x  \in  [0, 1], 0$$ elsewhere.
 
 $$E[X] = \int^{\infty}_{-\infty} x f_x(x) dx = \int^1_0 x dx = \frac{1}{2}$$
 
@@ -174,7 +174,7 @@ E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x
 ### **Continuous case**:
 
 \begin{equation}
-E[g(X)] = \int^{\infty}_{-\infty} 1{x ∈ A}f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)
+E[g(X)] = \int^{\infty}_{-\infty} 1{x \in A}f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)
 \end{equation}.
 
 
@@ -275,7 +275,7 @@ f_{XY}(x, y) = \frac{∂2F_{XY}(x, y)}{∂x∂y}
 
 Like in the single-dimensional case, $$f_{XY} (x, y) \neq P(X = x, Y = y)$$, but rather
 \begin{equation}
-\int \int_{x∈A} f_{XY} (x, y)dx dy = P((X, Y ) \in A).
+\int \int_{x \in A} f_{XY} (x, y)dx dy = P((X, Y ) \in A).
 \end{equation}
 Note that the values of the probability density function f_{XY}(x, y) are always nonnegative, but they
 may be greater than 1. Nonetheless, it must be the case that $$\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1$$
