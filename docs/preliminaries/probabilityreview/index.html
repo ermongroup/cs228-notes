@@ -79,7 +79,7 @@
 
 <p>We will go through a review of probability concepts over here, all of review the material have been adapted from <a href="http://cs229.stanford.edu/section/cs229-prob.pdf">CS229 Probability Notes</a>.</p>
 
-<h4 id="1-elements-of-probability">1. Elements of probability</h4>
+<h1 id="1-elements-of-probability">1. Elements of probability</h1>
 <p>In order to define a probability on a set we need a few basic elements,</p>
 <ul>
   <li><strong>Sample space</strong> Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.</li>
@@ -88,7 +88,7 @@
     <ul>
       <li>P(A) ≥ 0, for all A ∈ F</li>
       <li>P(Ω) = 1</li>
-      <li>If $A_1$, $A_2$, . . . are disjoint events $(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$, then $P(∪_iA_i) = \sum_i P(A_i)$</li>
+      <li>If $A_1$, $A_2$, . . . are disjoint events $(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$, then <script type="math/tex">P(∪_iA_i) = \sum_i P(A_i)</script></li>
     </ul>
   </li>
 </ul>
@@ -107,7 +107,7 @@
 $\bigcup^k_{i=1} A_i = \Omega$ then $\sum^k_{i=1} P(A_k) = 1.$</li>
 </ul>
 
-<h4 id="11-conditional-probability-and-independence">1.1 Conditional probability and independence</h4>
+<h1 id="11-conditional-probability-and-independence">1.1 Conditional probability and independence</h1>
 
 <p>Let B be an event with non-zero probability. The conditional probability of any event A given B is defined as
 $ P(A \mid B) = \frac {P(A \cap B)}{P(B)}$
@@ -116,7 +116,7 @@ event B. Two events are called independent if and only if $P(A \cap B) = P(A)P(B
 $P(A \mid B) = P(A)$). Therefore, independence is equivalent to saying that observing B does not have
 any effect on the probability of A.</p>
 
-<h4 id="2-random-variables">2. Random variables</h4>
+<h1 id="2-random-variables">2. Random variables</h1>
 
 <p>Consider an experiment in which we flip 10 coins, and we want to know the number of coins that
 come up heads. Here, the elements of the sample space Ω are 10-length sequences of heads and
