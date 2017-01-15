@@ -396,10 +396,10 @@ one variable given another, is <strong>Bayes’s rule</strong>.</p>
 P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y' \in Val(Y) P_{X \mid Y} (x \mid y') P_Y(y')}}
 </script></div>
 
-<p>If the random variables X and Y are continuous,
-\begin{equation}
-f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}<em>{- \infty} f</em>{X\mid Y} (x \mid y’) f_Y (y’) dy’}
-\end{equation}</p>
+<p>If the random variables X and Y are continuous,</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}_{- \infty} f_{X\mid Y} (x \mid y') f_Y (y') dy'}
+</script></div>
 
 <h2 id="36-independence">3.6 Independence</h2>
 <p>Two random variables X and Y are independent if <script type="math/tex">F_{XY} (x, y) = F_X(x)F_Y(y)</script> for all values of x and y. Equivalently,</p>
@@ -425,23 +425,23 @@ By using the above lemma one can prove that if <script type="math/tex">X</script
 E[g(X,Y)] = \sum_{x \in Val(X)} \sum_{y \in Val(Y)} g(x, y)p_{XY}(x, y).
 \end{equation}</p>
 
-<p>For continuous random variables X, Y , the analogous expression is
-\begin{equation}
-E[g(X, Y)] = \int^{\infty}<em>{-\infty} \int^{\infty}</em>{-\infty} g(x, y)f_{XY}(x, y)dxdy.
-\end{equation}</p>
+<p>For continuous random variables X, Y , the analogous expression is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+E[g(X, Y)] = \int^{\infty}_{-\infty} \int^{\infty}_{-\infty} g(x, y)f_{XY}(x, y)dxdy.
+</script></div>
 
 <p>We can use the concept of expectation to study the relationship of two random variables with each other. In particular, the covariance of two random variables X and Y is defined as</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 Cov[X, Y] = E[(X − E[X])(Y − E[Y])]
 </script></div>
 
-<p>Using an argument similar to that for variance, we can rewrite this as,
-\begin{equation}
-Cov[X, Y] = E[(X − E[X])(Y − E[Y])] <br />
-= E[XY − XE[Y] − Y E[X] + E[X]E[Y]] <br />
-= E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y]] <br />
+<p>Using an argument similar to that for variance, we can rewrite this as,</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+Cov[X, Y] = E[(X − E[X])(Y − E[Y])] \\
+= E[XY − XE[Y] − Y E[X] + E[X]E[Y]] \\
+= E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y]] \\
 = E[XY] − E[X]E[Y].
-\end{equation}</p>
+</script></div>
 
 <p>Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that <script type="math/tex">E[X]</script> and <script type="math/tex">E[Y]</script> are actually constants which can be pulled out of the expectation. When <script type="math/tex">Cov[X, Y] = 0</script>, we say that <script type="math/tex">X</script> and <script type="math/tex">Y</script> are uncorrelated.</p>
 

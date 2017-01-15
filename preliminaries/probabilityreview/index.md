@@ -314,9 +314,9 @@ P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mi
 {% endmath %}
 
 If the random variables X and Y are continuous,
-\begin{equation}
+{% math %}
 f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}_{- \infty} f_{X\mid Y} (x \mid y') f_Y (y') dy'}
-\end{equation}
+{% endmath %}
 
 
 ## 3.6 Independence
@@ -342,9 +342,9 @@ E[g(X,Y)] = \sum_{x \in Val(X)} \sum_{y \in Val(Y)} g(x, y)p_{XY}(x, y).
 \end{equation}
 
 For continuous random variables X, Y , the analogous expression is
-\begin{equation}
+{% math %}
 E[g(X, Y)] = \int^{\infty}_{-\infty} \int^{\infty}_{-\infty} g(x, y)f_{XY}(x, y)dxdy.
-\end{equation}
+{% endmath %}
 
 We can use the concept of expectation to study the relationship of two random variables with each other. In particular, the covariance of two random variables X and Y is defined as
 {% math %}
@@ -352,12 +352,12 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])]
 {% endmath %}
 
 Using an argument similar to that for variance, we can rewrite this as,
-\begin{equation}
+{% math %}
 Cov[X, Y] = E[(X − E[X])(Y − E[Y])] \\
 = E[XY − XE[Y] − Y E[X] + E[X]E[Y]] \\
 = E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y]] \\
 = E[XY] − E[X]E[Y].
-\end{equation}
+{% endmath %}
 
 Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$E[X]$$ and $$E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
 
