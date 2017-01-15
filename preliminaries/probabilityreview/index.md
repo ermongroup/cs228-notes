@@ -173,25 +173,21 @@ E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x
 
 ### **Continuous case**:
 {% math %}
-E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \\
-\int_{x\in A}
+E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(x \in A)
 {% endmath %}
 
-\begin{equation}
-E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x)dx = P(x \in A)
-\end{equation}.
 
 
 ## 2.6 Some common random variables
 
 ### Discrete random variables
 • **$$X$$ ∼ Bernoulli(p)** $$(where 0 ≤ p ≤ 1)$$: one if a coin with heads probability p comes up heads, zero otherwise. 
-    \begin{equation}
+    {% math %}
       p(x)=\begin{cases}
         p, & \text{if $$p = 1$$}.\\
         1-p, & \text{if $$p = 0$$}.
       \end{cases}
-    \end{equation} 
+    {% endmath %}
 • **$$X$$ ∼ Binomial(n, p)** $$(where 0 ≤ p ≤ 1)$$: the number of heads in n independent flips of a
 coin with heads probability p.
 \begin{equation}
