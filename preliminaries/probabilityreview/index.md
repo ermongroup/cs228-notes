@@ -2,7 +2,7 @@
 layout: post
 title: Probability Review
 ---
-We will go through a review of probability concepts over here, some of the material have been adapted from [CS229 Probability Notes](http://cs229.stanford.edu/section/cs229-prob.pdf).
+We will go through a review of probability concepts over here, all of review the material have been adapted from [CS229 Probability Notes](http://cs229.stanford.edu/section/cs229-prob.pdf).
 
 
 #### 1. Elements of probability
