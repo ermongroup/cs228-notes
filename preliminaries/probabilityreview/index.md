@@ -4,15 +4,14 @@ title: Probability Review
 ---
 We will go through a review of probability concepts over here, all of review the material have been adapted from [CS229 Probability Notes](http://cs229.stanford.edu/section/cs229-prob.pdf).
 
-
 # 1. Elements of probability
 In order to define a probability on a set we need a few basic elements,
-* **Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
-* **Set of events (or event space) F**: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
-* **Probability measure**: A function P : F → R that satisfies the following properties, 
-    - P(A) ≥ 0, for all A ∈ F
-    - P(Ω) = 1
-    - If $$A_1$$, $$A_2$$, . . . are disjoint events $$(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$$, then $$P(∪_iA_i) = \sum_i P(A_i)$$
+- *Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
+- *Set of events (or event space) F**: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
+- *Probability measure**: A function P : F → R that satisfies the following properties, 
+    - $$P(A) ≥ 0, for all A ∈ F
+    - $$P(\Omega) = 1$$
+    - If $$A_1$$, $$A_2$$, . . . are disjoint events $(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$, then $$P(∪_iA_i) = \sum_i P(A_i)$$
 
 These three properties are called the **Axioms of Probability**.
 
@@ -345,7 +344,7 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])] \\
 Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$E[X]$$ and $$E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
 
 ## Properties:
-- (Linearity of expectation) $$E[f(X, Y) + g(X, Y)] = E[f(X, Y)] + E[g(X, Y)]$$.
+- (Linearity of expectation) E[f(X, Y) + g(X, Y)] = E[f(X, Y)] + E[g(X, Y)].
 - $$Var[X + Y] = Var[X] + Var[Y] + 2Cov[X, Y]$$.
 - If $$X$$ and $$Y$$ are independent, then $$Cov[X, Y] = 0$$.
 - If $$X$$ and $$Y$$ are independent, then $$E[f(X)g(Y)] = E[f(X)]E[g(Y)]$$.
