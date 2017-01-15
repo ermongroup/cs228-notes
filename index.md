@@ -41,9 +41,14 @@ Free to contribute your improvements on [Github](https://github.com/kuleshov/cs2
 
 2. [Learning in undirected models](learning/undirected/): Exponential families. Maximum likelihood estimation with gradient descent. Learning in CRFs
 
-3. Learning in latent-variable models: Gaussian mixture models. Expectation maximization.
+3. Learning in latent variable models: Latent variable models. Gaussian mixture models. Expectation maximization.
 
 4. Bayesian learning: Bayesian paradigm. Conjugate priors. Examples.
 
 5. Structure learning: Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning.
 
+## Bringing it all together
+
+1. The variational autoencoder: Deep generative models. The reparametrization trick. Learning latent visual representations.
+
+2. Further reading: Probabilistic models for topic modelling. Bayesian non-parametrics.
