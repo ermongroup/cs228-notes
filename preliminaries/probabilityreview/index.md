@@ -6,12 +6,12 @@ We will go through a review of probability concepts over here, all of review the
 
 # 1. Elements of probability
 In order to define a probability on a set we need a few basic elements,
-- *Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
-- *Set of events (or event space) F**: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
-- *Probability measure**: A function P : F → R that satisfies the following properties, 
+- **Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
+- **Set of events (or event space) F**: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
+- **Probability measure**: A function P : F → R that satisfies the following properties, 
     - $$P(A) ≥ 0, for all A ∈ F
     - $$P(\Omega) = 1$$
-    - If $$A_1$$, $$A_2$$, . . . are disjoint events $(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$, then $$P(∪_iA_i) = \sum_i P(A_i)$$
+    - If $$A_1$$, $$A_2$$, . . . are disjoint events $$(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$$, then $$P(∪_iA_i) = \sum_i P(A_i)$$
 
 These three properties are called the **Axioms of Probability**.
 
