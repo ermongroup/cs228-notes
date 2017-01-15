@@ -169,12 +169,15 @@ $$Var[X] = E[X^2] - E[X]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}$$
 
 \begin{equation}
 E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x \in A)
-\end{equation}.
+\end{equation}
 
 ### **Continuous case**:
+\begin{equation}
+p = a
+\end{equation}.
 
 \begin{equation}
-E[g(X)] = \int^{\infty}_{-\infty} 1{x \in A}f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)
+E[g(X)] = \int^{\infty}_{-\infty} 1{x \in A} f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)
 \end{equation}.
 
 
