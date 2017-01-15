@@ -84,24 +84,33 @@
 <ul>
   <li><strong>Sample space</strong> Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.</li>
   <li><strong>Set of events (or event space) F</strong>: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)</li>
-  <li><strong>Probability measure</strong>: A function P : F → R that satisfies the following properties,
+  <li><strong>Probability measure</strong>: A function P : F → R that satisfies the following <strong>properties</strong>,</li>
+  <li>
     <ul>
       <li>
         <script type="math/tex; mode=display">P(A) \geq 0, for all A \in F</script>
       </li>
+    </ul>
+  </li>
+  <li>
+    <ul>
       <li>
         <script type="math/tex; mode=display">P(\Omega) = 1</script>
       </li>
+    </ul>
+  </li>
+  <li>
+    <ul>
       <li>If <script type="math/tex">A_1</script>, <script type="math/tex">A_2</script>, . . . are disjoint events <script type="math/tex">(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)</script>, then <script type="math/tex">P(∪_iA_i) = \sum_i P(A_i)</script></li>
     </ul>
   </li>
 </ul>
 
-<p>These three properties are called the <strong>Axioms of Probability</strong>.</p>
+<p>These three <strong>properties</strong> are called the <strong>Axioms of Probability</strong>.</p>
 
 <p><strong>Example</strong>: Consider the event of tossing a six-sided die. The sample space is Ω = {1, 2, 3, 4, 5, 6}. We can define different event spaces on this sample space. For example, the simplest event space is the trivial event space F = {∅, Ω}. Another event space is the set of all subsets of Ω. For the first event space, the unique probability measure satisfying the requirements above is given by P(∅) = 0, P(Ω) = 1. For the second event space, one valid probability measure is to assign the probability of each set in the event space to be <script type="math/tex">\frac{i}{6}</script> where <script type="math/tex">i</script> is the number of elements of that set; for example, <script type="math/tex">P({1, 2, 3, 4}) = \frac{4}{6}</script> and <script type="math/tex">P({1, 2, 3}) = \frac{3}{6}</script>.</p>
 
-<h3 id="properties">Properties:</h3>
+<h3 id="properties"><strong>Properties</strong>:</h3>
 <ul>
   <li>If A ⊆ B ⇒ P(A) ≤ P(B).</li>
   <li><script type="math/tex">P(A \cap B) \leq min(P(A), P(B))</script>.</li>
@@ -151,7 +160,7 @@ F_X(x) = P(X \leq x)
 \end{equation}
 By using this function one can calculate the probability of any event.</p>
 
-<h3 id="properties-1">Properties:</h3>
+<h3 id="properties-1"><strong>Properties</strong>:</h3>
 <!--Figure 1: A cumulative distribution function (CDF).-->
 <ul>
   <li><script type="math/tex">0 ≤ F_X(x) ≤ 1</script>.</li>
@@ -169,7 +178,7 @@ a probability mass function (PMF) is a function <script type="math/tex">pX : \Om
 
 <p>In the case of discrete random variable, we use the notation V al(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.</p>
 
-<h3 id="properties-2">Properties:</h3>
+<h3 id="properties-2"><strong>Properties</strong>:</h3>
 <ul>
   <li><script type="math/tex">0 \leq p_X(x) \leq 1</script>.</li>
   <li><script type="math/tex">\sum_{x \in Val(X)} p_X(x) = 1</script>.</li>
@@ -179,17 +188,19 @@ a probability mass function (PMF) is a function <script type="math/tex">pX : \Om
 <h2 id="23-probability-density-functions">2.3 Probability density functions</h2>
 <p>For some continuous random variables, the cumulative distribution function FX(x) is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,</p>
 
-<p><script type="math/tex">f_X(x)  = \frac{dF_X(x)}{dx}</script>.</p>
+<p>\begin{equation}
+f_X(x)  = \frac{dF_X(x)}{dx}.
+\end{equation}</p>
 
 <p>Note here, that the PDF for a continuous random variable may not always exist (i.e., if FX(x) is not differentiable everywhere).</p>
 
-<p>According to the properties of differentiation, for very small ∆x,</p>
+<p>According to the <strong>properties</strong> of differentiation, for very small ∆x,</p>
 
 <p><script type="math/tex">P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x</script>.</p>
 
 <p>Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point <script type="math/tex">x</script> is not the probability of that event, i.e., <script type="math/tex">f_X(x) \neq P(X = x)</script>. For example, <script type="math/tex">f_X(x)</script> can take on values larger than one (but the integral of fX(x) over any subset of R will be at most one).</p>
 
-<h3 id="properties-3">Properties:</h3>
+<h3 id="properties-3"><strong>Properties</strong>:</h3>
 <ul>
   <li>
     <script type="math/tex; mode=display">f_X(x) \geq 0</script>
@@ -202,15 +213,19 @@ a probability mass function (PMF) is a function <script type="math/tex">pX : \Om
 
 <p>Suppose that <script type="math/tex">X</script> is a discrete random variable with <strong>PMF</strong> <script type="math/tex">p_X(x)</script> and <script type="math/tex">g : I\!R \rightarrow I\!R</script> is an arbitrary function. In this case, <script type="math/tex">g(X)</script> can be considered a random variable, and we define the expectation or expected value of <script type="math/tex">g(X)</script> as:</p>
 
-<p><script type="math/tex">E[g(X)] = \sum_{x∈Val(X)} g(x)p_X(x)</script>.</p>
+<p>\begin{equation}
+E[g(X)] = \sum_{x∈Val(X)} g(x)p_X(x).
+\end{equation}</p>
 
 <p>If X is a continuous random variable with PDF <script type="math/tex">f_X(x)</script>, then the expected value of g(X) is defined as,</p>
 
-<script type="math/tex; mode=display">E[g(X)] = \int^{\infty}_{-\infty} g(x)fX(x)dx.</script>
+<p>\begin{equation}
+E[g(X)] = \int^{\infty}_{-\infty} g(x)fX(x)dx.
+\end{equation}</p>
 
 <p>Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by pX(x) or fX(x). As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.</p>
 
-<h3 id="properties-4">Properties:</h3>
+<h3 id="properties-4"><strong>Properties</strong>:</h3>
 <ul>
   <li><script type="math/tex">E[a] = a</script> for any constant <script type="math/tex">a \in I\!R</script>.</li>
   <li><script type="math/tex">E[af(X)] = aE[f(X)]</script> for any constant <script type="math/tex">a \in I\!R</script>.</li>
@@ -222,14 +237,16 @@ a probability mass function (PMF) is a function <script type="math/tex">pX : \Om
 
 <p>The variance of a random variable X is a measure of how concentrated the distribution of a random variable X is around its mean. Formally, the variance of a random variable X is defined as <script type="math/tex">Var[X] = E[(X − E(X))^2]</script></p>
 
-<p>Using the properties in the previous section, we can derive an alternate expression for the variance:</p>
+<p>Using the <strong>properties</strong> in the previous section, we can derive an alternate expression for the variance:</p>
 
-<p><script type="math/tex">E[(X − E[X])^2] = E[X^2 − 2E[X]X + E[X]^2] = E[X^2] − 2E[X]E[X] + E[X]^2 = E[X^2] − E[X]^2</script>,</p>
+<p>\begin{equation}
+E[(X − E[X])^2] = E[X^2 − 2E[X]X + E[X]^2] = E[X^2] − 2E[X]E[X] + E[X]^2 = E[X^2] − E[X]^2
+\end{equation}</p>
 
 <p>where the second equality follows from linearity of expectations and the fact that <script type="math/tex">E[X]</script> is actually a
 constant with respect to the outer expectation.</p>
 
-<h3 id="properties-5">Properties:</h3>
+<h3 id="properties-5"><strong>Properties</strong>:</h3>
 <ul>
   <li><script type="math/tex">Var[a] = 0</script> for any constant <script type="math/tex">a \in I\!R</script>.</li>
   <li><script type="math/tex">Var[af(X)] = a^2 Var[f(X)]</script> for any constant <script type="math/tex">a \in I\!R</script>.</li>
@@ -245,11 +262,11 @@ constant with respect to the outer expectation.</p>
 
 <p><strong>Example</strong> : Suppose that <script type="math/tex">g(x) = 1{x \in A}</script> for some subset <script type="math/tex">A ⊆ \Omega</script>. What is <script type="math/tex">E[g(X)]</script>?</p>
 
-<h3 id="discrete-case">Discrete case:</h3>
+<h3 id="discrete-case"><strong>Discrete case</strong>:</h3>
 
 <script type="math/tex; mode=display">E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x∈A} P_X(x)dx = P(x \in A)</script>
 
-<h3 id="continuous-case">Continuous case:</h3>
+<h3 id="continuous-case"><strong>Continuous case</strong>:</h3>
 
 <p><script type="math/tex">E[g(X)] = \int^{\infty}_{-\infty} 1{x ∈ A}f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)</script>.</p>
 
@@ -262,8 +279,7 @@ heads, zero otherwise.
   p(x)=\begin{cases}
     p, &amp; \text{if <script type="math/tex">p = 1</script>}.<br />
     1-p, &amp; \text{if <script type="math/tex">p = 0</script>}.
-  \end{cases}
-\end{equation}
+  \end{cases}\end{equation} 
 • <strong><script type="math/tex">X</script> ∼ Binomial(n, p)</strong> <script type="math/tex">(where 0 ≤ p ≤ 1)</script>: the number of heads in n independent flips of a
 coin with heads probability p.
 \begin{equation}
@@ -282,13 +298,15 @@ p(x) = e^{\lambda} \frac{\lambda^x}{x!}
 <h3 id="continuous-random-variables">Continuous random variables</h3>
 
 <p>• <strong><script type="math/tex">X</script> ∼ Uniform(a, b)</strong> (where <script type="math/tex">% <![CDATA[
-a < b %]]></script>): equal probability density to every value between a and b on the real line. \begin{equation}
+a < b %]]></script>): equal probability density to every value between a and b on the real line. 
+\begin{equation}
 f(x)=\begin{cases}  <br />
 \frac{1}{b-a}, &amp; \text{if <script type="math/tex">a \leq b</script>}.<br />
 0, &amp; \text{otherwise}.
 \end{cases}
-\end{equation}
-• <strong><script type="math/tex">X</script> ∼ Exponential(λ)</strong> (where λ &gt; 0): decaying probability density over the nonnegative reals.
+\end{equation}</p>
+
+<p>• <strong><script type="math/tex">X</script> ∼ Exponential(λ)</strong> (where λ &gt; 0): decaying probability density over the nonnegative reals.
 \begin{equation}
   f(x)=\begin{cases}
     \lambda e^{-\lambda x}, &amp; \text{if <script type="math/tex">x \geq 0</script>}.<br />
@@ -316,7 +334,7 @@ F_Y(y) = lim_{x→\infty} F_{XY} (x, y)dx
 \end{equation}
 Here, we call <script type="math/tex">F_X(x)</script> and <script type="math/tex">F_Y(y)</script> the <strong>marginal cumulative distribution functions</strong> of <script type="math/tex">F_{XY} (x, y)</script>.</p>
 
-<h3 id="properties-6">Properties:</h3>
+<h3 id="properties-6"><strong>Properties</strong>:</h3>
 <ul>
   <li><script type="math/tex">0 \leq F_{XY} (x, y) \leq 1</script>.</li>
   <li><script type="math/tex">lim_{x,y\rightarrow \infty} F_{XY} (x, y) = 1</script>.</li>
@@ -369,7 +387,7 @@ as the <strong>marginal probability density function</strong> (or <strong>margin
 \begin{equation}
 p_{Y \mid X} (y \mid x) = \frac{p_{XY}(x, y)}{p_X(x)},
 \end{equation}
-assuming that p_X(x) \neq 0.</p>
+assuming that <script type="math/tex">p_X(x) \neq 0</script>.</p>
 
 <p>In the continuous case, the situation is technically a little more complicated because the probability that a continuous random variable X takes on a specific value x is equal to zero. Ignoring this
 technical point, we simply define, by analogy to the discrete case, the <em>conditional probability density</em> of Y given X = x to be
@@ -385,12 +403,12 @@ one variable given another, is <strong>Bayes’s rule</strong>.</p>
 
 <p>In the case of discrete random variables X and Y ,
 \begin{equation}
-P_{Y \mid X}(y|x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y’ \in Val(Y) P_{X \mid Y} (x \mid y’) P_Y(y’)}}
+P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y’ \in Val(Y) P_{X \mid Y} (x \mid y’) P_Y(y’)}}
 \end{equation}</p>
 
 <p>If the random variables X and Y are continuous,
 \begin{equation}
-f_{Y \mid X}(y|x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}<em>{- \infty} f</em>{X\mid Y} (x \mid y’) f_Y (y’) dy’}
+f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}<em>{- \infty} f</em>{X\mid Y} (x \mid y’) f_Y (y’) dy’}
 \end{equation}</p>
 
 <h2 id="36-independence">3.6 Independence</h2>
@@ -437,7 +455,7 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])] <br />
 
 <p>Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that <script type="math/tex">E[X]</script> and <script type="math/tex">E[Y]</script> are actually constants which can be pulled out of the expectation. When <script type="math/tex">Cov[X, Y] = 0</script>, we say that <script type="math/tex">X</script> and <script type="math/tex">Y</script> are uncorrelated.</p>
 
-<h3 id="properties-7">Properties:</h3>
+<h3 id="properties-7"><strong>Properties</strong>:</h3>
 <ul>
   <li>(Linearity of expectation) E[f(X, Y) + g(X, Y)] = E[f(X, Y)] + E[g(X, Y)].</li>
   <li><script type="math/tex">Var[X + Y] = Var[X] + Var[Y] + 2Cov[X, Y]</script>.</li>

@@ -8,16 +8,16 @@ We will go through a review of probability concepts over here, all of review the
 In order to define a probability on a set we need a few basic elements,
 - **Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
 - **Set of events (or event space) F**: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
-- **Probability measure**: A function P : F → R that satisfies the following properties, 
-    - $$P(A) \geq 0, for all A \in F$$
-    - $$P(\Omega) = 1$$
-    - If $$A_1$$, $$A_2$$, . . . are disjoint events $$(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$$, then $$P(∪_iA_i) = \sum_i P(A_i)$$
+- **Probability measure**: A function P : F → R that satisfies the following **properties**,
+- - $$P(A) \geq 0, for all A \in F$$
+- - $$P(\Omega) = 1$$
+- - If $$A_1$$, $$A_2$$, . . . are disjoint events $$(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$$, then $$P(∪_iA_i) = \sum_i P(A_i)$$
 
-These three properties are called the **Axioms of Probability**.
+These three **properties** are called the **Axioms of Probability**.
 
 **Example**: Consider the event of tossing a six-sided die. The sample space is Ω = {1, 2, 3, 4, 5, 6}. We can define different event spaces on this sample space. For example, the simplest event space is the trivial event space F = {∅, Ω}. Another event space is the set of all subsets of Ω. For the first event space, the unique probability measure satisfying the requirements above is given by P(∅) = 0, P(Ω) = 1. For the second event space, one valid probability measure is to assign the probability of each set in the event space to be $$\frac{i}{6}$$ where $$i$$ is the number of elements of that set; for example, $$P({1, 2, 3, 4}) = \frac{4}{6}$$ and $$P({1, 2, 3}) = \frac{3}{6}$$.
 
-### Properties:
+### **Properties**:
 - If A ⊆ B ⇒ P(A) ≤ P(B).
 - $$P(A \cap B) \leq min(P(A), P(B))$$.
 - **Union Bound** P(A ∪ B) ≤ P(A) + P(B).
@@ -66,7 +66,7 @@ F_X(x) = P(X \leq x)
 \end{equation}
 By using this function one can calculate the probability of any event.
 
-### Properties:
+### **Properties**:
 <!--Figure 1: A cumulative distribution function (CDF).-->
 - $$0 ≤ F_X(x) ≤ 1$$.
 - $$lim_{x→-\infty} F_X(x) = 0$$.
@@ -83,7 +83,7 @@ $$p_X(x) = P(X = x)$$.
 
 In the case of discrete random variable, we use the notation V al(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.
 
-### Properties:
+### **Properties**:
 - $$0 \leq p_X(x) \leq 1$$.
 - $$\sum_{x \in Val(X)} p_X(x) = 1$$.
 - $$\sum{x \in A} p_X(x) = P(X \in A)$$.
@@ -91,17 +91,19 @@ In the case of discrete random variable, we use the notation V al(X) for the set
 ## 2.3 Probability density functions
 For some continuous random variables, the cumulative distribution function FX(x) is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,
 
-$$f_X(x)  = \frac{dF_X(x)}{dx}$$.
+\begin{equation}
+f_X(x)  = \frac{dF_X(x)}{dx}.
+\end{equation}
 
 Note here, that the PDF for a continuous random variable may not always exist (i.e., if FX(x) is not differentiable everywhere).
 
-According to the properties of differentiation, for very small ∆x, 
+According to the **properties** of differentiation, for very small ∆x, 
 
 $$P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x$$.
 
 Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point $$x$$ is not the probability of that event, i.e., $$f_X(x) \neq P(X = x)$$. For example, $$f_X(x)$$ can take on values larger than one (but the integral of fX(x) over any subset of R will be at most one).
 
-### Properties:
+### **Properties**:
 - $$f_X(x) \geq 0$$
 - $$\int^{\infty}_{-\infty} f_X(x) = 1$$.
 - $$\int_{x \in A} f_X(x) dx = P(X \in A)$$.
@@ -111,15 +113,19 @@ Both CDFs and PDFs (when they exist!) can be used for calculating the probabilit
 
 Suppose that $$X$$ is a discrete random variable with **PMF** $$p_X(x)$$ and $$g : I\!R \rightarrow I\!R$$ is an arbitrary function. In this case, $$g(X)$$ can be considered a random variable, and we define the expectation or expected value of $$g(X)$$ as:
 
-$$E[g(X)] = \sum_{x∈Val(X)} g(x)p_X(x)$$.
+\begin{equation}
+E[g(X)] = \sum_{x∈Val(X)} g(x)p_X(x).
+\end{equation}
 
 If X is a continuous random variable with PDF $$f_X(x)$$, then the expected value of g(X) is defined as,
 
-$$E[g(X)] = \int^{\infty}_{-\infty} g(x)fX(x)dx.$$
+\begin{equation}
+E[g(X)] = \int^{\infty}_{-\infty} g(x)fX(x)dx.
+\end{equation}
 
 Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by pX(x) or fX(x). As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.
 
-### Properties:
+### **Properties**:
 - $$E[a] = a$$ for any constant $$a \in I\!R$$.
 - $$E[af(X)] = aE[f(X)]$$ for any constant $$a \in I\!R$$.
 - (Linearity of Expectation) $$E[f(X) + g(X)] = E[f(X)] + E[g(X)]$$.
@@ -130,14 +136,16 @@ Intuitively, the expectation of g(X) can be thought of as a “weighted average�
 
 The variance of a random variable X is a measure of how concentrated the distribution of a random variable X is around its mean. Formally, the variance of a random variable X is defined as $$Var[X] = E[(X − E(X))^2]$$
 
-Using the properties in the previous section, we can derive an alternate expression for the variance:
+Using the **properties** in the previous section, we can derive an alternate expression for the variance:
 
-$$E[(X − E[X])^2] = E[X^2 − 2E[X]X + E[X]^2] = E[X^2] − 2E[X]E[X] + E[X]^2 = E[X^2] − E[X]^2$$,
+\begin{equation}
+E[(X − E[X])^2] = E[X^2 − 2E[X]X + E[X]^2] = E[X^2] − 2E[X]E[X] + E[X]^2 = E[X^2] − E[X]^2
+\end{equation}
 
 where the second equality follows from linearity of expectations and the fact that $$E[X]$$ is actually a
 constant with respect to the outer expectation.
 
-### Properties:
+### **Properties**:
 - $$Var[a] = 0$$ for any constant $$a \in I\!R$$.
 - $$Var[af(X)] = a^2 Var[f(X)]$$ for any constant $$a \in I\!R$$.
 
@@ -151,11 +159,11 @@ $$Var[X] = E[X^2] - E[X]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}$$
 
 **Example** : Suppose that $$g(x) = 1{x \in A}$$ for some subset $$A ⊆ \Omega$$. What is $$E[g(X)]$$?
 
-### Discrete case:
+### **Discrete case**:
 
 $$E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x∈A} P_X(x)dx = P(x \in A)$$
 
-### Continuous case:
+### **Continuous case**:
 
 $$E[g(X)] = \int^{\infty}_{-\infty} 1{x ∈ A}f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)$$.
 
@@ -169,8 +177,7 @@ heads, zero otherwise.
   p(x)=\begin{cases}
     p, & \text{if $$p = 1$$}.\\
     1-p, & \text{if $$p = 0$$}.
-  \end{cases}
-\end{equation}
+  \end{cases}\end{equation} 
 • **$$X$$ ∼ Binomial(n, p)** $$(where 0 ≤ p ≤ 1)$$: the number of heads in n independent flips of a
 coin with heads probability p.
 \begin{equation}
@@ -188,12 +195,14 @@ p(x) = e^{\lambda} \frac{\lambda^x}{x!}
 
 ### Continuous random variables
 
-• **$$X$$ ∼ Uniform(a, b)** (where $$a < b$$): equal probability density to every value between a and b on the real line. \begin{equation}
+• **$$X$$ ∼ Uniform(a, b)** (where $$a < b$$): equal probability density to every value between a and b on the real line. 
+\begin{equation}
 f(x)=\begin{cases}    
 \frac{1}{b-a}, & \text{if $$a \leq b$$}.\\
 0, & \text{otherwise}.
 \end{cases}
 \end{equation}
+
 • **$$X$$ ∼ Exponential(λ)** (where λ > 0): decaying probability density over the nonnegative reals.
 \begin{equation}
   f(x)=\begin{cases}
@@ -223,7 +232,7 @@ F_Y(y) = lim_{x→\infty} F_{XY} (x, y)dx
 \end{equation}
 Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution functions** of $$F_{XY} (x, y)$$.
 
-### Properties:
+### **Properties**:
 - $$0 \leq F_{XY} (x, y) \leq 1$$.
 - $$lim_{x,y\rightarrow \infty} F_{XY} (x, y) = 1$$.
 - $$lim_{x,y\rightarrow -\infty} F_{XY} (x, y) = 0$$.
@@ -275,7 +284,7 @@ Conditional distributions seek to answer the question, what is the probability d
 \begin{equation}
 p_{Y \mid X} (y \mid x) = \frac{p_{XY}(x, y)}{p_X(x)},
 \end{equation}
-assuming that p_X(x) \neq 0.
+assuming that $$p_X(x) \neq 0$$.
 
 In the continuous case, the situation is technically a little more complicated because the probability that a continuous random variable X takes on a specific value x is equal to zero. Ignoring this
 technical point, we simply define, by analogy to the discrete case, the *conditional probability density* of Y given X = x to be
@@ -291,12 +300,12 @@ one variable given another, is **Bayes’s rule**.
 
 In the case of discrete random variables X and Y ,
 \begin{equation}
-P_{Y \mid X}(y|x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y' \in Val(Y) P_{X \mid Y} (x \mid y') P_Y(y')}}
+P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y' \in Val(Y) P_{X \mid Y} (x \mid y') P_Y(y')}}
 \end{equation}
 
 If the random variables X and Y are continuous,
 \begin{equation}
-f_{Y \mid X}(y|x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}_{- \infty} f_{X\mid Y} (x \mid y') f_Y (y') dy'}
+f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}_{- \infty} f_{X\mid Y} (x \mid y') f_Y (y') dy'}
 \end{equation}
 
 
@@ -342,7 +351,7 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])] \\
 
 Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$E[X]$$ and $$E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
 
-### Properties:
+### **Properties**:
 - (Linearity of expectation) E[f(X, Y) + g(X, Y)] = E[f(X, Y)] + E[g(X, Y)].
 - $$Var[X + Y] = Var[X] + Var[Y] + 2Cov[X, Y]$$.
 - If $$X$$ and $$Y$$ are independent, then $$Cov[X, Y] = 0$$.
