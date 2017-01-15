@@ -8,8 +8,8 @@ We will go through a review of probability concepts over here, all of review the
 In order to define a probability on a set we need a few basic elements,
 - **Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
 - **Set of events (or event space) F**: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
-- **Probability measure**: A function P : F → R that satisfies the following **properties**,
-- - $$P(A) \geq 0, for all A \in F$$
+- **Probability measure**: A function $$P : F \rightarrow I\!R$$ that satisfies the following **properties** 
+- - $$P(A) \geq 0$$, for all $$A \in F$$
 - - $$P(\Omega) = 1$$
 - - If $$A_1$$, $$A_2$$, . . . are disjoint events $$(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$$, then $$P(∪_iA_i) = \sum_i P(A_i)$$
 
@@ -42,7 +42,7 @@ tails. For example, we might have $$w_0 = \langle H, H, T, H, T, H, H, T, T, T \
 appear among our 10 tosses, or the length of the longest run of tails. These functions, under some
 technical conditions, are known as **random variables**.
 
-More formally, a random variable $$X$$ is a function $$X : \Omega → I\!R$$. Typically, we will denote random
+More formally, a random variable $$X$$ is a function $$X : \Omega \rightarrow I\!R$$. Typically, we will denote random
 variables using upper case letters $$X(\omega)$$ or more simply $$X$$ (where the dependence on the random
 outcome $$\omega$$ is implied). We will denote the value that a random variable may take on using lower
 case letters $$x$$.
@@ -60,7 +60,7 @@ two real constants a and b (where a < b) as $$P(a \leq X \leq b) := P({\omega : 
 
 ## 2.1 Cumulative distribution functions
 
-In order to specify the probability measures used when dealing with random variables, it is often convenient to specify alternative functions (CDFs, PDFs, and PMFs) from which the probability measure governing an experiment immediately follows. In this section and the next two sections, we describe each of these types of functions in turn. A cumulative distribution function (CDF) is a function $$F_X : I\!R → [0, 1]$$ which specifies a probability measure as, 
+In order to specify the probability measures used when dealing with random variables, it is often convenient to specify alternative functions (CDFs, PDFs, and PMFs) from which the probability measure governing an experiment immediately follows. In this section and the next two sections, we describe each of these types of functions in turn. A cumulative distribution function (CDF) is a function $$F_X : I\!R \rightarrow [0, 1]$$ which specifies a probability measure as, 
 \begin{equation}
 F_X(x) = P(X \leq x)
 \end{equation}
@@ -69,8 +69,8 @@ By using this function one can calculate the probability of any event.
 ### **Properties**:
 <!--Figure 1: A cumulative distribution function (CDF).-->
 - $$0 ≤ F_X(x) ≤ 1$$.
-- $$lim_{x→-\infty} F_X(x) = 0$$.
-- $$lim_{x→\infty} F_X(x) = 1$$.
+- $$lim_{x \rightarrow -\infty} F_X(x) = 0$$.
+- $$lim_{x \rightarrow \infty} F_X(x) = 1$$.
 - $$x \leq y ⇒ F_X(x) \leq F_X(y)$$.
 
 
@@ -78,7 +78,7 @@ By using this function one can calculate the probability of any event.
 When a random variable X takes on a finite set of possible values (i.e., X is a discrete random
 variable), a simpler way to represent the probability measure associated with a random variable is
 to directly specify the probability of each value that the random variable can assume. In particular,
-a probability mass function (PMF) is a function $$pX : \Omega → I\!R$$ such that 
+a probability mass function (PMF) is a function $$pX : \Omega \rightarrow I\!R$$ such that 
 $$p_X(x) = P(X = x)$$.
 
 In the case of discrete random variable, we use the notation V al(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.
@@ -171,13 +171,13 @@ $$E[g(X)] = \int^{\infty}_{-\infty} 1{x ∈ A}f_X(x)dx = \int_{x \in A} f_X(x)dx
 ## 2.6 Some common random variables
 
 ### Discrete random variables
-• **$$X$$ ∼ Bernoulli(p)** $$(where 0 ≤ p ≤ 1)$$: one if a coin with heads probability p comes up
-heads, zero otherwise.
-\begin{equation}
-  p(x)=\begin{cases}
-    p, & \text{if $$p = 1$$}.\\
-    1-p, & \text{if $$p = 0$$}.
-  \end{cases}\end{equation} 
+• **$$X$$ ∼ Bernoulli(p)** $$(where 0 ≤ p ≤ 1)$$: one if a coin with heads probability p comes up heads, zero otherwise. 
+    \begin{equation}
+      p(x)=\begin{cases}
+        p, & \text{if $$p = 1$$}.\\
+        1-p, & \text{if $$p = 0$$}.
+      \end{cases}
+    \end{equation} 
 • **$$X$$ ∼ Binomial(n, p)** $$(where 0 ≤ p ≤ 1)$$: the number of heads in n independent flips of a
 coin with heads probability p.
 \begin{equation}
@@ -227,8 +227,8 @@ Suppose that we have two random variables X and Y . One way to work with these t
 It can be shown that by knowing the joint cumulative distribution function, the probability of any event involving X and Y can be calculated.
 
 The joint CDF FXY (x, y) and the joint distribution functions FX(x) and FY (y) of each variable separately are related by
-\begin{equation}F_X(x) = lim_{y→\infty} F_{XY} (x, y)dy\\
-F_Y(y) = lim_{x→\infty} F_{XY} (x, y)dx
+\begin{equation}F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)dy\\
+F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)dx
 \end{equation}
 Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution functions** of $$F_{XY} (x, y)$$.
 
@@ -240,7 +240,7 @@ Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution f
 
 ## 3.2 Joint and marginal probability mass functions
 
-If X and Y are discrete random variables, then the joint probability mass function $$p_{XY} : I\!R \prod \!R →[0, 1]$$ is defined by
+If X and Y are discrete random variables, then the joint probability mass function $$p_{XY} : I\!R \prod \!R \rightarrow [0, 1]$$ is defined by
 \begin{equation}
 p_{XY}(x, y) = P(X = x, Y = y).
 \end{equation}

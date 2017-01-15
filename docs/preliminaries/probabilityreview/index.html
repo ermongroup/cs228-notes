@@ -84,12 +84,10 @@
 <ul>
   <li><strong>Sample space</strong> Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.</li>
   <li><strong>Set of events (or event space) F</strong>: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)</li>
-  <li><strong>Probability measure</strong>: A function P : F → R that satisfies the following <strong>properties</strong>,</li>
+  <li><strong>Probability measure</strong>: A function <script type="math/tex">P : F \rightarrow I\!R</script> that satisfies the following <strong>properties</strong></li>
   <li>
     <ul>
-      <li>
-        <script type="math/tex; mode=display">P(A) \geq 0, for all A \in F</script>
-      </li>
+      <li><script type="math/tex">P(A) \geq 0</script>, for all <script type="math/tex">A \in F</script></li>
     </ul>
   </li>
   <li>
@@ -136,7 +134,7 @@ tails. For example, we might have <script type="math/tex">w_0 = \langle H, H, T,
 appear among our 10 tosses, or the length of the longest run of tails. These functions, under some
 technical conditions, are known as <strong>random variables</strong>.</p>
 
-<p>More formally, a random variable <script type="math/tex">X</script> is a function <script type="math/tex">X : \Omega → I\!R</script>. Typically, we will denote random
+<p>More formally, a random variable <script type="math/tex">X</script> is a function <script type="math/tex">X : \Omega \rightarrow I\!R</script>. Typically, we will denote random
 variables using upper case letters <script type="math/tex">X(\omega)</script> or more simply <script type="math/tex">X</script> (where the dependence on the random
 outcome <script type="math/tex">\omega</script> is implied). We will denote the value that a random variable may take on using lower
 case letters <script type="math/tex">x</script>.</p>
@@ -154,7 +152,7 @@ two real constants a and b (where a &lt; b) as <script type="math/tex">P(a \leq 
 
 <h2 id="21-cumulative-distribution-functions">2.1 Cumulative distribution functions</h2>
 
-<p>In order to specify the probability measures used when dealing with random variables, it is often convenient to specify alternative functions (CDFs, PDFs, and PMFs) from which the probability measure governing an experiment immediately follows. In this section and the next two sections, we describe each of these types of functions in turn. A cumulative distribution function (CDF) is a function <script type="math/tex">F_X : I\!R → [0, 1]</script> which specifies a probability measure as, 
+<p>In order to specify the probability measures used when dealing with random variables, it is often convenient to specify alternative functions (CDFs, PDFs, and PMFs) from which the probability measure governing an experiment immediately follows. In this section and the next two sections, we describe each of these types of functions in turn. A cumulative distribution function (CDF) is a function <script type="math/tex">F_X : I\!R \rightarrow [0, 1]</script> which specifies a probability measure as, 
 \begin{equation}
 F_X(x) = P(X \leq x)
 \end{equation}
@@ -164,8 +162,8 @@ By using this function one can calculate the probability of any event.</p>
 <!--Figure 1: A cumulative distribution function (CDF).-->
 <ul>
   <li><script type="math/tex">0 ≤ F_X(x) ≤ 1</script>.</li>
-  <li><script type="math/tex">lim_{x→-\infty} F_X(x) = 0</script>.</li>
-  <li><script type="math/tex">lim_{x→\infty} F_X(x) = 1</script>.</li>
+  <li><script type="math/tex">lim_{x \rightarrow -\infty} F_X(x) = 0</script>.</li>
+  <li><script type="math/tex">lim_{x \rightarrow \infty} F_X(x) = 1</script>.</li>
   <li><script type="math/tex">x \leq y ⇒ F_X(x) \leq F_X(y)</script>.</li>
 </ul>
 
@@ -173,7 +171,7 @@ By using this function one can calculate the probability of any event.</p>
 <p>When a random variable X takes on a finite set of possible values (i.e., X is a discrete random
 variable), a simpler way to represent the probability measure associated with a random variable is
 to directly specify the probability of each value that the random variable can assume. In particular,
-a probability mass function (PMF) is a function <script type="math/tex">pX : \Omega → I\!R</script> such that 
+a probability mass function (PMF) is a function <script type="math/tex">pX : \Omega \rightarrow I\!R</script> such that 
 <script type="math/tex">p_X(x) = P(X = x)</script>.</p>
 
 <p>In the case of discrete random variable, we use the notation V al(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.</p>
@@ -273,13 +271,13 @@ constant with respect to the outer expectation.</p>
 <h2 id="26-some-common-random-variables">2.6 Some common random variables</h2>
 
 <h3 id="discrete-random-variables">Discrete random variables</h3>
-<p>• <strong><script type="math/tex">X</script> ∼ Bernoulli(p)</strong> <script type="math/tex">(where 0 ≤ p ≤ 1)</script>: one if a coin with heads probability p comes up
-heads, zero otherwise.
-\begin{equation}
-  p(x)=\begin{cases}
-    p, &amp; \text{if <script type="math/tex">p = 1</script>}.<br />
-    1-p, &amp; \text{if <script type="math/tex">p = 0</script>}.
-  \end{cases}\end{equation} 
+<p>• <strong><script type="math/tex">X</script> ∼ Bernoulli(p)</strong> <script type="math/tex">(where 0 ≤ p ≤ 1)</script>: one if a coin with heads probability p comes up heads, zero otherwise. 
+    \begin{equation}
+      p(x)=\begin{cases}
+        p, &amp; \text{if <script type="math/tex">p = 1</script>}.<br />
+        1-p, &amp; \text{if <script type="math/tex">p = 0</script>}.
+      \end{cases}
+    \end{equation} 
 • <strong><script type="math/tex">X</script> ∼ Binomial(n, p)</strong> <script type="math/tex">(where 0 ≤ p ≤ 1)</script>: the number of heads in n independent flips of a
 coin with heads probability p.
 \begin{equation}
@@ -329,8 +327,8 @@ The shape of the PDFs and CDFs of some of these random variables are shown in Fi
 <p>It can be shown that by knowing the joint cumulative distribution function, the probability of any event involving X and Y can be calculated.</p>
 
 <p>The joint CDF FXY (x, y) and the joint distribution functions FX(x) and FY (y) of each variable separately are related by
-\begin{equation}F_X(x) = lim_{y→\infty} F_{XY} (x, y)dy<br />
-F_Y(y) = lim_{x→\infty} F_{XY} (x, y)dx
+\begin{equation}F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)dy<br />
+F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)dx
 \end{equation}
 Here, we call <script type="math/tex">F_X(x)</script> and <script type="math/tex">F_Y(y)</script> the <strong>marginal cumulative distribution functions</strong> of <script type="math/tex">F_{XY} (x, y)</script>.</p>
 
@@ -344,7 +342,7 @@ Here, we call <script type="math/tex">F_X(x)</script> and <script type="math/tex
 
 <h2 id="32-joint-and-marginal-probability-mass-functions">3.2 Joint and marginal probability mass functions</h2>
 
-<p>If X and Y are discrete random variables, then the joint probability mass function <script type="math/tex">p_{XY} : I\!R \prod \!R →[0, 1]</script> is defined by
+<p>If X and Y are discrete random variables, then the joint probability mass function <script type="math/tex">p_{XY} : I\!R \prod \!R \rightarrow [0, 1]</script> is defined by
 \begin{equation}
 p_{XY}(x, y) = P(X = x, Y = y).
 \end{equation}
