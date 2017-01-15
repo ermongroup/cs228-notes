@@ -181,10 +181,12 @@ E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) 
 ## 2.6 Some common random variables
 
 ### Discrete random variables
-• **$$X$$ ∼ Bernoulli(p)** $$(where 0 \leq p \leq 1)$$: one if a coin with heads probability p comes up heads, zero otherwise. {% math %} p(x)=\begin{cases}
+• **$$X$$ ∼ Bernoulli(p)** (where 0 \leq p \leq 1): one if a coin with heads probability p comes up heads, zero otherwise. \begin{equation} p(x)=\begin{cases}
 p, & \text{if $$p = 1$$}.\\
 1-p, & \text{if $$p = 0$$}.
-\end{cases}{% endmath %}
+\end{cases}
+\end{equation}
+
 • **$$X$$ ∼ Binomial(n, p)** $$(where 0 \leq  p \leq  1)$$: the number of heads in n independent flips of a
 coin with heads probability p.
 \begin{equation}
