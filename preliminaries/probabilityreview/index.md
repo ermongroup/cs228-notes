@@ -107,7 +107,7 @@ $$P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x$$.
 Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point $$x$$ is not the probability of that event, i.e., $$f_X(x) \neq P(X = x)$$. For example, $$f_X(x)$$ can take on values larger than one (but the integral of fX(x) over any subset of R will be at most one).
 
 ### **Properties**:
-- $$f_X(x) \geq 0$$
+- $$f_X(x) \geq 0$$.
 - $$\int^{\infty}_{-\infty} f_X(x) = 1$$.
 - $$\int_{x \in A} f_X(x) dx = P(X \in A)$$.
 
