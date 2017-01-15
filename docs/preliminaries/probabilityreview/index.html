@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Probability Review</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/preliminaries/probabilityreview/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/ermongroup/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Probability review</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>We will go through a review of probability concepts over here, all of review the material have been adapted from <a href="http://cs229.stanford.edu/section/cs229-prob.pdf">CS229 Probability Notes</a>.</p>
+
+<h1 id="1-elements-of-probability">1. Elements of probability</h1>
+<p>In order to define a probability on a set we need a few basic elements,</p>
+
+<p><strong>Sample space</strong> Ω: The set of all the outcomes of a random experiment. Here, each outcome ω  \in  Ω can be thought of as a complete description of the state of the real world at the end of the experiment.</p>
+
+<p><strong>Set of events (or event space) F</strong>: A set whose elements A  \in  F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)</p>
+
+<p><strong>Probability measure</strong>: A function <script type="math/tex">P : F \rightarrow I\!R</script> that satisfies the following <strong>properties</strong></p>
+<ul>
+  <li><script type="math/tex">P(A) \geq 0</script>, for all <script type="math/tex">A \in F</script></li>
+  <li>If <script type="math/tex">A_1</script>, <script type="math/tex">A_2</script>, . . . are disjoint events <script type="math/tex">(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)</script>, then <script type="math/tex">P(∪_iA_i) = \sum_i P(A_i)</script></li>
+  <li><script type="math/tex">P(\Omega) = 1</script>.</li>
+</ul>
+
+<p>These three <strong>properties</strong> are called the <strong>Axioms of Probability</strong>.</p>
+
+<p><strong>Example</strong>: Consider the event of tossing a six-sided die. The sample space is Ω = {1, 2, 3, 4, 5, 6}. We can define different event spaces on this sample space. For example, the simplest event space is the trivial event space F = {∅, Ω}. Another event space is the set of all subsets of Ω. For the first event space, the unique probability measure satisfying the requirements above is given by P(∅) = 0, P(Ω) = 1. For the second event space, one valid probability measure is to assign the probability of each set in the event space to be <script type="math/tex">\frac{i}{6}</script> where <script type="math/tex">i</script> is the number of elements of that set; for example, <script type="math/tex">P({1, 2, 3, 4}) = \frac{4}{6}</script> and <script type="math/tex">P({1, 2, 3}) = \frac{3}{6}</script>.</p>
+
+<h3 id="properties"><strong>Properties</strong>:</h3>
+<ul>
+  <li>If A ⊆ B ⇒ P(A) \leq  P(B).</li>
+  <li><script type="math/tex">P(A \cap B) \leq min(P(A), P(B))</script>.</li>
+  <li><strong>Union Bound</strong> P(A ∪ B) \leq  P(A) + P(B).</li>
+  <li>P(Ω \ A) = 1 − P(A).</li>
+  <li><strong>Law of Total Probability</strong> If <script type="math/tex">A_1, . . . , A_k</script> are a set of disjoint events such that <script type="math/tex">\bigcup^k_{i=1} A_i = \Omega</script> then <script type="math/tex">\sum^k_{i=1} P(A_k) = 1.</script></li>
+</ul>
+
+<h2 id="11-conditional-probability-and-independence">1.1 Conditional probability and independence</h2>
+
+<p>Let B be an event with non-zero probability. The conditional probability of any event A given B is defined as
+<script type="math/tex">P(A \mid B) = \frac {P(A \cap B)}{P(B)}</script>
+In other words, <script type="math/tex">P(A \mid B)</script> is the probability measure of the event A after observing the occurrence of
+event B. Two events are called independent if and only if <script type="math/tex">P(A \cap B) = P(A)P(B)</script> (or equivalently,
+<script type="math/tex">P(A \mid B) = P(A)</script>). Therefore, independence is equivalent to saying that observing B does not have
+any effect on the probability of A.</p>
+
+<h1 id="2-random-variables">2. Random variables</h1>
+
+<p>Consider an experiment in which we flip 10 coins, and we want to know the number of coins that
+come up heads. Here, the elements of the sample space Ω are 10-length sequences of heads and
+tails. For example, we might have <script type="math/tex">w_0 = \langle H, H, T, H, T, H, H, T, T, T \rangle \in Omega</script>. However, in practice, we usually do not care about the probability of obtaining any particular sequence of heads and tails. Instead we usually care about real-valued functions of outcomes, such as the number of heads that
+appear among our 10 tosses, or the length of the longest run of tails. These functions, under some
+technical conditions, are known as <strong>random variables</strong>.</p>
+
+<p>More formally, a random variable <script type="math/tex">X</script> is a function <script type="math/tex">X : \Omega \rightarrow I\!R</script>. Typically, we will denote random
+variables using upper case letters <script type="math/tex">X(\omega)</script> or more simply <script type="math/tex">X</script> (where the dependence on the random
+outcome <script type="math/tex">\omega</script> is implied). We will denote the value that a random variable may take on using lower
+case letters <script type="math/tex">x</script>.</p>
+
+<p><strong>Example</strong>: In our experiment above, suppose that <script type="math/tex">X(\omega)</script> is the number of heads which occur in the
+sequence of tosses ω. Given that only 10 coins are tossed, <script type="math/tex">X(\omega)</script> can take only a finite number of
+values, so it is known as a discrete random variable. Here, the probability of the set associated
+with a random variable X taking on some specific value <script type="math/tex">k</script> is
+    <script type="math/tex">P(X = k) := P({\omega : X(\omega) = k})</script>.</p>
+
+<p><strong>Example</strong>: Suppose that <script type="math/tex">X(\omega)</script> is a random variable indicating the amount of time it takes for a
+radioactive particle to decay. In this case, <script type="math/tex">X(\omega)</script> takes on a infinite number of possible values, so it is
+called a continuous random variable. We denote the probability that X takes on a value between
+two real constants a and b (where a &lt; b) as <script type="math/tex">P(a \leq X \leq b) := P({\omega : a \leq X(\omega) \leq b})</script>.</p>
+
+<h2 id="21-cumulative-distribution-functions">2.1 Cumulative distribution functions</h2>
+
+<p>In order to specify the probability measures used when dealing with random variables, it is often convenient to specify alternative functions (CDFs, PDFs, and PMFs) from which the probability measure governing an experiment immediately follows. In this section and the next two sections, we describe each of these types of functions in turn. A cumulative distribution function (CDF) is a function <script type="math/tex">F_X : I\!R \rightarrow [0, 1]</script> which specifies a probability measure as, 
+\begin{equation}
+F_X(x) = P(X \leq x)
+\end{equation}
+By using this function one can calculate the probability of any event.</p>
+
+<h3 id="properties-1"><strong>Properties</strong>:</h3>
+<!--Figure 1: A cumulative distribution function (CDF).-->
+<ul>
+  <li><script type="math/tex">0 \leq  F_X(x) \leq  1</script>.</li>
+  <li><script type="math/tex">lim_{x \rightarrow -\infty} F_X(x) = 0</script>.</li>
+  <li><script type="math/tex">lim_{x \rightarrow \infty} F_X(x) = 1</script>.</li>
+  <li><script type="math/tex">x \leq y ⇒ F_X(x) \leq F_X(y)</script>.</li>
+</ul>
+
+<h2 id="22-probability-mass-functions">2.2 Probability mass functions</h2>
+<p>When a random variable X takes on a finite set of possible values (i.e., X is a discrete random
+variable), a simpler way to represent the probability measure associated with a random variable is
+to directly specify the probability of each value that the random variable can assume. In particular,
+a probability mass function (PMF) is a function <script type="math/tex">pX : \Omega \rightarrow I\!R</script> such that 
+<script type="math/tex">p_X(x) = P(X = x)</script>.</p>
+
+<p>In the case of discrete random variable, we use the notation V al(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.</p>
+
+<h3 id="properties-2"><strong>Properties</strong>:</h3>
+<ul>
+  <li><script type="math/tex">0 \leq p_X(x) \leq 1</script>.</li>
+  <li><script type="math/tex">\sum_{x \in Val(X)} p_X(x) = 1</script>.</li>
+  <li><script type="math/tex">\sum{x \in A} p_X(x) = P(X \in A)</script>.</li>
+</ul>
+
+<h2 id="23-probability-density-functions">2.3 Probability density functions</h2>
+<p>For some continuous random variables, the cumulative distribution function FX(x) is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,</p>
+
+<p>\begin{equation}
+f_X(x)  = \frac{dF_X(x)}{dx}.
+\end{equation}</p>
+
+<p>Note here, that the PDF for a continuous random variable may not always exist (i.e., if FX(x) is not differentiable everywhere).</p>
+
+<p>According to the <strong>properties</strong> of differentiation, for very small ∆x,</p>
+
+<p><script type="math/tex">P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x</script>.</p>
+
+<p>Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point <script type="math/tex">x</script> is not the probability of that event, i.e., <script type="math/tex">f_X(x) \neq P(X = x)</script>. For example, <script type="math/tex">f_X(x)</script> can take on values larger than one (but the integral of fX(x) over any subset of R will be at most one).</p>
+
+<h3 id="properties-3"><strong>Properties</strong>:</h3>
+<ul>
+  <li><script type="math/tex">f_X(x) \geq 0</script>.</li>
+  <li><script type="math/tex">\int^{\infty}_{-\infty} f_X(x) = 1</script>.</li>
+  <li><script type="math/tex">\int_{x \in A} f_X(x) dx = P(X \in A)</script>.</li>
+</ul>
+
+<h2 id="24-expectation">2.4 Expectation</h2>
+
+<p>Suppose that <script type="math/tex">X</script> is a discrete random variable with <strong>PMF</strong> <script type="math/tex">p_X(x)</script> and <script type="math/tex">g : I\!R \rightarrow I\!R</script> is an arbitrary function. In this case, <script type="math/tex">g(X)</script> can be considered a random variable, and we define the expectation or expected value of <script type="math/tex">g(X)</script> as:</p>
+
+<p>\begin{equation}
+E[g(X)] = \sum_{x \in Val(X)} g(x)p_X(x).
+\end{equation}</p>
+
+<p>If X is a continuous random variable with PDF <script type="math/tex">f_X(x)</script>, then the expected value of g(X) is defined as,</p>
+
+<p>\begin{equation}
+E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx
+\end{equation}.</p>
+
+<p>Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by <script type="math/tex">p_X(x)</script> or <script type="math/tex">f_X(x)</script>. As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.</p>
+
+<h3 id="properties-4"><strong>Properties</strong>:</h3>
+<ul>
+  <li><script type="math/tex">E[a] = a</script> for any constant <script type="math/tex">a \in I\!R</script>.</li>
+  <li><script type="math/tex">E[af(X)] = aE[f(X)]</script> for any constant <script type="math/tex">a \in I\!R</script>.</li>
+  <li>(Linearity of Expectation) <script type="math/tex">E[f(X) + g(X)] = E[f(X)] + E[g(X)]</script>.</li>
+  <li>For a discrete random variable <script type="math/tex">X</script>, <script type="math/tex">E[1\{X = k\}] = P(X = k)</script>.</li>
+</ul>
+
+<h2 id="25-variance">2.5 Variance</h2>
+
+<p>The variance of a random variable X is a measure of how concentrated the distribution of a random variable X is around its mean. Formally, the variance of a random variable X is defined as <script type="math/tex">Var[X] = E[(X − E(X))^2]</script></p>
+
+<p>Using the <strong>properties</strong> in the previous section, we can derive an alternate expression for the variance:</p>
+
+<p>\begin{equation}
+E[(X − E[X])^2] <br />
+= E[X^2 − 2E[X]X + E[X]^2] <br />
+= E[X^2] − 2E[X]E[X] + E[X]^2 <br />
+= E[X^2] − E[X]^2
+\end{equation}</p>
+
+<p>where the second equality follows from linearity of expectations and the fact that <script type="math/tex">E[X]</script> is actually a
+constant with respect to the outer expectation.</p>
+
+<h3 id="properties-5"><strong>Properties</strong>:</h3>
+<ul>
+  <li><script type="math/tex">Var[a] = 0</script> for any constant <script type="math/tex">a \in I\!R</script>.</li>
+  <li><script type="math/tex">Var[af(X)] = a^2 Var[f(X)]</script> for any constant <script type="math/tex">a \in I\!R</script>.</li>
+</ul>
+
+<p><strong>Example</strong> Calculate the mean and the variance of the uniform random variable X with PDF <script type="math/tex">f_X(x) = 1, ∀x  \in  [0, 1], 0</script> elsewhere.</p>
+
+<script type="math/tex; mode=display">E[X] = \int^{\infty}_{-\infty} x f_x(x) dx = \int^1_0 x dx = \frac{1}{2}</script>
+
+<script type="math/tex; mode=display">E[X^2] = \int^{\infty}_{-\infty} x^2 f_X(x)dx = \int^1_0 x^2 dx = \frac{1}{3}</script>
+
+<script type="math/tex; mode=display">Var[X] = E[X^2] - E[X]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}</script>
+
+<p><strong>Example</strong> : Suppose that <script type="math/tex">g(x) = 1{x \in A}</script> for some subset <script type="math/tex">A ⊆ \Omega</script>. What is <script type="math/tex">E[g(X)]</script>?</p>
+
+<h3 id="discrete-case"><strong>Discrete case</strong>:</h3>
+
+<p>\begin{equation}
+E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x \in A)
+\end{equation}</p>
+
+<h3 id="continuous-case"><strong>Continuous case</strong>:</h3>
+<div class="mathblock"><script type="math/tex; mode=display">
+E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(x \in A)
+</script></div>
+
+<h2 id="26-some-common-random-variables">2.6 Some common random variables</h2>
+
+<h3 id="discrete-random-variables">Discrete random variables</h3>
+<p>• <strong><script type="math/tex">X</script> ∼ Bernoulli(p)</strong> (where 0 \leq p \leq 1): one if a coin with heads probability p comes up heads, zero otherwise.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x)=\begin{cases}
+p, & \text{if $$p = 1$$}. 
+1-p, & \text{if $$p = 0$$}.
+\end{cases}
+</script></div>
+
+<p>• <strong><script type="math/tex">X</script> ∼ Binomial(n, p)</strong> <script type="math/tex">(where 0 \leq  p \leq  1)</script>: the number of heads in n independent flips of a
+coin with heads probability p.
+\begin{equation}
+p(x) = \binom{n}{x} \cdot p^x q^{n-x}
+\end{equation}
+• <strong><script type="math/tex">X</script> ∼ Geometric(p)</strong> <script type="math/tex">(where p > 0)</script>: the number of flips of a coin with heads probability p
+until the first heads.
+\begin{equation} p(x) = p(1 − p)^{x-1}
+\end{equation}
+• <strong><script type="math/tex">X</script> ∼ Poisson(λ)</strong> (where λ &gt; 0): a probability distribution over the nonnegative integers
+used for modeling the frequency of rare events.
+\begin{equation} 
+p(x) = e^{\lambda} \frac{\lambda^x}{x!}
+\end{equation}</p>
+
+<h3 id="continuous-random-variables">Continuous random variables</h3>
+
+<p>• <strong><script type="math/tex">X</script> ∼ Uniform(a, b)</strong> (where <script type="math/tex">% <![CDATA[
+a < b %]]></script>): equal probability density to every value between a and b on the real line. 
+\begin{equation}
+f(x)=\begin{cases}  <br />
+\frac{1}{b-a}, &amp; \text{if <script type="math/tex">a \leq b</script>}.<br />
+0, &amp; \text{otherwise}.
+\end{cases}
+\end{equation}</p>
+
+<p>• <strong><script type="math/tex">X</script> ∼ Exponential(λ)</strong> (where λ &gt; 0): decaying probability density over the nonnegative reals.
+\begin{equation}
+  f(x)=\begin{cases}
+    \lambda e^{-\lambda x}, &amp; \text{if <script type="math/tex">x \geq 0</script>}.<br />
+    0, &amp; \text{otherwise}.
+  \end{cases}
+\end{equation}</p>
+
+<p>• <strong><script type="math/tex">X</script> ∼ Normal(<script type="math/tex">\mu</script>, <script type="math/tex">\sigma^2</script>)</strong>: also known as the Gaussian distribution
+\begin{equation}
+\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2\sigma^2}(x-\mu)^2}
+\end{equation}</p>
+
+<h2 id="31-joint-and-marginal-distributions">3.1 Joint and marginal distributions</h2>
+
+<p>Suppose that we have two random variables X and Y . One way to work with these two random variables is to consider each of them separately. If we do that we will only need <script type="math/tex">F_X(x)</script> and <script type="math/tex">F_Y (y)</script>. But if we want to know about the values that X and Y assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of X and Y , defined by 
+\begin{equation}F_{XY} (x, y) = P(X \leq  x, Y \leq  y)\end{equation}</p>
+
+<p>It can be shown that by knowing the joint cumulative distribution function, the probability of any event involving X and Y can be calculated.</p>
+
+<p>The joint CDF FXY (x, y) and the joint distribution functions FX(x) and FY (y) of each variable separately are related by
+\begin{equation}F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)dy<br />
+F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)dx
+\end{equation}
+Here, we call <script type="math/tex">F_X(x)</script> and <script type="math/tex">F_Y(y)</script> the <strong>marginal cumulative distribution functions</strong> of <script type="math/tex">F_{XY} (x, y)</script>.</p>
+
+<h3 id="properties-6"><strong>Properties</strong>:</h3>
+<ul>
+  <li><script type="math/tex">0 \leq F_{XY} (x, y) \leq 1</script>.</li>
+  <li><script type="math/tex">lim_{x,y\rightarrow \infty} F_{XY} (x, y) = 1</script>.</li>
+  <li><script type="math/tex">lim_{x,y\rightarrow -\infty} F_{XY} (x, y) = 0</script>.</li>
+  <li><script type="math/tex">F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)</script>.</li>
+</ul>
+
+<h2 id="32-joint-and-marginal-probability-mass-functions">3.2 Joint and marginal probability mass functions</h2>
+
+<p>If X and Y are discrete random variables, then the joint probability mass function <script type="math/tex">p_{XY} : I\!R \prod \!R \rightarrow [0, 1]</script> is defined by
+\begin{equation}
+p_{XY}(x, y) = P(X = x, Y = y).
+\end{equation}
+Here, <script type="math/tex">0 \leq P_{XY}(x, y) \leq 1</script> for all <script type="math/tex">x, y,</script> and 
+<script type="math/tex">\sum_{x \in Val(X)} \sum_{y \in Val(Y)} P_{XY}(x, y) = 1</script>.</p>
+
+<p>How does the joint PMF over two variables relate to the probability mass function for each variable
+separately? It turns out that
+\begin{equation}
+p_X(x) = \sum_y p_{XY} (x, y).
+\end{equation}
+and similarly for <script type="math/tex">p_Y (y)</script>. In this case, we refer to <script type="math/tex">p_X(x)</script> as the <strong>marginal probability mass function</strong>
+of X. In statistics, the process of forming the marginal distribution with respect to one variable by
+summing out the other variable is often known as “marginalization.”</p>
+
+<h2 id="33-joint-and-marginal-probability-density-functions">3.3 Joint and marginal probability density functions</h2>
+
+<p>Let X and Y be two continuous random variables with joint distribution function <script type="math/tex">F_{XY}</script> . In the case that <script type="math/tex">F_{XY}(x, y)</script> is everywhere differentiable in both x and y, then we can define the joint probability density function,</p>
+
+<p>\begin{equation}
+f_{XY}(x, y) = \frac{∂2F_{XY}(x, y)}{∂x∂y}
+\end{equation}</p>
+
+<p>Like in the single-dimensional case, <script type="math/tex">f_{XY} (x, y) \neq P(X = x, Y = y)</script>, but rather
+\begin{equation}
+\int \int_{x \in A} f_{XY} (x, y)dx dy = P((X, Y ) \in A).
+\end{equation}
+Note that the values of the probability density function f_{XY}(x, y) are always nonnegative, but they
+may be greater than 1. Nonetheless, it must be the case that <script type="math/tex">\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1</script></p>
+
+<p>Analagous to the discrete case, we define
+\begin{equation}
+f_X(x) = \int^{\infty}<em>{-\infty} f</em>{XY} (x, y)dy
+\end{equation}
+as the <strong>marginal probability density function</strong> (or <strong>marginal density</strong>) of X, and similarly for <script type="math/tex">f_Y (y)</script>.</p>
+
+<h2 id="34-conditional-distributions">3.4 Conditional distributions</h2>
+
+<p>Conditional distributions seek to answer the question, what is the probability distribution over Y, when we know that X must take on a certain value x? In the discrete case, the conditional probability mass function of X given Y is simply 
+\begin{equation}
+p_{Y \mid X} (y \mid x) = \frac{p_{XY}(x, y)}{p_X(x)},
+\end{equation}
+assuming that <script type="math/tex">p_X(x) \neq 0</script>.</p>
+
+<p>In the continuous case, the situation is technically a little more complicated because the probability that a continuous random variable X takes on a specific value x is equal to zero. Ignoring this
+technical point, we simply define, by analogy to the discrete case, the <em>conditional probability density</em> of Y given X = x to be
+\begin{equation}
+f_{Y \mid X}(y \mid x) = \frac{f_{XY} (x, y)}{f_X(x)}
+\end{equation}
+provided <script type="math/tex">f_X(x) \neq 0</script>.</p>
+
+<h2 id="35-bayess-rule">3.5 Bayes’s rule</h2>
+
+<p>A useful formula that often arises when trying to derive expression for the conditional probability of
+one variable given another, is <strong>Bayes’s rule</strong>.</p>
+
+<p>In the case of discrete random variables X and Y ,
+\begin{equation}
+P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y’ \in Val(Y) P_{X \mid Y} (x \mid y’) P_Y(y’)}}
+\end{equation}</p>
+
+<p>If the random variables X and Y are continuous,
+\begin{equation}
+f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}<em>{- \infty} f</em>{X\mid Y} (x \mid y’) f_Y (y’) dy’}
+\end{equation}</p>
+
+<h2 id="36-independence">3.6 Independence</h2>
+<p>Two random variables X and Y are independent if <script type="math/tex">F_{XY} (x, y) = F_X(x)F_Y(y)</script> for all values of x and y. Equivalently,</p>
+<ul>
+  <li>For discrete random variables, <script type="math/tex">p_{XY} (x, y) = p_X(x)p_Y(y)</script> for all <script type="math/tex">x \in Val(X)</script>, <script type="math/tex">y \in Val(Y)</script>.</li>
+  <li>For discrete random variables, <script type="math/tex">p_{Y\mid X}(y \mid x) = p_Y(y)</script> whenever <script type="math/tex">p_X(x) \neq 0</script> for all <script type="math/tex">y \in Val(Y)</script>.</li>
+  <li>For continuous random variables, <script type="math/tex">f_{XY} (x, y) = f_X(x)f_Y(y)</script> for all <script type="math/tex">x, y \in R</script>.</li>
+  <li>For continuous random variables, <script type="math/tex">f_{Y\mid X}(y \mid x) = f_Y(y)</script> whenever <script type="math/tex">f_X(x) \neq 0</script> for all <script type="math/tex">y \in R</script>.</li>
+</ul>
+
+<p>Informally, two random variables <script type="math/tex">X</script> and <script type="math/tex">Y</script> are independent if “knowing” the value of one variable will never have any effect on the conditional probability distribution of the other variable, that is, you know all the information about the pair <script type="math/tex">(X, Y)</script> by just knowing <script type="math/tex">f(x)</script> and <script type="math/tex">f(y)</script>. The following lemma formalizes this observation:</p>
+
+<p><strong>Lemma 3.1.</strong> If <script type="math/tex">X</script> and <script type="math/tex">Y</script> are independent then for any subsets <script type="math/tex">A, B ⊆ I\!R</script>, we have,
+\begin{equation}
+P(X \in A, Y \in B) = P(X \in A)P(Y \in B)
+\end{equation}
+By using the above lemma one can prove that if <script type="math/tex">X</script> is independent of <script type="math/tex">Y</script> then any function of X is independent of any function of Y.</p>
+
+<h2 id="37-expectation-and-covariance">3.7 Expectation and covariance</h2>
+
+<p>Suppose that we have two discrete random variables <script type="math/tex">X, Y</script> and <script type="math/tex">g : {I\!R}^2 \rightarrow I\!R</script> is a function of these two random variables. Then the expected value of g is defined in the following way, 
+\begin{equation}
+E[g(X,Y)] = \sum_{x \in Val(X)} \sum_{y \in Val(Y)} g(x, y)p_{XY}(x, y).
+\end{equation}</p>
+
+<p>For continuous random variables X, Y , the analogous expression is
+\begin{equation}
+E[g(X, Y)] = \int^{\infty}<em>{-\infty} \int^{\infty}</em>{-\infty} g(x, y)f_{XY}(x, y)dxdy.
+\end{equation}</p>
+
+<p>We can use the concept of expectation to study the relationship of two random variables with each other. In particular, the covariance of two random variables X and Y is defined as
+\begin {equation}
+Cov[X, Y] = E[(X − E[X])(Y − E[Y])]
+\end{equation}</p>
+
+<p>Using an argument similar to that for variance, we can rewrite this as,
+\begin{equation}
+Cov[X, Y] = E[(X − E[X])(Y − E[Y])] <br />
+= E[XY − XE[Y] − Y E[X] + E[X]E[Y]] <br />
+= E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y]] <br />
+= E[XY] − E[X]E[Y].
+\end{equation}</p>
+
+<p>Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that <script type="math/tex">E[X]</script> and <script type="math/tex">E[Y]</script> are actually constants which can be pulled out of the expectation. When <script type="math/tex">Cov[X, Y] = 0</script>, we say that <script type="math/tex">X</script> and <script type="math/tex">Y</script> are uncorrelated.</p>
+
+<h3 id="properties-7"><strong>Properties</strong>:</h3>
+<ul>
+  <li>(Linearity of expectation) E[f(X, Y) + g(X, Y)] = E[f(X, Y)] + E[g(X, Y)].</li>
+  <li><script type="math/tex">Var[X + Y] = Var[X] + Var[Y] + 2Cov[X, Y]</script>.</li>
+  <li>If <script type="math/tex">X</script> and <script type="math/tex">Y</script> are independent, then <script type="math/tex">Cov[X, Y] = 0</script>.</li>
+  <li>If <script type="math/tex">X</script> and <script type="math/tex">Y</script> are independent, then <script type="math/tex">E[f(X)g(Y)] = E[f(X)]E[g(Y)]</script>.</li>
+</ul>
+
+
+
+
+    </article>
+    <span class="print-footer">Probability Review - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2017 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2017</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
