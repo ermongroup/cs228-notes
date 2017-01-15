@@ -18,7 +18,7 @@ These three properties are called the **Axioms of Probability**.
 
 **Example**: Consider the event of tossing a six-sided die. The sample space is Ω = {1, 2, 3, 4, 5, 6}. We can define different event spaces on this sample space. For example, the simplest event space is the trivial event space F = {∅, Ω}. Another event space is the set of all subsets of Ω. For the first event space, the unique probability measure satisfying the requirements above is given by P(∅) = 0, P(Ω) = 1. For the second event space, one valid probability measure is to assign the probability of each set in the event space to be $$\frac{i}{6}$$ where $$i$$ is the number of elements of that set; for example, $$P({1, 2, 3, 4}) = \frac{4}{6}$$ and $$P({1, 2, 3}) = \frac{3}{6}$$.
 
-#### Properties:
+## Properties:
 - If A ⊆ B ⇒ P(A) ≤ P(B).
 - $$P(A \cap B) \leq min(P(A), P(B))$$.
 - (Union Bound) P(A ∪ B) ≤ P(A) + P(B).
@@ -60,7 +60,7 @@ radioactive particle to decay. In this case, $$X(\omega)$$ takes on a infinite n
 called a continuous random variable. We denote the probability that X takes on a value between
 two real constants a and b (where a < b) as $$P(a \leq X \leq b) := P({\omega : a \leq X(\omega) \leq b})$$.
 
-#### 2.1 Cumulative distribution functions
+## 2.1 Cumulative distribution functions
 
 In order to specify the probability measures used when dealing with random variables, it is often convenient to specify alternative functions (CDFs, PDFs, and PMFs) from which the probability measure governing an experiment immediately follows. In this section and the next two sections, we describe each of these types of functions in turn. A cumulative distribution function (CDF) is a function $$F_X : I\!R → [0, 1]$$ which specifies a probability measure as, 
 \begin{equation}
@@ -68,7 +68,7 @@ F_X(x) = P(X \leq x)
 \end{equation}
 By using this function one can calculate the probability of any event.
 
-##### Properties:
+## Properties:
 <!--Figure 1: A cumulative distribution function (CDF).-->
 - $$0 ≤ F_X(x) ≤ 1$$.
 - $$lim_{x→-\infty} F_X(x) = 0$$.
@@ -76,7 +76,7 @@ By using this function one can calculate the probability of any event.
 - $$x \leq y ⇒ F_X(x) \leq F_X(y)$$.
 
 
-#### 2.2 Probability mass functions
+## 2.2 Probability mass functions
 When a random variable X takes on a finite set of possible values (i.e., X is a discrete random
 variable), a simpler way to represent the probability measure associated with a random variable is
 to directly specify the probability of each value that the random variable can assume. In particular,
@@ -85,12 +85,12 @@ $$p_X(x) = P(X = x)$$.
 
 In the case of discrete random variable, we use the notation V al(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.
 
-##### Properties:
+## Properties:
 - $$0 ≤ p_X(x) ≤ 1$$.
 - $$\sum_{x∈Val(X)} p_X(x) = 1$$.
 - $$\sum{x∈A} p_X(x) = P(X \in A)$$.
 
-#### 2.3 Probability density functions
+## 2.3 Probability density functions
 For some continuous random variables, the cumulative distribution function FX(x) is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,
 
 $$f_X(x)  = \frac{dF_X(x)}{dx}$$.
@@ -103,13 +103,13 @@ $$P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x$$.
 
 Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point $$x$$ is not the probability of that event, i.e., $$f_X(x) \neq P(X = x)$$. For example, $$f_X(x)$$ can take on values larger than one (but the integral of fX(x) over any subset of R will be at most one).
 
-##### Properties:
+### Properties:
 - $$f_X(x) \geq 0$$
 - $$\int^{\infty}_{-\infty} f_X(x) = 1$$.
 - $$\int_{x \in A} f_X(x) dx = P(X \in A)$$.
 
 
-#### 2.4 Expectation
+## 2.4 Expectation
 
 Suppose that $$X$$ is a discrete random variable with **PMF** $$p_X(x)$$ and $$g : I\!R \rightarrow I\!R$$ is an arbitrary function. In this case, $$g(X)$$ can be considered a random variable, and we define the expectation or expected value of $$g(X)$$ as:
 
@@ -121,14 +121,14 @@ $$E[g(X)] = \int^{\infty}_{-\infty} g(x)fX(x)dx.$$
 
 Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by pX(x) or fX(x). As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.
 
-##### Properties:
+### Properties:
 - $$E[a] = a$$ for any constant $$a \in I\!R$$.
 - $$E[af(X)] = aE[f(X)]$$ for any constant $$a \in I\!R$$.
 - (Linearity of Expectation) $$E[f(X) + g(X)] = E[f(X)] + E[g(X)]$$.
 - For a discrete random variable $$X$$, $$E[1\{X = k\}] = P(X = k)$$.
 
 
-#### 2.5 Variance
+## 2.5 Variance
 
 The variance of a random variable X is a measure of how concentrated the distribution of a random variable X is around its mean. Formally, the variance of a random variable X is defined as $$Var[X] = E[(X − E(X))^2]$$
 
@@ -139,7 +139,7 @@ $$E[(X − E[X])^2] = E[X^2 − 2E[X]X + E[X]^2] = E[X^2] − 2E[X]E[X] + E[X]^2
 where the second equality follows from linearity of expectations and the fact that $$E[X]$$ is actually a
 constant with respect to the outer expectation.
 
-##### Properties:
+### Properties:
 - $$Var[a] = 0$$ for any constant $$a \in I\!R$$.
 - $$Var[af(X)] = a^2 Var[f(X)]$$ for any constant $$a \in I\!R$$.
 
@@ -153,18 +153,18 @@ $$Var[X] = E[X^2] - E[X]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}$$
 
 **Example** : Suppose that $$g(x) = 1{x \in A}$$ for some subset $$A ⊆ \Omega$$. What is $$E[g(X)]$$?
 
-##### Discrete case:
+### Discrete case:
 
 $$E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x∈A} P_X(x)dx = P(x \in A)$$
 
-##### Continuous case:
+### Continuous case:
 
 $$E[g(X)] = \int^{\infty}_{-\infty} 1{x ∈ A}f_X(x)dx = \int_{x \in A} f_X(x)dx = P(x \in A)$$.
 
 
-#### 2.6 Some common random variables
+## 2.6 Some common random variables
 
-##### Discrete random variables
+### Discrete random variables
 • **$$X$$ ∼ Bernoulli(p)** $$(where 0 ≤ p ≤ 1)$$: one if a coin with heads probability p comes up
 heads, zero otherwise.
 \begin{equation}
@@ -188,7 +188,7 @@ used for modeling the frequency of rare events.
 p(x) = e^{\lambda} \frac{\lambda^x}{x!}
 \end{equation}
 
-##### Continuous random variables
+### Continuous random variables
 
 • **$$X$$ ∼ Uniform(a, b)** (where $$a < b$$): equal probability density to every value between a and b on the real line. \begin{equation}
 f(x)=\begin{cases}    
@@ -212,7 +212,7 @@ f(x)=\begin{cases}
 The shape of the PDFs and CDFs of some of these random variables are shown in Figure ??.-->
 
 
-#### 3.1 Joint and marginal distributions
+## 3.1 Joint and marginal distributions
 
 Suppose that we have two random variables X and Y . One way to work with these two random variables is to consider each of them separately. If we do that we will only need $$F_X(x)$$ and $$F_Y (y)$$. But if we want to know about the values that X and Y assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of X and Y , defined by 
 \begin{equation}F_{XY} (x, y) = P(X ≤ x, Y ≤ y)\end{equation}
@@ -225,13 +225,13 @@ F_Y(y) = lim_{x→\infty} F_{XY} (x, y)dx
 \end{equation}
 Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution functions** of $$F_{XY} (x, y)$$.
 
-##### Properties:
+### Properties:
 - $$0 \leq F_{XY} (x, y) \leq 1$$.
 - $$lim_{x,y\rightarrow \infty} F_{XY} (x, y) = 1$$.
 - $$lim_{x,y\rightarrow -\infty} F_{XY} (x, y) = 0$$.
 - $$F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)$$.
 
-#### 3.2 Joint and marginal probability mass functions
+## 3.2 Joint and marginal probability mass functions
 
 If X and Y are discrete random variables, then the joint probability mass function $$p_{XY} : I\!R \prod \!R →[0, 1]$$ is defined by
 \begin{equation}
@@ -249,7 +249,7 @@ and similarly for $$p_Y (y)$$. In this case, we refer to $$p_X(x)$$ as the **mar
 of X. In statistics, the process of forming the marginal distribution with respect to one variable by
 summing out the other variable is often known as “marginalization.”
 
-#### 3.3 Joint and marginal probability density functions
+## 3.3 Joint and marginal probability density functions
 
 Let X and Y be two continuous random variables with joint distribution function $$F_{XY}$$ . In the case that $$F_{XY}(x, y)$$ is everywhere differentiable in both x and y, then we can define the joint probability density function, 
 
@@ -271,7 +271,7 @@ f_X(x) = \int^{\infty}_{-\infty} f_{XY} (x, y)dy,
 as the **marginal probability density function** (or **marginal density**) of X, and similarly for $$f_Y (y)$$.
 
 
-#### 3.4 Conditional distributions
+## 3.4 Conditional distributions
 
 Conditional distributions seek to answer the question, what is the probability distribution over Y, when we know that X must take on a certain value x? In the discrete case, the conditional probability mass function of X given Y is simply 
 \begin{equation}
@@ -286,7 +286,7 @@ f_{Y \mid X}(y \mid x) = \frac{f_{XY} (x, y)}{f_X(x)}
 \end{equation}
 provided $$f_X(x) \neq 0$$.
 
-#### 3.5 Bayes’s rule
+## 3.5 Bayes’s rule
 
 A useful formula that often arises when trying to derive expression for the conditional probability of
 one variable given another, is **Bayes’s rule**.
@@ -302,10 +302,10 @@ f_{Y \mid X}(y|x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) 
 \end{equation}
 
 
-#### 3.6 Independence
+## 3.6 Independence
 Two random variables X and Y are independent if $$F_{XY} (x, y) = F_X(x)F_Y(y)$$ for all values of x and y. Equivalently,
 - For discrete random variables, $$p_{XY} (x, y) = p_X(x)p_Y(y)$$ for all $$x \in Val(X)$$, $$y \in Val(Y)$$.
-- For discrete random variables, $$pY |X(y|x) = pY (y)$$ whenever $$p_X(x) \neq 0$$ for all $$y \in Val(Y)$$.
+- For discrete random variables, $$p_{Y\mid X}(y \mid x) = p_Y(y)$$ whenever $$p_X(x) \neq 0$$ for all $$y \in Val(Y)$$.
 - For continuous random variables, $$f_{XY} (x, y) = f_X(x)f_Y(y)$$ for all $$x, y \in R$$.
 - For continuous random variables, $$f_{Y\mid X}(y \mid x) = f_Y(y)$$ whenever $$f_X(x) \neq 0$$ for all $$y \in R$$.
 
@@ -317,7 +317,7 @@ P(X \in A, Y \in B) = P(X \in A)P(Y \in B)
 \end{equation}
 By using the above lemma one can prove that if $$X$$ is independent of $$Y$$ then any function of X is independent of any function of Y.
 
-#### 3.7 Expectation and covariance
+## 3.7 Expectation and covariance
 
 Suppose that we have two discrete random variables $$X, Y$$ and $$g : {I\!R}^2 \rightarrow I\!R$$ is a function of these two random variables. Then the expected value of g is defined in the following way, 
 \begin{equation}
@@ -344,7 +344,7 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])] \\
 
 Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$E[X]$$ and $$E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
 
-##### Properties:
+## Properties:
 - (Linearity of expectation) $$E[f(X, Y) + g(X, Y)] = E[f(X, Y)] + E[g(X, Y)]$$.
 - $$Var[X + Y] = Var[X] + Var[Y] + 2Cov[X, Y]$$.
 - If $$X$$ and $$Y$$ are independent, then $$Cov[X, Y] = 0$$.
