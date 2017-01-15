@@ -139,3 +139,51 @@ Note that this is precisely the difference between the expectations of the natur
 This gives us an insight into how MRFs are trained. The log-likelihood objective forces the model marginals to match the empirical marginals.
 
 We refer to the above property as *moment matching*. This property of maximum-likelihood learning is very general: it occurs whenever we train distributions $$q$$ using the inclusive KL-divergence {%m%}KL(p||q){%em%} and is useful for understanding the properties of various machine learning algorithms, especially in variational inference.
+
+## Learning in conditional random fields
+
+Finally, let us look how maximum-likelihood learning extends to conditional random fields (CRFs), the other important type of undirected graphical models that we have seen.
+
+Recall that a CRF is a probability distribution of the form
+{% math %}
+p(y \mid x) = \frac{1}{Z(x, \varphi)} \prod_{c \in C} \phi_c(y_c, x; \varphi),
+{% endmath %}
+where 
+{% math %} 
+Z(x, \varphi) = \sum_{y_1,..,y_n}\prod_{c \in C} \phi_c(y_c, x; \varphi) 
+{% endmath %}
+is the partition function. The feature functions now depend on $$x$$ in addition to $$y$$. The $$x$$ variables are fixed and the distribution is only over $$y$$; the partition function is thus a function of both $$x$$ and $$\varphi$$.
+
+We can reparametrize $$p$$ as we did for MRFs:
+{% math %}
+p(y\mid x) = \frac{\exp(\theta^T f(x, y))}{Z(x, \theta)},
+{% endmath %}
+where $$f(y, x)$$ is again a vector of indicator functions and $$\theta$$ is a reparametrization of the model parameters.
+
+The log-likelihood for this model given a dataset $$D$$ is
+{% math %}
+\frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x,y \in D} \theta^T f(x, y) - \sum_{x, y \in D} \log Z(x, \theta).
+{% endmath %}
+Note that this is almost the same form as we had for MRFs, except that now there is a different partition function $$\log Z(x, \theta)$$ for each data point $$x,y$$.
+
+The gradient for a data point $$(x,y)$$ is now
+{% math %}
+\frac{1}{|D|} \sum_{x, y \in D} f(x, y) - \mathbb{E}_{y \sim p(y|x)} [ f(x,y) ]
+{% endmath %}
+Similarly, the Hessian is going to be the covariance matrix 
+{% math %}
+\text{cov}_{y \sim p(y \mid x)} [ f(x,y) ]
+{% endmath %}
+
+The good news is that this means that the conditional log-likelihood is still a concave function. We can optimize it using gradient ascent as before.
+
+The bad news is that computing the gradient now requires one inference per training data point $$x, y$$ in order to compute the term
+{% math %}
+\sum_{x, y \in D} \log Z(x, \theta).
+{% endmath %}
+
+This makes learning CRFs more expensive that learning in MRFs. In practice, however, CRFs are much more widely used than MRFs because supervised learning is a more widely used type of learning, and discriminative models (like CRFs) often learn a better classifier than their generative counterparts (which model $$p(x,y)$$).
+
+To deal with the computational difficulties introduced by the partition function, we may use simpler models in which exact inference is tractable. This was the approach taken in the OCR example introduced in our first discussion of CRFs. More generally, one should try to limit the number of variables or make sure that the model's graph is not too densely connected.
+
+Finally, we would like to add that there exists another popular objective for training CRFs called the max-margin loss, a generalization of the objective for training SVMs. Models trained using this loss are called *structured support vector machines* or *max-margin networks*. This loss is more widely used in practice because it often leads to better generalization, and also it requires only MAP inference to compute the gradient, rather than general (e.g. marginal) inference, which is often more expensive to perform.
