@@ -86,7 +86,9 @@
   <li><strong>Set of events (or event space) F</strong>: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)</li>
   <li><strong>Probability measure</strong>: A function P : F → R that satisfies the following properties,
     <ul>
-      <li>$$P(A) ≥ 0, for all A ∈ F</li>
+      <li>
+        <script type="math/tex; mode=display">P(A) \geq 0, for all A \in F</script>
+      </li>
       <li>
         <script type="math/tex; mode=display">P(\Omega) = 1</script>
       </li>
@@ -99,14 +101,13 @@
 
 <p><strong>Example</strong>: Consider the event of tossing a six-sided die. The sample space is Ω = {1, 2, 3, 4, 5, 6}. We can define different event spaces on this sample space. For example, the simplest event space is the trivial event space F = {∅, Ω}. Another event space is the set of all subsets of Ω. For the first event space, the unique probability measure satisfying the requirements above is given by P(∅) = 0, P(Ω) = 1. For the second event space, one valid probability measure is to assign the probability of each set in the event space to be <script type="math/tex">\frac{i}{6}</script> where <script type="math/tex">i</script> is the number of elements of that set; for example, <script type="math/tex">P({1, 2, 3, 4}) = \frac{4}{6}</script> and <script type="math/tex">P({1, 2, 3}) = \frac{3}{6}</script>.</p>
 
-<h2 id="properties">Properties:</h2>
+<h3 id="properties">Properties:</h3>
 <ul>
   <li>If A ⊆ B ⇒ P(A) ≤ P(B).</li>
   <li><script type="math/tex">P(A \cap B) \leq min(P(A), P(B))</script>.</li>
-  <li>(Union Bound) P(A ∪ B) ≤ P(A) + P(B).</li>
+  <li><strong>Union Bound</strong> P(A ∪ B) ≤ P(A) + P(B).</li>
   <li>P(Ω \ A) = 1 − P(A).</li>
-  <li>(Law of Total Probability) If <script type="math/tex">A_1, . . . , A_k</script> are a set of disjoint events such that 
-<script type="math/tex">\bigcup^k_{i=1} A_i = \Omega</script> then <script type="math/tex">\sum^k_{i=1} P(A_k) = 1.</script></li>
+  <li><strong>Law of Total Probability</strong> If <script type="math/tex">A_1, . . . , A_k</script> are a set of disjoint events such that <script type="math/tex">\bigcup^k_{i=1} A_i = \Omega</script> then <script type="math/tex">\sum^k_{i=1} P(A_k) = 1.</script></li>
 </ul>
 
 <h2 id="11-conditional-probability-and-independence">1.1 Conditional probability and independence</h2>
@@ -150,7 +151,7 @@ F_X(x) = P(X \leq x)
 \end{equation}
 By using this function one can calculate the probability of any event.</p>
 
-<h2 id="properties-1">Properties:</h2>
+<h3 id="properties-1">Properties:</h3>
 <!--Figure 1: A cumulative distribution function (CDF).-->
 <ul>
   <li><script type="math/tex">0 ≤ F_X(x) ≤ 1</script>.</li>
@@ -168,11 +169,11 @@ a probability mass function (PMF) is a function <script type="math/tex">pX : \Om
 
 <p>In the case of discrete random variable, we use the notation V al(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.</p>
 
-<h2 id="properties-2">Properties:</h2>
+<h3 id="properties-2">Properties:</h3>
 <ul>
-  <li><script type="math/tex">0 ≤ p_X(x) ≤ 1</script>.</li>
-  <li><script type="math/tex">\sum_{x∈Val(X)} p_X(x) = 1</script>.</li>
-  <li><script type="math/tex">\sum{x∈A} p_X(x) = P(X \in A)</script>.</li>
+  <li><script type="math/tex">0 \leq p_X(x) \leq 1</script>.</li>
+  <li><script type="math/tex">\sum_{x \in Val(X)} p_X(x) = 1</script>.</li>
+  <li><script type="math/tex">\sum{x \in A} p_X(x) = P(X \in A)</script>.</li>
 </ul>
 
 <h2 id="23-probability-density-functions">2.3 Probability density functions</h2>
@@ -436,7 +437,7 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])] <br />
 
 <p>Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that <script type="math/tex">E[X]</script> and <script type="math/tex">E[Y]</script> are actually constants which can be pulled out of the expectation. When <script type="math/tex">Cov[X, Y] = 0</script>, we say that <script type="math/tex">X</script> and <script type="math/tex">Y</script> are uncorrelated.</p>
 
-<h2 id="properties-7">Properties:</h2>
+<h3 id="properties-7">Properties:</h3>
 <ul>
   <li>(Linearity of expectation) E[f(X, Y) + g(X, Y)] = E[f(X, Y)] + E[g(X, Y)].</li>
   <li><script type="math/tex">Var[X + Y] = Var[X] + Var[Y] + 2Cov[X, Y]</script>.</li>

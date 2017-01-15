@@ -9,7 +9,7 @@ In order to define a probability on a set we need a few basic elements,
 - **Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω ∈ Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
 - **Set of events (or event space) F**: A set whose elements A ∈ F (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
 - **Probability measure**: A function P : F → R that satisfies the following properties, 
-    - $$P(A) ≥ 0, for all A ∈ F
+    - $$P(A) \geq 0, for all A \in F$$
     - $$P(\Omega) = 1$$
     - If $$A_1$$, $$A_2$$, . . . are disjoint events $$(i.e., A_i ∩ A_j = ∅  \text{ whenever }  i \neq j)$$, then $$P(∪_iA_i) = \sum_i P(A_i)$$
 
@@ -17,13 +17,12 @@ These three properties are called the **Axioms of Probability**.
 
 **Example**: Consider the event of tossing a six-sided die. The sample space is Ω = {1, 2, 3, 4, 5, 6}. We can define different event spaces on this sample space. For example, the simplest event space is the trivial event space F = {∅, Ω}. Another event space is the set of all subsets of Ω. For the first event space, the unique probability measure satisfying the requirements above is given by P(∅) = 0, P(Ω) = 1. For the second event space, one valid probability measure is to assign the probability of each set in the event space to be $$\frac{i}{6}$$ where $$i$$ is the number of elements of that set; for example, $$P({1, 2, 3, 4}) = \frac{4}{6}$$ and $$P({1, 2, 3}) = \frac{3}{6}$$.
 
-## Properties:
+### Properties:
 - If A ⊆ B ⇒ P(A) ≤ P(B).
 - $$P(A \cap B) \leq min(P(A), P(B))$$.
-- (Union Bound) P(A ∪ B) ≤ P(A) + P(B).
+- **Union Bound** P(A ∪ B) ≤ P(A) + P(B).
 - P(Ω \ A) = 1 − P(A).
-- (Law of Total Probability) If $$A_1, . . . , A_k$$ are a set of disjoint events such that 
-$$\bigcup^k_{i=1} A_i = \Omega$$ then $$\sum^k_{i=1} P(A_k) = 1.$$
+- **Law of Total Probability** If $$A_1, . . . , A_k$$ are a set of disjoint events such that $$\bigcup^k_{i=1} A_i = \Omega$$ then $$\sum^k_{i=1} P(A_k) = 1.$$
 
 
 ## 1.1 Conditional probability and independence
@@ -67,7 +66,7 @@ F_X(x) = P(X \leq x)
 \end{equation}
 By using this function one can calculate the probability of any event.
 
-## Properties:
+### Properties:
 <!--Figure 1: A cumulative distribution function (CDF).-->
 - $$0 ≤ F_X(x) ≤ 1$$.
 - $$lim_{x→-\infty} F_X(x) = 0$$.
@@ -84,10 +83,10 @@ $$p_X(x) = P(X = x)$$.
 
 In the case of discrete random variable, we use the notation V al(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.
 
-## Properties:
-- $$0 ≤ p_X(x) ≤ 1$$.
-- $$\sum_{x∈Val(X)} p_X(x) = 1$$.
-- $$\sum{x∈A} p_X(x) = P(X \in A)$$.
+### Properties:
+- $$0 \leq p_X(x) \leq 1$$.
+- $$\sum_{x \in Val(X)} p_X(x) = 1$$.
+- $$\sum{x \in A} p_X(x) = P(X \in A)$$.
 
 ## 2.3 Probability density functions
 For some continuous random variables, the cumulative distribution function FX(x) is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,
@@ -343,7 +342,7 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])] \\
 
 Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$E[X]$$ and $$E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
 
-## Properties:
+### Properties:
 - (Linearity of expectation) E[f(X, Y) + g(X, Y)] = E[f(X, Y)] + E[g(X, Y)].
 - $$Var[X + Y] = Var[X] + Var[Y] + 2Cov[X, Y]$$.
 - If $$X$$ and $$Y$$ are independent, then $$Cov[X, Y] = 0$$.
