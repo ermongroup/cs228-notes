@@ -21,9 +21,9 @@ These three **properties** are called the **Axioms of Probability**.
 **Example**: Consider the event of tossing a six-sided die. The sample space is Ω = {1, 2, 3, 4, 5, 6}. We can define different event spaces on this sample space. For example, the simplest event space is the trivial event space F = {∅, Ω}. Another event space is the set of all subsets of Ω. For the first event space, the unique probability measure satisfying the requirements above is given by P(∅) = 0, P(Ω) = 1. For the second event space, one valid probability measure is to assign the probability of each set in the event space to be $$\frac{i}{6}$$ where $$i$$ is the number of elements of that set; for example, $$P({1, 2, 3, 4}) = \frac{4}{6}$$ and $$P({1, 2, 3}) = \frac{3}{6}$$.
 
 ### **Properties**:
-- If A ⊆ B ⇒ P(A) ≤ P(B).
+- If A ⊆ B ⇒ P(A) \leq  P(B).
 - $$P(A \cap B) \leq min(P(A), P(B))$$.
-- **Union Bound** P(A ∪ B) ≤ P(A) + P(B).
+- **Union Bound** P(A ∪ B) \leq  P(A) + P(B).
 - P(Ω \ A) = 1 − P(A).
 - **Law of Total Probability** If $$A_1, . . . , A_k$$ are a set of disjoint events such that $$\bigcup^k_{i=1} A_i = \Omega$$ then $$\sum^k_{i=1} P(A_k) = 1.$$
 
@@ -71,7 +71,7 @@ By using this function one can calculate the probability of any event.
 
 ### **Properties**:
 <!--Figure 1: A cumulative distribution function (CDF).-->
-- $$0 ≤ F_X(x) ≤ 1$$.
+- $$0 \leq  F_X(x) \leq  1$$.
 - $$lim_{x \rightarrow -\infty} F_X(x) = 0$$.
 - $$lim_{x \rightarrow \infty} F_X(x) = 1$$.
 - $$x \leq y ⇒ F_X(x) \leq F_X(y)$$.
@@ -181,14 +181,14 @@ E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) 
 ## 2.6 Some common random variables
 
 ### Discrete random variables
-• **$$X$$ ∼ Bernoulli(p)** $$(where 0 ≤ p ≤ 1)$$: one if a coin with heads probability p comes up heads, zero otherwise. 
+• **$$X$$ ∼ Bernoulli(p)** $$(where 0 \leq p \leq 1)$$: one if a coin with heads probability p comes up heads, zero otherwise. 
     {% math %}
       p(x)=\begin{cases}
         p, & \text{if $$p = 1$$}.\\
         1-p, & \text{if $$p = 0$$}.
       \end{cases}
     {% endmath %}
-• **$$X$$ ∼ Binomial(n, p)** $$(where 0 ≤ p ≤ 1)$$: the number of heads in n independent flips of a
+• **$$X$$ ∼ Binomial(n, p)** $$(where 0 \leq  p \leq  1)$$: the number of heads in n independent flips of a
 coin with heads probability p.
 \begin{equation}
 p(x) = \binom{n}{x} \cdot p^x q^{n-x}
@@ -231,7 +231,7 @@ f(x)=\begin{cases}
 ## 3.1 Joint and marginal distributions
 
 Suppose that we have two random variables X and Y . One way to work with these two random variables is to consider each of them separately. If we do that we will only need $$F_X(x)$$ and $$F_Y (y)$$. But if we want to know about the values that X and Y assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of X and Y , defined by 
-\begin{equation}F_{XY} (x, y) = P(X ≤ x, Y ≤ y)\end{equation}
+\begin{equation}F_{XY} (x, y) = P(X \leq  x, Y \leq  y)\end{equation}
 
 It can be shown that by knowing the joint cumulative distribution function, the probability of any event involving X and Y can be calculated.
 
