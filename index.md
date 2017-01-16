@@ -3,7 +3,7 @@ layout: post
 title: Contents
 ---
 {% newthought 'These notes'%} form a concise introductory course on probabilistic graphical models{% sidenote 1 'Probabilistic graphical models are a subfield of machine learning that studies how to describe and reason about the world in terms of probabilities.'%}.
-They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and are written and maintained by the course staff{% marginnote 'mn-id-whatever' 'These notes are still **under construction**!
+They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and are written and maintained by the course staff.{% marginnote 'mn-id-whatever' 'These notes are still **under construction**!
 They are about 70% complete, and probably contain a lot of typos.
 We are in the process of finalizing them; in the meantime feel free to submit your fixes on [Github](https://github.com/ermongroup/cs228-notes).'%}
 Free to contribute your improvements on [Github](https://github.com/ermongroup/cs228-notes).
