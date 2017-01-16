@@ -143,7 +143,7 @@ Conversely, we can also show by counter-example that when <script type="math/tex
 By expressing a probability in this form, we are introducing into our model assumptions that certain variables are independent.</p>
 
 <p>This raises the question: which independence assumptions are we exactly making by using a model Bayesian network with a given structure described by <script type="math/tex">G</script>?
-This question important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.</p>
+This question is important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.</p>
 
 <p>Let us use the notation <script type="math/tex">I(p)</script> to denote the set of all conditional independencies that hold for a joint distribution <script type="math/tex">p</script>. For example, if <script type="math/tex">p(x,y)=p(x)p(y)</script>, then we say that <script type="math/tex">x \perp y \in I(p)</script>.</p>
 
@@ -163,17 +163,17 @@ This question important for two reasons: we should know precisely what model ass
 
 <p>These structures clearly describe the independencies encoded by a three-variable Bayesian net. We can extend them to general networks by applying them recursively over any larger graph. This leads to a notion called <script type="math/tex">d</script>-separation (where <script type="math/tex">d</script> stands for directed).</p>
 
-<p>We say that <script type="math/tex">Q</script>, <script type="math/tex">W</script> are <script type="math/tex">d</script>-separated when variables <script type="math/tex">O</script> are observed if they are connected by an <em>active path</em>. An undirected path in the Bayesian Network structure <script type="math/tex">G</script> is called <em>active</em> given observed variables <script type="math/tex">O</script> if for every consecutive triple of variables <script type="math/tex">X,Y,Z</script> on the path, one of the following holds:</p>
+<p>We say that <script type="math/tex">Q</script>, <script type="math/tex">W</script> are <script type="math/tex">d</script>-separated when variables <script type="math/tex">O</script> are observed if they are not connected by an <em>active path</em>. An undirected path in the Bayesian Network structure <script type="math/tex">G</script> is called <em>active</em> given observed variables <script type="math/tex">O</script> if for every consecutive triple of variables <script type="math/tex">X,Y,Z</script> on the path, one of the following holds:</p>
 
 <ul>
   <li><script type="math/tex">X \leftarrow Y \leftarrow Z</script>, and <script type="math/tex">Y</script> is unobserved <script type="math/tex">Y \not\in O</script></li>
   <li><script type="math/tex">X \rightarrow Y \rightarrow Z</script>, and <script type="math/tex">Y</script> is unobserved <script type="math/tex">Y \not\in O</script></li>
   <li><script type="math/tex">X \leftarrow Y \rightarrow Z</script>, and <script type="math/tex">Y</script> is unobserved <script type="math/tex">Y \not\in O</script></li>
-  <li><script type="math/tex">X \leftarrow Y \leftarrow Z</script>, and <script type="math/tex">Y</script> or any of its descendents are observed.
+  <li><script type="math/tex">X \rightarrow Y \leftarrow Z</script>, and <script type="math/tex">Y</script> or any of its descendents are observed.
 <label for="dp2" class="margin-toggle">⊕</label><input type="checkbox" id="dp2" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/dsep2.png" /><br />In this example, <script type="math/tex">X_1</script> and <script type="math/tex">X_6</script> are <script type="math/tex">d</script>-separated given <script type="math/tex">X_2, X_3</script>.</span><label for="dp1" class="margin-toggle">⊕</label><input type="checkbox" id="dp1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/dsep1.png" /><br />However, <script type="math/tex">X_2, X_3</script> are not <script type="math/tex">d</script>-separated given <script type="math/tex">X_1, X_6</script>. There is an active pass which passed through the V-structure created when <script type="math/tex">X_6</script> is observed.</span></li>
 </ul>
 
-<p>For example, in the graph below, <script type="math/tex">X_1</script> and <script type="math/tex">X_6</script> are <script type="math/tex">d</script>-separated given <script type="math/tex">X_2, X_3</script>. However, <script type="math/tex">X_2, X_3</script> are not <script type="math/tex">d</script>-separated given <script type="math/tex">X_2, X_3</script>, because we can find an active path <script type="math/tex">(X_2, X_6, X_5, X_3)</script></p>
+<p>For example, in the graph below, <script type="math/tex">X_1</script> and <script type="math/tex">X_6</script> are <script type="math/tex">d</script>-separated given <script type="math/tex">X_2, X_3</script>. However, <script type="math/tex">X_2, X_3</script> are not <script type="math/tex">d</script>-separated given <script type="math/tex">X_1, X_6</script>, because we can find an active path <script type="math/tex">(X_2, X_6, X_5, X_3)</script></p>
 
 <p>The notion of <script type="math/tex">d</script>-separation is  useful, because it lets us describe a large fraction of the dependencies that hold in our model.
 Let <span>​<script type="math/tex">I(G) = \{(X \perp Y \mid  Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}</script></span> be a set of variables that are <script type="math/tex">d</script>-separated in <script type="math/tex">G</script>.</p>
