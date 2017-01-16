@@ -47,7 +47,7 @@ In addition, we will also see many examples of how to apply probabilistic techni
 
 To get a first taste of the of the challenges that lie ahead of us, consider a simple application of probabilistic modeling: spam classification.
 
-Suppose we have a model $$p(y,x_1,...,x_n)$$ of word occurrences in spam and non-spam mail. Each binary variable $$x_i$$ encodes whether the $$i$$-ith English word is present in the email; the binary variable $$Y$$ indicates whether the email is spam. In order to classify a new email, we may look at the probability {%m%} P(y=1 | x_1,...,x_n) {%em%}.
+Suppose we have a model $$p(y,x_1,...,x_n)$$ of word occurrences in spam and non-spam mail. Each binary variable $$x_i$$ encodes whether the $$i$$-th English word is present in the email; the binary variable $$Y$$ indicates whether the email is spam. In order to classify a new email, we may look at the probability {%m%} P(y=1 | x_1,...,x_n) {%em%}.
 
 What is the ``size" of the function $$\pt$$ that we just defined? Our model defines a probability in $$[0,1]$$ for each combination of parameters $$Y,X_1,...,X_n$$;  specifying all these probabilities will require us to write down a staggering $$2^{n+1}$$ different values, one for each assignment to our $$n+1$$ binary variables. Since $$n$$ is the size of the English vocabulary, this is clearly impractical from both a computational (how do we store this large list?) and from a statistical (how do we efficiently estimates the parameters from limited data?) point of view. More generally, our example illustrates one of the main challenges that this course will deal with: probabilities are inherently exponentially-sized objects; the only way in which we can manipulate them is by making simplifying assumptions about their structure.
 
