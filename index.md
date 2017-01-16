@@ -15,11 +15,11 @@ Free to contribute your improvements on [Github](https://github.com/kuleshov/cs2
 
 2. Review of probability theory: Probability distributions. Conditional probability. Random variables.
 
-2. Examples of real-world applications: Image denoising. RNA structure prediciton. Syntactic analysis of sentences. Optical character recogition.
+2. Examples of real-world applications: Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recognition.
 
 ## Representation
 
-1. [Bayesian networks](representation/directed/): Definitions. Representations via directed graphs. Independencies in directed models.
+1. [Bayesian networks](representation/directed/): The chain rule. Representations via directed graphs. Independencies in directed models.
 
 2. [Markov random fields](representation/undirected/): Undirected vs directed models. Independencies in undirected models. Conditional random fields.
 
@@ -41,7 +41,7 @@ Free to contribute your improvements on [Github](https://github.com/kuleshov/cs2
 
 2. [Learning in undirected models](learning/undirected/): Exponential families. Maximum likelihood estimation with gradient descent. Learning in CRFs
 
-3. Learning in latent variable models: Latent variable models. Gaussian mixture models. Expectation maximization.
+3. [Learning in latent variable models](learning/latent/): Latent variable models. Gaussian mixture models. Expectation maximization.
 
 4. Bayesian learning: Bayesian paradigm. Conjugate priors. Examples.
 
@@ -51,4 +51,4 @@ Free to contribute your improvements on [Github](https://github.com/kuleshov/cs2
 
 1. The variational autoencoder: Deep generative models. The reparametrization trick. Learning latent visual representations.
 
-2. Further reading: Probabilistic models for topic modelling. Bayesian non-parametrics.
+2. List of further readings: Structured support vector machines. Bayesian non-parametrics.
