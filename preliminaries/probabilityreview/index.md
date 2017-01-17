@@ -7,7 +7,7 @@ We will go through a review of probability concepts over here, all of review the
 # 1. Elements of probability
 In order to define a probability on a set we need a few basic elements,
 
-**Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome ω  \in  Ω can be thought of as a complete description of the state of the real world at the end of the experiment.
+**Sample space** Ω: The set of all the outcomes of a random experiment. Here, each outcome $$\omega  \in  \Omega$$ can be thought of as a complete description of the state of the real world at the end of the experiment.
 
 **Set of events (or event space) F**: A set whose elements $$A  \in  F$$ (called events) are subsets of Ω (i.e., A ⊆ Ω is a collection of possible outcomes of an experiment)
 
@@ -21,10 +21,10 @@ These three **properties** are called the **Axioms of Probability**.
 **Example**: Consider the event of tossing a six-sided die. The sample space is Ω = {1, 2, 3, 4, 5, 6}. We can define different event spaces on this sample space. For example, the simplest event space is the trivial event space F = {∅, Ω}. Another event space is the set of all subsets of Ω. For the first event space, the unique probability measure satisfying the requirements above is given by P(∅) = 0, P(Ω) = 1. For the second event space, one valid probability measure is to assign the probability of each set in the event space to be $$\frac{i}{6}$$ where $$i$$ is the number of elements of that set; for example, $$P({1, 2, 3, 4}) = \frac{4}{6}$$ and $$P({1, 2, 3}) = \frac{3}{6}$$.
 
 ### **Properties**:
-- If A ⊆ B ⇒ P(A) \leq  P(B).
+- If $$A \subseteq B \Rightarrow P(A) \leq  P(B).$$
 - $$P(A \cap B) \leq min(P(A), P(B))$$.
-- **Union Bound** P(A ∪ B) \leq  P(A) + P(B).
-- P(Ω \ A) = 1 − P(A).
+- **Union Bound** $$P(A \cup B) \leq  P(A) + P(B).$$
+- $$P(\Omega - A) = 1 − P(A).$$
 - **Law of Total Probability** If $$A_1, . . . , A_k$$ are a set of disjoint events such that $$\bigcup^k_{i=1} A_i = \Omega$$ then $$\sum^k_{i=1} P(A_k) = 1.$$
 
 
@@ -41,7 +41,7 @@ any effect on the probability of A.
 
 Consider an experiment in which we flip 10 coins, and we want to know the number of coins that
 come up heads. Here, the elements of the sample space Ω are 10-length sequences of heads and
-tails. For example, we might have $$w_0 = \langle H, H, T, H, T, H, H, T, T, T \rangle \in Omega$$. However, in practice, we usually do not care about the probability of obtaining any particular sequence of heads and tails. Instead we usually care about real-valued functions of outcomes, such as the number of heads that
+tails. For example, we might have $$w_0 = \langle H, H, T, H, T, H, H, T, T, T \rangle \in \Omega$$. However, in practice, we usually do not care about the probability of obtaining any particular sequence of heads and tails. Instead we usually care about real-valued functions of outcomes, such as the number of heads that
 appear among our 10 tosses, or the length of the longest run of tails. These functions, under some
 technical conditions, are known as **random variables**.
 
@@ -163,12 +163,12 @@ $$E[X^2] = \int^{\infty}_{-\infty} x^2 f_X(x)dx = \int^1_0 x^2 dx = \frac{1}{3}$
 
 $$Var[X] = E[X^2] - E[X]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}$$
 
-**Example** : Suppose that $$g(x) = 1{x \in A}$$ for some subset $$A ⊆ \Omega$$. What is $$E[g(X)]$$?
+**Example** : Suppose that $$g(x) = 1\{x \in A\}$$ for some subset $$A ⊆ \Omega$$. What is $$E[g(X)]$$?
 
 ### **Discrete case**:
 
 \begin{equation}
-E[g(X)] = \sum_{x \in Val(X)} 1{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x \in A)
+E[g(X)] = \sum_{x \in Val(X)} 1\{x \in A\}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(x \in A)
 \end{equation}
 
 ### **Continuous case**:
@@ -271,7 +271,7 @@ summing out the other variable is often known as “marginalization.”
 Let X and Y be two continuous random variables with joint distribution function $$F_{XY}$$ . In the case that $$F_{XY}(x, y)$$ is everywhere differentiable in both x and y, then we can define the joint probability density function, 
 
 \begin{equation}
-f_{XY}(x, y) = \frac{∂2F_{XY}(x, y)}{∂x∂y}
+f_{XY}(x, y) = \frac{∂^2F_{XY}(x, y)}{∂x∂y}
 \end{equation}
 
 Like in the single-dimensional case, $$f_{XY} (x, y) \neq P(X = x, Y = y)$$, but rather
@@ -310,7 +310,7 @@ one variable given another, is **Bayes’s rule**.
 
 In the case of discrete random variables X and Y ,
 {% math %}
-P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y' \in Val(Y) P_{X \mid Y} (x \mid y') P_Y(y')}}
+P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y' \in Val(Y)} P_{X \mid Y} (x \mid y') P_Y(y')}
 {% endmath %}
 
 If the random variables X and Y are continuous,
