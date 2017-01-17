@@ -49,6 +49,6 @@ Free to contribute your improvements on [Github](https://github.com/kuleshov/cs2
 
 ## Bringing it all together
 
-1. The variational autoencoder: Deep generative models. The reparametrization trick. Learning latent visual representations.
+1. [The variational autoencoder](extras/vae): Deep generative models. The reparametrization trick. Learning latent visual representations.
 
 2. List of further readings: Structured support vector machines. Bayesian non-parametrics.
