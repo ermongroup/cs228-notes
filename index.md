@@ -3,23 +3,24 @@ layout: post
 title: Contents
 ---
 {% newthought 'These notes'%} form a concise introductory course on probabilistic graphical models{% sidenote 1 'Probabilistic graphical models are a subfield of machine learning that studies how to describe and reason about the world in terms of probabilities.'%}.
-They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and are written and maintained by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov), with the help of many CS228 [students and course staff](https://github.com/ermongroup/cs228-notes).
+They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and have been written by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov), with the [help](https://github.com/ermongroup/cs228-notes/commits/master) of many students and course staff.
 {% marginnote 'mn-id-whatever' 'The notes are still **under construction**!
 Although we have written up most of the material, you will probably find several typos. If you do, please let us know, or submit a pull request with your fixes to our [Github repository](https://github.com/ermongroup/cs228-notes).'%}
 You too may help make these notes better by submitting your improvements to us via [Github](https://github.com/ermongroup/cs228-notes).
 
-This course starts by introducing probabilistic graphical models from the very basics and concludes by explaining from first principles the [variational auto-encoder](), an influential probabilistic model, that is also one of the most important recent results in deep learning.
+This course starts by introducing probabilistic graphical models from the very basics and concludes by explaining from first principles the [variational auto-encoder](), an important probabilistic model that is also one of the most influential recent results in deep learning.
 
 ## Preliminaries
 
 1. [Introduction](preliminaries/introduction/) What is probabilistic graphical modeling? Overview of the course.
 
-<<<<<<< HEAD
 2. [Review of probability theory](preliminaries/probabilityreview): Probability distributions. Conditional probability. Random variables.
 
-3. [Examples of real-world applications](preliminaries/applications): Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recogition.
+3. Examples of real-world applications: Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recognition.
 
 ## Representation
+
+1. [Bayesian networks](representation/directed/): Definitions. Representations via directed graphs. Independencies in directed models.
 
 2. [Markov random fields](representation/undirected/): Undirected vs directed models. Independencies in undirected models. Conditional random fields.
 
