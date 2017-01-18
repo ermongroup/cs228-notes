@@ -3,11 +3,12 @@ layout: post
 title: Contents
 ---
 {% newthought 'These notes'%} form a concise introductory course on probabilistic graphical models{% sidenote 1 'Probabilistic graphical models are a subfield of machine learning that studies how to describe and reason about the world in terms of probabilities.'%}.
-They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and are written and maintained by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov).
-{% marginnote 'mn-id-whatever' 'These notes are still **under construction**!
-They are about 70% complete, and probably contain a lot of typos.
-We are in the process of finalizing them; in the meantime feel free to submit your fixes on [Github](https://github.com/kuleshov/cs228-notes).'%}
-Free to contribute your improvements on [Github](https://github.com/kuleshov/cs228-notes).
+They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and are written and maintained by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov), with the help of many CS228 [students](https://github.com/kuleshov/cs228-notes).
+{% marginnote 'mn-id-whatever' 'The notes are still **under construction**!
+Although we have written up most of the material, you will probably find several typos. If you do, please let us know, or submit a pull request with your fixes to our [Github repository](https://github.com/kuleshov/cs228-notes).'%}
+You too may help make these notes better by submitting your improvements to us via [Github](https://github.com/kuleshov/cs228-notes).
+
+This course starts by introducing probabilistic graphical models from the very basics and concludes by explaining from first principles the [variational auto-encoder](), an influential probabilistic model, that is also one of the most important recent results in deep learning.
 
 ## Preliminaries
 
