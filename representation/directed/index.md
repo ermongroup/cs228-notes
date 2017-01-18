@@ -10,16 +10,17 @@ We are going to:
 
 - Learn an effective and general technique for parameterizing probability distributions using only a few parameters.
 - See how the resulting models can be elegantly described via *directed acyclic graphs* (DAGs). 
-- Study connections between the structure of a DAG and the modeling assumptions made by distribution that it describes; this will not only make these modeling assumptions more obvious, but will also help us design more efficient inference algorithms.
+- Study connections between the structure of a DAG and the modeling assumptions made by distribution that it describes; this will not only make these modeling assumptions more explicit, but will also help us design more efficient inference algorithms.
 
 The kinds of models that we will see here are referred to as *Bayesian networks*. In the next chapter, we will also see a second approach, which involves *undirected* graphs, also known as *Markov random fields*.
 
 
 ## Probabilistic modeling with Bayesian networks
 
-Directed graphical models (a.k.a. Bayesian networks) are a family of probability distributions that have a compact parametrization that can be naturally described using a directed graph. 
+Directed graphical models (a.k.a. Bayesian networks) are a family of probability distributions that admit a compact parametrization that can be naturally described using a directed graph. 
 
 The general idea behind this parametrization is surprisingly simple.
+
 Recall that by the chain rule, we can write any probability $$p$$ as:
 {% math %}
 p(x_1,x_2,...,x_n) = p(x_1) p(x_2\mid x_1) \cdots p(x_n\mid x_{n-1},...,x_2,x_1).
@@ -43,7 +44,7 @@ p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
 The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student's intelligence and the difficulty of the exam.
 
 Another way to interpret directed graphs is in terms of stories for how the data was generated.
-In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student's grade is sampled given these parameters; finally, the recommendation letter is generated based on the grade.
+In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student's grade is sampled given these parameters; finally, the recommendation letter is generated based on that grade.
 
 In the previous spam classification example, we implicitly postulated that email is generated according to a two-step process:
 first, we choose a spam/non-spam label $$y$$; then we sample independently whether each word is present, conditioned on that label.
@@ -67,7 +68,7 @@ To summarize, Bayesian networks represent probability distributions that can be 
 By expressing a probability in this form, we are introducing into our model assumptions that certain variables are independent.
 
 This raises the question: which independence assumptions are we exactly making by using a model Bayesian network with a given structure described by $$G$$?
-This question important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
+This question is important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
 
 Let us use the notation $$I(p)$$ to denote the set of all conditional independencies that hold for a joint distribution $$p$$. For example, if $$p(x,y)=p(x)p(y)$$, then we say that $$x \perp y \in I(p)$$.
 
@@ -81,19 +82,19 @@ For simplicity, let's start by looking at a Bayes net $$G$$ with three nodes: $$
 - *Cascade*: If $$G$$ equals $$A \rightarrow B \rightarrow C$$, and $$B$$ is again observed, then, again {%m%}A \perp C \mid  B{%em%}. However, if $$B$$ is unobserved, then $$A \not\perp C$$. Here, the intuition is again that $$B$$ holds all the information that determines the outcome of $$C$$; thus, it does not matter what value $$A$$ takes.
 - *V-structure* (also known as *explaining away*): If $$G$$ is $$A \rightarrow C \leftarrow B$$, then knowing $$C$$ couples $$A$$ and $$B$$. In other words, $$A \perp B$$ if $$C$$ is unobserved, but {%m%}A \not\perp B \mid  C{%em%} if $$C$$ is observed.
 
-The latter case requires additional explanation. Suppose that $$C$$ is a Boolean variable that indicates whether our lawn is wet one morning; $$A$$ and $$B$$ are two explanations for why it is wet: either it rained (indicated by $$A$$), or the sprinkler turned on (indicated by $$B$$). If we know that the grass is wet ($$C$$ is true) and the sprinkler didn't go on ($$B$$ is false), then the probability that $$A$$ is true must be one, because that is the only other possible explanation. Hence, $$C$$ and $$A$$ are not independent given $$B$$.
+The latter case requires additional explanation. Suppose that $$C$$ is a Boolean variable that indicates whether our lawn is wet one morning; $$A$$ and $$B$$ are two explanation for it being wet: either it rained (indicated by $$A$$), or the sprinkler turned on (indicated by $$B$$). If we know that the grass is wet ($$C$$ is true) and the sprinkler didn't go on ($$B$$ is false), then the probability that $$A$$ is true must be one, because that is the only other possible explanation. Hence, $$C$$ and $$A$$ are not independent given $$B$$.
 
 These structures clearly describe the independencies encoded by a three-variable Bayesian net. We can extend them to general networks by applying them recursively over any larger graph. This leads to a notion called $$d$$-separation (where $$d$$ stands for directed).
 
-We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed if they are connected by an *active path*. An undirected path in the Bayesian Network structure $$G$$ is called *active* given observed variables $$O$$ if for every consecutive triple of variables $$X,Y,Z$$ on the path, one of the following holds:
+We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed if they are not connected by an *active path*. An undirected path in the Bayesian Network structure $$G$$ is called *active* given observed variables $$O$$ if for every consecutive triple of variables $$X,Y,Z$$ on the path, one of the following holds:
 
 - $$X \leftarrow Y \leftarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
 - $$X \rightarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
 - $$X \leftarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
-- $$X \leftarrow Y \leftarrow Z$$, and $$Y$$ or any of its descendents are observed.
+- $$X \rightarrow Y \leftarrow Z$$, and $$Y$$ or any of its descendents are observed.
 {% marginfigure 'dp2' 'assets/img/dsep2.png' 'In this example, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$.' %}{% marginfigure 'dp1' 'assets/img/dsep1.png' 'However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$. There is an active pass which passed through the V-structure created when $$X_6$$ is observed.' %}
 
-For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_2, X_3$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
+For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
 
 
 The notion of $$d$$-separation is  useful, because it lets us describe a large fraction of the dependencies that hold in our model.
@@ -125,4 +126,4 @@ The cascade-type structures (a,b) are clearly symmetric and the directionality o
 **Fact:**
 If $$G,G'$$ have the same skeleton and the same v-structures, then $$I(G) = I(G').$$
 
-Again, it is easy to understand intuitively why this is true. Two graphs are I-equivalent is the $$d$$-separation between variables is the same. We can flip the directionality of any edge, unless it forms a v-structure, and the $$d$$-connectivity of the graph will be unchanged. We refer the reader to the textbook of Koller and Friedman for a full proof.
+Again, it is easy to understand intuitively why this is true. Two graphs are I-equivalent if the $$d$$-separation between variables is the same. We can flip the directionality of any edge, unless it forms a v-structure, and the $$d$$-connectivity of the graph will be unchanged. We refer the reader to the textbook of Koller and Friedman for a full proof.
