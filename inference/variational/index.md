@@ -29,7 +29,7 @@ Although sampling methods were historically invented first (in the 1940's), vari
 
 To formulate inference as an optimization problem, we need to choose an approximating family $$\mathcal{Q}$$ and an optimization objective $$J(q)$$. This objective needs to capture the similarity between $$q$$ and $$p$$; the field of information theory provides us with a tool for this called the *Kullback-Leibler (KL) divergence*.
 
-Formally, the KL divergence between two distributions $q$ and $p$ with discrete support is defined as
+Formally, the KL divergence between two distributions $$q$$ and $$p$$ with discrete support is defined as
 {% math %}
 KL(q||p) = \sum_x q(x) \log \frac{q(x)}{p(x)}.
 {% endmath %}
