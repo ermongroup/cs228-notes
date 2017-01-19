@@ -78,10 +78,12 @@
 
 
 <p><span class="newthought">These notes</span>  form a concise introductory course on probabilistic graphical models<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Probabilistic graphical models are a subfield of machine learning that studies how to describe and reason about the world in terms of probabilities. </span>.
-They are based on Stanford <a href="http://cs.stanford.edu/~ermon/cs228/index.html">CS228</a>, taught by <a href="http://cs.stanford.edu/~ermon/">Stefano Ermon</a>, and are written and maintained by the course staff.<label for="mn-id-whatever" class="margin-toggle"> ⊕</label><input type="checkbox" id="mn-id-whatever" class="margin-toggle" /><span class="marginnote">These notes are still <strong>under construction</strong>!
-They are about 70% complete, and probably contain a lot of typos.
-We are in the process of finalizing them; in the meantime feel free to submit your fixes on <a href="https://github.com/ermongroup/cs228-notes">Github</a>. </span>
-Free to contribute your improvements on <a href="https://github.com/ermongroup/cs228-notes">Github</a>.</p>
+They are based on Stanford <a href="http://cs.stanford.edu/~ermon/cs228/index.html">CS228</a>, taught by <a href="http://cs.stanford.edu/~ermon/">Stefano Ermon</a>, and have been written by <a href="http://www.stanford.edu/~kuleshov">Volodymyr Kuleshov</a>, with the <a href="https://github.com/ermongroup/cs228-notes/commits/master">help</a> of many students and course staff.
+<label for="mn-id-whatever" class="margin-toggle"> ⊕</label><input type="checkbox" id="mn-id-whatever" class="margin-toggle" /><span class="marginnote">The notes are still <strong>under construction</strong>!
+Although we have written up most of the material, you will probably find several typos. If you do, please let us know, or submit a pull request with your fixes to our <a href="https://github.com/ermongroup/cs228-notes">Github repository</a>. </span>
+You too may help make these notes better by submitting your improvements to us via <a href="https://github.com/ermongroup/cs228-notes">Github</a>.</p>
+
+<p>This course starts by introducing probabilistic graphical models from the very basics and concludes by explaining from first principles the <a href="">variational auto-encoder</a>, an important probabilistic model that is also one of the most influential recent results in deep learning.</p>
 
 <h2 id="preliminaries">Preliminaries</h2>
 
@@ -93,7 +95,7 @@ Free to contribute your improvements on <a href="https://github.com/ermongroup/c
     <p><a href="preliminaries/probabilityreview">Review of probability theory</a>: Probability distributions. Conditional probability. Random variables.</p>
   </li>
   <li>
-    <p><a href="preliminaries/applications">Examples of real-world applications</a>: Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recogition.</p>
+    <p>Examples of real-world applications: Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recognition.</p>
   </li>
 </ol>
 
@@ -124,7 +126,7 @@ Free to contribute your improvements on <a href="https://github.com/ermongroup/c
     <p><a href="inference/sampling/">Sampling-based inference</a>: Monte-Carlo sampling. Importance sampling. Markov Chain Monte-Carlo. Applications in inference.</p>
   </li>
   <li>
-    <p>Variational inference: Variational lower bounds. Mean Field. Marginal polytope and its relaxations.</p>
+    <p><a href="inference/variational/">Variational inference</a>: Variational lower bounds. Mean Field. Marginal polytope and its relaxations.</p>
   </li>
 </ol>
 
@@ -132,13 +134,13 @@ Free to contribute your improvements on <a href="https://github.com/ermongroup/c
 
 <ol>
   <li>
-    <p>Learning in directed models: Maximum likelihood estimation. Learning theory basics. Maximum likelihood estimators for Bayesian networks.</p>
+    <p><a href="learning/directed/">Learning in directed models</a>: Maximum likelihood estimation. Learning theory basics. Maximum likelihood estimators for Bayesian networks.</p>
   </li>
   <li>
-    <p>Learning in undirected models: Exponential families. Gradient descent maximum likelihood estimation.</p>
+    <p><a href="learning/undirected/">Learning in undirected models</a>: Exponential families. Maximum likelihood estimation with gradient descent. Learning in CRFs</p>
   </li>
   <li>
-    <p>Learning in latent-variable models: Gaussian mixture models. Expectation maximization.</p>
+    <p><a href="learning/latent/">Learning in latent variable models</a>: Latent variable models. Gaussian mixture models. Expectation maximization.</p>
   </li>
   <li>
     <p>Bayesian learning: Bayesian paradigm. Conjugate priors. Examples.</p>
@@ -148,6 +150,16 @@ Free to contribute your improvements on <a href="https://github.com/ermongroup/c
   </li>
 </ol>
 
+<h2 id="bringing-it-all-together">Bringing it all together</h2>
+
+<ol>
+  <li>
+    <p><a href="extras/vae">The variational autoencoder</a>: Deep generative models. The reparametrization trick. Learning latent visual representations.</p>
+  </li>
+  <li>
+    <p>List of further readings: Structured support vector machines. Bayesian non-parametrics.</p>
+  </li>
+</ol>
 
 
 

@@ -77,23 +77,25 @@
 </script>
 
 
-<p>We begin our study of probabilistic graphical models with the topic of <em>representation</em>.
-The main question we want to address is the following: how do we define a probability distribution that models some real-world phenomenon of interest? This is not a trivial problem: we have seen that a naive model for classifying spam messages with <script type="math/tex">n</script> possible words involves potentially up to <script type="math/tex">O(2^n)</script> parameters.</p>
+<p>We begin with the topic of <em>representation</em>: how do we choose a probability distribution to model some interesting aspect of the world? 
+Coming up with a good model is not always easy: we have seen in the introduction that a naive model for spam classification would require us to specify a number of parameters that is exponential in the number of words in the English language!</p>
 
-<p>In this chapter, we will:</p>
+<p>In this chapter, we will learn about one way to avoid these kinds of complications.
+We are going to:</p>
 
 <ul>
-  <li>Propose a general approach for parametrizing probability distributions using only a few parameters.</li>
-  <li>Introduce a visual language for describing and representing these distributions via <em>directed acyclic graphs</em> (DAGs).</li>
-  <li>Study how our graphical representation describes properties of the probability distribution; this will enable to us to accurately understand our modeling assumptions and will later help designing efficient inference algorithms.</li>
+  <li>Learn an effective and general technique for parameterizing probability distributions using only a few parameters.</li>
+  <li>See how the resulting models can be elegantly described via <em>directed acyclic graphs</em> (DAGs).</li>
+  <li>Study connections between the structure of a DAG and the modeling assumptions made by distribution that it describes; this will not only make these modeling assumptions more explicit, but will also help us design more efficient inference algorithms.</li>
 </ul>
 
-<p>We will later see that there are two general approaches to representing probabilities.
-The first approach, which we will see here, describes probabilities using directed graphs, also referred to as <em>Bayesian networks</em>. The second approach, covered in the next chapter, will involve undirected graphs, which are also called <em>Markov random fields</em>.</p>
+<p>The kinds of models that we will see here are referred to as <em>Bayesian networks</em>. In the next chapter, we will also see a second approach, which involves <em>undirected</em> graphs, also known as <em>Markov random fields</em>.</p>
 
 <h2 id="probabilistic-modeling-with-bayesian-networks">Probabilistic modeling with Bayesian networks</h2>
 
-<p>Directed graphical models (also known as Bayesian networks) are a class of probability distributions that admit a particular compact parametrization that can be elegantly described using directed graphs. The general idea behind this parametrization is that each variable depends only on a small number of <em>ancestor</em> variables.</p>
+<p>Directed graphical models (a.k.a. Bayesian networks) are a family of probability distributions that admit a compact parametrization that can be naturally described using a directed graph.</p>
+
+<p>The general idea behind this parametrization is surprisingly simple.</p>
 
 <p>Recall that by the chain rule, we can write any probability <script type="math/tex">p</script> as:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
@@ -111,15 +113,16 @@ p(x_i \mid  x_{i-1}...x_1) = p(x_i \mid  x_{A_i}).
 
 <p>Distributions of this form can be naturally expressed as <em>directed acyclic graphs</em>, in which vertices correspond to variables <script type="math/tex">x_i</script> and edges indicate dependency relationships. In particular we set the parents of each node to <script type="math/tex">x_i</script> to its ancestors <script type="math/tex">x_{A_i}</script>.</p>
 
-<p>As an example, consider a model of a student’s grade <script type="math/tex">g</script> on an exam; in addition to <script type="math/tex">g</script>, we also model other aspects of the problem, such as the exam’s difficulty <script type="math/tex">d</script>, the student’s intelligence <script type="math/tex">i</script>, his SAT score <script type="math/tex">s</script>, and the quality <script type="math/tex">l</script> of a reference letter from the professor who taught the course. Each variable is binary, except for <script type="math/tex">g</script>, which takes 3 possible values.<label for="nb1" class="margin-toggle">⊕</label><input type="checkbox" id="nb1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/grade-model.png" /><br />Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.</span> The joint probability distribution over the 5 variables naturally factorizes as follows:</p>
+<p>As an example, consider a model of a student’s grade <script type="math/tex">g</script> on an exam; this grade depends on several factors: the exam’s difficulty <script type="math/tex">d</script>, the student’s intelligence <script type="math/tex">i</script>, his SAT score <script type="math/tex">s</script>; it also affects the quality <script type="math/tex">l</script> of the reference letter from the professor who taught the course. Each variable is binary, except for <script type="math/tex">g</script>, which takes 3 possible values.<label for="nb1" class="margin-toggle">⊕</label><input type="checkbox" id="nb1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/grade-model.png" /><br />Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.</span> The joint probability distribution over the 5 variables naturally factorizes as follows:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
 </script></div>
 <p>The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student’s intelligence and the difficulty of the exam.</p>
 
 <p>Another way to interpret directed graphs is in terms of stories for how the data was generated.
-In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student’s grade is sampled given these parameters; finally, the recommendation letter is generated based on that grade.
-In the previous spam classification example, we implicitly postulated that email is generated according to a two-step process:
+In the above example, to determine the quality of the reference letter, we may first sample an intelligence level and an exam difficulty; then, a student’s grade is sampled given these parameters; finally, the recommendation letter is generated based on that grade.</p>
+
+<p>In the previous spam classification example, we implicitly postulated that email is generated according to a two-step process:
 first, we choose a spam/non-spam label <script type="math/tex">y</script>; then we sample independently whether each word is present, conditioned on that label.</p>
 
 <h3 id="formal-definition">Formal definition.</h3>
