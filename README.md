@@ -4,7 +4,7 @@ These notes form a concise introductory course on probabilistic graphical models
 
 This course starts by introducing graphical models from the very basics and concludes by explaining from first principles the [variational auto-encoder](https://ermongroup.github.io/cs228-notes/).
 
-The compiled version is available [here](kuleshov.github.io/cs228-notes/).
+The compiled version is available [here](http://ermongroup.github.io/cs228-notes/).
 
 ## Contributing
 
