@@ -85,7 +85,7 @@ Given a probabilistic model, how do we obtain answers to relevant questions abou
 
 - *Marginal inference*: what is the probability of a given variable in our model after we sum everything else out?
 {% math %}
-p(x_1) = \sum_{x_2} \sum_{x_2}  \cdots \sum_{x_n} p(x_1, x_2, ..., x_n).
+p(x_1) = \sum_{x_2} \sum_{x_3}  \cdots \sum_{x_n} p(x_1, x_2, ..., x_n).
 {% endmath %}
 An example query would be to determine the probability that a random house has more than three bedrooms.
 
