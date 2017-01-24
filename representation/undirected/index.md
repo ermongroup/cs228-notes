@@ -19,7 +19,7 @@ One way to define a probability over the joint voting decision of $$A,B,C,D$$ is
 where $$\phi(X,Y)$$ is a factor that assigns more weight to consistent votes among friends $$X,Y$$, e.g.:
 {% math %} 
 \begin{align*}
-\phi(A,B) = 
+\phi(X,Y) = 
 \begin{cases}
 10 & \text{ if}\; X = Y = 1 \\
 5 & \text{ if}\; X = Y = 0 \\
