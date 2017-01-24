@@ -5,12 +5,11 @@ title: Real World Applications
 
 To Be Completed..
 
-## Image denoising
+## Image denoising 
 
-## RNA Structure Prediction
+![Bilby Stamp](imageDenoising.png)
+![Bilby Stamp2](imageDenoising2.png)
 
-## Syntactic analysis of sentences
-
-## Optical character recogition
-
-
+## In Painting
+![inpainting](inpainting.png)
+![inpainting2](inpainting2.png)
