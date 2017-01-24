@@ -3,7 +3,7 @@ layout: post
 title: Real World Applications
 ---
 
-# Image denoising 
+# Image Denoising 
 
 ![Image Denoising 1](imageDenoising.png)
 ![Image Denoising 2](imageDenoising2.png)
@@ -33,3 +33,10 @@ title: Real World Applications
 
 # Ecology - Bird Migration Patterns
 ![birds](bird_new.gif)
+
+# Poverty Mapping
+![uganda](uganda.png.jpg)
+[Stanford scientists combine satellite data, machine learning to map poverty](http://news.stanford.edu/2016/08/18/combining-satellite-data-machine-learning-to-map-poverty/)
+
+# Error Correcting Codes
+![codes](Picture1.png)

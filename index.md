@@ -16,7 +16,7 @@ This course starts by introducing probabilistic graphical models from the very b
 
 2. [Review of probability theory](preliminaries/probabilityreview): Probability distributions. Conditional probability. Random variables.
 
-3. Examples of real-world applications: Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recognition.
+3. [Examples of real-world applications](preliminaries/applications): Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recognition.
 
 ## Representation
 
