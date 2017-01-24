@@ -17,9 +17,9 @@ title: Real World Applications
 ![inpainting2](inpainting2.png)
 
 ## Generating Images of Bedroom Spaces
-Training Data
-![bedroom1](bedroominpainting1.png)
-Generated Data
+**Training Data**<br /> 
+![bedroom1](bedroominpainting1.png)<br /> 
+**Generated Data**<br /> 
 ![bedroom1](bedroominpainting2.png)
 
 # Speech Recognition
