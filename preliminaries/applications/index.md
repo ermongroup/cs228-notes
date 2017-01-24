@@ -3,13 +3,33 @@ layout: post
 title: Real World Applications
 ---
 
-To Be Completed..
+# Image denoising 
 
-## Image denoising 
+![Image Denoising 1](imageDenoising.png)
+![Image Denoising 2](imageDenoising2.png)
 
-![Bilby Stamp](imageDenoising.png)
-![Bilby Stamp2](imageDenoising2.png)
+# In Painting
 
-## In Painting
+## Generating Celebrity Faces
 ![inpainting](inpainting.png)
+
+## Completing a picture of a Face
 ![inpainting2](inpainting2.png)
+
+## Generating Images of Bedroom Spaces
+Training Data
+![bedroom1](bedroominpainting1.png)
+Generated Data
+![bedroom1](bedroominpainting2.png)
+
+# Speech Recognition
+![Speech](speech.png)
+- Infer spoken words from audio signals
+- Hidden Markov Models
+
+# Evolutionary Biology
+![philo](philo.png)
+- Reconstruct a phylogenetic tree from DNA sequences of current species
+
+# Ecology - Bird Migration Patterns
+![birds](bird_new.gif)
