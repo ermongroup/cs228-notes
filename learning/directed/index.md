@@ -114,7 +114,7 @@ Thus, there is an inherent bias-variance trade off when selecting the hypothesis
 
 High bias can be avoided by increasing the capacity of the model. We may avoid high variance using several approaches.
 
-We may impose hard constraints, e.g. by selecting a less expressive hypothesis class: Bayesian networks with at most d parents or pairwise (rather than arbitrary-order) MRFs. We may also introduce a soft preference for “simpler” models by adding a regularizer term $$R(p)$$ to the loss $$L(x,p)$$, which will penalize overly complex $$p$$.
+We may impose hard constraints, e.g. by selecting a less expressive hypothesis class: Bayesian networks with at most $$d$$ parents or pairwise (rather than arbitrary-order) MRFs. We may also introduce a soft preference for “simpler” models by adding a regularizer term $$R(p)$$ to the loss $$L(x,p)$$, which will penalize overly complex $$p$$.
 
 ### Generalization error
 
