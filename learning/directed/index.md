@@ -40,7 +40,7 @@ The first term does not depend on p; hence minimizing KL divergence is equivalen
 \mathbb{E}_{x \sim p^*} [ \log p(x) ].
 {% endmath %}
 This objective asks that $$p$$ assign high probability to instances sampled from $$p^∗$$, so as to reflect the true distribution.
-Although we can now compare models, since we are not computing $$H(p^∗)$$, we don’t know how close we are to the optimum
+Although we can now compare models, since we are not computing $$H(p^∗)$$, we don’t know how close we are to the optimum.
 
 However, there is still a problem: in general we do not know $$p^∗$$. We will thus approximate the expected log-likelihood $$\mathbb{E}_{x \sim p^*} [ \log p(x) ]$$ with the empirical log-likelihood (a Monte-Carlo estimate):
 {% math %}
