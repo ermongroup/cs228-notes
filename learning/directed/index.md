@@ -62,11 +62,11 @@ of 100 tosses are heads? Let's assume that $$p(x=h)=\theta$$ and $$p(x=t)=1−\t
 
 More generally, our log-likelihood function is simply
 {% math %}
-L(\theta) = \text{\# heads} \cdot \log(\theta) + \text{\# tails} \cdot \log(1 − \theta),
+L(\theta) = \text{# heads} \cdot \log(\theta) + \text{# tails} \cdot \log(1 − \theta),
 {% endmath %}
 for which the optimal solution is
 {% math %}
-\theta^* = \frac{\text{\# heads}}{\text{\# heads} + \text{\# tails}}. 
+\theta^* = \frac{\text{# heads}}{\text{# heads} + \text{# tails}}. 
 {% endmath %}
 
 ## Likelihood, Loss and Risk
