@@ -2,7 +2,7 @@
 layout: post
 title: Markov random fields
 ---
-Bayesian networks are a class of models that can compactly represent many interesting probability distributions. However, we have seen in the previous chapter that some distributions cannot be perfectly represented by a Bayes net. 
+Bayesian networks are a class of models that can compactly represent many interesting probability distributions. However, we have seen in the previous chapter that some distributions cannot be perfectly represented by a Bayesian network. 
 
 In such cases, unless we want to introduce false independencies among the variables of our model, we must fall back to a less compact representation (which can be viewed as a graph with additional, unnecessary edges). This leads to extra, unnecessary parameters in the model, and makes it more difficult to learn these parameters and to make predictions.
 
@@ -74,7 +74,7 @@ They also possess several important drawbacks:
 It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique potential (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called *moralization*.
 {% maincolumn 'assets/img/moralization.png' 'A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.' %}
 
-Thus MRFs have more power than Bayes net, but are more difficult to deal with computationally. A general rule of thumb is to use Bayes nets whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).
+Thus MRFs have more power than Bayesian networks, but are more difficult to deal with computationally. A general rule of thumb is to use Bayesian networks whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).
 
 ## Independencies in Markov Random Fields
 
