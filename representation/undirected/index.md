@@ -89,7 +89,7 @@ In particular, if a set of observed variables forms a cutset between two halves 
 
 Formally, we define the *Markov blanket* $$U$$ of a variable $$X$$ as the minimal set of nodes such that $$X$$ is independent from the rest of the graph if $$U$$ is observed, i.e. $$X \perp (\mathcal{X} - \{X\} - U) \mid  U$$. This notion holds for both directed and undirected models, but in the undirected case the Markov blanket turns out to simply equal a node's neighborhood.
 
-In the directed case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$p$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
+In the directed case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$G$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
 
 {% maincolumn 'assets/img/mrf-bn-comparison.png' 'Examples of probability distributions that have a perfect directed graphical representation but no indirected representation, and vice-versa.' %}
 
