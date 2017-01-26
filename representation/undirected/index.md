@@ -34,7 +34,7 @@ p(A,B,C,D) = \frac{1}{Z} \tilde p(A,B,C,D),
 {% endmath %}
 where $$ Z = \sum_{A,B,C,D} \tilde p(A,B,C,D) $$ is a normalizing constant that ensures that the distribution sums to one.
 
-When normalized, we can view $$\phi(A,B)$$ as an interaction that pushes them $$B$$'s vote closer to that of $$A$$. The term $$\phi(B,C)$$ pushes $$B$$'s vote closer to $$C$$, and the most likely vote will require reconciling these conflicting influences.
+When normalized, we can view $$\phi(A,B)$$ as an interaction that pushes $$B$$'s vote closer to that of $$A$$. The term $$\phi(B,C)$$ pushes $$B$$'s vote closer to $$C$$, and the most likely vote will require reconciling these conflicting influences.
 
 Note that unlike in the directed case, we are not saying anything about how one variable is generated from another set of variables (as a conditional probability distribution would do). We simply indicate a level of coupling between dependent variables in the graph. In a sense, this requires less prior knowledge, as we no longer have to specify a full generative story of how the vote of $$B$$ is constructed from the vote of $$A$$ (which we would need to do if we had a $$P(B\mid A)$$ factor). Instead, we simply identify dependent variables and define the strength of their interactions; this in turn defines an energy landscape over the space of possible assignments and we convert this energy to a probability via the normalization constant.
 
