@@ -15,7 +15,7 @@ We will consider parameter learning in both directed and undirected models. It t
 
 ## The learning task
 
-Before, we start our discussion of learning, let's first reflect on what it means it fit a model, and what is a desirable objective for this task.
+Before, we start our discussion of learning, let's first reflect on what it means to fit a model, and what is a desirable objective for this task.
 
 Let's assume that the domain is governed by some underlying distribution $$p^*$$. We are given a dataset $$D$$ of $$m$$ samples from $$p^∗$$; The standard assumption is that the data instances are independent and identically distributed (iid). We are also given a family of models $$M$$, and our task is to learn some “good” model in $$M$$ that defines a distribution $$p$$. For example, we could look at all Bayes nets with a given graph structure, with all the possible choices of the CPD tables.
 
