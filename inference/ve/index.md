@@ -108,11 +108,11 @@ Starting with $$x_1$$, we collected all the factors involving $$x_1$$, which wer
 For a slightly more complex example, recall the graphical model of a student's grade that we introduced earlier.{% marginfigure 'nb1' 'assets/img/grade-model.png' "Bayes net model of a student's grade $$g$$ on an exam; in addition to $$g$$, we also model other aspects of the problem, such as the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$, and the quality $$l$$ of a reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values."%}
 The probability specified by the model is of the form
 {% math %}
-p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
+p(l, g, i, d, s) = p(l \mid  g) p(s \mid i) p(i) p(g \mid  i, d) p(d).
 {% endmath %}
-Let's suppose that we are computing $$p(l)$$ and are eliminating variables in their topological ordering in the graph. First, we eliminate $$d$$, which corresponds to creating a new factor $$\tau_1(g,i) = \sum_{d} p(g \mid  i, d)p(d)$$. Next, we eliminate $$i$$ to produce a factor $$\tau_2(g,s) = \sum_{d} \tau_1(g,i) p(i) p(s \mid i)$$; then we eliminate $$g$$ yielding $$\tau_2(g) = \sum_{d} \tau_2(g,d)$$, and so forth. Note that these operations are equivalent to summing out the factored probability distribution as follows:
+Let's suppose that we are computing $$p(l)$$ and are eliminating variables in their topological ordering in the graph. First, we eliminate $$d$$, which corresponds to creating a new factor $$\tau_1(g,i) = \sum_{d} p(g \mid  i, d) p(d)$$. Next, we eliminate $$i$$ to produce a factor $$\tau_2(g,s) = \sum_{i} \tau_1(g,i) p(i) p(s \mid i)$$; then we eliminate $$s$$ yielding $$\tau_3(g) = \sum_{s} \tau_2(g,s)$$, and so forth. Note that these operations are equivalent to summing out the factored probability distribution as follows:
 {% math %}
-p(l) = \sum_{g} p(l \mid  g) \sum_{s} p(s\mid d) \sum_{i} p(i) \sum_{d} p(g \mid  i, d) p(d) .
+p(l) = \sum_{g} p(l \mid  g) \sum_{s} \sum_{i} p(s\mid i) p(i) \sum_{d} p(g \mid  i, d) p(d).
 {% endmath %}
 Note that this example requires computing at most $$d^3$$ operations per step, since each factor is at most over 2 variables, and one variable is summed out at each step (the dimensionality $$d$$ in this example is either 2 or 3).
 
