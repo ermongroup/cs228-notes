@@ -77,7 +77,7 @@
 </script>
 
 
-<p>Bayesian networks are a class of models that can compactly represent many interesting probability distributions. However, we have seen in the previous chapter that some distributions cannot be perfectly represented by a Bayes net.</p>
+<p>Bayesian networks are a class of models that can compactly represent many interesting probability distributions. However, we have seen in the previous chapter that some distributions cannot be perfectly represented by a Bayesian network.</p>
 
 <p>In such cases, unless we want to introduce false independencies among the variables of our model, we must fall back to a less compact representation (which can be viewed as a graph with additional, unnecessary edges). This leads to extra, unnecessary parameters in the model, and makes it more difficult to learn these parameters and to make predictions.</p>
 
@@ -109,7 +109,7 @@ p(A,B,C,D) = \frac{1}{Z} \tilde p(A,B,C,D),
 </script></div>
 <p>where <script type="math/tex">Z = \sum_{A,B,C,D} \tilde p(A,B,C,D)</script> is a normalizing constant that ensures that the distribution sums to one.</p>
 
-<p>When normalized, we can view <script type="math/tex">\phi(A,B)</script> as an interaction that pushes them <script type="math/tex">B</script>’s vote closer to that of <script type="math/tex">A</script>. The term <script type="math/tex">\phi(B,C)</script> pushes <script type="math/tex">B</script>’s vote closer to <script type="math/tex">C</script>, and the most likely vote will require reconciling these conflicting influences.</p>
+<p>When normalized, we can view <script type="math/tex">\phi(A,B)</script> as an interaction that pushes <script type="math/tex">B</script>’s vote closer to that of <script type="math/tex">A</script>. The term <script type="math/tex">\phi(B,C)</script> pushes <script type="math/tex">B</script>’s vote closer to <script type="math/tex">C</script>, and the most likely vote will require reconciling these conflicting influences.</p>
 
 <p>Note that unlike in the directed case, we are not saying anything about how one variable is generated from another set of variables (as a conditional probability distribution would do). We simply indicate a level of coupling between dependent variables in the graph. In a sense, this requires less prior knowledge, as we no longer have to specify a full generative story of how the vote of <script type="math/tex">B</script> is constructed from the vote of <script type="math/tex">A</script> (which we would need to do if we had a <script type="math/tex">P(B\mid A)</script> factor). Instead, we simply identify dependent variables and define the strength of their interactions; this in turn defines an energy landscape over the space of possible assignments and we convert this energy to a probability via the normalization constant.</p>
 
@@ -153,7 +153,7 @@ However, the MRF turns out to a perfect map for this distribution.</p>
 <p>It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique potential (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph <script type="math/tex">G</script> and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called <em>moralization</em>.</p>
 <figure><figcaption>A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.</figcaption><img src="/cs228-notes/assets/img/moralization.png" /></figure>
 
-<p>Thus MRFs have more power than Bayes net, but are more difficult to deal with computationally. A general rule of thumb is to use Bayes nets whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).</p>
+<p>Thus MRFs have more power than Bayesian networks, but are more difficult to deal with computationally. A general rule of thumb is to use Bayesian networks whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).</p>
 
 <h2 id="independencies-in-markov-random-fields">Independencies in Markov Random Fields</h2>
 
@@ -168,7 +168,7 @@ What independencies can be then described by an undirected MRF? The answer here 
 
 <p>Formally, we define the <em>Markov blanket</em> <script type="math/tex">U</script> of a variable <script type="math/tex">X</script> as the minimal set of nodes such that <script type="math/tex">X</script> is independent from the rest of the graph if <script type="math/tex">U</script> is observed, i.e. <script type="math/tex">X \perp (\mathcal{X} - \{X\} - U) \mid  U</script>. This notion holds for both directed and undirected models, but in the undirected case the Markov blanket turns out to simply equal a node’s neighborhood.</p>
 
-<p>In the directed case, we found that <script type="math/tex">I(G) \subseteq I(p)</script>, but there were distributions <script type="math/tex">p</script> whose independencies could not be described by <script type="math/tex">p</script>. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption <script type="math/tex">X \perp Y</script>.</p>
+<p>In the directed case, we found that <script type="math/tex">I(G) \subseteq I(p)</script>, but there were distributions <script type="math/tex">p</script> whose independencies could not be described by <script type="math/tex">G</script>. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption <script type="math/tex">X \perp Y</script>.</p>
 
 <figure><figcaption>Examples of probability distributions that have a perfect directed graphical representation but no indirected representation, and vice-versa.</figcaption><img src="/cs228-notes/assets/img/mrf-bn-comparison.png" /></figure>
 

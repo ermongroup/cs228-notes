@@ -92,7 +92,7 @@
 
 <h2 id="the-learning-task">The learning task</h2>
 
-<p>Before, we start our discussion of learning, let’s first reflect on what it means it fit a model, and what is a desirable objective for this task.</p>
+<p>Before, we start our discussion of learning, let’s first reflect on what it means to fit a model, and what is a desirable objective for this task.</p>
 
 <p>Let’s assume that the domain is governed by some underlying distribution <script type="math/tex">p^*</script>. We are given a dataset <script type="math/tex">D</script> of <script type="math/tex">m</script> samples from <script type="math/tex">p^∗</script>; The standard assumption is that the data instances are independent and identically distributed (iid). We are also given a family of models <script type="math/tex">M</script>, and our task is to learn some “good” model in <script type="math/tex">M</script> that defines a distribution <script type="math/tex">p</script>. For example, we could look at all Bayes nets with a given graph structure, with all the possible choices of the CPD tables.</p>
 
@@ -119,7 +119,7 @@ KL(p^*||p) = \sum_x p^*(x) \log \frac{p^*(x)}{p(x)} = -H(p^*) - \mathbb{E}_{x \s
 \mathbb{E}_{x \sim p^*} [ \log p(x) ].
 </script></div>
 <p>This objective asks that <script type="math/tex">p</script> assign high probability to instances sampled from <script type="math/tex">p^∗</script>, so as to reflect the true distribution.
-Although we can now compare models, since we are not computing <script type="math/tex">H(p^∗)</script>, we don’t know how close we are to the optimum</p>
+Although we can now compare models, since we are not computing <script type="math/tex">H(p^∗)</script>, we don’t know how close we are to the optimum.</p>
 
 <p>However, there is still a problem: in general we do not know <script type="math/tex">p^∗</script>. We will thus approximate the expected log-likelihood <script type="math/tex">\mathbb{E}_{x \sim p^*} [ \log p(x) ]</script> with the empirical log-likelihood (a Monte-Carlo estimate):</p>
 <div class="mathblock"><script type="math/tex; mode=display">
@@ -134,18 +134,18 @@ Although we can now compare models, since we are not computing <script type="mat
 
 <h3 id="an-example">An example</h3>
 
-<p>As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution <script type="math/tex">p^∗(x)$ where</script>x \in {h,t}<script type="math/tex">. Our class of models</script>M<script type="math/tex">is going to be the set of all probability distributions over</script>{h,t}$$.</p>
+<p>As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution <script type="math/tex">p^∗(x)</script> where <script type="math/tex">x \in \{h,t\}</script>. Our class of models <script type="math/tex">M</script> is going to be the set of all probability distributions over <script type="math/tex">\{h,t\}</script>.</p>
 
 <p>How should we choose <script type="math/tex">p</script> from M if 60 out
 of 100 tosses are heads? Let’s assume that <script type="math/tex">p(x=h)=\theta</script> and <script type="math/tex">p(x=t)=1−\theta</script>. If our observed data is <script type="math/tex">D = \{h,h,t,h,t\}</script>, our likelihood becomes <script type="math/tex">\prod_i p(x_i ) = \theta \cdot \theta \cdot (1 − \theta) \cdot \theta \cdot (1 − \theta)</script>; maximizing this yields <script type="math/tex">\theta = 60\%</script>.</p>
 
 <p>More generally, our log-likelihood function is simply</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-L(\theta) = \text{\# heads} \cdot \log(\theta) + \text{\# tails} \cdot \log(1 − \theta),
+L(\theta) = \text{# heads} \cdot \log(\theta) + \text{# tails} \cdot \log(1 − \theta),
 </script></div>
 <p>for which the optimal solution is</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\theta^* = \frac{\text{\# heads}}{\text{\# heads} + \text{\# tails}}. 
+\theta^* = \frac{\text{# heads}}{\text{# heads} + \text{# tails}}. 
 </script></div>
 
 <h2 id="likelihood-loss-and-risk">Likelihood, Loss and Risk</h2>
@@ -193,7 +193,7 @@ The data we have is a sample, and usually there is vast amount of samples that w
 
 <p>High bias can be avoided by increasing the capacity of the model. We may avoid high variance using several approaches.</p>
 
-<p>We may impose hard constraints, e.g. by selecting a less expressive hypothesis class: Bayesian networks with at most d parents or pairwise (rather than arbitrary-order) MRFs. We may also introduce a soft preference for “simpler” models by adding a regularizer term <script type="math/tex">R(p)</script> to the loss <script type="math/tex">L(x,p)</script>, which will penalize overly complex <script type="math/tex">p</script>.</p>
+<p>We may impose hard constraints, e.g. by selecting a less expressive hypothesis class: Bayesian networks with at most <script type="math/tex">d</script> parents or pairwise (rather than arbitrary-order) MRFs. We may also introduce a soft preference for “simpler” models by adding a regularizer term <script type="math/tex">R(p)</script> to the loss <script type="math/tex">L(x,p)</script>, which will penalize overly complex <script type="math/tex">p</script>.</p>
 
 <h3 id="generalization-error">Generalization error</h3>
 
