@@ -151,3 +151,13 @@ This is essentially the same as the head/tails example we saw earlier (except wi
 {% endmath %}
 
 We thus conclude that in Bayesian networks with discrete variabels, the maximum-likelihood estimate has a closed-form solution. Even when the variables are not discrete, the task is equally simple: the log-factors are linearly separable, hence the log-likelihood reduces to estimating each of them separately. The simplicity of learning is one of the most convenient features of Bayesian networks.
+
+##Structure learning for Bayesian networks
+
+<p>The task of structure learning for Bayesian networks refers to learn the structure of the directed acyclic graph (DAG) from data. There are two major approaches for the structure learning: score-based approach and constraint-based approach . 
+
+<h3 id="score-based approach">Score-based approach</h3>
+
+The score-based approach first defines a criterion by which we could evaluate how well the Bayesian network fits the data, then search over the space of DAG for a structure with maximal score. The de
+
+<h3 id="constraint-based approach">Constraint-based approach</h3>
