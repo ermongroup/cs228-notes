@@ -64,7 +64,7 @@ Recall that we can view a factor as a multi-dimensional table assigning a value 
 
 ### Factor Operations
 
-The variable elimination algorithm will repeatedly perform two factor operations: product and marginalization. We have been implicitly been performing these operations in our chain example.
+The variable elimination algorithm will repeatedly perform two factor operations: product and marginalization. We have been implicitly performing these operations in our chain example.
 
 The factor product operation simply defines the product $$\phi_3 := \phi_1 \times \phi_2$$ of two factors $$\phi_1, \phi_2$$ as
 {% math %}
