@@ -78,7 +78,7 @@ Because of this property, $$-J(q)$$ is called the variational lower bound or the
 \log Z(\theta) \geq \mathbb{E}_{q(x)} \left[ \log \tilde p(x) - \log q(x) \right].
 {% endmath %}
 
-Crucially, the difference between $$\log Z(\theta)$$ and $$J(q)$$ is precisely {%m%}KL(q||p){%em%}. Thus, by maximizing the evidence-lower bound, we are minimizing {%m%}KL(q||p){%em%} by "squeezing" it between $$J(q)$$ and $$\log Z(\theta)$$.
+Crucially, the difference between $$\log Z(\theta)$$ and $$-J(q)$$ is precisely {%m%}KL(q||p){%em%}. Thus, by maximizing the evidence-lower bound, we are minimizing {%m%}KL(q||p){%em%} by "squeezing" it between $$J(q)$$ and $$\log Z(\theta)$$.
 
 ## On the choice of KL divergence
 
