@@ -25,7 +25,7 @@ In a sense, when $$x_k$$ is marginalized out, it receives all the signal from va
 
 At the end of the VE run, $$x_i$$ receives messages from all of its immediate children, marginalizes them out, and we obtain the final marginal.
 
-Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all of messages from its children. The key insight here is that the messages $$x_k$$ will receives from $$x_j$$ will be the same as when $$x_i$$ was the root{% sidenote 1 'Another reason why this is true is because there is only a single path connecting two nodes in the tree.'%}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
+Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all of messages from its children. The key insight here is that the messages $$x_k$$ receives from $$x_j$$ will be the same as when $$x_i$$ was the root{% sidenote 1 'Another reason why this is true is because there is only a single path connecting two nodes in the tree.'%}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
 
 ### A message-passing algorithm
 
