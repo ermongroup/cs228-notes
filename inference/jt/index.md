@@ -99,14 +99,14 @@ Crucially, we will assume that the cliques $$c$$ have a form of path structure, 
 {% maincolumn 'assets/img/junctionpath.png' 'A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicates sepsets, which are variables forming the intersection of the scopes of two neighboring cliques'%}
 
 Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to 
-``push in" certain variables deeper into the product of cluster potentials:
+"push in" certain variables deeper into the product of cluster potentials:
 {% math %}
 \begin{align*}
 \phi(x_1) \sum_{x_2} \phi(x_1,x_2) \sum_{x_3} \phi(x_1,x_2,x_3) \sum_{x_5} \phi(x_2,x_3,x_5) \sum_{x_6} \phi(x_2,x_5,x_6).
 \end{align*}
 {% endmath %}
 
-We first sum over $$x_6$$, which creates a factor $$\tau(x_2, x_3, x_5) = \phi(x_2,x_3,x_5) \phi_{x_6} \phi(x_2,x_5,x_6)$$. Then, $$x_5$$ gets eliminated, and so on. At each step, each cluster marginalizes out the variables that are not in the scope of its neighbor. This marginalization can also be interpreted as computing a message over the variables it shares with the neighbor.
+We first sum over $$x_6$$, which creates a factor $$\tau(x_2, x_3, x_5) = \phi(x_2,x_3,x_5) \sum_{x_6} \phi(x_2,x_5,x_6)$$. Then, $$x_5$$ gets eliminated, and so on. At each step, each cluster marginalizes out the variables that are not in the scope of its neighbor. This marginalization can also be interpreted as computing a message over the variables it shares with the neighbor.
 
 The running intersection property is what enables us to push sums in all the way to the last factor. We may eliminate $$x_6$$ because we know that only the last cluster will carry this variable: since it is not present in the neighboring cluster, it cannot be anywhere else in the graph without violating the RIP.
 
@@ -137,14 +137,14 @@ A special case when we *can* find the optimal junction tree is when $$G$$ itself
 
 Let us now define the junction tree algorithm, and then explain why it works. At a high-level, this algorithm implements a form of message passing on the junction tree, which will be equivalent to variable elimination for the same reasons that BP was equivalent to VE.
 
-More precisely, let us define the potential $$\psi_c(x_c)$$ of each cluster $$c$$ as the product of all the factors $$\phi$$ in $$G$$ that have been assigned to $$x_c$$. By the family preservation property, this is well-defined, and we may assume that our distribution is in the form
+More precisely, let us define the potential $$\psi_c(x_c)$$ of each cluster $$c$$ as the product of all the factors $$\phi$$ in $$G$$ that have been assigned to $$c$$. By the family preservation property, this is well-defined, and we may assume that our distribution is in the form
 {% math %}
 p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \psi_c(x_c).
 {% endmath %}
 
 Then, at each step of the algorithm, we choose a pair of adjacent clusters $$c^{(i)}, c^{(j)}$$ in $$T$$ and compute a message whose scope is the sepset $$S_{ij}$$ between the two clusters:
 {% math %}
-m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi(x_c \backslash S_{ij}) \prod_{\ell \in N(i) \backslash j} m_{\ell \to i}(S_{\ell i}).
+m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi(x_c) \prod_{\ell \in N(i) \backslash j} m_{\ell \to i}(S_{\ell i}).
 {% endmath %}
 
 We choose $$c^{(i)}, c^{(j)}$$ only if $$c^{(i)}$$ has received messages from all of its neighbors except $$c^{(j)}$$. Just as in belief propagation, this procedure will terminate in exactly {%m%}2|E_T|{%em%} steps. After it terminates, we will define the belief of each cluster based on all the messages that it receives
@@ -154,9 +154,9 @@ We choose $$c^{(i)}, c^{(j)}$$ only if $$c^{(i)}$$ has received messages from al
 
 These updates are often referred to as *Shafer-Shenoy*. After all the messages have been passed, beliefs will be proportional to the marginal probabilities over their scopes, i.e. $$\beta_c(x_c) \propto p(x_c)$$. We may answer queries of the form $$\tp(x)$$ for $$x \in x_c$$ by marginalizing out the variable in its belief{% sidenote 1 'Readers familiar with combinatorial optimization will recognize this as a special case of dynamic programming on a tree decomposition of a graph with bounded treewidth.'%}
 {% math %}
-\tp(x) = \sum_{x_c \backslash x} \beta_c(x_c) .
+\tp(x) \propto \sum_{x_c \backslash x} \beta_c(x_c) .
 {% endmath %}
-To get the actual probability, we compute the partition function by e.g. summing all the beliefs in a cluster $$\sum_{x_c} \beta_c(x_c)$$ and dividing by $$Z$$.
+To get the actual (normalized) probability, we divide by the partition function $$Z$$ which is computed by summing all the beliefs in a cluster, $$Z = \sum_{x_c} \beta_c(x_c)$$.
 
 Note that this algorithm makes it obvious why we want small clusters: the running time will be exponential in the size of the largest cluster (if only because we may need to marginalize out variables from the cluster, which often must be done using brute force). This is why a junction tree of a single node containing all the variables is not useful: it amounts to performing full brute-force marginalization.
 
