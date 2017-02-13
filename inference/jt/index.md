@@ -169,9 +169,9 @@ Suppose we are performing variable elimination to compute $$\tp(x')$$ for some v
 
 First, we pick a set of variables $$x_{-k}$$ in a leaf $$c^{(j)}$$ of $$T$$ that does not appear in the sepset $$S_{kj}$$ between $$c^{(j)}$$ and its parent $$c^{(k)}$$ (if there is no such variable, we may multiply $$\psi(x_c^{(j)})$$ and $$\psi(x_c^{(k)})$$ into a new factor with a scope not larger than that of the initial factors). In our example, we may pick the variable $$f$$ in the factor $$(b,e,f)$$.
 
-Then we marginalize out $$x_{-k}$$ to obtain a factor $$m_{j \to k}(S_{ij})$$. We multiply $$m_{j \to k}(S_{ij})$$ with $$\psi(x_c^{(k)})$$ to obtain a new factor $$\tau(x_c^{(k)})$$. Doing so, we have effectively eliminated the factor $$\psi(x_c^{(j)})$$ and the unique variables it contained. In the running example, we may sum our $$f$$ and the resulting factor over $$(b, e)$$ may be folded into $$(b,c,e)$$. 
+Then we marginalize out $$x_{-k}$$ to obtain a factor $$m_{j \to k}(S_{ij})$$. We multiply $$m_{j \to k}(S_{ij})$$ with $$\psi(x_c^{(k)})$$ to obtain a new factor $$\tau(x_c^{(k)})$$. Doing so, we have effectively eliminated the factor $$\psi(x_c^{(j)})$$ and the unique variables it contained. In the running example, we may sum out $$f$$ and the resulting factor over $$(b, e)$$ may be folded into $$(b,c,e)$$. 
 
-Note that the messages computed in this case are exactly the same as those of JT. In particular, $$c^{(k)})$$ will be ready to send its message, it will have been multiplied by $$m_{j\ell \to k}(S_{ij})$$ from all neighbors except its parent, which is exactly how JT sends its message.
+Note that the messages computed in this case are exactly the same as those of JT. In particular, $$c^{(k)}$$ will be ready to send its message, it will have been multiplied by $$m_{j\ell \to k}(S_{ij})$$ from all neighbors except its parent, which is exactly how JT sends its message.
 
 Repeating this procedure eventually produces a single factor $$\beta(x_c^{(i)})$$, which is our final belief. Since VE implements the messages of the JT algorithm, $$\beta(x_c^{(i)})$$ will correspond to the JT belief. Assuming we have convinced ourselves in the previous section that VE works, we know that this belief will be valid.
 
@@ -184,7 +184,7 @@ The important thing to note is that if we now set $$c^{(k)}$$ to be the root of 
 The last topic that we need to address is the question of constructing good junction trees.
 
 - *By hand*: Typically, our models will have a very regular structure, for which there will be an obvious solution. For example, very often our model is a grid, in which case clusters will be associated with pairs of adjacent rows (or columns) in the grid.
-- *Using variable elimination*: One can show that running the VE elimination algorithm implicitly generates a junction tree over the variables. Thus it is possible to use the heuristics we previously discuss to define this ordering.
+- *Using variable elimination*: One can show that running the VE elimination algorithm implicitly generates a junction tree over the variables. Thus it is possible to use the heuristics we previously discussed to define this ordering.
 
 
 ## Loopy belief propagation
