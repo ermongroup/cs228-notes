@@ -39,7 +39,7 @@ Finally, this algorithm will be correct because our messages are defined as the 
 
 We are now ready to formally define the belief propagation algorithm. This algorithm will have two variants, the first of which is called sum-product message passing. This algorithm is defined as follows: while there is a node $$x_i$$ ready to transmit to $$x_j$$, send the message
 {% math %}
-m_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \\ j} m_{\ell \to i}(x_i).
+m_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \setminus j} m_{\ell \to i}(x_i).
 {% endmath %}
 
 Again, observe that this message is precisely the factor $$\tau$$ that $$x_i$$ would transmit to $$x_j$$ during a round of variable elimination with the goal of computing $$p(x_j)$$.
@@ -199,7 +199,7 @@ Loopy belief propagation (LBP) is another technique for performing inference on 
 Suppose that we a given an MRF with pairwise potentials{% sidenote 1 'Arbitrary potentials can be handled using an algorithm called LBP on *factor graphs*. We will include this material at some point in the future'%}.
 The main idea of LBP is to disregard loops in the graph and perform message passing anyway. In other words, given an ordering on the edges, at each time $$t$$ we iterate over a pair of adjacent variables $$x_i, x_j$$ in that order and simply perform the update
 {% math %}
-m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \\ j} m^{t}_{\ell \to i}(x_i).
+m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \setminus j} m^{t}_{\ell \to i}(x_i).
 {% endmath %}
 
 We keep performing these updates for a fixed number of steps or until convergence (the messages don't change). Messages are typically initialized uniformly.
