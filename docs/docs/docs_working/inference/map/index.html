@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>MAP inference</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/inference/map/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/ermongroup/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Map inference</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>This section will explore in more detail the problem of MAP inference in graphical models. 
+Recall that MAP inference in a graphical model <script type="math/tex">p</script> corresponds to the following optimization problem:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\max_x \log p(x) = \max_x \sum_c \phi_c(\bfx_c) - \log Z.
+</script></div>
+
+<p>In the previous section, we briefly showed how to solve this problem within the same message passing framework as marginal inference. We will now look at more efficient specialized methods.</p>
+
+<h2 id="the-challenges-of-map-inference">The challenges of MAP inference</h2>
+
+<p>In a way, MAP inference is easier than marginal inference. One reason for this is that the intractable partition constant <script type="math/tex">\log Z</script> does not depend on <script type="math/tex">x</script> and can be ignored:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\arg \max_x \sum_c \phi_c(\bfx_c).
+</script></div>
+
+<p>Marginal inference can also be seen as computing and summing all assignments to the model, one of which is the MAP assignment. If we replace summation with maximization, we can also find the assignment with the highest probability; however, there exist more efficient methods that this sort of enumeration-based approach.</p>
+
+<p>Note, however, that MAP inference is still not an easy problem in the general case.
+The above optimization objective includes many intractable problems as special cases, e.g. 3-sat. We may reduce 3-sat to MAP inference by constructing for each clause <script type="math/tex">c = (x \lor y \lor \neg z)</script> a factor <script type="math/tex">\theta_c (x, y, z)</script> that equals one if <script type="math/tex">x, y, z</script> satisfy
+clause <script type="math/tex">c</script>, and <script type="math/tex">\theta_c (x, y, z) = 0</script> otherwise. Then, the 3-sat instance is satisfiable if and only if the value of the MAP assignment equals the number of clauses<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">We may also use a similar construction to prove that marginal inference is NP-hard. The high-level idea is to add an additional variable <script type="math/tex">X</script> that equals <script type="math/tex">1</script> when all the clauses are satisfied, and zero otherwise. Its marginal probability will be greater than zero iff the 3-sat instance is satisfiable. </span>.</p>
+
+<p>Nonetheless, we will see that the MAP problem is easier than general inference, in the sense that there are some models in which MAP inference can be solved in polynomial time, while general inference is NP-hard.</p>
+
+<h3 id="examples">Examples</h3>
+
+<p>Many interesting examples of MAP inference are instances of <em>structured prediction</em>, which involves doing inference in a conditional random field (CRF) model <script type="math/tex">p(y|x)</script>:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\arg \max_y \log p(y|x) =  \arg \max_y \sum_c \phi_c(\bfy_c, \bfx_c).
+</script></div>
+
+<p><label for="ocr" class="margin-toggle">⊕</label><input type="checkbox" id="ocr" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/ocr.png" /><br />Chain-structured conditional random field for optical character recognition.</span>
+We discussed structured prediction in detail when we covered CRFs.
+Recall that our main example was handwriting recognition, in which we are given 
+images <script type="math/tex">x_i \in [0, 1]^{d\times d}</script> of characters in the form of pixel matrices; MAP inference in this setting amounts to jointly recognizing the most likely word <script type="math/tex">(y_i)_{i=1}^n</script> encoded by the images.</p>
+
+<p>Another example of MAP inference is image segmentation; here, we are interested in locating an entity in an image and label all its pixels. Our input <script type="math/tex">\bfx \in [0, 1]^{d\times d}</script> is a matrix of image pixels, and our task is to predict the label <script type="math/tex">y \in \{0, 1\}^{d\times d}</script>, indicating whether each pixel encodes the object we want to recover. Intuitively, neighboring pixels should have similar values in <script type="math/tex">\bfy</script>, i.e. pixels associated with the horse should form one continuous blob (rather than white noise).
+<label for="ocr" class="margin-toggle">⊕</label><input type="checkbox" id="ocr" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/imagesegmentation.png" /><br />An illustration of the image segmentation problem.</span></p>
+
+<p>This prior knowledge can be naturally modeled in the language of graphical models via a <a href="https://en.wikipedia.org/wiki/Potts_model">Potts model</a>. As in our first example, we can introduce potentials <script type="math/tex">\phi(y_i,x)</script> that encode the likelihood that any given pixel is from our subject. We then augment them with pairwise potentials <script type="math/tex">\phi(y_i, y_j )</script> for neighboring <script type="math/tex">y_i, y_j</script>, which will encourage adjacent <script type="math/tex">y</script>’s to have the same value with higher probability.</p>
+
+<h2 id="graphcuts">Graphcuts</h2>
+
+<p>We will start our discussion with an efficient exact MAP inference algorithm for certain Potts models.
+Unlike previously-seen methods (e.g. the junction tree algorithm), this algorithm will be tractable even when the model will have large treewidth.</p>
+
+<p>Suppose we are given a binary pairwise MRF in which edge energies (i.e. log-edge factors) have the form</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+E_{uv}(x_u, x_v) =
+\begin{cases}
+0 & \; \text{if} \; x_u = x_v \\
+\lambda_{st} & \; \text{if} \; x_u \neq x_v,
+\end{cases}
+</script></div>
+<p>where <script type="math/tex">\lambda_{st} \geq 0</script> is a cost that penalizes edge mismatches.
+Assume also that nodes have unary potentials; we can always normalize the nodes’ energies so that <script type="math/tex">E_u(1) = 0</script> or <script type="math/tex">E_u(0) = 0</script> and <script type="math/tex">E_u \geq 0</script>.</p>
+
+<p><label for="mincut" class="margin-toggle">⊕</label><input type="checkbox" id="mincut" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/mincut.png" /><br />Formulating the segmentation task in a 2x2 MRF as a graph cut problem. Dashed edges are part of the min-cut. (Source: Machine Learning: A Probabilistic Perspective).</span>
+The motivation for this model comes from image segmentation. We are looking for an assignment that minimizes the energy, which (among other things) tries to reduce discordance between adjacent variables.</p>
+
+<p>We can formulate energy minimization in this type of model as a min-cut problem in an augmented graph <script type="math/tex">G'</script>:
+we construct <script type="math/tex">G'</script> by adding special source and sink nodes <script type="math/tex">s,t</script> to our PGM graph; 
+the node <script type="math/tex">s</script> is connected to nodes <script type="math/tex">u</script> with <script type="math/tex">E_u(0) = 0</script> by an edge with weight <script type="math/tex">E_u(1)</script>; 
+the node <script type="math/tex">t</script> is connected to nodes <script type="math/tex">v</script> with <script type="math/tex">E_v(1) = 0</script> by an edge with weight <script type="math/tex">E_v(0)</script>.
+Finally, all the edges of the original graph get <script type="math/tex">E_{uv}</script> as their weight.</p>
+
+<p>It is not hard to see that by construction,
+the cost of a min-cut in this graph will equal the minimum energy in the model. In particular, all nodes on the <script type="math/tex">s</script> side of the cut receive an assignment of <script type="math/tex">0</script>, and all the ones that are on the <script type="math/tex">t</script> side receive an assignment of one. The edges between the nodes that disagree are precisely the ones that are in the min-cut.</p>
+
+<p>The fastest algorithms for computing min-cuts in a graph <script type="math/tex">G=(V,E)</script> take <script type="math/tex">O(EV\log V)</script> or <script type="math/tex">O(V^3)</script> time. Similar techniques can also be applied in slightly more general types of models with a certain type of edge potentials that are called <em>submodular</em>. We refer the reader to a textbook (e.g. Koller and Friedman) for more details.</p>
+
+<h2 id="linear-programming-based-approaches">Linear programming-based approaches</h2>
+
+<p>Although graphcut-based methods recover the exact MAP assignment, they are only applicable in certain restricted classes of MRFs. 
+The algorithms we will see next solve the MAP problem approximately, but can applied in much larger classes of graphical models.</p>
+
+<h3 id="linear-programming">Linear programming</h3>
+
+<p>Our first approximate inference strategy consists in reducing MAP inference to integer linear programming.
+Linear programming (LP) — also known as linear optimization — refers to a class of problems of the form</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{align*}
+\min \;& \bf{c} \cdot \bfx \\
+\textrm{s.t. } & A \bfx \leq \bf{b}
+\end{align*}
+</script></div>
+<p>where <script type="math/tex">\bfx \in \mathbb{R}^n</script>, and <script type="math/tex">\bf{c}, \bf{b} \in \mathbb{R}^n</script>, <script type="math/tex">A\in \mathbb{R}^{n\times n}</script> are problem parameters.</p>
+
+<p>Problems of this form are found in almost every field of science and engineering. 
+They have been extensively studied since the 30’s, which has led to both an extensive theory<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">A major breakthrough of applied mathematics in the 80’s was the development polynomial-time <a href="https://en.wikipedia.org/wiki/Karmarkar%27s_algorithm">algorithms</a> for linear programming. </span>, as well as
+practical <a href="https://en.wikipedia.org/wiki/CPLEX">tools</a> that can solve very large LP instances (100,000 variables or more) in a reasonable time.</p>
+
+<p>Integer linear programming (ILP) is an extension of linear programming in which we also require that <script type="math/tex">\bfx \in \{0, 1\}^n</script>. Unfortunately, this makes optimization considerably more difficult, and ILP is in general NP-hard. Nonetheless, there are many heuristics for solving ILP problems in practice, and commercial solvers can handle instances with thousands of variables or more.</p>
+
+<p>One of the main techniques for solving ILP problems is <em>rounding</em>. The idea of rounding is to relax the requirement that <script type="math/tex">\bfx \in \{0, 1\}^n</script> into <script type="math/tex">0 \leq \bfx \leq 1</script>, solve the resulting LP, and then round the LP solution to its nearest integer value. This approach works surprisingly well in practice and has theoretical guarantees for some classes of ILPs.</p>
+
+<h3 id="formulating-map-inference-as-ilp">Formulating MAP inference as ILP</h3>
+
+<p>For simplicity, let’s look at MAP in pairwise MRFs. We can reduce the MAP objective to integer linear programming by introducing two types of indicator variables:</p>
+
+<ul>
+  <li>A variable <script type="math/tex">\mu_i(x_i)</script> for each <script type="math/tex">i \in V</script> and state <script type="math/tex">x_i</script>.</li>
+  <li>A variable <script type="math/tex">\mu_{ij}(x_i,x_j)</script> for each edge <script type="math/tex">(i,j) \in E</script> and pair of states <script type="math/tex">x_i,x_j</script>.</li>
+</ul>
+
+<p>We can rewrite the MAP objective in terms of these variables as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\max_\mu \sum_{i \in V} \sum_{x_i} \theta_i (x_i) \mu_i(x_i) + \sum_{i,j \in E} \sum_{x_i, x_j} \theta_{ij} (x_i, x_j) \mu_{ij}(x_i, x_j).
+</script></div>
+
+<p>We would like to optimize over these <script type="math/tex">\mu</script>’s; for that we also need to introduce constrains.
+First, we need to force each cluster to choose a local assignment:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{align*}
+\mu_i(x_i) & \in \{0,1\} \; \forall \, i, x_i \\
+\sum_{x_i} \mu_i(x_i) & = 1\; \forall \, i \\
+\mu_{ij}(x_i,x_j) & \in \{0,1\} \; \forall \, i,j \in E, x_i, x_j \\
+\sum_{x_i, x_j} \mu_{ij}(x_i, x_j) & = 1 \; \forall \, i,j \in E.
+\end{align*}
+</script></div>
+
+<p>These assignments must also be consistent:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{align*}
+\sum_{x_i} \mu_{ij}(x_i, x_j) & = \mu_j(x_j) \; \forall \, i,j \in E, x_j \\
+\sum_{x_j} \mu_{ij}(x_i, x_j) & = \mu_i(x_i) \; \forall \, i,j \in E, x_i
+\end{align*}
+</script></div>
+
+<p>Together, these constraints along with the MAP objective yield an integer linear program, whose solution equals the MAP assignment.
+This ILP is still NP-hard, but we have an easy way to transform this into an (easy to solve) LP via relaxation. This is the essence of the linear programming approach to MAP inference.</p>
+
+<p>In general, this method will only give approximate solution. An important special case are tree-structured graphs, in which the relaxation is guaranteed to always return integer solution, which are in turn optimal<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">See e.g. the textbook of Koller and Friedman for a proof and a more detailed discussion. </span>.</p>
+
+<h2 id="dual-decomposition">Dual decomposition</h2>
+
+<p>Let us now look at another way to transform the MAP objective into a more amenable optimization problem.
+Suppose that we are dealing with an MRF of the form</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\max_x \sum_{i \in V} \theta_i (x_i) + \sum_{f \in F} \theta_{f} (x_f),
+</script></div>
+<p>where <script type="math/tex">F</script> denote arbitrary factors (e.g. the edge potentials in a pairwise MRF)<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">These short notes are roughly based on the tutorial by <a href="http://cs.nyu.edu/~dsontag/papers/SonGloJaa_optbook.pdf">Sontag et al.</a>, to which we refer the reader for a full discussion. </span>. Let us use <script type="math/tex">p^*</script> to denote the optimal value of this objective and let <script type="math/tex">x^*</script> denote the optimal assignment.</p>
+
+<p>The above objective is difficult to optimize because the potentials are coupled. Consider for a moment an alternative objective where we optimize the potentials separately:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\sum_{i \in V} \max_{x_i}  \theta_i (x_i) + \sum_{f \in F} \max_{x^f} \theta_{f} (x^f) .
+</script></div>
+
+<p>This would be easy optimize, but would only give us an upper bound on the value of the true MAP assignment.
+To make our relexation tight, we would need to introduce
+constraints that encourage consistency between the potentials:</p>
+<div class="mathblock"><script type="math/tex; mode=display"> 
+x^f_i - x_i = 0 \; \forall f, \forall i \in f.
+</script></div>
+<p>The dual decomposition approach consists in softening these constraints in order to achieve a middle ground between the two optimization objective defined above.</p>
+
+<p>We will achieve this by first forming
+the <em>Lagrangian</em> for the constrained problem, which is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+L(\delta, \bfx^f, \bfx) = \sum_{i \in V}  \theta_i (x_i) + \sum_{f \in F} \theta_{f} (x^f) + \sum_{f \in F} \sum_{i \in f} \sum_{x'_i} \delta_{fi}(x_i')\left( \Ind_{x'_i = x_i} - \Ind_{x'_i = x^f_i} \right).
+</script></div>
+
+<p>The <script type="math/tex">\delta</script> variables are called Lagrange <em>multipliers</em>; each of them is associated with a constraint<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">There is a very deep and powerful theory of constrained optimization centered around Lagrangians. We refer the reader to a course on <a href="http://stanford.edu/class/ee364a/">convex optimization</a> for a thorough discussion. </span>. 
+Observe that <script type="math/tex">x, x^f = x^*</script> is a valid assignment to the Lagrangian; its value equals <script type="math/tex">p^*</script> for any <script type="math/tex">\delta</script>, since the Lagrange multipliers are simply multiplied by zero. This shows that the Lagrangian is an upper bound on <script type="math/tex">p^*</script>:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+L(\delta) := \max_{\bfx^f, \bfx} L(\delta, \bfx^f, \bfx) \geq p^* \; \forall \delta.
+</script></div>
+
+<p>In order to get the tightest such bound, we may optimize <script type="math/tex">L(\delta)</script> over <script type="math/tex">\delta</script>. It turns out that by the theory of Lagarange duality, at the optimal <script type="math/tex">\delta^*</script>, this bound will be exactly tight, i.e.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+L(\delta^*) =  p^*.
+</script></div>
+
+<p>It is actually not hard to prove this in our particular setting.
+To see that, note that we can reparametrize the Lagrangian as:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{align*}
+L(\delta) 
+& = \sum_{i \in V} \max_{x_i} \left( \theta_i (x_i) + \sum_{f:i \in f} \delta_{fi}(x_i) \right) + \sum_{f \in F} \max_{x^f} \left( \theta_f (x^f) + \sum_{i \in f} \delta_{fi}(x_i) \right) \\
+& := \sum_{i \in V} \max_{x_i} \bar \theta_{i}^\delta (x_i) + \sum_{f \in F} \max_{x^f} \bar \theta_{f}^\delta (x^f).
+\end{align*}
+</script></div>
+
+<p>Suppose we can find dual variables <script type="math/tex">\bar \delta</script> such that the local maximizers of <script type="math/tex">\bar \theta_{i}^{\bar \delta} (x_i)</script> and <script type="math/tex">\bar \theta_{f}^{\bar \delta} (x^f)</script> agree; in other words, we can find a <script type="math/tex">\bar x</script> such that <script type="math/tex">\bar x_i \in \arg\max_{x_i} \bar \theta_{i}^{\bar \delta} (x_i)</script> and <script type="math/tex">\bar x^f \in \arg\max_{x^f} \bar \theta_{f}^{\bar \delta} (x^f)</script>. Then we have that</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+L(\bar \delta) =  \sum_{i \in V} \bar \theta_{i}^{\bar\delta} (\bar x_i) + \sum_{f \in F} \bar \theta_{f}^{\bar\delta} (\bar x^f) =  \sum_{i \in V} \theta_{i} (\bar x_i) + \sum_{f \in F} \theta_{f} (\bar x^f).
+</script></div>
+<p>The first equality follows by definition of <script type="math/tex">L(\delta)</script>, while the second follows holds because terms involving Lagrange multipliers cancel out when <script type="math/tex">x</script> and <script type="math/tex">x^f</script> agree.</p>
+
+<p>On the other hand, we have by the definition of <script type="math/tex">p^*</script> that</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\sum_{i \in V} \theta_{i} (\bar x_i) + \sum_{f \in F} \theta_{f} (\bar x^f) \leq p^* \leq L(\bar\delta)
+</script></div>
+<p>which implies that <script type="math/tex">L(\bar\delta) = p^*</script>.</p>
+
+<p>This argument has shown two things:</p>
+
+<ul>
+  <li>The bound given by the Lagrangian can be made tight for the right choice of <script type="math/tex">\delta</script>.</li>
+  <li>To compute <script type="math/tex">p^*</script>, it suffices to find a <script type="math/tex">\delta</script> at which the local sub-problems agree with each other. This happens surprisingly often in practice.</li>
+</ul>
+
+<h3 id="minimizing-the-objective">Minimizing the objective</h3>
+
+<p>There exist several ways of computing <script type="math/tex">L(\delta^*)</script>, of which we will give a brief overview.</p>
+
+<p>Since the objective <script type="math/tex">L(\delta)</script> is continuous and convex<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">The objective is a pointwise max of a set of affine functions. </span>, we may minimize it using subgradient descent. Let <script type="math/tex">\bar x_i \in \arg\max_{x_i} \bar \theta_{i}^{\delta} (x_i)</script> and let <script type="math/tex">\bar x^f \in \arg\max_{x^f} \bar \theta_{f}^\delta (x^f)</script>. It can be shown that the gradient <script type="math/tex">g_{fi}(x_i)</script> of <script type="math/tex">L(\delta)</script> w.r.t. <script type="math/tex">\delta_{fi}(x_i)</script> equals <script type="math/tex">1</script> if <script type="math/tex">\bar x_i^f \neq \bar x_i</script> and zero otherwise; similarly, <script type="math/tex">g_{fi}(x_i^f)</script> equals <script type="math/tex">-1</script> if <script type="math/tex">\bar x_i^f \neq \bar x_i</script> and zero otherwise. This expression has the effect of decreasing <script type="math/tex">\bar \theta_{i}^{\delta} (\bar x_i)</script> and increasing <script type="math/tex">\bar \theta_{f}^\delta (\bar x^f)</script>, thus bringing them closer to each other.</p>
+
+<p>To compute these gradients we need to perform the operations <script type="math/tex">\bar x_i \in \arg\max_{x_i} \bar \theta_{i}^{\delta} (x_i)</script> and <script type="math/tex">\bar x^f \in \arg\max_{x^f} \bar \theta_{f}^\delta (x^f)</script>. This is possible if the scope of the factors is small, if the graph has small tree width, if the factors are constant on most of their domain, and in many other useful special cases.</p>
+
+<p>An alternative way of minimizing <script type="math/tex">L(\delta)</script> is via block coordinate descent. A typical way of forming blocks is to consider all the variables <script type="math/tex">\delta_{fi}(x_i)</script> associated with a fixed factor <script type="math/tex">f</script>. This results in updates that are very similar to loopy max-product belief propagation. In practice, this method may be faster than subgradient descent, is guaranteed to decrease the objective at every step, and does not require tuning a step-size parameter. Its drawback is that it does not find the global minimum (since the objective is not <em>strongly</em> convex).</p>
+
+<h3 id="recovering-the-map-assignment">Recovering the MAP assignment</h3>
+
+<p>As we have seen above, if a solution <script type="math/tex">\bfx, \bfx^f</script> agrees on the factors for some <script type="math/tex">\delta</script>, then we can guarantee that this solution is optimal.</p>
+
+<p>If the optimal <script type="math/tex">\bfx, \bfx^f</script> do not agree, finding the MAP assignment from this solution is still NP-hard. However, this is usually not a big problem in practice. From the point of view of theoretical guarantees, if each <script type="math/tex">\bar \theta_i^{\delta^*}</script> has a unique maximum, then the problem will be decodable. If this guarantee is not met by all variables, we can clamp the ones that can be uniquely decoded to their optimal values and use exact inference to find the remaining variables’ values.</p>
+
+<h2 id="other-methods">Other methods</h2>
+
+<h3 id="local-search">Local search</h3>
+
+<p>A more heuristic-type solution consists in starting with an arbitrary assignment and perform “moves” on the joint assignment that locally increase the probability. This technique has no guarantees; however, we can often use prior knowledge to come up with highly effective moves. Therefore, in practice, local search may perform extremely well.</p>
+
+<h3 id="branch-and-bound">Branch and bound</h3>
+
+<p>Alternatively, one may perform exhaustive search over space of assignments, while pruning branches that can be provably shown not to contain a MAP assignment. The LP relaxation or its dual to obtain upper bounds useful for pruning trees.</p>
+
+<h3 id="simulated-annealing">Simulated annealing</h3>
+
+<p>A third approach is to use sampling methods (e.g. Metropolis-Hastings) to sample from <script type="math/tex">p_t(x) \propto \exp(\frac{1}{t} \sum_{c \in C} \theta_c (x_c ))</script>. The parameter <script type="math/tex">t</script> is called the temperature. When <script type="math/tex">t \to \infty</script>, <script type="math/tex">p_t</script> is close to the uniform distribution, which is easy to sample form. As <script type="math/tex">t \to 0</script>, <script type="math/tex">p_t</script> places more weight on <script type="math/tex">\arg\max_\bfx \sum_{c \in C} \theta_c (x_c )</script>, the quantity we want to recover. However, since this distribution is highly peaked, it is also very difficult to sample from it.</p>
+
+<p>The idea of simulated annealing is to run a sampling algorithm starting with a high <script type="math/tex">t</script>, and gradually decrease it, as the algorithm is being run. If the “cooling rate” is sufficiently slow, we are guaranteed to eventually find the mode of our distribution. In practice, however, choosing the rate requires a lot of tuning. This makes simulated annealing somewhat difficult to use in practice.</p>
+
+
+
+
+    </article>
+    <span class="print-footer">MAP inference - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2017 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2017</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

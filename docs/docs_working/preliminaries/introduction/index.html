@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Introduction</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/preliminaries/introduction/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/ermongroup/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Introduction</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>Probabilistic graphical modeling is a branch of machine learning that studies how to model real-world phenomena using probability distributions and use these models to make useful predictions about the future.</p>
+
+<p>Building probabilistic models turns out to be a complex and fascinating problem. From a theoretical point of view, this field is built on an elegant foundation that bridges two very different fields of mathematics: probability theory — which, along with statistics, forms the core of modern machine learning and data analysis — as well as discrete math — particularly graph theory and combinatorics. The field also has intriguing connections to philosophy, especially the question of causality.</p>
+
+<p>Probabilistic modeling is also deeply grounded in reality and has countless real-world applications in fields as diverse as medicine, language processing, vision, and physics.
+Most likely, there are several applications currently running on your computer that make use of graphical models.</p>
+
+<p>This combination of beautiful theory and powerful applications makes graphical models one of the most fascinating topics in modern artificial intelligence and computer science<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">The 2011 Turing award (considered to be the “Nobel prize of computer science”) was recently awarded to <a href="http://amturing.acm.org/award_winners/pearl_2658896.cfm">Judea Pearl</a> for founding the field of probabilistic graphical modeling. </span>.</p>
+
+<h2 id="probabilistic-modeling">Probabilistic modeling</h2>
+
+<p>But what is, exactly, probabilistic modeling? When trying to solve a real-world problem using mathematics, it is very common to define a mathematical model of the world in the form of an equation.
+Perhaps the simplest model would be a linear equation of the form</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+y = \beta^T x,
+</script></div>
+
+<p>where <script type="math/tex">y</script> is an outcome variable that we want to predict, and <script type="math/tex">x</script> are known (given) variables that affect the outcome. For example, <script type="math/tex">y</script> may be the price of a house, and <script type="math/tex">x</script> are a series of factors that affect this price, e.g. the location, the number of bedrooms, the age of the house, etc. We assume that <script type="math/tex">y</script> is a linear function of this inputs (parametrized by <script type="math/tex">\beta</script>).</p>
+
+<p>Often, the real world that we are trying to model is very complicated; in particular, it often involves a significant amount of <em>uncertainty</em> (e.g., the price of a house has a certain chance of going up if a new subway station opens within a certain distance). It is therefore very natural to deal with this uncertainty by modeling the world in the form a probability distribution<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle" /><span class="sidenote">For a more philosophical discussion of why one should use probability theory as opposed to something else, see the <a href="http://plato.stanford.edu/entries/dutch-book/">Dutch book argument</a> for probabilism. </span></p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+p(y,x). 
+</script></div>
+
+<p>Given such a model, we could ask questions such as  “what is the probability that house prices will rise over the next five years?”, or “given that the house costs $100,000, what is the most probability that it has three bedrooms?” The probabilistic aspect of modeling is very important, because:</p>
+
+<ul>
+  <li>Typically, we cannot perfectly predict the future. We often don’t have enough knowledge about the world, and often the world itself is stochastic.</li>
+  <li>We need to assess the confidence of our predictions; often, predicting a single value is not enough, we need the system to output its beliefs about what’s going on in the world.</li>
+</ul>
+
+<p>In this course, we will study principled ways of reasoning about uncertainty and use ideas from both probability and graph theory to derive efficient machine learning algorithms for this task. We will find answers to many interesting questions, such as:</p>
+
+<ul>
+  <li>What are the tradeoffs between computational complexity and the richness of a probabilistic model?</li>
+  <li>What is the best model for inferring facts about the future, given a fixed dataset and computational budget?</li>
+  <li>How does one combine prior knowledge with observed evidence in a principled way to make predictions?</li>
+  <li>How can we rigorously analyze whether <script type="math/tex">A</script> is the cause of <script type="math/tex">B</script> or vice versa?</li>
+</ul>
+
+<p>In addition, we will also see many examples of how to apply probabilistic techniques to various problems, such as disease prediction, image understanding, language analysis, etc.</p>
+
+<h2 id="the-difficulties-of-probabilistic-modeling">The difficulties of probabilistic modeling</h2>
+
+<p>To get a first taste of the of the challenges that lie ahead of us, consider a simple application of probabilistic modeling: spam classification.</p>
+
+<p>Suppose we have a model <script type="math/tex">p(y,x_1,...,x_n)</script> of word occurrences in spam and non-spam mail. Each binary variable <script type="math/tex">x_i</script> encodes whether the <script type="math/tex">i</script>-ith English word is present in the email; the binary variable <script type="math/tex">Y</script> indicates whether the email is spam. In order to classify a new email, we may look at the probability <span>​<script type="math/tex"> P(y=1 | x_1,...,x_n) </script></span>.</p>
+
+<p>What is the ``size” of the function <script type="math/tex">\pt</script> that we just defined? Our model defines a probability in <script type="math/tex">[0,1]</script> for each combination of parameters <script type="math/tex">Y,X_1,...,X_n</script>;  specifying all these probabilities will require us to write down a staggering <script type="math/tex">2^{n+1}</script> different values, one for each assignment to our <script type="math/tex">n+1</script> binary variables. Since <script type="math/tex">n</script> is the size of the English vocabulary, this is clearly impractical from both a computational (how do we store this large list?) and from a statistical (how do we efficiently estimates the parameters from limited data?) point of view. More generally, our example illustrates one of the main challenges that this course will deal with: probabilities are inherently exponentially-sized objects; the only way in which we can manipulate them is by making simplifying assumptions about their structure.</p>
+
+<p>The main simplifying assumption that we will make in this course is that of <em>conditional independence</em> among the variables.
+For example, suppose that the English words are all conditionally independent given <script type="math/tex">Y</script>. In other words, the probabilities of seeing two words are independent given that a message is spam. This is clearly an oversimplification, as the probabilities of the words “pills” and “buy” are clearly correlated; however, for most words (e.g. “penguin” and “muffin”) the probabilities will indeed be independent, and our assumption will not significantly degrade the accuracy of the model.</p>
+
+<p>We refer to this particular choice of independencies as the <em>Naive Bayes</em> assumption. Given this assumption, we can write the model probability as a product of factors</p>
+
+<div class="mathblock"><script type="math/tex; mode=display"> 
+P(y,x_1,...,x_n) = p(y) \prod_{i=1}^n p(x_i|y).
+</script></div>
+
+<p>Each factor <span>​<script type="math/tex">p(x_i | y)</script></span> can be completely described by a small number of parameters (<script type="math/tex">4</script> to be exact). The entire distribution is parametrized by <script type="math/tex">O(n)</script> parameters, which we can tractably estimate from data and make predictions.</p>
+
+<h2 id="describing-probabilities-with-graphs">Describing probabilities with graphs</h2>
+
+<p>Our independence assumption can be conveniently represented in the form of a graph.<label for="nb1" class="margin-toggle">⊕</label><input type="checkbox" id="nb1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/naive-bayes.png" /><br />Graphical representation of the Naive Bayes spam classification model. We can interpret the directed graph as indicating a story of how the data was generated: first, a spam/non-spam label was chosen at random; then a subset of <script type="math/tex">n</script> possible English words sampled independently and at random.</span>
+This representation has the immediate advantage of being easy to understand. It can be interpreted as telling us a story: an email was generated by first choosing at random whether the email is spam or not (indicated by <script type="math/tex">y</script>), and then by sampling words one at a time. Conversely, if we have a story of how our dataset was generated, we can naturally express it as a graph with an associated probability distribution.</p>
+
+<p>More importantly, we want to submit various queries to the model (e.g. what is the probability of spam given that I see the word “pill”?); answering these questions will require specialized algorithms that will be most naturally defined using graph-theoretical concepts. We will also use graph theory to analyze the speed of learning algorithms and to quantify the computational complexity (e.g. NP-hardness) of different learning tasks.</p>
+
+<p>The take-away point we want to get across is that there is an intimate connection between probability distributions and graphs that will be exploited throughout the course for defining, learning, and working with probabilistic models.</p>
+
+<h2 id="a-birds-eye-overview-of-the-course">A bird’s eye overview of the course</h2>
+
+<p>Our discussion of graphical models will be divided into three major parts: representation (how to specify a model), inference (how to ask the model questions), and learning (how to fit a model to real-world data). These three themes will also be closely linked: to derive efficient inference and learning algorithms, the model will need to be adequately represented; furthermore, learning models will require inference as a subroutine. Thus, it will best to always keep the three tasks in mind, rather than focusing on them in isolation<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">For a more detailed overview, see this <a href="https://docs.google.com/file/d/0B_hicYJxvbiOc1ViZTRxbnhSU1cza1VhOFlhRlRuQQ/edit">writeup</a> by Neal Parikh; this part of the notes is based on it. </span>.</p>
+
+<h3 id="representation">Representation</h3>
+
+<p>How do we express a probability distribution that models some real-world phenomenon? This is not a trivial problem: we have seen that a naive model for classifying spam messages with <script type="math/tex">n</script> possible words requires us in general to specify <script type="math/tex">O(2^n)</script> parameters. We will address this difficulty via general techniques for constructing tractable models. These recipes will make heavy use of graph theory; probabilities will be described by graphs whose properties (e.g. connectivity, tree-width) will reveal probabilistic and algorithmic features of the model (e.g., independence, learning complexity).</p>
+
+<h3 id="inference">Inference</h3>
+
+<p>Given a probabilistic model, how do we obtain answers to relevant questions about the world? Such questions often reduce to querying the marginal or conditional probabilities of certain events of interest. More concretely, we will be typically interested in asking the system two types of questions:</p>
+
+<ul>
+  <li><em>Marginal inference</em>: what is the probability of a given variable in our model after we sum everything else out?</li>
+</ul>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x_1) = \sum_{x_2} \sum_{x_2}  \cdots \sum_{x_n} p(x_1, x_2, ..., x_n).
+</script></div>
+<p>An example query would be to determine the probability that a random house has more than three bedrooms.</p>
+
+<ul>
+  <li><em>Maximum a posteriori (MAP) inference</em> asks for the most likely assignment of variables. For example, we may try to determine the most likely spam message, solving the problem</li>
+</ul>
+<div class="mathblock"><script type="math/tex; mode=display">
+\max_{x_1, \dots, x_n} p(x_1,...,x_n, y=1)
+</script></div>
+
+<p>Often our queries will involve evidence (like in the MAP example above), in which case we will fix the assignment of a subset of the variables.</p>
+
+<p>It turns out that inference is a very challenging task. For many probabilities of interest, it will be NP-hard to answer any of these questions. Crucially, whether inference is tractable will depend on the structure of the graph that describes that probability! If a problem is intractable, we will still be able to obtain useful answers via approximate inference methods. Interestingly, algorithms described in this part of the course will be heavily based on work done in the statistical physics community in the mid-20th century.</p>
+
+<h3 id="learning">Learning</h3>
+
+<p>Our last key task refers to fitting a model to a dataset, which could be for example a large number of labeled examples of spam. By looking at the data, we can infer useful patterns (e.g. which words are found more frequently in spam emails), which we can then use to make predictions about the future. However, we will see that learning and inference are also inherently linked in a more subtle way, since inference will turn out to be a key subroutine that we will repeatedly call within learning algorithms. Also, the topic of learning will feature important connections to the field of computational learning theory — which deals with questions such as generalization from limited data and overfitting — as well as to Bayesian statistics — which tells us (among other things) about how to combine prior knowledge and observed evidence in a principled way.</p>
+
+
+
+    </article>
+    <span class="print-footer">Introduction - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2017 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2017</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
