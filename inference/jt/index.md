@@ -33,7 +33,7 @@ A key question here is how exactly do we compute all the message we need. Notice
 
 The answer is very simple: a node $$x_i$$ sends a message to a neighbor $$x_j$$ whenever it has received messages from all nodes besides $$x_j$$. It's a fun exercise to the reader to show that there will always be a node with a message to send, unless all the messages have been sent out. This will happen after precisely {%m%}2|E|{%em%} steps, since each edge can receive messages only twice: once from $$x_i \to x_j$$, and once more in the opposite direction.
 
-Finally, this algorithm will be correct because our messages are defined as the intermediate factors in the VE algorithm
+Finally, this algorithm will be correct because our messages are defined as the intermediate factors in the VE algorithm.
 
 ### Sum-product message passing
 
