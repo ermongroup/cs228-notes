@@ -216,7 +216,7 @@ P(Y \mid E = e) = \frac{P(Y, E = e)}{P(E=e)},
 
 <p>In the previous example, suppose we eliminated <script type="math/tex">g</script> first. Then, we would have had to transform the factors <script type="math/tex">p(g \mid i, d), \phi(l \mid g)</script> into a big factor <script type="math/tex">\tau(d, i, l)</script> over 3 variables, which would require <script type="math/tex">O(d^4)</script> time to compute. If we had a factor <script type="math/tex">S \rightarrow G</script>, then we would have had to eliminate <script type="math/tex">p(g \mid s)</script> as well, producing a single giant factor <script type="math/tex">\tau(d, i, l, s)</script> in <script type="math/tex">O(d^5)</script> time. Then, eliminating any variable from this factor would require almost as much work as if we had started with the original distribution, since all the variable have become coupled.</p>
 
-<p>Clearly some ordering are much more efficient than others. In fact, the running time of Variable Elimination will equal <script type="math/tex">O(m d^M)</script>, where <script type="math/tex">M</script> is the maximum size of any factor during the elimination process.</p>
+<p>Clearly some ordering are much more efficient than others. In fact, the running time of Variable Elimination will equal <script type="math/tex">O(m d^M)</script>, where <script type="math/tex">M</script> is the maximum size of any factor during the elimination process and <script type="math/tex">m</script> is the number of variables.</p>
 
 <h3 id="choosing-variable-elimination-orderings">Choosing variable elimination orderings</h3>
 

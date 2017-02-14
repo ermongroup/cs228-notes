@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Learning in directed models</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/learning/directed/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/ermongroup/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Learning in directed models</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>We now turn our attention to the third and last part of the course: <em>learning</em>. Given a dataset, we would like to fit a model that will make useful predictions on various tasks that we care about.</p>
+
+<p>A graphical model has two components: the graph structure, and the parameters of the factors induced by this graph. These components lead to two different learning tasks:</p>
+
+<ul>
+  <li><em>Parameter learning</em>, where the graph structure is known and we want to esimate the factors.</li>
+  <li><em>Structure learning</em>, where we want to estimate the graph, i.e. determine from data how the variables depend on each other.</li>
+</ul>
+
+<p>We are going to first focus on parameter learning, and come back to structure learning in a later chapter.</p>
+
+<p>We will consider parameter learning in both directed and undirected models. It turns out that the former will admit easy, closed form solutions, while the latter will involve potentially intractable numerical optimization techniques. In later sections, we will look at latent variable models (which contain unobserved hidden variables that succinctly model the event of interest) as well as Bayesian learning, a general approach to statistics that offers certain advantages to more standard approaches.</p>
+
+<h2 id="the-learning-task">The learning task</h2>
+
+<p>Before, we start our discussion of learning, let’s first reflect on what it means to fit a model, and what is a desirable objective for this task.</p>
+
+<p>Let’s assume that the domain is governed by some underlying distribution <script type="math/tex">p^*</script>. We are given a dataset <script type="math/tex">D</script> of <script type="math/tex">m</script> samples from <script type="math/tex">p^∗</script>; The standard assumption is that the data instances are independent and identically distributed (iid). We are also given a family of models <script type="math/tex">M</script>, and our task is to learn some “good” model in <script type="math/tex">M</script> that defines a distribution <script type="math/tex">p</script>. For example, we could look at all Bayes nets with a given graph structure, with all the possible choices of the CPD tables.</p>
+
+<p>The goal of learning is to return a model that precisely captures the distribution <script type="math/tex">p^∗</script> from which our data was sampled. This is in general not achievable because limited data only provides a rough approximation of the true underlying distribution, and because of computational reasons.
+Still, we want to somehow select the ”best” approximation to the underlying distribution <script type="math/tex">p^∗</script>.</p>
+
+<p>What is “best” in this case? It depends on what we want to do:</p>
+
+<ul>
+  <li>Density estimation: we are interested in the full distribution (so later we can compute whatever conditional probabilities we want)</li>
+  <li>Specific prediction tasks: we are using the distribution to make a prediction, e.g. is this email spam or not?</li>
+  <li>Structure or knowledge discovery: we are interested in the model itself, e.g. how do some genes interact with each other?</li>
+</ul>
+
+<h2 id="maximum-likelihood">Maximum likelihood</h2>
+
+<p>Let’s assume that we want to learn the full distribution so that later we can answer any probabilistic inference query. In this setting we can view the learning problem as <em>density estimation</em>. We want to construct a <script type="math/tex">p</script> as ”close” as possible to <script type="math/tex">p^∗</script>. How do we evaluate ”closeness”? We will again use the KL divergence, which we have seen when we covered variational inference:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+KL(p^*||p) = \sum_x p^*(x) \log \frac{p^*(x)}{p(x)} = -H(p^*) - \mathbb{E}_{x \sim p^*} [ \log p(x) ].
+</script></div>
+
+<p>The first term does not depend on p; hence minimizing KL divergence is equivalent to maximizing the expected log-likelihood</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathbb{E}_{x \sim p^*} [ \log p(x) ].
+</script></div>
+<p>This objective asks that <script type="math/tex">p</script> assign high probability to instances sampled from <script type="math/tex">p^∗</script>, so as to reflect the true distribution.
+Although we can now compare models, since we are not computing <script type="math/tex">H(p^∗)</script>, we don’t know how close we are to the optimum.</p>
+
+<p>However, there is still a problem: in general we do not know <script type="math/tex">p^∗</script>. We will thus approximate the expected log-likelihood <script type="math/tex">\mathbb{E}_{x \sim p^*} [ \log p(x) ]</script> with the empirical log-likelihood (a Monte-Carlo estimate):</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathbb{E}_{x \sim p^*} [ \log p(x) ] \approx \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
+</script></div>
+<p>where <script type="math/tex">D</script> is a dataset drawn i.i.d. from <script type="math/tex">p^*</script>.</p>
+
+<p>*Maximum likelihood learning is then defined as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\max_{p \in M} \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
+</script></div>
+
+<h3 id="an-example">An example</h3>
+
+<p>As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution <script type="math/tex">p^∗(x)</script> where <script type="math/tex">x \in \{h,t\}</script>. Our class of models <script type="math/tex">M</script> is going to be the set of all probability distributions over <script type="math/tex">\{h,t\}</script>.</p>
+
+<p>How should we choose <script type="math/tex">p</script> from M if 60 out
+of 100 tosses are heads? Let’s assume that <script type="math/tex">p(x=h)=\theta</script> and <script type="math/tex">p(x=t)=1−\theta</script>. If our observed data is <script type="math/tex">D = \{h,h,t,h,t\}</script>, our likelihood becomes <script type="math/tex">\prod_i p(x_i ) = \theta \cdot \theta \cdot (1 − \theta) \cdot \theta \cdot (1 − \theta)</script>; maximizing this yields <script type="math/tex">\theta = 60\%</script>.</p>
+
+<p>More generally, our log-likelihood function is simply</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+L(\theta) = \text{# heads} \cdot \log(\theta) + \text{# tails} \cdot \log(1 − \theta),
+</script></div>
+<p>for which the optimal solution is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\theta^* = \frac{\text{# heads}}{\text{# heads} + \text{# tails}}. 
+</script></div>
+
+<h2 id="likelihood-loss-and-risk">Likelihood, Loss and Risk</h2>
+
+<p>We may now generalize this by introducing the concept of a <em>loss function</em>. A loss function <script type="math/tex">L(x,p)</script> measures the loss that a model distribution <script type="math/tex">p</script> makes on a
+particular instance <script type="math/tex">x</script>.
+Assuming instances are sampled from some distribution <script type="math/tex">p^∗</script>, our goal is to
+find the model that minimizes the expected loss or risk,</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathbb{E}_{x \sim p^*} [ L(x,p) ] \approx \frac{1}{|D|} \sum_{x \in D}  L(x,p), 
+</script></div>
+<p>Notive that the loss function which corresponds to maximum likelihood estimation is the log loss <script type="math/tex">-\log p(x)</script>.</p>
+
+<p>Another example of a loss is the conditional log-likelihood. Suppose we want to predict a set of variables <script type="math/tex">y</script> given <script type="math/tex">x</script>, e.g., for segmentation or stereo vision. We concentrate on predicting <script type="math/tex">p(y|x)</script>, and use a conditional loss function <script type="math/tex">L(x,y,p) = −\log p(y \mid  x).</script>
+Since the loss function only depends on <script type="math/tex">p(y \mid  x)</script>, it suffices to estimate the conditional distribution, not the joint. This is the objective function we use to train conditional random fields (CRFs).</p>
+
+<p>Suppose next that our ultimate goal is structured prediction, i.e. given
+<script type="math/tex">x</script> we predict <script type="math/tex">y</script> via <script type="math/tex">\arg\max_y p(y \mid  x)</script>. What loss function should we use to measure error in this setting?</p>
+
+<p>One reasonable choice would be the classification error:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathbb{E}_{(x,y)\sim p^∗} [\mathbb{I}\{ \exists y' \neq y : p(y'\mid x) \geq p(y\mid x) \}],
+</script></div>
+<p>which is the probability over all <script type="math/tex">(x, y)</script> pairs sampled from <script type="math/tex">p^∗</script> that we predict
+the wrong assignment.
+A somewhat better choice might be the hamming loss, which counts the number of variables in which the MAP assignment differs from the ground truth label.
+There also exists a fascinating line of work on generalizations of the hinge loss to CRFs, which leads to a class of models called <em>structured support vector machines</em>.</p>
+
+<p>The moral of the story here is that it often makes sense to choose a loss that is appropriate to the task at hand, e.g. prediction rather than full density estimation.</p>
+
+<h2 id="empirical-risk-and-overfitting">Empirical Risk and Overfitting</h2>
+
+<p>Empirical risk minimization can easily overfit the data.
+The data we have is a sample, and usually there is vast amount of samples that we have never seen. Our model should generalize well to these “never-seen” samples.</p>
+
+<h3 id="the-biasvariance-tradeoff">The bias/variance tradeoff</h3>
+
+<p>Thus, we typically restrict the <em>hypothesis space</em> of distributions that we search over. If the hypothesis space is very limited, it might not be able to represent <script type="math/tex">p^∗</script>, even with unlimited data. This type of limitation is called bias, as the learning is limited on how close it can approximate the target distribution</p>
+
+<p>If we select a highly expressive hypothesis class, we might represent better the data. However, when we have small amount of data, multiple models can fit well, or even better than the true model. Moreover, small perturbations on D will result in very different estimates. This limitation is call the variance.</p>
+
+<p>Thus, there is an inherent bias-variance trade off when selecting the hypothesis class. One of the main challenges of machine learning is to choose a model that is sufficiently rich to be useful, yet not so complex as to overfit the training set.</p>
+
+<h3 id="how-to-avoid-overfitting">How to avoid overfitting?</h3>
+
+<p>High bias can be avoided by increasing the capacity of the model. We may avoid high variance using several approaches.</p>
+
+<p>We may impose hard constraints, e.g. by selecting a less expressive hypothesis class: Bayesian networks with at most <script type="math/tex">d</script> parents or pairwise (rather than arbitrary-order) MRFs. We may also introduce a soft preference for “simpler” models by adding a regularizer term <script type="math/tex">R(p)</script> to the loss <script type="math/tex">L(x,p)</script>, which will penalize overly complex <script type="math/tex">p</script>.</p>
+
+<h3 id="generalization-error">Generalization error</h3>
+
+<p>At training, we minimize empirical loss</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{|D|} \sum_{x \in D}  \log p(x). 
+</script></div>
+<p>However, we are actually interested in minimizing</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathbb{E}_{x \sim p^*} [ \log p(x) ].
+</script></div>
+
+<p>We cannot guarantee with certainty the quality of our learned model.
+This is because the data <script type="math/tex">D</script> is sampled stochastically from <script type="math/tex">p^∗</script>, and we might get an unlucky sample. The goal of learning theory is to prove that the model is approximately correct: for most <script type="math/tex">D</script>, the learning procedure returns a model whose error is low. There exist a vast literature that quantifies the probability of observing a given error between the empirical and the expected loss given a particular type of model and a particular dataset size.</p>
+
+<h2 id="maximum-likelihood-learning-in-bayesian-networks">Maximum likelihood learning in Bayesian networks</h2>
+
+<p>Let us now apply this long discussion to a particular problem of interest: parameter learning in Bayesian networks.</p>
+
+<p>Suppose that we are given a Bayesian network <script type="math/tex">p(x) = \prod^n_{i=1} \theta_{x_i \mid pa(x_i)}</script> and i.i.d. samples <script type="math/tex">D=\{x^{(1)},x^{(2)},...,x^{(m)}\}</script>. What is the maximum likelihood estimate of the parameters (the CPDs)?</p>
+
+<p>We may write the likelihood as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+L(\theta, D) = \prod_{i=1}^n \prod_{j=1}^m \theta_{x_i^{(j)} \mid pa(x_i^{(j)})}
+</script></div>
+<p>Taking logs and combining like terms, this becomes</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\log L(\theta, D) = \sum_{i=1}^n \#(x_i, pa(x_i)) \cdot \theta_{x_i \mid pa(x_i)}.
+</script></div>
+<p>Thus, maximization of the (log) likelihood function decomposes into separate maximizations for the local conditional distributions!
+This is essentially the same as the head/tails example we saw earlier (except with more categories). It’s a simple calculus exercise to formally show that</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\theta^*_{x_i \mid pa(x_i)} = \frac{\#(x_i, pa(x_i))}{\#(pa(x_i))}. 
+</script></div>
+
+<p>We thus conclude that in Bayesian networks with discrete variabels, the maximum-likelihood estimate has a closed-form solution. Even when the variables are not discrete, the task is equally simple: the log-factors are linearly separable, hence the log-likelihood reduces to estimating each of them separately. The simplicity of learning is one of the most convenient features of Bayesian networks.</p>
+
+<p>##Structure learning for Bayesian networks</p>
+
+<p>The task of structure learning for Bayesian networks refers to learn the structure of the directed acyclic graph (DAG) from data. There are two major approaches for the structure learning: score-based approach and constraint-based approach .</p>
+
+<p>###Score-based approach</p>
+
+<p>The score-based approach first defines a criterion by which we could evaluate how well the Bayesian network fits the data, then search over the space of DAGs for a structure with maximal score. In this way, the score-based approach is essentially a search problem and consists of two parts: the definition of score metric and the search algorithm.</p>
+
+<p>####Score metrics</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>The score metrics for a structure $\mathcal{G}$ and data $D$ can be generally defined as: $$Score(G:D)= LL(G:D) - \phi(</td>
+      <td>D</td>
+      <td>) |G|.$$ Here $LL(G:D)$ refers to the log-likelihood of the data under the graph structure $\mathcal{G}.$  The parameters in Bayesian network $G$ are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with a overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function. $</td>
+      <td>D</td>
+      <td>$ is the number of sample and $|G|$ is the number of parameters in the graph $\mathcal{G}.$ With this extra term, we will penalize the over-complicated graph structure and avoid overfitting.  For AIC the function $\phi(t) = 1, $ while for BIC $\phi(t) =  \log(t)/2.$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first define the probability of data $D$ conditional on the graph structure $\mathcal{G}$ as 
+<script type="math/tex">P(D|\mathcal{G})=\int P(D|\Theta_{\mathcal{G}},\mathcal{G})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},</script>
+where $P(D|\Theta_{\mathcal{G}},\mathcal{G})$ is the probability of the data given the network structure and parameters, and $P(\Theta_{\mathcal{G}}|\mathcal{G})$ is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,
+<script type="math/tex">P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N'_{i,\pi_i,j})}{\Gamma(\sum_j N'_{i,\pi_i,j} + N_{i,\pi_i,j} )} \prod_{j}\frac{\Gamma(N'_{i,\pi_i,j} + N_{i,\pi_i,j})}{\Gamma(N'_{i,\pi_i,j})}\right].</script>
+Here $\pi_i$ refers to the parent configuration of the variable $i$ and $N_{i,\pi_i,j}$ is the count of variable $i$ taking value $j$ with parent configuration $\pi_i$. $N’$ represents the counts in the prior respectively.</p>
+
+<p>With a prior for the graph structure $P(\Theta_{\mathcal{G}})$ (say, a uniform one), the BD score is defined as 
+<script type="math/tex">\log P(D|\Theta_{\mathcal{G}}) + \log P(\Theta_{\mathcal{G}}).</script>
+Notice there is no penalty term appending to the BD score due to that it will penalize the overfitting implicitly via the integral over parameter space.</p>
+
+<h4 id="search-algorithms">Search algorithms</h4>
+
+<p>The most common choice for search algorithms are local search and  greedy search.</p>
+
+<p>For local search algorithm, it starts with an empty graph or a complete graph. At each step, it attempts to change the graph structure by a single operation of adding an edge, removing an edge or reversing an edge. (Of course, the operation should preserve the acyclic property.) If the score increases, then it adopts the attempt and does the change, otherwise it makes another attempt.</p>
+
+<p>For greedy search (namely the K3 algorithm), we first assume a topological order of the graph. For each variable, we restrict its parent set to the variables with a higher order. While searching for parent set for each variable, it takes a greedy approach by adding the parent that increases the score most until no improvement can be made.</p>
+
+<p>Although both approach are computational tractable, neither of them have a guarantee of the quality of the graph that we end up with. The graph space is highly “non-convex” and both algorithm might get stuck at some sub-optimal regions.</p>
+
+<h3 id="constraint-based-approach">Constraint-based approach</h3>
+
+<p>The constraint-based case employs the independence test to identify a set of edge constraints for the graph and then finds the best DAG that satisfies the constraints. For example, we could distinguish V-structure and fork-structure by doing independence test for the two variables on the sides conditional on the variable in the middle. This approach works well with some other prior (expert) knowledge of structure but requires lots of data samples to guarantee testing power. So it is less reliable when the number of sample is small.</p>
+
+<h3 id="recent-advances">Recent Advances</h3>
+
+<p>In this section, we will briefly introduce two recent algorithm for graph search: order-search (OS) approach and integer linear programming (ILP) approach.</p>
+
+<p>The OS approach, as the name refers, conducts a search over the topological orders and the search over graph space at the same time. The K3 algorithm assumes a topological order in advance and do the search only over the graphs that obey the topological order. When the order specified is a poor one, it may end with a bad graph structure (with a low graph score). The OS algorithm resolves this problem by doing search over orders at the same time. It shifts two adjacent variable in an order at each step and employs the K3 algorithm as a sub-routine.</p>
+
+<p>The ILP approach encodes the graph structure, scoring and the acyclic constraints into a linear programming problem. Thus it can utilize the state-of-art integer programming solver. But this approach requires a bound on the maximum number of node parents in the graph (say to be 4 or 5). Otherwise, the number of constraints in the ILP will explode and the computation will be intractable.</p>
+
+
+
+    </article>
+    <span class="print-footer">Learning in directed models - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2017 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2017</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
