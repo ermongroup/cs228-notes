@@ -25,7 +25,7 @@ In a sense, when $$x_k$$ is marginalized out, it receives all the signal from va
 
 At the end of the VE run, $$x_i$$ receives messages from all of its immediate children, marginalizes them out, and we obtain the final marginal.
 
-Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all of messages from its children. The key insight here is that the messages $$x_k$$ will receives from $$x_j$$ will be the same as when $$x_i$$ was the root{% sidenote 1 'Another reason why this is true is because there is only a single path connecting two nodes in the tree.'%}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
+Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all messages from its children. The key insight here is that the messages $$x_k$$ will receives from $$x_j$$ will be the same as when $$x_i$$ was the root{% sidenote 1 'Another reason why this is true is because there is only a single path connecting two nodes in the tree.'%}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
 
 ### A message-passing algorithm
 
@@ -33,13 +33,13 @@ A key question here is how exactly do we compute all the message we need. Notice
 
 The answer is very simple: a node $$x_i$$ sends a message to a neighbor $$x_j$$ whenever it has received messages from all nodes besides $$x_j$$. It's a fun exercise to the reader to show that there will always be a node with a message to send, unless all the messages have been sent out. This will happen after precisely {%m%}2|E|{%em%} steps, since each edge can receive messages only twice: once from $$x_i \to x_j$$, and once more in the opposite direction.
 
-Finally, this algorithm will be correct because our messages are defined as the intermediate factors in the VE algorithm
+Finally, this algorithm will be correct because our messages are defined as the intermediate factors in the VE algorithm.
 
 ### Sum-product message passing
 
 We are now ready to formally define the belief propagation algorithm. This algorithm will have two variants, the first of which is called sum-product message passing. This algorithm is defined as follows: while there is a node $$x_i$$ ready to transmit to $$x_j$$, send the message
 {% math %}
-m_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \\ j} m_{\ell \to i}(x_i).
+m_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \setminus j} m_{\ell \to i}(x_i).
 {% endmath %}
 
 Again, observe that this message is precisely the factor $$\tau$$ that $$x_i$$ would transmit to $$x_j$$ during a round of variable elimination with the goal of computing $$p(x_j)$$.
@@ -95,7 +95,7 @@ Suppose that we are performing marginal inference and that we are given an MRF o
 p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c),
 {% endmath %}
 
-Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, ..., x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(i)}$$ and $$x_c^{(j)}$$. We refer to this assumption as the *running intersection* (RIP) property.
+Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, ..., x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(j)}$$ and $$x_c^{(k)}$$. We refer to this assumption as the *running intersection* (RIP) property.
 {% maincolumn 'assets/img/junctionpath.png' 'A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicates sepsets, which are variables forming the intersection of the scopes of two neighboring cliques'%}
 
 Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to 
@@ -129,7 +129,7 @@ Here is an example of an MRF with graph $$G$$ and junction tree $$T$$. MRF poten
 
 Note that we may always find a trivial junction tree with one node containing all the variables in the original graph. However, such trees are useless because they will not result in efficient marginalization algorithms. 
 
-Optimal trees are one that make the clusters are small and modular as possible; unfortunately, it is again NP-hard to find the optimal tree. We will see below some practical ways in which we can find good junction trees 
+Optimal trees are one that make the clusters as small and modular as possible; unfortunately, it is again NP-hard to find the optimal tree. We will see below some practical ways in which we can find good junction trees 
 
 A special case when we *can* find the optimal junction tree is when $$G$$ itself is a tree. In that case, we may define a cluster for each edge in the tree. It is not hard to check that the result satisfies the above definition.
 
@@ -171,7 +171,7 @@ First, we pick a set of variables $$x_{-k}$$ in a leaf $$c^{(j)}$$ of $$T$$ that
 
 Then we marginalize out $$x_{-k}$$ to obtain a factor $$m_{j \to k}(S_{ij})$$. We multiply $$m_{j \to k}(S_{ij})$$ with $$\psi(x_c^{(k)})$$ to obtain a new factor $$\tau(x_c^{(k)})$$. Doing so, we have effectively eliminated the factor $$\psi(x_c^{(j)})$$ and the unique variables it contained. In the running example, we may sum our $$f$$ and the resulting factor over $$(b, e)$$ may be folded into $$(b,c,e)$$. 
 
-Note that the messages computed in this case are exactly the same as those of JT. In particular, $$c^{(k)})$$ will be ready to send its message, it will have been multiplied by $$m_{j\ell \to k}(S_{ij})$$ from all neighbors except its parent, which is exactly how JT sends its message.
+Note that the messages computed in this case are exactly the same as those of JT. In particular, when $$c^{(k)}$$ will be ready to send its message, it will have been multiplied by $$m_{j\ell \to k}(S_{ij})$$ from all neighbors except its parent, which is exactly how JT sends its message.
 
 Repeating this procedure eventually produces a single factor $$\beta(x_c^{(i)})$$, which is our final belief. Since VE implements the messages of the JT algorithm, $$\beta(x_c^{(i)})$$ will correspond to the JT belief. Assuming we have convinced ourselves in the previous section that VE works, we know that this belief will be valid.
 
@@ -199,7 +199,7 @@ Loopy belief propagation (LBP) is another technique for performing inference on 
 Suppose that we a given an MRF with pairwise potentials{% sidenote 1 'Arbitrary potentials can be handled using an algorithm called LBP on *factor graphs*. We will include this material at some point in the future'%}.
 The main idea of LBP is to disregard loops in the graph and perform message passing anyway. In other words, given an ordering on the edges, at each time $$t$$ we iterate over a pair of adjacent variables $$x_i, x_j$$ in that order and simply perform the update
 {% math %}
-m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \\ j} m^{t}_{\ell \to i}(x_i).
+m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \setminus j} m^{t}_{\ell \to i}(x_i).
 {% endmath %}
 
 We keep performing these updates for a fixed number of steps or until convergence (the messages don't change). Messages are typically initialized uniformly.
