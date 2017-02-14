@@ -1,4 +1,7 @@
-
+---
+layout: post
+title: Structure Learning for Bayesian Networks
+---
 ## Structure learning for Bayesian networks
 
 The task of structure learning for Bayesian networks refers to learn the structure of the directed acyclic graph (DAG) from data. There are two major approaches for the structure learning: score-based approach and constraint-based approach . 
@@ -13,21 +16,21 @@ The score metrics for a structure $$\mathcal{G}$$ and data $$D$$ can be generall
 
 There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first define the probability of data $D$ conditional on the graph structure $$\mathcal{G}$$ as 
 
-{% math %}
+$$$
 P(D|\mathcal{G})=\int P(D|\Theta_{\mathcal{G}},\mathcal{G})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},
-{% endmath %}
+$$$
 
 where $$P(D|\Theta_{\mathcal{G}},\mathcal{G})$$ is the probability of the data given the network structure and parameters, and $$P(\Theta_{\mathcal{G}}|\mathcal{G})$$ is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,
-{% math %}
+$$$
 P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N'_{i,\pi_i,j})}{\Gamma(\sum_j N'_{i,\pi_i,j} + N_{i,\pi_i,j} )} \prod_{j}\frac{\Gamma(N'_{i,\pi_i,j} + N_{i,\pi_i,j})}{\Gamma(N'_{i,\pi_i,j})}\right].
-{% endmath %}
+$$$
 Here $$\pi_i$$ refers to the parent configuration of the variable $$i$$ and $$N_{i,\pi_i,j}$$ is the count of variable $$i$$ taking value $$j$$ with parent configuration $$\pi_i$$. $$N'$$ represents the counts in the prior respectively.
 
 With a prior for the graph structure $$P(\Theta_{\mathcal{G}})$$ (say, a uniform one), the BD score is defined as 
 
-{% math %}
+$$$
 \log P(D|\Theta_{\mathcal{G}}) + \log P(\Theta_{\mathcal{G}}).
-{% endmath %}
+$$$
 
 Notice there is no penalty term appending to the BD score due to that it will penalize the overfitting implicitly via the integral over parameter space.
 
