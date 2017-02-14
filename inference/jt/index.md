@@ -39,7 +39,7 @@ Finally, this algorithm will be correct because our messages are defined as the 
 
 We are now ready to formally define the belief propagation algorithm. This algorithm will have two variants, the first of which is called sum-product message passing. This algorithm is defined as follows: while there is a node $$x_i$$ ready to transmit to $$x_j$$, send the message
 {% math %}
-m_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \\ j} m_{\ell \to i}(x_i).
+m_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \backslash j} m_{\ell \to i}(x_i).
 {% endmath %}
 
 Again, observe that this message is precisely the factor $$\tau$$ that $$x_i$$ would transmit to $$x_j$$ during a round of variable elimination with the goal of computing $$p(x_j)$$.
