@@ -46,7 +46,7 @@ This course starts by introducing probabilistic graphical models from the very b
 
 4. Bayesian learning: Bayesian paradigm. Conjugate priors. Examples.
 
-5. Structure learning: Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning.
+5. [Structure learning](learning/structLearn/): Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning.
 
 ## Bringing it all together
 
