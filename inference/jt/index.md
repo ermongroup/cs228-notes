@@ -8,7 +8,7 @@ However, this algorithm still has an important shortcoming: if we want to ask th
 
 Fortunately, it turns out that this problem is also easily avoidable. When computing marginals, VE produces many intermediate factors $$\tau$$ as a side-product of the main computation; these factors turn out to be the same as the ones that we need to answer other marginal queries. By caching them after a first run of VE, we can easily answer new marginal queries at essentially no additional cost.
 
-The end result of this chapter will be a new technique called the Junction Tree (JT) algorithm; this algorithm will first execute two runs of the VE algorithm to initialize a particular data structure holding a set of pre-computed factors. Once the structure is initialize, it will be used to answer marginal queries in $$O(1)$$ time.
+The end result of this chapter will be a new technique called the Junction Tree (JT) algorithm; this algorithm will first execute two runs of the VE algorithm to initialize a particular data structure holding a set of pre-computed factors. Once the structure is initialized, it will be used to answer marginal queries in $$O(1)$$ time.
 
 We will introduce two variants of this algorithm: belief propagation, and then the full junction tree method. The first one will apply to tree-structured graphs, while the other will be applicable to general networks.
 
