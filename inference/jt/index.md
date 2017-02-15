@@ -96,7 +96,7 @@ p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c),
 {% endmath %}
 
 Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, ..., x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(j)}$$ and $$x_c^{(k)}$$. We refer to this assumption as the *running intersection* (RIP) property.
-{% maincolumn 'assets/img/junctionpath.png' 'A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicates sepsets, which are variables forming the intersection of the scopes of two neighboring cliques'%}
+{% maincolumn 'assets/img/junctionpath.png' 'A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques'%}
 
 Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to 
 ``push in" certain variables deeper into the product of cluster potentials:
