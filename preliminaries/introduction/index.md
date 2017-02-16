@@ -28,7 +28,7 @@ Often, the real world that we are trying to model is very complicated; in partic
 p(x,y). 
 {% endmath %}
 
-Given such a model, we could ask questions such as  "what is the probability that house prices will rise over the next five years?", or "given that the house costs $100,000, what is the most probability that it has three bedrooms?" The probabilistic aspect of modeling is very important, because:
+Given such a model, we could ask questions such as "what is the probability that house prices will rise over the next five years?", or "given that the house costs $100,000, what is the most probability that it has three bedrooms?" The probabilistic aspect of modeling is very important, because:
 
 - Typically, we cannot perfectly predict the future. We often don't have enough knowledge about the world, and often the world itself is stochastic.
 - We need to assess the confidence of our predictions; often, predicting a single value is not enough, we need the system to output its beliefs about what's going on in the world.

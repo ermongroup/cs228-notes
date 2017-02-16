@@ -99,14 +99,14 @@ Crucially, we will assume that the cliques $$c$$ have a form of path structure, 
 {% maincolumn 'assets/img/junctionpath.png' 'A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicates sepsets, which are variables forming the intersection of the scopes of two neighboring cliques'%}
 
 Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to 
-``push in" certain variables deeper into the product of cluster potentials:
+"push in" certain variables deeper into the product of cluster potentials:
 {% math %}
 \begin{align*}
 \phi(x_1) \sum_{x_2} \phi(x_1,x_2) \sum_{x_3} \phi(x_1,x_2,x_3) \sum_{x_5} \phi(x_2,x_3,x_5) \sum_{x_6} \phi(x_2,x_5,x_6).
 \end{align*}
 {% endmath %}
 
-We first sum over $$x_6$$, which creates a factor $$\tau(x_2, x_3, x_5) = \phi(x_2,x_3,x_5) \phi_{x_6} \phi(x_2,x_5,x_6)$$. Then, $$x_5$$ gets eliminated, and so on. At each step, each cluster marginalizes out the variables that are not in the scope of its neighbor. This marginalization can also be interpreted as computing a message over the variables it shares with the neighbor.
+We first sum over $$x_6$$, which creates a factor $$\tau(x_2, x_3, x_5) = \phi(x_2,x_3,x_5) \sum_{x_6} \phi(x_2,x_5,x_6)$$. Then, $$x_5$$ gets eliminated, and so on. At each step, each cluster marginalizes out the variables that are not in the scope of its neighbor. This marginalization can also be interpreted as computing a message over the variables it shares with the neighbor.
 
 The running intersection property is what enables us to push sums in all the way to the last factor. We may eliminate $$x_6$$ because we know that only the last cluster will carry this variable: since it is not present in the neighboring cluster, it cannot be anywhere else in the graph without violating the RIP.
 
@@ -137,14 +137,14 @@ A special case when we *can* find the optimal junction tree is when $$G$$ itself
 
 Let us now define the junction tree algorithm, and then explain why it works. At a high-level, this algorithm implements a form of message passing on the junction tree, which will be equivalent to variable elimination for the same reasons that BP was equivalent to VE.
 
-More precisely, let us define the potential $$\psi_c(x_c)$$ of each cluster $$c$$ as the product of all the factors $$\phi$$ in $$G$$ that have been assigned to $$x_c$$. By the family preservation property, this is well-defined, and we may assume that our distribution is in the form
+More precisely, let us define the potential $$\psi_c(x_c)$$ of each cluster $$c$$ as the product of all the factors $$\phi$$ in $$G$$ that have been assigned to $$c$$. By the family preservation property, this is well-defined, and we may assume that our distribution is in the form
 {% math %}
 p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \psi_c(x_c).
 {% endmath %}
 
 Then, at each step of the algorithm, we choose a pair of adjacent clusters $$c^{(i)}, c^{(j)}$$ in $$T$$ and compute a message whose scope is the sepset $$S_{ij}$$ between the two clusters:
 {% math %}
-m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi(x_c \backslash S_{ij}) \prod_{\ell \in N(i) \backslash j} m_{\ell \to i}(S_{\ell i}).
+m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi(x_c) \prod_{\ell \in N(i) \backslash j} m_{\ell \to i}(S_{\ell i}).
 {% endmath %}
 
 We choose $$c^{(i)}, c^{(j)}$$ only if $$c^{(i)}$$ has received messages from all of its neighbors except $$c^{(j)}$$. Just as in belief propagation, this procedure will terminate in exactly {%m%}2|E_T|{%em%} steps. After it terminates, we will define the belief of each cluster based on all the messages that it receives
@@ -154,9 +154,9 @@ We choose $$c^{(i)}, c^{(j)}$$ only if $$c^{(i)}$$ has received messages from al
 
 These updates are often referred to as *Shafer-Shenoy*. After all the messages have been passed, beliefs will be proportional to the marginal probabilities over their scopes, i.e. $$\beta_c(x_c) \propto p(x_c)$$. We may answer queries of the form $$\tp(x)$$ for $$x \in x_c$$ by marginalizing out the variable in its belief{% sidenote 1 'Readers familiar with combinatorial optimization will recognize this as a special case of dynamic programming on a tree decomposition of a graph with bounded treewidth.'%}
 {% math %}
-\tp(x) = \sum_{x_c \backslash x} \beta_c(x_c) .
+\tp(x) \propto \sum_{x_c \backslash x} \beta_c(x_c) .
 {% endmath %}
-To get the actual probability, we compute the partition function by e.g. summing all the beliefs in a cluster $$\sum_{x_c} \beta_c(x_c)$$ and dividing by $$Z$$.
+To get the actual (normalized) probability, we divide by the partition function $$Z$$ which is computed by summing all the beliefs in a cluster, $$Z = \sum_{x_c} \beta_c(x_c)$$.
 
 Note that this algorithm makes it obvious why we want small clusters: the running time will be exponential in the size of the largest cluster (if only because we may need to marginalize out variables from the cluster, which often must be done using brute force). This is why a junction tree of a single node containing all the variables is not useful: it amounts to performing full brute-force marginalization.
 
@@ -169,9 +169,9 @@ Suppose we are performing variable elimination to compute $$\tp(x')$$ for some v
 
 First, we pick a set of variables $$x_{-k}$$ in a leaf $$c^{(j)}$$ of $$T$$ that does not appear in the sepset $$S_{kj}$$ between $$c^{(j)}$$ and its parent $$c^{(k)}$$ (if there is no such variable, we may multiply $$\psi(x_c^{(j)})$$ and $$\psi(x_c^{(k)})$$ into a new factor with a scope not larger than that of the initial factors). In our example, we may pick the variable $$f$$ in the factor $$(b,e,f)$$.
 
-Then we marginalize out $$x_{-k}$$ to obtain a factor $$m_{j \to k}(S_{ij})$$. We multiply $$m_{j \to k}(S_{ij})$$ with $$\psi(x_c^{(k)})$$ to obtain a new factor $$\tau(x_c^{(k)})$$. Doing so, we have effectively eliminated the factor $$\psi(x_c^{(j)})$$ and the unique variables it contained. In the running example, we may sum our $$f$$ and the resulting factor over $$(b, e)$$ may be folded into $$(b,c,e)$$. 
+Then we marginalize out $$x_{-k}$$ to obtain a factor $$m_{j \to k}(S_{ij})$$. We multiply $$m_{j \to k}(S_{ij})$$ with $$\psi(x_c^{(k)})$$ to obtain a new factor $$\tau(x_c^{(k)})$$. Doing so, we have effectively eliminated the factor $$\psi(x_c^{(j)})$$ and the unique variables it contained. In the running example, we may sum out $$f$$ and the resulting factor over $$(b, e)$$ may be folded into $$(b,c,e)$$. 
 
-Note that the messages computed in this case are exactly the same as those of JT. In particular, when $$c^{(k)}$$ will be ready to send its message, it will have been multiplied by $$m_{j\ell \to k}(S_{ij})$$ from all neighbors except its parent, which is exactly how JT sends its message.
+Note that the messages computed in this case are exactly the same as those of JT. In particular, when $$c^{(k)}$$ is ready to send its message, it will have been multiplied by $$m_{j\ell \to k}(S_{ij})$$ from all neighbors except its parent, which is exactly how JT sends its message.
 
 Repeating this procedure eventually produces a single factor $$\beta(x_c^{(i)})$$, which is our final belief. Since VE implements the messages of the JT algorithm, $$\beta(x_c^{(i)})$$ will correspond to the JT belief. Assuming we have convinced ourselves in the previous section that VE works, we know that this belief will be valid.
 
@@ -184,7 +184,7 @@ The important thing to note is that if we now set $$c^{(k)}$$ to be the root of 
 The last topic that we need to address is the question of constructing good junction trees.
 
 - *By hand*: Typically, our models will have a very regular structure, for which there will be an obvious solution. For example, very often our model is a grid, in which case clusters will be associated with pairs of adjacent rows (or columns) in the grid.
-- *Using variable elimination*: One can show that running the VE elimination algorithm implicitly generates a junction tree over the variables. Thus it is possible to use the heuristics we previously discuss to define this ordering.
+- *Using variable elimination*: One can show that running the VE elimination algorithm implicitly generates a junction tree over the variables. Thus it is possible to use the heuristics we previously discussed to define this ordering.
 
 
 ## Loopy belief propagation
