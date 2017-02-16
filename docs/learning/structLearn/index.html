@@ -99,15 +99,7 @@
 P(D|\mathcal{G})=\int P(D|\Theta_{\mathcal{G}},\mathcal{G})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},
 </script></div>
 
-<table>
-  <tbody>
-    <tr>
-      <td>where $$P(D</td>
-      <td>\Theta_{\mathcal{G}},\mathcal{G})<script type="math/tex">is the probability of the data given the network structure and parameters, and</script>P(\Theta_{\mathcal{G}}</td>
-      <td>\mathcal{G})$$ is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,</td>
-    </tr>
-  </tbody>
-</table>
+<p>where <script type="math/tex">P(D\mid \Theta_{\mathcal{G}},\mathcal{G})</script> is the probability of the data given the network structure and parameters, and <script type="math/tex">P(\Theta_{\mathcal{G}}\mid \mathcal{G})</script> is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,</p>
 
 <div class="mathblock"><script type="math/tex; mode=display">
 P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N'_{i,\pi_i,j})}{\Gamma(\sum_j N'_{i,\pi_i,j} + N_{i,\pi_i,j} )} \prod_{j}\frac{\Gamma(N'_{i,\pi_i,j} + N_{i,\pi_i,j})}{\Gamma(N'_{i,\pi_i,j})}\right].
