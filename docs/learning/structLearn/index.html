@@ -85,38 +85,45 @@
 
 <p>The score-based approach first defines a criterion by which we could evaluate how well the Bayesian network fits the data, then search over the space of DAGs for a structure with maximal score. In this way, the score-based approach is essentially a search problem and consists of two parts: the definition of score metric and the search algorithm.</p>
 
-<h4 id="score-metrics">Score metrics</h4>
+<h3 id="score-metrics">Score metrics</h3>
+
+<p>The score metrics for a structure <script type="math/tex">\mathcal{G}</script> and data <script type="math/tex">D</script> can be generally defined as: 
+<script type="math/tex">Score(G:D)= LL(G:D) - \phi(|D|) \|G\|.</script></p>
+
+<p>Here <script type="math/tex">LL(G:D)</script> refers to the log-likelihood of the data under the graph structure <script type="math/tex">\mathcal{G}.</script>  The parameters in Bayesian network <script type="math/tex">G</script> are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with a overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function. <script type="math/tex">|D|</script> is the number of sample and <script type="math/tex">\|G\|</script> is the number of parameters in the graph 
+<script type="math/tex">\mathcal{G}.</script> With this extra term, we will penalize the over-complicated graph structure and avoid overfitting.  For AIC the function <script type="math/tex">\phi(t) = 1,</script> while for BIC <script type="math/tex">\phi(t) =  \log(t)/2.</script></p>
+
+<p>There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first define the probability of data <script type="math/tex">D</script> conditional on the graph structure <script type="math/tex">\mathcal{G}</script> as</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+P(D|\mathcal{G})=\int P(D|\Theta_{\mathcal{G}},\mathcal{G})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},
+</script></div>
 
 <table>
   <tbody>
     <tr>
-      <td>The score metrics for a structure <script type="math/tex">\mathcal{G}</script> and data <script type="math/tex">D</script> can be generally defined as: $$Score(G:D)= LL(G:D) - \phi(</td>
-      <td>D</td>
-      <td>) |G|.<script type="math/tex">Here</script>LL(G:D)<script type="math/tex">refers to the log-likelihood of the data under the graph structure</script>\mathcal{G}.<script type="math/tex">The parameters in Bayesian network $G$ are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with a overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function.</script></td>
-      <td>D</td>
-      <td><script type="math/tex">is the number of sample and</script>|G|<script type="math/tex">is the number of parameters in the graph</script>\mathcal{G}.<script type="math/tex">With this extra term, we will penalize the over-complicated graph structure and avoid overfitting.  For AIC the function</script>\phi(t) = 1, <script type="math/tex">while for BIC</script>\phi(t) =  \log(t)/2.$$</td>
+      <td>where $$P(D</td>
+      <td>\Theta_{\mathcal{G}},\mathcal{G})<script type="math/tex">is the probability of the data given the network structure and parameters, and</script>P(\Theta_{\mathcal{G}}</td>
+      <td>\mathcal{G})$$ is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,</td>
     </tr>
   </tbody>
 </table>
 
-<p>There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first define the probability of data $D$ conditional on the graph structure <script type="math/tex">\mathcal{G}</script> as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N'_{i,\pi_i,j})}{\Gamma(\sum_j N'_{i,\pi_i,j} + N_{i,\pi_i,j} )} \prod_{j}\frac{\Gamma(N'_{i,\pi_i,j} + N_{i,\pi_i,j})}{\Gamma(N'_{i,\pi_i,j})}\right].
+</script></div>
 
-<p><script type="math/tex">$
-P(D|\mathcal{G})=\int P(D|\Theta_{\mathcal{G}},\mathcal{G})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},</script>$</p>
-
-<p>where <script type="math/tex">P(D|\Theta_{\mathcal{G}},\mathcal{G})</script> is the probability of the data given the network structure and parameters, and <script type="math/tex">P(\Theta_{\mathcal{G}}|\mathcal{G})</script> is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,
-<script type="math/tex">$
-P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N'_{i,\pi_i,j})}{\Gamma(\sum_j N'_{i,\pi_i,j} + N_{i,\pi_i,j} )} \prod_{j}\frac{\Gamma(N'_{i,\pi_i,j} + N_{i,\pi_i,j})}{\Gamma(N'_{i,\pi_i,j})}\right].</script>$
-Here <script type="math/tex">\pi_i</script> refers to the parent configuration of the variable <script type="math/tex">i</script> and <script type="math/tex">N_{i,\pi_i,j}</script> is the count of variable <script type="math/tex">i</script> taking value <script type="math/tex">j</script> with parent configuration <script type="math/tex">\pi_i</script>. <script type="math/tex">N'</script> represents the counts in the prior respectively.</p>
+<p>Here <script type="math/tex">\pi_i</script> refers to the parent configuration of the variable <script type="math/tex">i</script> and <script type="math/tex">N_{i,\pi_i,j}</script> is the count of variable <script type="math/tex">i</script> taking value <script type="math/tex">j</script> with parent configuration <script type="math/tex">\pi_i</script>. <script type="math/tex">N'</script> represents the counts in the prior respectively.</p>
 
 <p>With a prior for the graph structure <script type="math/tex">P(\Theta_{\mathcal{G}})</script> (say, a uniform one), the BD score is defined as</p>
 
-<p><script type="math/tex">$
-\log P(D|\Theta_{\mathcal{G}}) + \log P(\Theta_{\mathcal{G}}).</script>$</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\log P(D|\Theta_{\mathcal{G}}) + \log P(\Theta_{\mathcal{G}}).
+</script></div>
 
 <p>Notice there is no penalty term appending to the BD score due to that it will penalize the overfitting implicitly via the integral over parameter space.</p>
 
-<h4 id="search-algorithms">Search algorithms</h4>
+<h3 id="search-algorithms">Search algorithms</h3>
 
 <p>The most common choice for search algorithms are local search and  greedy search.</p>
 
