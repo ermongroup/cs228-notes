@@ -10,31 +10,37 @@ The task of structure learning for Bayesian networks refers to learn the structu
 
 The score-based approach first defines a criterion by which we could evaluate how well the Bayesian network fits the data, then search over the space of DAGs for a structure with maximal score. In this way, the score-based approach is essentially a search problem and consists of two parts: the definition of score metric and the search algorithm. 
 
-#### Score metrics
+### Score metrics
 
-The score metrics for a structure $$\mathcal{G}$$ and data $$D$$ can be generally defined as: $$Score(G:D)= LL(G:D) - \phi(|D|) \|G\|.$$ Here $$LL(G:D)$$ refers to the log-likelihood of the data under the graph structure $$\mathcal{G}.$$  The parameters in Bayesian network $G$ are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with a overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function. $$|D|$$ is the number of sample and $$\|G\|$$ is the number of parameters in the graph $$\mathcal{G}.$$ With this extra term, we will penalize the over-complicated graph structure and avoid overfitting.  For AIC the function $$\phi(t) = 1, $$ while for BIC $$\phi(t) =  \log(t)/2.$$
+The score metrics for a structure $$\mathcal{G}$$ and data $$D$$ can be generally defined as: 
+$$Score(G:D)= LL(G:D) - \phi(|D|) \|G\|.$$ 
 
-There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first define the probability of data $D$ conditional on the graph structure $$\mathcal{G}$$ as 
+Here $$LL(G:D)$$ refers to the log-likelihood of the data under the graph structure $$\mathcal{G}.$$  The parameters in Bayesian network $$G$$ are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with a overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function. $$|D|$$ is the number of sample and $$\|G\|$$ is the number of parameters in the graph 
+$$ \mathcal{G}.$$ With this extra term, we will penalize the over-complicated graph structure and avoid overfitting.  For AIC the function $$\phi(t) = 1, $$ while for BIC $$\phi(t) =  \log(t)/2.$$
 
-$$$
+There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first define the probability of data $$D$$ conditional on the graph structure $$\mathcal{G}$$ as 
+
+{%math%}
 P(D|\mathcal{G})=\int P(D|\Theta_{\mathcal{G}},\mathcal{G})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},
-$$$
+{%endmath%}
 
 where $$P(D|\Theta_{\mathcal{G}},\mathcal{G})$$ is the probability of the data given the network structure and parameters, and $$P(\Theta_{\mathcal{G}}|\mathcal{G})$$ is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,
-$$$
+
+{%math%}
 P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N'_{i,\pi_i,j})}{\Gamma(\sum_j N'_{i,\pi_i,j} + N_{i,\pi_i,j} )} \prod_{j}\frac{\Gamma(N'_{i,\pi_i,j} + N_{i,\pi_i,j})}{\Gamma(N'_{i,\pi_i,j})}\right].
-$$$
+{%endmath%}
+
 Here $$\pi_i$$ refers to the parent configuration of the variable $$i$$ and $$N_{i,\pi_i,j}$$ is the count of variable $$i$$ taking value $$j$$ with parent configuration $$\pi_i$$. $$N'$$ represents the counts in the prior respectively.
 
 With a prior for the graph structure $$P(\Theta_{\mathcal{G}})$$ (say, a uniform one), the BD score is defined as 
 
-$$$
+{%math%}
 \log P(D|\Theta_{\mathcal{G}}) + \log P(\Theta_{\mathcal{G}}).
-$$$
+{%endmath%}
 
 Notice there is no penalty term appending to the BD score due to that it will penalize the overfitting implicitly via the integral over parameter space.
 
-#### Search algorithms
+### Search algorithms
 
 The most common choice for search algorithms are local search and  greedy search. 
 
