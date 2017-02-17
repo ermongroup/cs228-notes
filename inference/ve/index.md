@@ -40,7 +40,7 @@ p(x_n)
 & = \sum_{x_{n-1}} p(x_n \mid x_{n-1}) \sum_{x_{n-2}} p(x_{n-1} \mid x_{n-2}) \cdots \sum_{x_1} p(x_2 \mid x_1) p(x_1) .
 \end{align*}
 {% endmath %}
-We perform this summation by first summing the inner terms, starting from $$x_1$$, and ending with $$x_{n-1}$$. More concretely, we start by computing an intermediary *factor* $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$ by summing out $$x_1$$. This takes $$O(d^2)$$ time because we must sum over $$x_1$$ for each assignment to $$x_1$$. The resulting factor $$\tau(x_2)$$ can be thought of as a table of values (though not necessarily probabilities), with one entry for each assignment to $$x_2$$ (just as factor $$p(x_1)$$ can be represented as a table. We may then rewrite the marginal probability using $$\tau$$ as
+We perform this summation by first summing the inner terms, starting from $$x_1$$, and ending with $$x_{n-1}$$. More concretely, we start by computing an intermediary *factor* $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$ by summing out $$x_1$$. This takes $$O(d^2)$$ time because we must sum over $$x_1$$ for each assignment to $$x_2$$. The resulting factor $$\tau(x_2)$$ can be thought of as a table of values (though not necessarily probabilities), with one entry for each assignment to $$x_2$$ (just as factor $$p(x_1)$$ can be represented as a table. We may then rewrite the marginal probability using $$\tau$$ as
 {% math %}
 p(x_n) = \sum_{x_{n-1}} p(x_n \mid x_{n-1}) \sum_{x_{n-2}} p(x_{n-1} \mid x_{n-2}) \cdots \sum_{x_2} p(x_3 \mid x_2) \tau(x_2).
 {% endmath %}
