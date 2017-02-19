@@ -172,7 +172,7 @@ To see that, first observe that if $$A(x' \mid x) < 1$$, then $$\frac{P(x)Q(x' \
 {% math %}
 \begin{align*}
 A(x' \mid x) & =  \frac{P(x')Q(x \mid x')}{P(x)Q(x' \mid x)} \\
-P(x')Q(x \mid x') A(x' \mid x) & =  P(x)Q(x' \mid x) A(x' \mid x) \\
+P(x')Q(x \mid x') A(x \mid x') & =  P(x)Q(x' \mid x) A(x' \mid x) \\
 P(x')T(x \mid x') & =  P(x)T(x' \mid x),
 \end{align*}
 {% endmath %}
