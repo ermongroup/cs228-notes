@@ -41,14 +41,14 @@ This technique approximates a target expectation with
 {% endmath %}
 where $$x^1,...,x^T$$ are samples drawn according to $$p$$.
 
-It easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(g(x))/T$$, which can be made arbitrarily small with $$T$$. 
+It easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(f(x))/T$$, which can be made arbitrarily small with $$T$$. 
 
 ### Rejection sampling
 
 {% marginfigure 'nb1' 'assets/img/rejection-sampling.png' 'Graphical illustration of rejection sampling. We may compute the area of circle by drawing uniform samples from the square; the fraction of points that fall in the circle represents its area. This method breaks down if the size of the circle is small relative to the size of the square.'%}
 A special case of Monte Carlo integration is rejection sampling. We may use it to compute the area of a region $$R$$ by sampling in a larger region with a known area and recording the fraction of samples that falls within $$R$$.
 
-For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x')$$: we may write this probability as $$\Exp_{x\sim p}[\Ind(x=x')]$$ and then take the the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
+For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x')$$: we may write this probability as $$\Exp_{x\sim p}[\Ind(x=x')]$$ and then take the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
 
 ### Importance sampling
 
@@ -70,11 +70,11 @@ where $$w(x) = \frac{p(x)}{q(x)}$$. In other words, we may instead take samples 
 
 Now the variance of this new estimator equals 
 {% math %}
-\text{var}_{x \sim q}(f(x)w(x)) = \Exp_q (f^2(x) w^2(x)) - \Exp_q (f(x) w(x))^2 \geq 0
+\text{var}_{x \sim q}(f(x)w(x)) = \Exp_{x \sim q} [f^2(x) w^2(x)] - \Exp_{x \sim q} [f(x) w(x)]^2 \geq 0
 {% endmath %}
 Note that we can set the variance to zero by choosing {%m%}q(x) = \frac{|f(x)|p(x)}{\int |f(x)|p(x) dx}{%em%}; this means that if we can sample from this $$q$$ (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a $$q$$ would be NP-hard in general, but this at least gives us an indication for what to strive for.
 
-In the context of our previous example for computing $$p(x=x') = \Exp_z[p(z,x')]$$, we may take $$q$$ to be uniform distribution apply importance sampling as follows:
+In the context of our previous example for computing $$p(x=x') = \Exp_z[p(z,x')]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
 {% math %}
 \Exp_z[p(z,x')] \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)}.
 {% endmath %}
@@ -91,14 +91,14 @@ A key concept in MCMC is that of a *Markov chain*. A (discrete-time) Markov chai
 
 The probability $$P(S_i \mid S_{i-1})$$ is the same at every step $$i$$; this means that the transition probabilities at any time in the entire process depend only on the given state and not on the history of how we got there. This is called the *Markov* assumption.
 
-{% marginfigure 'mc' 'assets/img/markovchain.png' 'A Markov chain over three states. The weighted directed edges indicates probabilities of transitioning to a different state.'%}
+{% marginfigure 'mc' 'assets/img/markovchain.png' 'A Markov chain over three states. The weighted directed edges indicate probabilities of transitioning to a different state.'%}
 It is very convenient to represent the transition probability as a $$d \times d$$ matrix
 {% math %}
 T_{ij} = P(S_\text{new} = i \mid S_\text{prev} = j),
 {% endmath %}
 where $$T^t$$ denotes matrix exponentiation (we apply the matrix operator $$t$$ times).
 
-If the inital state $$S_0$$ is drawn from a vector probabilities $$p_0$$, we may represent the probability $$p_t$$ of ending up in each state after $$t$$ steps as
+If the initial state $$S_0$$ is drawn from a vector probabilities $$p_0$$, we may represent the probability $$p_t$$ of ending up in each state after $$t$$ steps as
 {% math %}
 p_t = T^t p_0.
 {% endmath %}
@@ -107,7 +107,7 @@ The limit $$\pi = \lim_{t \to \infty} p_t$$ (when it exists) is called a *statio
 
 A necessary condition that must be satisfied by a stationary distribution is called *detailed balance*:
 {% math %}
-\pi(x') T(x \mid x') = \pi(x) T(x' \mid x) \;\text{for all x}
+\pi(x') T(x \mid x') = \pi(x) T(x' \mid x) \;\text{for all $x$}
 {% endmath %}
 It is easy to show that such a $$\pi$$ must form a stationary distribution (just sum both sides of the equation over $$x$$ and simplify).
 
@@ -120,7 +120,7 @@ In order to construct such a chain, we first need to understand when stationary 
 - *Irreducibility*: It is possible to get from any state $$x$$ to any other state $$x'$$ with probability > 0 in a finite number of steps.
 - *Aperiodicity*: It is possible to return to any state at any time, i.e. there exists an $$n$$ such that for all $$i$$ and all $$n' \geq n$$, $$P(s_{n'}=i \mid s_0 = i) > 0$$.
 
-The first condition is meant to prevent *absorbing states*, i.e. states from which we can never leave. In the example below, if we start in states $$1,2$$, we will never reach state 4. Conversely, if we start in state 4, then we will never each states 1,2. If we start the chain in the middle (in state 3), then clearly it cannot have a single limiting distribution.
+The first condition is meant to prevent *absorbing states*, i.e. states from which we can never leave. In the example below, if we start in states $$1,2$$, we will never reach state 4. Conversely, if we start in state 4, then we will never reach states 1,2. If we start the chain in the middle (in state 3), then clearly it cannot have a single limiting distribution.
 {% maincolumn 'assets/img/reducible-chain.png' 'A reducible Markov Chain over four states.'%}
 
 The second condition is necessary to rule out transition operators such as
@@ -142,7 +142,7 @@ In the context of continuous variables, the Markov chain must be *ergodic*, whic
 
 As we said, the idea of MCMC algorithms is to construct a Markov chain over the assignments to a probability function $$p$$; the chain will have a stationary distribution equal to $$p$$ itself; by running the chain for some number of time, we will thus sample from $$p$$.
 
-At a high level, MCMC algorithms will have the following structure. They take as argument a transition operator $$T$$ specifying a Markov chain whose stationary distribution is $$p$$, and an initial  assignment $$x_0$$ to the variables of $$p$$. An MCMC algorithm then perform the following steps.
+At a high level, MCMC algorithms will have the following structure. They take as argument a transition operator $$T$$ specifying a Markov chain whose stationary distribution is $$p$$, and an initial assignment $$x_0$$ to the variables of $$p$$. An MCMC algorithm then perform the following steps.
 
 1. Run the Markov chain from $$x_0$$ for $$B$$ *burn-in* steps.
 2. Run the Markov chain from $$x_0$$ for $$N$$ *sampling* steps and collect all the states that it visits.
@@ -166,7 +166,7 @@ Notice that the acceptance probability encourages us to move towards more likely
 
 In practice, the distribution $$Q$$ is taken to be something simple, like a Gaussian centered at $$x$$ if we are dealing with continuous variables. 
 
-Given any $$Q$$ the MH algorithm will ensure that $$P$$ will be a stationary distribution of the resulting Markov Chain. More precisely, $$P$$ wil satisfy the detailed balance condition with respect to the MH Markov chain.
+Given any $$Q$$ the MH algorithm will ensure that $$P$$ will be a stationary distribution of the resulting Markov Chain. More precisely, $$P$$ will satisfy the detailed balance condition with respect to the MH Markov chain.
 
 To see that, first observe that if $$A(x' \mid x) < 1$$, then $$\frac{P(x)Q(x' \mid x)}{P(x')Q(x \mid x')} > 1$$ and thus $$A(x \mid x') = 1$$. When $$A(x' \mid x) < 1$$, this lets us write:
 {% math %}
@@ -180,20 +180,20 @@ which is simply the detailed balance condition. We used $$T(x \mid x')$$ to deno
 
 ### Gibbs sampling
 
-A widely-used special case of teh Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables $$x_1,...,x_n$$ and a starting configuration $$x^0 = (x_1^0,...,x_n^0)$$, we iterate through the variables one at a time; at each time step $$t$$, we:
+A widely-used special case of the Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables $$x_1,...,x_n$$ and a starting configuration $$x^0 = (x_1^0,...,x_n^0)$$, we iterate through the variables one at a time; at each time step $$t$$, we:
 
 1. Sample $$x_i' \sim p(x_i \mid x_{-i}^t)$$
-2. Set $$x^{t+1} = (x_1^t, ..., x_i', ..., x_n^0).$$
+2. Set $$x^{t+1} = (x_1^t, ..., x_i', ..., x_n^t).$$
 
 We use $$x_{-i}^t$$ to denote all variables in $$x^t$$ except $$x_i$$. It is often very easy to performing this sampling step, since we only need to condition $$x_i$$ on its Markov blanket, which is typically small.
 
 Gibbs sampling can be seen as a special case of MH with proposal
 $$ Q(x_i', x_{-i} \mid x_i, x_{-i}) = P(x_i' \mid x_{-i}). $$
-It is easy check that in the acceptance probability simplifies to one.
+It is easy check that the acceptance probability simplifies to one.
 
 Assuming the right transition operator, both Gibbs sampling and MH will eventually produce samples from their stationary distribution, which by construction is $$P$$. 
 
-There exists simple ways of ensuring that this will be the case
+There exist simple ways of ensuring that this will be the case
 
 - To ensure irreducibility, the transition operator $$Q$$ with MH should be able to potentially move to every state. In the case of Gibbs sampling, we would like to make sure that every $$x_i'$$ can get sampled from $$p(x_i \mid x_{-i}^t)$$.
 - To ensure aperiodicity, it is enough to make let the chain transition stay in its state with some probability.
@@ -213,7 +213,7 @@ T = \left[
 {% endmath %}
 then for small $$\e$$ it will take a very long time to reach the stationary distribution, which is close to $$(0.5, 0.5)$$. At each step, we will stay in the same state with overwhelming probability; very rarely, we will transition to another state, and then stay there for a very long time. The average of these states will converge to $$(0.5, 0.5)$$, but the convergence will be very slow.
 
-This problem will also occur with complicated distributions that have two distinct and narrow modes; with high probability the algorithm will sample from a given mode for a very long time. These examples are indications that sampling is a hard problem in general, and MCMC does not give us a free lunch. Nonetheless, for many real-world distributions, sampling will produce very useful solutions.
+This problem will also occur with complicated distributions that have two distinct and narrow modes; with high probability, the algorithm will sample from a given mode for a very long time. These examples are indications that sampling is a hard problem in general, and MCMC does not give us a free lunch. Nonetheless, for many real-world distributions, sampling will produce very useful solutions.
 
 Another, perhaps more important problem, is that we may not know when to end the burn-in period, even if it is theoretically not too long. There exist many heuristics to determine whether a Markov chain has *mixed*; however, typically these heuristics involve plotting certain quantities and estimating them by eye; even the quantitative measures are not significantly more reliable than this approach. 
 
