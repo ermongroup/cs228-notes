@@ -116,14 +116,14 @@ This technique approximates a target expectation with</p>
 </script></div>
 <p>where <script type="math/tex">x^1,...,x^T</script> are samples drawn according to <script type="math/tex">p</script>.</p>
 
-<p>It easy to show that the expected value of <script type="math/tex">I_T</script>, the MC estimate, equals the true integral. We say that <script type="math/tex">I_T</script> is an unbiased estimator for <script type="math/tex">\Exp_{x \sim p}[f(x)]</script>. Moreover as <script type="math/tex">I_T \to \Exp_{x \sim p}[f(x)]</script> as <script type="math/tex">T \to \infty</script>. Finally, we can show that the variance of <script type="math/tex">I_T</script> equals <script type="math/tex">\text{var}_P(g(x))/T</script>, which can be made arbitrarily small with <script type="math/tex">T</script>.</p>
+<p>It easy to show that the expected value of <script type="math/tex">I_T</script>, the MC estimate, equals the true integral. We say that <script type="math/tex">I_T</script> is an unbiased estimator for <script type="math/tex">\Exp_{x \sim p}[f(x)]</script>. Moreover as <script type="math/tex">I_T \to \Exp_{x \sim p}[f(x)]</script> as <script type="math/tex">T \to \infty</script>. Finally, we can show that the variance of <script type="math/tex">I_T</script> equals <script type="math/tex">\text{var}_P(f(x))/T</script>, which can be made arbitrarily small with <script type="math/tex">T</script>.</p>
 
 <h3 id="rejection-sampling">Rejection sampling</h3>
 
 <p><label for="nb1" class="margin-toggle">⊕</label><input type="checkbox" id="nb1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/rejection-sampling.png" /><br />Graphical illustration of rejection sampling. We may compute the area of circle by drawing uniform samples from the square; the fraction of points that fall in the circle represents its area. This method breaks down if the size of the circle is small relative to the size of the square.</span>
 A special case of Monte Carlo integration is rejection sampling. We may use it to compute the area of a region <script type="math/tex">R</script> by sampling in a larger region with a known area and recording the fraction of samples that falls within <script type="math/tex">R</script>.</p>
 
-<p>For example, we may use rejection sampling to compute marginal probabilities of the form <script type="math/tex">p(x=x')</script>: we may write this probability as <script type="math/tex">\Exp_{x\sim p}[\Ind(x=x')]</script> and then take the the Monte Carlo approximation. This will amount to sampling many samples from <script type="math/tex">p</script> and keeping ones that are consistent with the value of the marginal.</p>
+<p>For example, we may use rejection sampling to compute marginal probabilities of the form <script type="math/tex">p(x=x')</script>: we may write this probability as <script type="math/tex">\Exp_{x\sim p}[\Ind(x=x')]</script> and then take the Monte Carlo approximation. This will amount to sampling many samples from <script type="math/tex">p</script> and keeping ones that are consistent with the value of the marginal.</p>
 
 <h3 id="importance-sampling">Importance sampling</h3>
 
@@ -145,11 +145,11 @@ A special case of Monte Carlo integration is rejection sampling. We may use it t
 
 <p>Now the variance of this new estimator equals</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\text{var}_{x \sim q}(f(x)w(x)) = \Exp_q (f^2(x) w^2(x)) - \Exp_q (f(x) w(x))^2 \geq 0
+\text{var}_{x \sim q}(f(x)w(x)) = \Exp_{x \sim q} [f^2(x) w^2(x)] - \Exp_{x \sim q} [f(x) w(x)]^2 \geq 0
 </script></div>
 <p>Note that we can set the variance to zero by choosing <span>​<script type="math/tex">q(x) = \frac{|f(x)|p(x)}{\int |f(x)|p(x) dx}</script></span>; this means that if we can sample from this <script type="math/tex">q</script> (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a <script type="math/tex">q</script> would be NP-hard in general, but this at least gives us an indication for what to strive for.</p>
 
-<p>In the context of our previous example for computing <script type="math/tex">p(x=x') = \Exp_z[p(z,x')]</script>, we may take <script type="math/tex">q</script> to be uniform distribution apply importance sampling as follows:</p>
+<p>In the context of our previous example for computing <script type="math/tex">p(x=x') = \Exp_z[p(z,x')]</script>, we may take <script type="math/tex">q</script> to be the uniform distribution and apply importance sampling as follows:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \Exp_z[p(z,x')] \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)}.
 </script></div>
@@ -166,14 +166,14 @@ We will solve these problems using a very powerful technique called Markov chain
 
 <p>The probability <script type="math/tex">P(S_i \mid S_{i-1})</script> is the same at every step <script type="math/tex">i</script>; this means that the transition probabilities at any time in the entire process depend only on the given state and not on the history of how we got there. This is called the <em>Markov</em> assumption.</p>
 
-<p><label for="mc" class="margin-toggle">⊕</label><input type="checkbox" id="mc" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/markovchain.png" /><br />A Markov chain over three states. The weighted directed edges indicates probabilities of transitioning to a different state.</span>
+<p><label for="mc" class="margin-toggle">⊕</label><input type="checkbox" id="mc" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/markovchain.png" /><br />A Markov chain over three states. The weighted directed edges indicate probabilities of transitioning to a different state.</span>
 It is very convenient to represent the transition probability as a <script type="math/tex">d \times d</script> matrix</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 T_{ij} = P(S_\text{new} = i \mid S_\text{prev} = j),
 </script></div>
 <p>where <script type="math/tex">T^t</script> denotes matrix exponentiation (we apply the matrix operator <script type="math/tex">t</script> times).</p>
 
-<p>If the inital state <script type="math/tex">S_0</script> is drawn from a vector probabilities <script type="math/tex">p_0</script>, we may represent the probability <script type="math/tex">p_t</script> of ending up in each state after <script type="math/tex">t</script> steps as</p>
+<p>If the initial state <script type="math/tex">S_0</script> is drawn from a vector probabilities <script type="math/tex">p_0</script>, we may represent the probability <script type="math/tex">p_t</script> of ending up in each state after <script type="math/tex">t</script> steps as</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 p_t = T^t p_0.
 </script></div>
@@ -182,7 +182,7 @@ p_t = T^t p_0.
 
 <p>A necessary condition that must be satisfied by a stationary distribution is called <em>detailed balance</em>:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\pi(x') T(x \mid x') = \pi(x) T(x' \mid x) \;\text{for all x}
+\pi(x') T(x \mid x') = \pi(x) T(x' \mid x) \;\text{for all $x$}
 </script></div>
 <p>It is easy to show that such a <script type="math/tex">\pi</script> must form a stationary distribution (just sum both sides of the equation over <script type="math/tex">x</script> and simplify).</p>
 
@@ -197,7 +197,7 @@ p_t = T^t p_0.
   <li><em>Aperiodicity</em>: It is possible to return to any state at any time, i.e. there exists an <script type="math/tex">n</script> such that for all <script type="math/tex">i</script> and all <script type="math/tex">n' \geq n</script>, <script type="math/tex">P(s_{n'}=i \mid s_0 = i) > 0</script>.</li>
 </ul>
 
-<p>The first condition is meant to prevent <em>absorbing states</em>, i.e. states from which we can never leave. In the example below, if we start in states <script type="math/tex">1,2</script>, we will never reach state 4. Conversely, if we start in state 4, then we will never each states 1,2. If we start the chain in the middle (in state 3), then clearly it cannot have a single limiting distribution.</p>
+<p>The first condition is meant to prevent <em>absorbing states</em>, i.e. states from which we can never leave. In the example below, if we start in states <script type="math/tex">1,2</script>, we will never reach state 4. Conversely, if we start in state 4, then we will never reach states 1,2. If we start the chain in the middle (in state 3), then clearly it cannot have a single limiting distribution.</p>
 <figure><figcaption>A reducible Markov Chain over four states.</figcaption><img src="/cs228-notes/assets/img/reducible-chain.png" /></figure>
 
 <p>The second condition is necessary to rule out transition operators such as</p>
@@ -219,7 +219,7 @@ T = \left[
 
 <p>As we said, the idea of MCMC algorithms is to construct a Markov chain over the assignments to a probability function <script type="math/tex">p</script>; the chain will have a stationary distribution equal to <script type="math/tex">p</script> itself; by running the chain for some number of time, we will thus sample from <script type="math/tex">p</script>.</p>
 
-<p>At a high level, MCMC algorithms will have the following structure. They take as argument a transition operator <script type="math/tex">T</script> specifying a Markov chain whose stationary distribution is <script type="math/tex">p</script>, and an initial  assignment <script type="math/tex">x_0</script> to the variables of <script type="math/tex">p</script>. An MCMC algorithm then perform the following steps.</p>
+<p>At a high level, MCMC algorithms will have the following structure. They take as argument a transition operator <script type="math/tex">T</script> specifying a Markov chain whose stationary distribution is <script type="math/tex">p</script>, and an initial assignment <script type="math/tex">x_0</script> to the variables of <script type="math/tex">p</script>. An MCMC algorithm then perform the following steps.</p>
 
 <ol>
   <li>Run the Markov chain from <script type="math/tex">x_0</script> for <script type="math/tex">B</script> <em>burn-in</em> steps.</li>
@@ -246,7 +246,7 @@ A(x' \mid x) = \min \left(1, \frac{P(x')Q(x \mid x')}{P(x)Q(x' \mid x)} \right).
 
 <p>In practice, the distribution <script type="math/tex">Q</script> is taken to be something simple, like a Gaussian centered at <script type="math/tex">x</script> if we are dealing with continuous variables.</p>
 
-<p>Given any <script type="math/tex">Q</script> the MH algorithm will ensure that <script type="math/tex">P</script> will be a stationary distribution of the resulting Markov Chain. More precisely, <script type="math/tex">P</script> wil satisfy the detailed balance condition with respect to the MH Markov chain.</p>
+<p>Given any <script type="math/tex">Q</script> the MH algorithm will ensure that <script type="math/tex">P</script> will be a stationary distribution of the resulting Markov Chain. More precisely, <script type="math/tex">P</script> will satisfy the detailed balance condition with respect to the MH Markov chain.</p>
 
 <p>To see that, first observe that if <script type="math/tex">% <![CDATA[
 A(x' \mid x) < 1 %]]></script>, then <script type="math/tex">\frac{P(x)Q(x' \mid x)}{P(x')Q(x \mid x')} > 1</script> and thus <script type="math/tex">A(x \mid x') = 1</script>. When <script type="math/tex">% <![CDATA[
@@ -254,7 +254,7 @@ A(x' \mid x) < 1 %]]></script>, this lets us write:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \begin{align*}
 A(x' \mid x) & =  \frac{P(x')Q(x \mid x')}{P(x)Q(x' \mid x)} \\
-P(x')Q(x \mid x') A(x' \mid x) & =  P(x)Q(x' \mid x) A(x' \mid x) \\
+P(x')Q(x \mid x') A(x \mid x') & =  P(x)Q(x' \mid x) A(x' \mid x) \\
 P(x')T(x \mid x') & =  P(x)T(x' \mid x),
 \end{align*}
 </script></div>
@@ -262,22 +262,22 @@ P(x')T(x \mid x') & =  P(x)T(x' \mid x),
 
 <h3 id="gibbs-sampling">Gibbs sampling</h3>
 
-<p>A widely-used special case of teh Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables <script type="math/tex">x_1,...,x_n</script> and a starting configuration <script type="math/tex">x^0 = (x_1^0,...,x_n^0)</script>, we iterate through the variables one at a time; at each time step <script type="math/tex">t</script>, we:</p>
+<p>A widely-used special case of the Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables <script type="math/tex">x_1,...,x_n</script> and a starting configuration <script type="math/tex">x^0 = (x_1^0,...,x_n^0)</script>, we iterate through the variables one at a time; at each time step <script type="math/tex">t</script>, we:</p>
 
 <ol>
   <li>Sample <script type="math/tex">x_i' \sim p(x_i \mid x_{-i}^t)</script></li>
-  <li>Set <script type="math/tex">x^{t+1} = (x_1^t, ..., x_i', ..., x_n^0).</script></li>
+  <li>Set <script type="math/tex">x^{t+1} = (x_1^t, ..., x_i', ..., x_n^t).</script></li>
 </ol>
 
 <p>We use <script type="math/tex">x_{-i}^t</script> to denote all variables in <script type="math/tex">x^t</script> except <script type="math/tex">x_i</script>. It is often very easy to performing this sampling step, since we only need to condition <script type="math/tex">x_i</script> on its Markov blanket, which is typically small.</p>
 
 <p>Gibbs sampling can be seen as a special case of MH with proposal
 <script type="math/tex">Q(x_i', x_{-i} \mid x_i, x_{-i}) = P(x_i' \mid x_{-i}).</script>
-It is easy check that in the acceptance probability simplifies to one.</p>
+It is easy check that the acceptance probability simplifies to one.</p>
 
 <p>Assuming the right transition operator, both Gibbs sampling and MH will eventually produce samples from their stationary distribution, which by construction is <script type="math/tex">P</script>.</p>
 
-<p>There exists simple ways of ensuring that this will be the case</p>
+<p>There exist simple ways of ensuring that this will be the case</p>
 
 <ul>
   <li>To ensure irreducibility, the transition operator <script type="math/tex">Q</script> with MH should be able to potentially move to every state. In the case of Gibbs sampling, we would like to make sure that every <script type="math/tex">x_i'</script> can get sampled from <script type="math/tex">p(x_i \mid x_{-i}^t)</script>.</li>
@@ -299,7 +299,7 @@ T = \left[
 </script></div>
 <p>then for small <script type="math/tex">\e</script> it will take a very long time to reach the stationary distribution, which is close to <script type="math/tex">(0.5, 0.5)</script>. At each step, we will stay in the same state with overwhelming probability; very rarely, we will transition to another state, and then stay there for a very long time. The average of these states will converge to <script type="math/tex">(0.5, 0.5)</script>, but the convergence will be very slow.</p>
 
-<p>This problem will also occur with complicated distributions that have two distinct and narrow modes; with high probability the algorithm will sample from a given mode for a very long time. These examples are indications that sampling is a hard problem in general, and MCMC does not give us a free lunch. Nonetheless, for many real-world distributions, sampling will produce very useful solutions.</p>
+<p>This problem will also occur with complicated distributions that have two distinct and narrow modes; with high probability, the algorithm will sample from a given mode for a very long time. These examples are indications that sampling is a hard problem in general, and MCMC does not give us a free lunch. Nonetheless, for many real-world distributions, sampling will produce very useful solutions.</p>
 
 <p>Another, perhaps more important problem, is that we may not know when to end the burn-in period, even if it is theoretically not too long. There exist many heuristics to determine whether a Markov chain has <em>mixed</em>; however, typically these heuristics involve plotting certain quantities and estimating them by eye; even the quantitative measures are not significantly more reliable than this approach.</p>
 
