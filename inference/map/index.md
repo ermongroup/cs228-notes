@@ -17,7 +17,7 @@ In a way, MAP inference is easier than marginal inference. One reason for this i
 \arg \max_x \sum_c \phi_c(\bfx_c).
 {% endmath %}
 
-Marginal inference can also be seen as computing and summing all assignments to the model, one of which is the MAP assignment. If we replace summation with maximization, we can also find the assignment with the highest probability; however, there exist more efficient methods that this sort of enumeration-based approach.
+Marginal inference can also be seen as computing and summing all assignments to the model, one of which is the MAP assignment. If we replace summation with maximization, we can also find the assignment with the highest probability; however, there exist more efficient methods than this sort of enumeration-based approach.
 
 Note, however, that MAP inference is still not an easy problem in the general case.
 The above optimization objective includes many intractable problems as special cases, e.g. 3-sat. We may reduce 3-sat to MAP inference by constructing for each clause $$ c = (x \lor y \lor \neg z)$$ a factor $$\theta_c (x, y, z)$$ that equals one if $$x, y, z$$ satisfy
@@ -45,7 +45,7 @@ This prior knowledge can be naturally modeled in the language of graphical model
 ## Graphcuts
 
 We will start our discussion with an efficient exact MAP inference algorithm for certain Potts models.
-Unlike previously-seen methods (e.g. the junction tree algorithm), this algorithm will be tractable even when the model will have large treewidth.
+Unlike previously-seen methods (e.g. the junction tree algorithm), this algorithm will be tractable even when the model has large treewidth.
 
 Suppose we are given a binary pairwise MRF in which edge energies (i.e. log-edge factors) have the form
 {% math %}
@@ -76,7 +76,7 @@ The fastest algorithms for computing min-cuts in a graph $$G=(V,E)$$ take $$O(EV
 ## Linear programming-based approaches
 
 Although graphcut-based methods recover the exact MAP assignment, they are only applicable in certain restricted classes of MRFs. 
-The algorithms we will see next solve the MAP problem approximately, but can applied in much larger classes of graphical models.
+The algorithms we will see next solve the MAP problem approximately, but apply to much larger classes of graphical models.
 
 ### Linear programming
 
@@ -132,7 +132,7 @@ These assignments must also be consistent:
 Together, these constraints along with the MAP objective yield an integer linear program, whose solution equals the MAP assignment.
 This ILP is still NP-hard, but we have an easy way to transform this into an (easy to solve) LP via relaxation. This is the essence of the linear programming approach to MAP inference.
 
-In general, this method will only give approximate solution. An important special case are tree-structured graphs, in which the relaxation is guaranteed to always return integer solution, which are in turn optimal{% sidenote 1 "See e.g. the textbook of Koller and Friedman for a proof and a more detailed discussion."%}.
+In general, this method will only give approximate solutions. An important special case are tree-structured graphs, in which the relaxation is guaranteed to always return integer solutions, which are in turn optimal{% sidenote 1 "See e.g. the textbook of Koller and Friedman for a proof and a more detailed discussion."%}.
 
 ## Dual decomposition
 
@@ -149,7 +149,7 @@ The above objective is difficult to optimize because the potentials are coupled.
 {% endmath %}
 
 This would be easy optimize, but would only give us an upper bound on the value of the true MAP assignment.
-To make our relexation tight, we would need to introduce
+To make our relaxation tight, we would need to introduce
 constraints that encourage consistency between the potentials:
 {% math %} 
 x^f_i - x_i = 0 \; \forall f, \forall i \in f.
@@ -229,7 +229,7 @@ Alternatively, one may perform exhaustive search over space of assignments, whil
 
 ### Simulated annealing
 
-A third approach is to use sampling methods (e.g. Metropolis-Hastings) to sample from $$p_t(x) \propto \exp(\frac{1}{t} \sum_{c \in C} \theta_c (x_c ))$$. The parameter $$t$$ is called the temperature. When $$t \to \infty $$, $$p_t$$ is close to the uniform distribution, which is easy to sample form. As $$t \to 0$$, $$p_t$$ places more weight on $$\arg\max_\bfx \sum_{c \in C} \theta_c (x_c )$$, the quantity we want to recover. However, since this distribution is highly peaked, it is also very difficult to sample from it. 
+A third approach is to use sampling methods (e.g. Metropolis-Hastings) to sample from $$p_t(x) \propto \exp(\frac{1}{t} \sum_{c \in C} \theta_c (x_c ))$$. The parameter $$t$$ is called the temperature. When $$t \to \infty $$, $$p_t$$ is close to the uniform distribution, which is easy to sample from. As $$t \to 0$$, $$p_t$$ places more weight on $$\arg\max_\bfx \sum_{c \in C} \theta_c (x_c )$$, the quantity we want to recover. However, since this distribution is highly peaked, it is also very difficult to sample from.
 
 The idea of simulated annealing is to run a sampling algorithm starting with a high $$t$$, and gradually decrease it, as the algorithm is being run. If the "cooling rate" is sufficiently slow, we are guaranteed to eventually find the mode of our distribution. In practice, however, choosing the rate requires a lot of tuning. This makes simulated annealing somewhat difficult to use in practice.
 
