@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Bayesian Learning</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/learning/bayesianlearning/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/ermongroup/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Bayesian learning</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>Generally speaking, Bayesian learning is the method of selecting the best hypothesis <script type="math/tex">h \in H</script>  in terms of how well it can explain the observed training data <script type="math/tex">D</script>. In this learning method, we use Bayes’ theorem to update the probability for a hypothesis as more information or data get available.</p>
+<h2 id="the-bayesian-paradigm">The Bayesian Paradigm</h2>
+<p>The main idea behind the Bayesian paradigm is that any uncertainty can be modeled in a probabilistic manner. The probability model we build for this uncertainty reflects our beliefs or any prior experience we may have. And since this prior belief can differ from person to person, our probability model can be pretty crude.</p>
+
+<p>Now, lets say the probability model we use to express uncertainty is described by parameter <script type="math/tex">\theta</script>. In the Bayesian paradigm, we treat this parameter <script type="math/tex">\theta</script> as if it were a random variable <script type="math/tex">\Theta</script> whose distribution describes the uncertainty. Here we are in no means bound to hold our initial belief regarding the uncertainty. In fact, we modify our belief as we acquire more data and information. And the key behind this updating procedure is Bayes’ theorem.</p>
+
+<p>Bayes’ theorem states that:</p>
+
+<script type="math/tex; mode=display">P(\theta \mid x) = \frac{P(x \mid \theta) \, P(\theta)}{P(x)} = \frac{P(x \mid \theta) \, P(\theta)}{\int P(x | \theta) P(\theta) d\theta }</script>
+
+<p>To motivate Bayesian learning, we can read this in the following way: “the probability of the model given the data, <script type="math/tex">P(\theta \mid x)</script>, is the probability of the data given the model, <script type="math/tex">P(x \mid \theta)</script>, times the prior probability of the model, <script type="math/tex">P(\theta)</script>, divided by the probability of the data <script type="math/tex">P(x)</script>. Under Bayesian paradigm, we treat degrees of belief exactly in the same way as we treat probabilities. In the above equation, the prior <script type="math/tex">P(\theta)</script> represents how much we believe model <script type="math/tex">\theta</script> to be the true model that generates the data <script type="math/tex">x</script>, before we actually observe the data <script type="math/tex">x</script>. The posterior <script type="math/tex">P(\theta \mid x)</script> represents how much we believe model <script type="math/tex">\theta</script> after observing the data.</p>
+
+<p>Informally speaking, in Bayesian learning, we start out by enumerating all reasonable models of the data and assigning our prior belief <script type="math/tex">P(\theta)</script> to each of these models. Once we observe the data <script type="math/tex">x</script>, we evaluate how probable the observed data <script type="math/tex">x</script> was under each of these models, i.e. we compute <script type="math/tex">P(x \mid \theta)</script>. We then multiply this likelihood <script type="math/tex">P(x \mid \theta)</script> by the prior <script type="math/tex">P(\theta)</script> and normalize it yielding posterior probability over models <script type="math/tex">P(\theta \mid x)</script>. This posterior probability encapsulates everything that we have learned from the data regarding the models we are considering.</p>
+<h2 id="conjugate-priors">Conjugate Priors</h2>
+<p>When calculating posterior distribution using Bayes’ rule, as in the above, it should be pretty straightforward to calculate the numerator. But to calculate the denominator <script type="math/tex">P(x)</script>, we are required to compute the integral. This might cause us trouble, since for an arbitrary distribution, computing the integral is likely to be intractable.</p>
+
+<p>To tackle this issue, we use a conjugate prior. A parametric family <script type="math/tex">\varphi</script> is conjugate for the likelihood <script type="math/tex">P(x \mid \theta)</script> if:</p>
+
+<script type="math/tex; mode=display">P(\theta) \in \varphi \Longrightarrow P(\theta \mid x) \in \varphi</script>
+
+<p>This is convenient because if we know the normalizing constant of <script type="math/tex">\varphi</script>, then we get the denominator in Bayes’ rule “for free”. Thus it essentially reduces the computation of the posterior from a tricky numerical integral to some simple algebra.</p>
+
+<p>To see conjugate prior in action, let’s consider an example. Suppose we are given a sequence of $N$ coin tosses, <script type="math/tex">D = \{X_{1},...,X_{N}\}</script>. We want to infer the probability of getting heads which we denote by <script type="math/tex">\theta</script>.  Now, we can model this as a sequence of Bernoulli trials with parameter <script type="math/tex">\theta</script>. A natural conjugate prior in this case is the beta distribution with</p>
+
+<script type="math/tex; mode=display">P(\theta) = Beta(\theta \mid \alpha_{H}, \alpha_{T}) = \frac{\theta^{\alpha_{H} -1 }(1-\theta)^{\alpha_{T} -1 }}{B(\alpha_{H},\alpha_{T})}</script>
+
+<p>where the normalization constant <script type="math/tex">B(\cdot)</script> is the beta function. Here <script type="math/tex">\alpha = (\alpha_{H},\alpha_{T})</script> are called the hyperparameters of the prior. The expected value of <script type="math/tex">\theta</script> is <script type="math/tex">\frac{\alpha_{H}}{\alpha_{H}+\alpha_{T}}</script>. Here the sum of the hyperparameters <script type="math/tex">(\alpha_{H}+\alpha_{T})</script> can be interpreted as a measure of confidence in the expectations they lead to. Intuitively, we can think of <script type="math/tex">\alpha_{H}</script> as the number of heads we have observed before the current dataset.</p>
+
+<p>Out of <script type="math/tex">N</script> coin tosses, if the number of heads and the number of tails are <script type="math/tex">N_{H}</script>
+and <script type="math/tex">N_{T}</script> respectively, then it can be shown that the posterior is:</p>
+
+<script type="math/tex; mode=display">P(\theta \mid N_{H}, N_{T}) = \frac{\theta^{N_{H}+ \alpha_{H} -1 }(1-\theta)^{ N_{T}+ \alpha_{T} -1 }}{B(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})}</script>
+
+<p>which is another Beta distribution with parameters <script type="math/tex">(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})</script>. We can use this posterior distribution as the prior for more samples with the hyperparameters simply adding each extra piece of information as it comes from additional coin tosses.</p>
+
+<figure><figcaption>Here the exponents $$(3,2)$$ and $$(30,20)$$ can both be used to encode the belief that $$\theta$$ is $$0.6$$. But the second set of exponents imply a stronger belief as they are based on a larger sample.</figcaption><img src="/cs228-notes/assets/img/beta.png" /></figure>
+
+
+
+
+    </article>
+    <span class="print-footer">Bayesian Learning - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2017 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2017</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
