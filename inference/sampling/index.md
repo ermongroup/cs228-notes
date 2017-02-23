@@ -74,11 +74,17 @@ Now the variance of this new estimator equals
 {% endmath %}
 Note that we can set the variance to zero by choosing {%m%}q(x) = \frac{|f(x)|p(x)}{\int |f(x)|p(x) dx}{%em%}; this means that if we can sample from this $$q$$ (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a $$q$$ would be NP-hard in general, but this at least gives us an indication for what to strive for.
 
-In the context of our previous example for computing $$p(x=x') = \Exp_z[p(z,x')]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
+In the context of our previous example for computing $$p(x=x') = \Exp_{z\sim p}[p(x'|z)]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
 {% math %}
-\Exp_z[p(z,x')] \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)}.
+\begin{align*}
+p(x=x')
+& = \Exp_{z\sim p}[p(x'|z)] \\
+& = \Exp_{z\sim q}[p(x'|z)\frac{p(z)}{q(z)}] \\
+& = \Exp_{z\sim q}[\frac{p(x',z)}{q(z)}] \\
+& \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)} \\
+\end{align*}
 {% endmath %}
-Unlike rejection sampling, this will use all the examples; if $$p(z | x')$$ is not too far from uniform, this will converge to the true probability after only a very small number of samples.
+Unlike rejection sampling, this will use all the examples; if $$p(x'|z)$$ is not too far from uniform, this will converge to the true probability after only a very small number of samples.
 
 ## Markov chain Monte Carlo
 
