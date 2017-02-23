@@ -30,7 +30,7 @@ p(x_1,..,x_n)
 {% endmath %}
 where $$f(x)$$ is a vector of indicator functions and $$\theta$$ is the set of all the model parameters, as defined by the $$\log \phi_c(x_c'; \varphi)$$.
 
-Note that $$Z(\theta)$$ is different for each set of parameters $$\theta$$, therefore we also refer to it as the *partition function*.
+Note that $$Z(\theta)$$ is different for each set of parameters $$\theta$$; therefore, we also refer to it as the *partition function*.
 Bayesian networks are constructed such that $$Z(\theta) = 1$$ for all $$\theta$$; MRFs do not make this modeling assumption, which makes them more flexible, but also more difficult to learn.
 
 ### Exponential families
