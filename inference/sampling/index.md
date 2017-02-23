@@ -113,7 +113,7 @@ It is easy to show that such a $$\pi$$ must form a stationary distribution (just
 
 ### Existence of a stationary distribution
 
-The high-level idea of MCMC will be construct a Markov chain whose states will be joint assignments to the variables in the model and whose stationary distribution will equal the model probability $$p$$.
+The high-level idea of MCMC will be to construct a Markov chain whose states will be joint assignments to the variables in the model and whose stationary distribution will equal the model probability $$p$$.
 
 In order to construct such a chain, we first need to understand when stationary distributions exist. This turns out to be true under two sufficient conditions:
 
@@ -196,7 +196,7 @@ Assuming the right transition operator, both Gibbs sampling and MH will eventual
 There exist simple ways of ensuring that this will be the case
 
 - To ensure irreducibility, the transition operator $$Q$$ with MH should be able to potentially move to every state. In the case of Gibbs sampling, we would like to make sure that every $$x_i'$$ can get sampled from $$p(x_i \mid x_{-i}^t)$$.
-- To ensure aperiodicity, it is enough to make let the chain transition stay in its state with some probability.
+- To ensure aperiodicity, it is enough to let the chain transition stay in its state with some probability.
 
 In practice, it is not difficult to ensure these requirements are met.
 
