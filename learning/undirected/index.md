@@ -93,7 +93,7 @@ This observation lets us apply to learning many of the approximate inference met
 
 ### Pseudo-likelihood
 
-Another popular approach to learning $$p$$ is called *pseudo-likelihood$. The pseudo-likelihood replaces the likelihood
+Another popular approach to learning $$p$$ is called *pseudo-likelihood*. The pseudo-likelihood replaces the likelihood
 {% math %}
 \frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x\in D} \log p(x; \theta)
 {% endmath %}
@@ -108,12 +108,12 @@ Note that each term $$\log p(x_i \mid x_{N(i)}; \theta)$$ only involves one vari
 However, it is not equal to the likelihood. Note that the correct way to expand the likelihood would involve the chain rule, i.e. the terms would be $$\log p(x_i \mid x_{-i}; \theta)$$ objective, where $$x_{-i}$$ are variables preceding $$i$$ in some ordering.
 
 Intuitively, the pseudo-likelihood objective assumes that $$x_i$$ depends mainly on its neighbors in the graph, and ignores the dependencies on other, more distant variables. 
-Observe also that if pseudolikelihood succeeds in matching all the conditional distributions to the data, a Gibbs sampler run on the model distribution will have the same invariant distribution as a Gibbs sampler run on the true data distribution, ensuring that they are the same.
+Observe also that if pseudo-likelihood succeeds in matching all the conditional distributions to the data, a Gibbs sampler run on the model distribution will have the same invariant distribution as a Gibbs sampler run on the true data distribution, ensuring that they are the same.
 
 More formally, we can show that the pseudo-likelihood objective is concave. Assuming the data is drawn from an MRF with parameters $$\theta^∗$$,
 we can show that as the number of data points gets large, $$\theta_\text{PL} \to \theta^∗$$. 
 
-Pseudo-likelihood often works very well in practice, although there are 
+Pseudo-likelihood often works very well in practice, although there are exceptions.
 
 ### Moment matching
 
