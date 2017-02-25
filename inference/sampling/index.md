@@ -84,7 +84,7 @@ p(x=x')
 & \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)} \\
 \end{align*}
 {% endmath %}
-Unlike rejection sampling, this will use all the examples; if $$p(x'|z)$$ is not too far from uniform, this will converge to the true probability after only a very small number of samples.
+Unlike rejection sampling, this will use all the examples; if $$p(z|x')$$ is not too far from uniform, this will converge to the true probability after only a very small number of samples.
 
 ## Markov chain Monte Carlo
 
