@@ -15,7 +15,7 @@ Now, suppose we continue tossing the coin such that after a 100 total trials (in
 
 $$\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6$$
 
-In both the above situations, the maximum likelihood estimate does not change as we observe more data. This seems counterintuitive - our $confidence$ in predicting heads with probability 0.6 should be higher in the second setting where we have seen many more trials of the coin! The reason why MLE fails to distinguish the two settings is due to an implicit assumption we have been making all along. MLE assumes that the only source of uncertainty is due to the variables, $$X$$ and the quantification of this uncertainty is based on a fixed parameter $$\theta_{MLE}$$. 
+In both the above situations, the maximum likelihood estimate does not change as we observe more data. This seems counterintuitive - our _confidence_ in predicting heads with probability 0.6 should be higher in the second setting where we have seen many more trials of the coin! The reason why MLE fails to distinguish the two settings is due to an implicit assumption we have been making all along. MLE assumes that the only source of uncertainty is due to the variables, $$X$$ and the quantification of this uncertainty is based on a fixed parameter $$\theta_{MLE}$$. 
 
 ## Example 2
 
@@ -30,7 +30,7 @@ Out-of-vocabulary words are a common phenomena even for language models trained 
 
 In contrast to maximum likelihood learning, Bayesian learning explicitly models uncertainty over both the variables, $$X$$ and the parameters, $$\theta$$.  In other words, the model parameters $$\theta$$ are random variables as well. 
 
-A $prior$ distribution over the parameters, $$p(\theta)$$ encodes our initial beliefs. These beliefs are subjective. For example, we can choose the prior over $$\theta$$ for a biased coin to be uniform between 0 and 1. If however we expect the coin to be fair, the prior distribution can be peaked around $$\theta = 0.5$$. We will discuss commonly used priors later in this chapter.
+A _prior_ distribution over the parameters, $$p(\theta)$$ encodes our initial beliefs. These beliefs are subjective. For example, we can choose the prior over $$\theta$$ for a biased coin to be uniform between 0 and 1. If however we expect the coin to be fair, the prior distribution can be peaked around $$\theta = 0.5$$. We will discuss commonly used priors later in this chapter.
 
 Observing data $$D$$ in the form of evidence allows us to update our beliefs using Bayes' rule,
 

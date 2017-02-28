@@ -89,7 +89,7 @@
 
 <script type="math/tex; mode=display">\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6</script>
 
-<p>In both the above situations, the maximum likelihood estimate does not change as we observe more data. This seems counterintuitive - our $confidence$ in predicting heads with probability 0.6 should be higher in the second setting where we have seen many more trials of the coin! The reason why MLE fails to distinguish the two settings is due to an implicit assumption we have been making all along. MLE assumes that the only source of uncertainty is due to the variables, <script type="math/tex">X</script> and the quantification of this uncertainty is based on a fixed parameter <script type="math/tex">\theta_{MLE}</script>.</p>
+<p>In both the above situations, the maximum likelihood estimate does not change as we observe more data. This seems counterintuitive - our <em>confidence</em> in predicting heads with probability 0.6 should be higher in the second setting where we have seen many more trials of the coin! The reason why MLE fails to distinguish the two settings is due to an implicit assumption we have been making all along. MLE assumes that the only source of uncertainty is due to the variables, <script type="math/tex">X</script> and the quantification of this uncertainty is based on a fixed parameter <script type="math/tex">\theta_{MLE}</script>.</p>
 
 <h2 id="example-2">Example 2</h2>
 
@@ -104,7 +104,7 @@
 
 <p>In contrast to maximum likelihood learning, Bayesian learning explicitly models uncertainty over both the variables, <script type="math/tex">X</script> and the parameters, <script type="math/tex">\theta</script>.  In other words, the model parameters <script type="math/tex">\theta</script> are random variables as well.</p>
 
-<p>A $prior$ distribution over the parameters, <script type="math/tex">p(\theta)</script> encodes our initial beliefs. These beliefs are subjective. For example, we can choose the prior over <script type="math/tex">\theta</script> for a biased coin to be uniform between 0 and 1. If however we expect the coin to be fair, the prior distribution can be peaked around <script type="math/tex">\theta = 0.5</script>. We will discuss commonly used priors later in this chapter.</p>
+<p>A <em>prior</em> distribution over the parameters, <script type="math/tex">p(\theta)</script> encodes our initial beliefs. These beliefs are subjective. For example, we can choose the prior over <script type="math/tex">\theta</script> for a biased coin to be uniform between 0 and 1. If however we expect the coin to be fair, the prior distribution can be peaked around <script type="math/tex">\theta = 0.5</script>. We will discuss commonly used priors later in this chapter.</p>
 
 <p>Observing data <script type="math/tex">D</script> in the form of evidence allows us to update our beliefs using Bayes’ rule,</p>
 
