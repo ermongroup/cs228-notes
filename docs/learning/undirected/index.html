@@ -104,7 +104,7 @@ p(x_1,..,x_n)
 </script></div>
 <p>where <script type="math/tex">f(x)</script> is a vector of indicator functions and <script type="math/tex">\theta</script> is the set of all the model parameters, as defined by the <script type="math/tex">\log \phi_c(x_c'; \varphi)</script>.</p>
 
-<p>Note that <script type="math/tex">Z(\theta)</script> is different for each set of parameters <script type="math/tex">\theta</script>, therefore we also refer to it as the <em>partition function</em>.
+<p>Note that <script type="math/tex">Z(\theta)</script> is different for each set of parameters <script type="math/tex">\theta</script>; therefore, we also refer to it as the <em>partition function</em>.
 Bayesian networks are constructed such that <script type="math/tex">Z(\theta) = 1</script> for all <script type="math/tex">\theta</script>; MRFs do not make this modeling assumption, which makes them more flexible, but also more difficult to learn.</p>
 
 <h3 id="exponential-families">Exponential families</h3>
@@ -171,7 +171,7 @@ However, as we have seen, inference in general is intractable, and therefore so 
 
 <h3 id="pseudo-likelihood">Pseudo-likelihood</h3>
 
-<p>Another popular approach to learning <script type="math/tex">p</script> is called *pseudo-likelihood$. The pseudo-likelihood replaces the likelihood</p>
+<p>Another popular approach to learning <script type="math/tex">p</script> is called <em>pseudo-likelihood</em>. The pseudo-likelihood replaces the likelihood</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x\in D} \log p(x; \theta)
 </script></div>
@@ -186,12 +186,12 @@ However, as we have seen, inference in general is intractable, and therefore so 
 <p>However, it is not equal to the likelihood. Note that the correct way to expand the likelihood would involve the chain rule, i.e. the terms would be <script type="math/tex">\log p(x_i \mid x_{-i}; \theta)</script> objective, where <script type="math/tex">x_{-i}</script> are variables preceding <script type="math/tex">i</script> in some ordering.</p>
 
 <p>Intuitively, the pseudo-likelihood objective assumes that <script type="math/tex">x_i</script> depends mainly on its neighbors in the graph, and ignores the dependencies on other, more distant variables. 
-Observe also that if pseudolikelihood succeeds in matching all the conditional distributions to the data, a Gibbs sampler run on the model distribution will have the same invariant distribution as a Gibbs sampler run on the true data distribution, ensuring that they are the same.</p>
+Observe also that if pseudo-likelihood succeeds in matching all the conditional distributions to the data, a Gibbs sampler run on the model distribution will have the same invariant distribution as a Gibbs sampler run on the true data distribution, ensuring that they are the same.</p>
 
 <p>More formally, we can show that the pseudo-likelihood objective is concave. Assuming the data is drawn from an MRF with parameters <script type="math/tex">\theta^∗</script>,
 we can show that as the number of data points gets large, <script type="math/tex">\theta_\text{PL} \to \theta^∗</script>.</p>
 
-<p>Pseudo-likelihood often works very well in practice, although there are</p>
+<p>Pseudo-likelihood often works very well in practice, although there are exceptions.</p>
 
 <h3 id="moment-matching">Moment matching</h3>
 

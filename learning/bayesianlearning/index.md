@@ -3,30 +3,55 @@ layout: post
 title: Bayesian Learning
 ---
 
-Generally speaking, Bayesian learning is the method of selecting the best hypothesis $$h \in H$$  in terms of how well it can explain the observed training data $$D$$. In this learning method, we use Bayes' theorem to update the probability for a hypothesis as more information or data get available. 
-## The Bayesian Paradigm 
-The main idea behind the Bayesian paradigm is that any uncertainty can be modeled in a probabilistic manner. The probability model we build for this uncertainty reflects our beliefs or any prior experience we may have. And since this prior belief can differ from person to person, our probability model can be pretty crude. 
+The learning approaches we have discussed so far are based on the principle of maximum likelihood estimation. While being extremely general, there are limitations of this approach as illustrated in the two examples below.
 
-Now, lets say the probability model we use to express uncertainty is described by parameter $$\theta$$. In the Bayesian paradigm, we treat this parameter $$\theta$$ as if it were a random variable $$\Theta$$ whose distribution describes the uncertainty. Here we are in no means bound to hold our initial belief regarding the uncertainty. In fact, we modify our belief as we acquire more data and information. And the key behind this updating procedure is Bayes' theorem. 
+## Example 1
 
-Bayes' theorem states that:
+Let's suppose we are interested in modeling the outcome of a biased coin, $$X = \{heads, tails\}$$. We toss the coin 10 times, observing 6 heads. If $$\theta$$ denotes the probability of observing heads, the maximum likelihood estimate (MLE) is given by, 
 
-$$P(\theta \mid x) = \frac{P(x \mid \theta) \, P(\theta)}{P(x)} = \frac{P(x \mid \theta) \, P(\theta)}{\int P(x | \theta) P(\theta) d\theta }$$
+$$\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6$$
+
+Now, suppose we continue tossing the coin such that after a 100 total trials (including the 10 initial trials), we observe 60 heads. Again, we can compute the MLE as,
+
+$$\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6$$
+
+In both the above situations, the maximum likelihood estimate does not change as we observe more data. This seems counterintuitive - our $confidence$ in predicting heads with probability 0.6 should be higher in the second setting where we have seen many more trials of the coin! The reason why MLE fails to distinguish the two settings is due to an implicit assumption we have been making all along. MLE assumes that the only source of uncertainty is due to the variables, $$X$$ and the quantification of this uncertainty is based on a fixed parameter $$\theta_{MLE}$$. 
+
+## Example 2
+
+Consider a language model for sentences based on the bag-of-words assumption. In such a model, the probability of a sentence can be factored as the probability of the words appearing in the sentence. 
+
+For simplicity, assume that our language corpus consists of a single sentence, "Probabilistic graphical models are fun. They are also powerful.". We can estimate the probability of each of the individual words based on the counts. Our corpus contains 10 words with each word appearing once, and hence, each word in the corpus is assigned a probability of 0.1. Now, while testing the generalization of our model to the English language, we observe another sentence "Probabilistic graphical models are hard.". The probability of the sentence under our model is 
+$$0.1 \times 0.1 \times 0.1 \times 0.1 \times 0 = 0$$. We did not observe one of the words ("hard") during training which made our language model infer the sentence as impossible, even though it is a perfectly plausible sentence.
+
+Out-of-vocabulary words are a common phenomena even for language models trained on large corpus. One of the simplest ways to handle these words is to assign a prior probability of observing an out-of-vocabulary word such that the model will assign a low, but non-zero probability to test sentences containing such words. This mechanism of incorporating prior knowledge is a practical application of Bayesian learning, which we present next.
+
+## Setup
+
+In contrast to maximum likelihood learning, Bayesian learning explicitly models uncertainty over both the variables, $$X$$ and the parameters, $$\theta$$.  In other words, the model parameters $$\theta$$ are random variables as well. 
+
+A $prior$ distribution over the parameters, $$p(\theta)$$ encodes our initial beliefs. These beliefs are subjective. For example, we can choose the prior over $$\theta$$ for a biased coin to be uniform between 0 and 1. If however we expect the coin to be fair, the prior distribution can be peaked around $$\theta = 0.5$$. We will discuss commonly used priors later in this chapter.
+
+Observing data $$D$$ in the form of evidence allows us to update our beliefs using Bayes' rule,
+
+$$p(\theta \mid D) = \frac{p(D \mid \theta) \, p(\theta)}{p(D)} \propto p(D \mid \theta) \, p(\theta)$$
+
+$$posterior \propto likelihood \times prior$$
+
+Hence, Bayesian learning provides a principled mechanism for incorporating prior knowledge into our model. This prior knowledge is useful in many situations such as when want to provide uncertainty estimates about the model parameters (Example 1) or when the data available for learning a model is limited (Example 2).
 
 
-To motivate Bayesian learning, we can read this in the following way: "the probability of the model given the data, $$P(\theta \mid x)$$, is the probability of the data given the model, $$P(x \mid \theta)$$, times the prior probability of the model, $$P(\theta)$$, divided by the probability of the data $$P(x)$$. Under Bayesian paradigm, we treat degrees of belief exactly in the same way as we treat probabilities. In the above equation, the prior $$P(\theta)$$ represents how much we believe model $$\theta$$ to be the true model that generates the data $$x$$, before we actually observe the data $$x$$. The posterior $$P(\theta \mid x)$$ represents how much we believe model $$\theta$$ after observing the data. 
 
-Informally speaking, in Bayesian learning, we start out by enumerating all reasonable models of the data and assigning our prior belief $$P(\theta)$$ to each of these models. Once we observe the data $$x$$, we evaluate how probable the observed data $$x$$ was under each of these models, i.e. we compute $$P(x \mid \theta)$$. We then multiply this likelihood $$P(x \mid \theta)$$ by the prior $$P(\theta)$$ and normalize it yielding posterior probability over models $$P(\theta \mid x)$$. This posterior probability encapsulates everything that we have learned from the data regarding the models we are considering. 
 ## Conjugate Priors
-When calculating posterior distribution using Bayes' rule, as in the above, it should be pretty straightforward to calculate the numerator. But to calculate the denominator $$P(x)$$, we are required to compute the integral. This might cause us trouble, since for an arbitrary distribution, computing the integral is likely to be intractable.
+When calculating posterior distribution using Bayes' rule, as in the above, it should be pretty straightforward to calculate the numerator. But to calculate the denominator $$P(D)$$, we are required to compute an integral. This might cause us trouble, since for an arbitrary distribution, computing the integral is likely to be intractable.
 
-To tackle this issue, we use a conjugate prior. A parametric family $$\varphi$$ is conjugate for the likelihood $$P(x \mid \theta)$$ if:
+To tackle this issue, we use a conjugate prior. A parametric family $$\varphi$$ is conjugate for the likelihood $$P(D \mid \theta)$$ if:
 
-$$P(\theta) \in \varphi \Longrightarrow P(\theta \mid x) \in \varphi$$
+$$P(\theta) \in \varphi \Longrightarrow P(\theta \mid D) \in \varphi$$
 
 This is convenient because if we know the normalizing constant of $$\varphi$$, then we get the denominator in Bayes' rule "for free". Thus it essentially reduces the computation of the posterior from a tricky numerical integral to some simple algebra. 
 
-To see conjugate prior in action, let's consider an example. Suppose we are given a sequence of $N$ coin tosses, $$D = \{X_{1},...,X_{N}\}$$. We want to infer the probability of getting heads which we denote by $$\theta$$.  Now, we can model this as a sequence of Bernoulli trials with parameter $$\theta$$. A natural conjugate prior in this case is the beta distribution with
+To see conjugate prior in action, let's consider an example. Suppose we are given a sequence of $$N$$ coin tosses, $$D = \{X_{1},...,X_{N}\}$$. We want to infer the probability of getting heads which we denote by $$\theta$$.  Now, we can model this as a sequence of Bernoulli trials with parameter $$\theta$$. A natural conjugate prior in this case is the beta distribution with
 
 $$P(\theta) = Beta(\theta \mid \alpha_{H}, \alpha_{T}) = \frac{\theta^{\alpha_{H} -1 }(1-\theta)^{\alpha_{T} -1 }}{B(\alpha_{H},\alpha_{T})}$$
 

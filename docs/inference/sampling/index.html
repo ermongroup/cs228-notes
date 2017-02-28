@@ -149,11 +149,17 @@ A special case of Monte Carlo integration is rejection sampling. We may use it t
 </script></div>
 <p>Note that we can set the variance to zero by choosing <span>​<script type="math/tex">q(x) = \frac{|f(x)|p(x)}{\int |f(x)|p(x) dx}</script></span>; this means that if we can sample from this <script type="math/tex">q</script> (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a <script type="math/tex">q</script> would be NP-hard in general, but this at least gives us an indication for what to strive for.</p>
 
-<p>In the context of our previous example for computing <script type="math/tex">p(x=x') = \Exp_z[p(z,x')]</script>, we may take <script type="math/tex">q</script> to be the uniform distribution and apply importance sampling as follows:</p>
+<p>In the context of our previous example for computing <script type="math/tex">p(x=x') = \Exp_{z\sim p}[p(x'|z)]</script>, we may take <script type="math/tex">q</script> to be the uniform distribution and apply importance sampling as follows:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\Exp_z[p(z,x')] \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)}.
+\begin{align*}
+p(x=x')
+& = \Exp_{z\sim p}[p(x'|z)] \\
+& = \Exp_{z\sim q}[p(x'|z)\frac{p(z)}{q(z)}] \\
+& = \Exp_{z\sim q}[\frac{p(x',z)}{q(z)}] \\
+& \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)} \\
+\end{align*}
 </script></div>
-<p>Unlike rejection sampling, this will use all the examples; if <script type="math/tex">p(z | x')</script> is not too far from uniform, this will converge to the true probability after only a very small number of samples.</p>
+<p>Unlike rejection sampling, this will use all the examples; if <script type="math/tex">p(z|x')</script> is not too far from uniform, this will converge to the true probability after only a very small number of samples.</p>
 
 <h2 id="markov-chain-monte-carlo">Markov chain Monte Carlo</h2>
 
@@ -188,7 +194,7 @@ p_t = T^t p_0.
 
 <h3 id="existence-of-a-stationary-distribution">Existence of a stationary distribution</h3>
 
-<p>The high-level idea of MCMC will be construct a Markov chain whose states will be joint assignments to the variables in the model and whose stationary distribution will equal the model probability <script type="math/tex">p</script>.</p>
+<p>The high-level idea of MCMC will be to construct a Markov chain whose states will be joint assignments to the variables in the model and whose stationary distribution will equal the model probability <script type="math/tex">p</script>.</p>
 
 <p>In order to construct such a chain, we first need to understand when stationary distributions exist. This turns out to be true under two sufficient conditions:</p>
 
@@ -281,7 +287,7 @@ It is easy check that the acceptance probability simplifies to one.</p>
 
 <ul>
   <li>To ensure irreducibility, the transition operator <script type="math/tex">Q</script> with MH should be able to potentially move to every state. In the case of Gibbs sampling, we would like to make sure that every <script type="math/tex">x_i'</script> can get sampled from <script type="math/tex">p(x_i \mid x_{-i}^t)</script>.</li>
-  <li>To ensure aperiodicity, it is enough to make let the chain transition stay in its state with some probability.</li>
+  <li>To ensure aperiodicity, it is enough to let the chain transition stay in its state with some probability.</li>
 </ul>
 
 <p>In practice, it is not difficult to ensure these requirements are met.</p>
