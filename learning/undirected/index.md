@@ -162,13 +162,13 @@ where $$f(y, x)$$ is again a vector of indicator functions and $$\theta$$ is a r
 
 The log-likelihood for this model given a dataset $$D$$ is
 {% math %}
-\frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x,y \in D} \theta^T f(x, y) - \sum_{x, y \in D} \log Z(x, \theta).
+\frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x,y \in D} \theta^T f(x, y) - \frac{1}{|D|} \sum_{x \in D} \log Z(x, \theta).
 {% endmath %}
 Note that this is almost the same form as we had for MRFs, except that now there is a different partition function $$\log Z(x, \theta)$$ for each data point $$x,y$$.
 
-The gradient for a data point $$(x,y)$$ is now
+The gradient is now
 {% math %}
-\frac{1}{|D|} \sum_{x, y \in D} f(x, y) - \mathbb{E}_{y \sim p(y|x)} [ f(x,y) ]
+\frac{1}{|D|} \sum_{x, y \in D} f(x, y) - \frac{1}{|D|} \sum_{x \in D} \mathbb{E}_{y \sim p(y|x)} [ f(x,y) ]
 {% endmath %}
 Similarly, the Hessian is going to be the covariance matrix 
 {% math %}
