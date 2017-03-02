@@ -240,13 +240,13 @@ p(y\mid x) = \frac{\exp(\theta^T f(x, y))}{Z(x, \theta)},
 
 <p>The log-likelihood for this model given a dataset <script type="math/tex">D</script> is</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x,y \in D} \theta^T f(x, y) - \sum_{x, y \in D} \log Z(x, \theta).
+\frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x,y \in D} \theta^T f(x, y) - \frac{1}{|D|} \sum_{x \in D} \log Z(x, \theta).
 </script></div>
 <p>Note that this is almost the same form as we had for MRFs, except that now there is a different partition function <script type="math/tex">\log Z(x, \theta)</script> for each data point <script type="math/tex">x,y</script>.</p>
 
-<p>The gradient for a data point <script type="math/tex">(x,y)</script> is now</p>
+<p>The gradient is now</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\frac{1}{|D|} \sum_{x, y \in D} f(x, y) - \mathbb{E}_{y \sim p(y|x)} [ f(x,y) ]
+\frac{1}{|D|} \sum_{x, y \in D} f(x, y) - \frac{1}{|D|} \sum_{x \in D} \mathbb{E}_{y \sim p(y|x)} [ f(x,y) ]
 </script></div>
 <p>Similarly, the Hessian is going to be the covariance matrix</p>
 <div class="mathblock"><script type="math/tex; mode=display">
