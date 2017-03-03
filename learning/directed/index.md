@@ -6,7 +6,7 @@ We now turn our attention to the third and last part of the course: *learning*. 
 
 A graphical model has two components: the graph structure, and the parameters of the factors induced by this graph. These components lead to two different learning tasks:
 
-- *Parameter learning*, where the graph structure is known and we want to esimate the factors.
+- *Parameter learning*, where the graph structure is known and we want to estimate the factors.
 - *Structure learning*, where we want to estimate the graph, i.e. determine from data how the variables depend on each other.
 
 We are going to first focus on parameter learning, and come back to structure learning in a later chapter.
@@ -17,12 +17,12 @@ We will consider parameter learning in both directed and undirected models. It t
 
 Before, we start our discussion of learning, let's first reflect on what it means to fit a model, and what is a desirable objective for this task.
 
-Let's assume that the domain is governed by some underlying distribution $$p^*$$. We are given a dataset $$D$$ of $$m$$ samples from $$p^∗$$; The standard assumption is that the data instances are independent and identically distributed (iid). We are also given a family of models $$M$$, and our task is to learn some “good” model in $$M$$ that defines a distribution $$p$$. For example, we could look at all Bayes nets with a given graph structure, with all the possible choices of the CPD tables.
+Let's assume that the domain is governed by some underlying distribution $$p^*$$. We are given a dataset $$D$$ of $$m$$ samples from $$p^*$$; The standard assumption is that the data instances are independent and identically distributed (iid). We are also given a family of models $$M$$, and our task is to learn some "good" model in $$M$$ that defines a distribution $$p$$. For example, we could look at all Bayes nets with a given graph structure, with all the possible choices of the CPD tables.
 
-The goal of learning is to return a model that precisely captures the distribution $$p^∗$$ from which our data was sampled. This is in general not achievable because limited data only provides a rough approximation of the true underlying distribution, and because of computational reasons.
-Still, we want to somehow select the ”best” approximation to the underlying distribution $$p^∗$$.
+The goal of learning is to return a model that precisely captures the distribution $$p^*$$ from which our data was sampled. This is in general not achievable because limited data only provides a rough approximation of the true underlying distribution, and because of computational reasons.
+Still, we want to somehow select the "best" approximation to the underlying distribution $$p^*$$.
 
-What is “best” in this case? It depends on what we want to do:
+What is "best" in this case? It depends on what we want to do:
 
 - Density estimation: we are interested in the full distribution (so later we can compute whatever conditional probabilities we want)
 - Specific prediction tasks: we are using the distribution to make a prediction, e.g. is this email spam or not?
@@ -30,7 +30,7 @@ What is “best” in this case? It depends on what we want to do:
 
 ## Maximum likelihood
 
-Let's assume that we want to learn the full distribution so that later we can answer any probabilistic inference query. In this setting we can view the learning problem as *density estimation*. We want to construct a $$p$$ as ”close” as possible to $$p^∗$$. How do we evaluate ”closeness”? We will again use the KL divergence, which we have seen when we covered variational inference:
+Let's assume that we want to learn the full distribution so that later we can answer any probabilistic inference query. In this setting we can view the learning problem as *density estimation*. We want to construct a $$p$$ as "close" as possible to $$p^*$$. How do we evaluate "closeness"? We will again use the KL divergence, which we have seen when we covered variational inference:
 {% math %}
 KL(p^*||p) = \sum_x p^*(x) \log \frac{p^*(x)}{p(x)} = -H(p^*) - \mathbb{E}_{x \sim p^*} [ \log p(x) ].
 {% endmath %}
@@ -39,25 +39,25 @@ The first term does not depend on p; hence minimizing KL divergence is equivalen
 {% math %}
 \mathbb{E}_{x \sim p^*} [ \log p(x) ].
 {% endmath %}
-This objective asks that $$p$$ assign high probability to instances sampled from $$p^∗$$, so as to reflect the true distribution.
-Although we can now compare models, since we are not computing $$H(p^∗)$$, we don’t know how close we are to the optimum.
+This objective asks that $$p$$ assign high probability to instances sampled from $$p^*$$, so as to reflect the true distribution.
+Although we can now compare models, since we are not computing $$H(p^*)$$, we don’t know how close we are to the optimum.
 
-However, there is still a problem: in general we do not know $$p^∗$$. We will thus approximate the expected log-likelihood $$\mathbb{E}_{x \sim p^*} [ \log p(x) ]$$ with the empirical log-likelihood (a Monte-Carlo estimate):
+However, there is still a problem: in general we do not know $$p^*$$. We will thus approximate the expected log-likelihood $$\mathbb{E}_{x \sim p^*} [ \log p(x) ]$$ with the empirical log-likelihood (a Monte-Carlo estimate):
 {% math %}
 \mathbb{E}_{x \sim p^*} [ \log p(x) ] \approx \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
 {% endmath %}
 where $$D$$ is a dataset drawn i.i.d. from $$p^*$$.
 
-*Maximum likelihood learning is then defined as
+Maximum likelihood learning is then defined as
 {% math %}
 \max_{p \in M} \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
 {% endmath %}
 
 ### An example
 
-As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution $$p^∗(x)$$ where $$x \in \{h,t\}$$. Our class of models $$M$$ is going to be the set of all probability distributions over $$\{h,t\}$$.
+As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution $$p^*(x)$$ where $$x \in \{h,t\}$$. Our class of models $$M$$ is going to be the set of all probability distributions over $$\{h,t\}$$.
 
-How should we choose $$p$$ from M if 60 out
+How should we choose $$p$$ from $$M$$ if 60 out
 of 100 tosses are heads? Let's assume that $$p(x=h)=\theta$$ and $$p(x=t)=1−\theta$$. If our observed data is $$D = \{h,h,t,h,t\}$$, our likelihood becomes $$\prod_i p(x_i ) = \theta \cdot \theta \cdot (1 − \theta) \cdot \theta \cdot (1 − \theta)$$; maximizing this yields $$\theta = 60\%$$.
 
 More generally, our log-likelihood function is simply
@@ -73,12 +73,12 @@ for which the optimal solution is
 
 We may now generalize this by introducing the concept of a *loss function*. A loss function $$L(x,p)$$ measures the loss that a model distribution $$p$$ makes on a
 particular instance $$x$$.
-Assuming instances are sampled from some distribution $$p^∗$$, our goal is to
+Assuming instances are sampled from some distribution $$p^*$$, our goal is to
 find the model that minimizes the expected loss or risk,
 {% math %}
 \mathbb{E}_{x \sim p^*} [ L(x,p) ] \approx \frac{1}{|D|} \sum_{x \in D}  L(x,p), 
 {% endmath %}
-Notive that the loss function which corresponds to maximum likelihood estimation is the log loss $$-\log p(x)$$.
+Notice that the loss function which corresponds to maximum likelihood estimation is the log loss $$-\log p(x)$$.
 
 Another example of a loss is the conditional log-likelihood. Suppose we want to predict a set of variables $$y$$ given $$x$$, e.g., for segmentation or stereo vision. We concentrate on predicting $$p(y|x)$$, and use a conditional loss function $$L(x,y,p) = −\log p(y \mid  x).$$
 Since the loss function only depends on $$p(y \mid  x)$$, it suffices to estimate the conditional distribution, not the joint. This is the objective function we use to train conditional random fields (CRFs).
@@ -88,9 +88,9 @@ $$x$$ we predict $$y$$ via $$\arg\max_y p(y \mid  x)$$. What loss function shoul
 
 One reasonable choice would be the classification error:
 {% math %}
-\mathbb{E}_{(x,y)\sim p^∗} [\mathbb{I}\{ \exists y' \neq y : p(y'\mid x) \geq p(y\mid x) \}],
+\mathbb{E}_{(x,y)\sim p^*} [\mathbb{I}\{ \exists y' \neq y : p(y'\mid x) \geq p(y\mid x) \}],
 {% endmath %}
-which is the probability over all $$(x, y)$$ pairs sampled from $$p^∗$$ that we predict
+which is the probability over all $$(x, y)$$ pairs sampled from $$p^*$$ that we predict
 the wrong assignment.
 A somewhat better choice might be the hamming loss, which counts the number of variables in which the MAP assignment differs from the ground truth label.
 There also exists a fascinating line of work on generalizations of the hinge loss to CRFs, which leads to a class of models called *structured support vector machines*.
@@ -100,11 +100,11 @@ The moral of the story here is that it often makes sense to choose a loss that i
 ## Empirical Risk and Overfitting
 
 Empirical risk minimization can easily overfit the data.
-The data we have is a sample, and usually there is vast amount of samples that we have never seen. Our model should generalize well to these “never-seen” samples.
+The data we have is a sample, and usually there is vast amount of samples that we have never seen. Our model should generalize well to these "never-seen" samples.
 
 ### The bias/variance tradeoff
 
-Thus, we typically restrict the *hypothesis space* of distributions that we search over. If the hypothesis space is very limited, it might not be able to represent $$p^∗$$, even with unlimited data. This type of limitation is called bias, as the learning is limited on how close it can approximate the target distribution
+Thus, we typically restrict the *hypothesis space* of distributions that we search over. If the hypothesis space is very limited, it might not be able to represent $$p^*$$, even with unlimited data. This type of limitation is called bias, as the learning is limited on how close it can approximate the target distribution
 
 If we select a highly expressive hypothesis class, we might represent better the data. However, when we have small amount of data, multiple models can fit well, or even better than the true model. Moreover, small perturbations on D will result in very different estimates. This limitation is call the variance.
 
@@ -114,7 +114,7 @@ Thus, there is an inherent bias-variance trade off when selecting the hypothesis
 
 High bias can be avoided by increasing the capacity of the model. We may avoid high variance using several approaches.
 
-We may impose hard constraints, e.g. by selecting a less expressive hypothesis class: Bayesian networks with at most $$d$$ parents or pairwise (rather than arbitrary-order) MRFs. We may also introduce a soft preference for “simpler” models by adding a regularizer term $$R(p)$$ to the loss $$L(x,p)$$, which will penalize overly complex $$p$$.
+We may impose hard constraints, e.g. by selecting a less expressive hypothesis class: Bayesian networks with at most $$d$$ parents or pairwise (rather than arbitrary-order) MRFs. We may also introduce a soft preference for "simpler" models by adding a regularizer term $$R(p)$$ to the loss $$L(x,p)$$, which will penalize overly complex $$p$$.
 
 ### Generalization error
 
@@ -128,7 +128,7 @@ However, we are actually interested in minimizing
 {% endmath %}
 
 We cannot guarantee with certainty the quality of our learned model.
-This is because the data $$D$$ is sampled stochastically from $$p^∗$$, and we might get an unlucky sample. The goal of learning theory is to prove that the model is approximately correct: for most $$D$$, the learning procedure returns a model whose error is low. There exist a vast literature that quantifies the probability of observing a given error between the empirical and the expected loss given a particular type of model and a particular dataset size.
+This is because the data $$D$$ is sampled stochastically from $$p^*$$, and we might get an unlucky sample. The goal of learning theory is to prove that the model is approximately correct: for most $$D$$, the learning procedure returns a model whose error is low. There exist a vast literature that quantifies the probability of observing a given error between the empirical and the expected loss given a particular type of model and a particular dataset size.
 
 ## Maximum likelihood learning in Bayesian networks
 
@@ -150,5 +150,4 @@ This is essentially the same as the head/tails example we saw earlier (except wi
 \theta^*_{x_i \mid pa(x_i)} = \frac{\#(x_i, pa(x_i))}{\#(pa(x_i))}. 
 {% endmath %}
 
-We thus conclude that in Bayesian networks with discrete variabels, the maximum-likelihood estimate has a closed-form solution. Even when the variables are not discrete, the task is equally simple: the log-factors are linearly separable, hence the log-likelihood reduces to estimating each of them separately. The simplicity of learning is one of the most convenient features of Bayesian networks.
-
+We thus conclude that in Bayesian networks with discrete variables, the maximum-likelihood estimate has a closed-form solution. Even when the variables are not discrete, the task is equally simple: the log-factors are linearly separable, hence the log-likelihood reduces to estimating each of them separately. The simplicity of learning is one of the most convenient features of Bayesian networks.
