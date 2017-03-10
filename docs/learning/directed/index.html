@@ -82,7 +82,7 @@
 <p>A graphical model has two components: the graph structure, and the parameters of the factors induced by this graph. These components lead to two different learning tasks:</p>
 
 <ul>
-  <li><em>Parameter learning</em>, where the graph structure is known and we want to esimate the factors.</li>
+  <li><em>Parameter learning</em>, where the graph structure is known and we want to estimate the factors.</li>
   <li><em>Structure learning</em>, where we want to estimate the graph, i.e. determine from data how the variables depend on each other.</li>
 </ul>
 
@@ -94,10 +94,10 @@
 
 <p>Before, we start our discussion of learning, let’s first reflect on what it means to fit a model, and what is a desirable objective for this task.</p>
 
-<p>Let’s assume that the domain is governed by some underlying distribution <script type="math/tex">p^*</script>. We are given a dataset <script type="math/tex">D</script> of <script type="math/tex">m</script> samples from <script type="math/tex">p^∗</script>; The standard assumption is that the data instances are independent and identically distributed (iid). We are also given a family of models <script type="math/tex">M</script>, and our task is to learn some “good” model in <script type="math/tex">M</script> that defines a distribution <script type="math/tex">p</script>. For example, we could look at all Bayes nets with a given graph structure, with all the possible choices of the CPD tables.</p>
+<p>Let’s assume that the domain is governed by some underlying distribution <script type="math/tex">p^*</script>. We are given a dataset <script type="math/tex">D</script> of <script type="math/tex">m</script> samples from <script type="math/tex">p^*</script>; The standard assumption is that the data instances are independent and identically distributed (iid). We are also given a family of models <script type="math/tex">M</script>, and our task is to learn some “good” model in <script type="math/tex">M</script> that defines a distribution <script type="math/tex">p</script>. For example, we could look at all Bayes nets with a given graph structure, with all the possible choices of the CPD tables.</p>
 
-<p>The goal of learning is to return a model that precisely captures the distribution <script type="math/tex">p^∗</script> from which our data was sampled. This is in general not achievable because limited data only provides a rough approximation of the true underlying distribution, and because of computational reasons.
-Still, we want to somehow select the ”best” approximation to the underlying distribution <script type="math/tex">p^∗</script>.</p>
+<p>The goal of learning is to return a model that precisely captures the distribution <script type="math/tex">p^*</script> from which our data was sampled. This is in general not achievable because limited data only provides a rough approximation of the true underlying distribution, and because of computational reasons.
+Still, we want to somehow select the “best” approximation to the underlying distribution <script type="math/tex">p^*</script>.</p>
 
 <p>What is “best” in this case? It depends on what we want to do:</p>
 
@@ -109,7 +109,7 @@ Still, we want to somehow select the ”best” approximation to the underlying 
 
 <h2 id="maximum-likelihood">Maximum likelihood</h2>
 
-<p>Let’s assume that we want to learn the full distribution so that later we can answer any probabilistic inference query. In this setting we can view the learning problem as <em>density estimation</em>. We want to construct a <script type="math/tex">p</script> as ”close” as possible to <script type="math/tex">p^∗</script>. How do we evaluate ”closeness”? We will again use the KL divergence, which we have seen when we covered variational inference:</p>
+<p>Let’s assume that we want to learn the full distribution so that later we can answer any probabilistic inference query. In this setting we can view the learning problem as <em>density estimation</em>. We want to construct a <script type="math/tex">p</script> as “close” as possible to <script type="math/tex">p^*</script>. How do we evaluate “closeness”? We will again use the KL divergence, which we have seen when we covered variational inference:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 KL(p^*||p) = \sum_x p^*(x) \log \frac{p^*(x)}{p(x)} = -H(p^*) - \mathbb{E}_{x \sim p^*} [ \log p(x) ].
 </script></div>
@@ -118,25 +118,25 @@ KL(p^*||p) = \sum_x p^*(x) \log \frac{p^*(x)}{p(x)} = -H(p^*) - \mathbb{E}_{x \s
 <div class="mathblock"><script type="math/tex; mode=display">
 \mathbb{E}_{x \sim p^*} [ \log p(x) ].
 </script></div>
-<p>This objective asks that <script type="math/tex">p</script> assign high probability to instances sampled from <script type="math/tex">p^∗</script>, so as to reflect the true distribution.
-Although we can now compare models, since we are not computing <script type="math/tex">H(p^∗)</script>, we don’t know how close we are to the optimum.</p>
+<p>This objective asks that <script type="math/tex">p</script> assign high probability to instances sampled from <script type="math/tex">p^*</script>, so as to reflect the true distribution.
+Although we can now compare models, since we are not computing <script type="math/tex">H(p^*)</script>, we don’t know how close we are to the optimum.</p>
 
-<p>However, there is still a problem: in general we do not know <script type="math/tex">p^∗</script>. We will thus approximate the expected log-likelihood <script type="math/tex">\mathbb{E}_{x \sim p^*} [ \log p(x) ]</script> with the empirical log-likelihood (a Monte-Carlo estimate):</p>
+<p>However, there is still a problem: in general we do not know <script type="math/tex">p^*</script>. We will thus approximate the expected log-likelihood <script type="math/tex">\mathbb{E}_{x \sim p^*} [ \log p(x) ]</script> with the empirical log-likelihood (a Monte-Carlo estimate):</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \mathbb{E}_{x \sim p^*} [ \log p(x) ] \approx \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
 </script></div>
 <p>where <script type="math/tex">D</script> is a dataset drawn i.i.d. from <script type="math/tex">p^*</script>.</p>
 
-<p>*Maximum likelihood learning is then defined as</p>
+<p>Maximum likelihood learning is then defined as</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \max_{p \in M} \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
 </script></div>
 
 <h3 id="an-example">An example</h3>
 
-<p>As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution <script type="math/tex">p^∗(x)</script> where <script type="math/tex">x \in \{h,t\}</script>. Our class of models <script type="math/tex">M</script> is going to be the set of all probability distributions over <script type="math/tex">\{h,t\}</script>.</p>
+<p>As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution <script type="math/tex">p^*(x)</script> where <script type="math/tex">x \in \{h,t\}</script>. Our class of models <script type="math/tex">M</script> is going to be the set of all probability distributions over <script type="math/tex">\{h,t\}</script>.</p>
 
-<p>How should we choose <script type="math/tex">p</script> from M if 60 out
+<p>How should we choose <script type="math/tex">p</script> from <script type="math/tex">M</script> if 60 out
 of 100 tosses are heads? Let’s assume that <script type="math/tex">p(x=h)=\theta</script> and <script type="math/tex">p(x=t)=1−\theta</script>. If our observed data is <script type="math/tex">D = \{h,h,t,h,t\}</script>, our likelihood becomes <script type="math/tex">\prod_i p(x_i ) = \theta \cdot \theta \cdot (1 − \theta) \cdot \theta \cdot (1 − \theta)</script>; maximizing this yields <script type="math/tex">\theta = 60\%</script>.</p>
 
 <p>More generally, our log-likelihood function is simply</p>
@@ -152,12 +152,12 @@ L(\theta) = \text{# heads} \cdot \log(\theta) + \text{# tails} \cdot \log(1 − 
 
 <p>We may now generalize this by introducing the concept of a <em>loss function</em>. A loss function <script type="math/tex">L(x,p)</script> measures the loss that a model distribution <script type="math/tex">p</script> makes on a
 particular instance <script type="math/tex">x</script>.
-Assuming instances are sampled from some distribution <script type="math/tex">p^∗</script>, our goal is to
+Assuming instances are sampled from some distribution <script type="math/tex">p^*</script>, our goal is to
 find the model that minimizes the expected loss or risk,</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \mathbb{E}_{x \sim p^*} [ L(x,p) ] \approx \frac{1}{|D|} \sum_{x \in D}  L(x,p), 
 </script></div>
-<p>Notive that the loss function which corresponds to maximum likelihood estimation is the log loss <script type="math/tex">-\log p(x)</script>.</p>
+<p>Notice that the loss function which corresponds to maximum likelihood estimation is the log loss <script type="math/tex">-\log p(x)</script>.</p>
 
 <p>Another example of a loss is the conditional log-likelihood. Suppose we want to predict a set of variables <script type="math/tex">y</script> given <script type="math/tex">x</script>, e.g., for segmentation or stereo vision. We concentrate on predicting <script type="math/tex">p(y|x)</script>, and use a conditional loss function <script type="math/tex">L(x,y,p) = −\log p(y \mid  x).</script>
 Since the loss function only depends on <script type="math/tex">p(y \mid  x)</script>, it suffices to estimate the conditional distribution, not the joint. This is the objective function we use to train conditional random fields (CRFs).</p>
@@ -167,9 +167,9 @@ Since the loss function only depends on <script type="math/tex">p(y \mid  x)</sc
 
 <p>One reasonable choice would be the classification error:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\mathbb{E}_{(x,y)\sim p^∗} [\mathbb{I}\{ \exists y' \neq y : p(y'\mid x) \geq p(y\mid x) \}],
+\mathbb{E}_{(x,y)\sim p^*} [\mathbb{I}\{ \exists y' \neq y : p(y'\mid x) \geq p(y\mid x) \}],
 </script></div>
-<p>which is the probability over all <script type="math/tex">(x, y)</script> pairs sampled from <script type="math/tex">p^∗</script> that we predict
+<p>which is the probability over all <script type="math/tex">(x, y)</script> pairs sampled from <script type="math/tex">p^*</script> that we predict
 the wrong assignment.
 A somewhat better choice might be the hamming loss, which counts the number of variables in which the MAP assignment differs from the ground truth label.
 There also exists a fascinating line of work on generalizations of the hinge loss to CRFs, which leads to a class of models called <em>structured support vector machines</em>.</p>
@@ -183,7 +183,7 @@ The data we have is a sample, and usually there is vast amount of samples that w
 
 <h3 id="the-biasvariance-tradeoff">The bias/variance tradeoff</h3>
 
-<p>Thus, we typically restrict the <em>hypothesis space</em> of distributions that we search over. If the hypothesis space is very limited, it might not be able to represent <script type="math/tex">p^∗</script>, even with unlimited data. This type of limitation is called bias, as the learning is limited on how close it can approximate the target distribution</p>
+<p>Thus, we typically restrict the <em>hypothesis space</em> of distributions that we search over. If the hypothesis space is very limited, it might not be able to represent <script type="math/tex">p^*</script>, even with unlimited data. This type of limitation is called bias, as the learning is limited on how close it can approximate the target distribution</p>
 
 <p>If we select a highly expressive hypothesis class, we might represent better the data. However, when we have small amount of data, multiple models can fit well, or even better than the true model. Moreover, small perturbations on D will result in very different estimates. This limitation is call the variance.</p>
 
@@ -207,7 +207,7 @@ The data we have is a sample, and usually there is vast amount of samples that w
 </script></div>
 
 <p>We cannot guarantee with certainty the quality of our learned model.
-This is because the data <script type="math/tex">D</script> is sampled stochastically from <script type="math/tex">p^∗</script>, and we might get an unlucky sample. The goal of learning theory is to prove that the model is approximately correct: for most <script type="math/tex">D</script>, the learning procedure returns a model whose error is low. There exist a vast literature that quantifies the probability of observing a given error between the empirical and the expected loss given a particular type of model and a particular dataset size.</p>
+This is because the data <script type="math/tex">D</script> is sampled stochastically from <script type="math/tex">p^*</script>, and we might get an unlucky sample. The goal of learning theory is to prove that the model is approximately correct: for most <script type="math/tex">D</script>, the learning procedure returns a model whose error is low. There exist a vast literature that quantifies the probability of observing a given error between the empirical and the expected loss given a particular type of model and a particular dataset size.</p>
 
 <h2 id="maximum-likelihood-learning-in-bayesian-networks">Maximum likelihood learning in Bayesian networks</h2>
 
@@ -229,8 +229,7 @@ This is essentially the same as the head/tails example we saw earlier (except wi
 \theta^*_{x_i \mid pa(x_i)} = \frac{\#(x_i, pa(x_i))}{\#(pa(x_i))}. 
 </script></div>
 
-<p>We thus conclude that in Bayesian networks with discrete variabels, the maximum-likelihood estimate has a closed-form solution. Even when the variables are not discrete, the task is equally simple: the log-factors are linearly separable, hence the log-likelihood reduces to estimating each of them separately. The simplicity of learning is one of the most convenient features of Bayesian networks.</p>
-
+<p>We thus conclude that in Bayesian networks with discrete variables, the maximum-likelihood estimate has a closed-form solution. Even when the variables are not discrete, the task is equally simple: the log-factors are linearly separable, hence the log-likelihood reduces to estimating each of them separately. The simplicity of learning is one of the most convenient features of Bayesian networks.</p>
 
 
 

@@ -108,7 +108,7 @@ p(x|z=k) = \mathcal{N}(x; \mu_k, \Sigma_k)
 </script></div>
 <p>is a multivariate Gaussian with mean and variance <script type="math/tex">\mu_k, \Sigma_k</script>.</p>
 
-<p>This model postulates that our observed data is comprised of <script type="math/tex">K</script> clusters with proportions specified by <script type="math/tex">\pi_1,...,\pi_K</script>; the distribution within each cluster is a Gaussian. We can see that <script type="math/tex">p(x)</script> is a mixture by explicitely writing out this probability:</p>
+<p>This model postulates that our observed data is comprised of <script type="math/tex">K</script> clusters with proportions specified by <script type="math/tex">\pi_1,...,\pi_K</script>; the distribution within each cluster is a Gaussian. We can see that <script type="math/tex">p(x)</script> is a mixture by explicitly writing out this probability:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 p(x) = \sum_{k=1}^K p(x|z=k)p(z=k) = \sum_{k=1}^K \pi_k \mathcal{N}(x; \mu_k, \Sigma_k).
 </script></div>
@@ -169,7 +169,7 @@ p(x) = \sum_z p(x|z) p(z)
 </script></div>
 <p>This expectation is what gives the EM algorithm half of its name. If <script type="math/tex">z</script> is not too high-dimensional (e.g. in GMMs it is a one-dimensional categorical variable), then we can compute this expectation.</p>
 
-<p>Since the summation is now outside the log, we can maximize the expected log-likelihood. In particular, when <script type="math/tex">p</script> is a directed model, <script type="math/tex">\log p</script> again decomposes into a sum of log-CPD terms that can be optimized independely, as discussed in the chapter on directed graphical models.</p>
+<p>Since the summation is now outside the log, we can maximize the expected log-likelihood. In particular, when <script type="math/tex">p</script> is a directed model, <script type="math/tex">\log p</script> again decomposes into a sum of log-CPD terms that can be optimized independently, as discussed in the chapter on directed graphical models.</p>
 
 <p>We can formally define the EM algorithm as follows. Let <script type="math/tex">D</script> be our dataset.</p>
 
@@ -191,14 +191,14 @@ p(z \mid x; \theta_{t}) = \frac{p(z, x; \theta_{t})}{p(x; \theta_{t})} = \frac{p
 
 <p>Note that each <script type="math/tex">p(x \mid z_k; \theta_{t}) p(z_k; \theta_{t})</script> is simply the probability that <script type="math/tex">x</script> originates from component <script type="math/tex">k</script> given the current set of parameters <script type="math/tex">\theta</script>. After normalization, these form the <script type="math/tex">K</script>-dimensional vector of probabilities <script type="math/tex">p(z \mid x; \theta_{t})</script>.</p>
 
-<p>Recall that in the original model, <script type="math/tex">z</script> is an indicator variable that chooses a component for <script type="math/tex">x</script>; we may view this a “hard” assignment of <script type="math/tex">x</script> to one component. The result of the <script type="math/tex">E</script> step is a <script type="math/tex">K</script>-dimensional vector (whose components sum to one) that specifies a “soft” assignment to components. In that sense, we have “hallucinated” a “soft” instantiation of <script type="math/tex">z</script>; this is what we meant earlier by an “intuitive interpretation” for <script type="math/tex">p(z\mid x)</script>.</p>
+<p>Recall that in the original model, <script type="math/tex">z</script> is an indicator variable that chooses a component for <script type="math/tex">x</script>; we may view this as a “hard” assignment of <script type="math/tex">x</script> to one component. The result of the <script type="math/tex">E</script> step is a <script type="math/tex">K</script>-dimensional vector (whose components sum to one) that specifies a “soft” assignment to components. In that sense, we have “hallucinated” a “soft” instantiation of <script type="math/tex">z</script>; this is what we meant earlier by an “intuitive interpretation” for <script type="math/tex">p(z\mid x)</script>.</p>
 
 <p>At the M-step, we optimize the expected log-likelihood of our model.</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \begin{align*}
 \theta_{t+1} 
 & = \arg \max_{\theta} \frac{1}{|D|}\sum_{x \in D} \mathbb{E}_{z \sim p(z|x; \theta_{t})} \log p(x,z; \theta) \\
-& = \arg \max_{\theta} \sum_{k=1}^K \frac{1}{|D|}\sum_{x \in D} p(z_k|x; \theta_{t}) \log p(x|z_k; \theta) + \frac{1}{|D|}\sum_{x \in D} \sum_{k=1}^K p(z_k|x; \theta_{t}) p(z_k; \theta)
+& = \arg \max_{\theta} \sum_{k=1}^K \frac{1}{|D|}\sum_{x \in D} p(z_k|x; \theta_{t}) \log p(x|z_k; \theta) + \frac{1}{|D|}\sum_{x \in D} \sum_{k=1}^K p(z_k|x; \theta_{t}) \log p(z_k; \theta)
 \end{align*}
 </script></div>
 
@@ -242,11 +242,11 @@ Moreover, since <script type="math/tex">p(x\mid z_k; \theta) = \mathcal{N}(x; \m
 <div class="mathblock"><script type="math/tex; mode=display">
 \log p(x; \theta) = KL(q(z) || p(z|x; \theta)) + \mathcal{L}(p,q).
 </script></div>
-<p>Hence, <script type="math/tex">\mathcal{L}(p,q)</script> is maximized when <script type="math/tex">q=p(z|x)</script>; in that case the KL term becomes zero and the lowe bound is tight: <script type="math/tex">\log p(x; \theta) = \mathcal{L}(p,q).</script></p>
+<p>Hence, <script type="math/tex">\mathcal{L}(p,q)</script> is maximized when <script type="math/tex">q=p(z|x)</script>; in that case the KL term becomes zero and the lower bound is tight: <script type="math/tex">\log p(x; \theta) = \mathcal{L}(p,q).</script></p>
 
-<p>The EM algorithm can be seen as iteratively optimizng the ELBO over <script type="math/tex">q</script> (at the E step) and over <script type="math/tex">\theta</script> (at the M) step.</p>
+<p>The EM algorithm can be seen as iteratively optimizing the ELBO over <script type="math/tex">q</script> (at the E step) and over <script type="math/tex">\theta</script> (at the M) step.</p>
 
-<p>Starting at some <script type="math/tex">\theta_t</script>, we compute the posterior <script type="math/tex">p(z\mid x; \theta)</script> at the <script type="math/tex">E</script> step. We evalute the ELBO for <script type="math/tex">q = p(z\mid x; \theta)</script>; this makes the ELBO tight:</p>
+<p>Starting at some <script type="math/tex">\theta_t</script>, we compute the posterior <script type="math/tex">p(z\mid x; \theta)</script> at the <script type="math/tex">E</script> step. We evaluate the ELBO for <script type="math/tex">q = p(z\mid x; \theta)</script>; this makes the ELBO tight:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \log p(x; \theta_t) = \mathbb{E}_{p(z|x; \theta_t)} \log p(x,z; \theta_t) - \mathbb{E}_{p(z|x; \theta_t)} \log p(z|x; \theta_t)
 </script></div>

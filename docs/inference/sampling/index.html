@@ -186,11 +186,11 @@ p_t = T^t p_0.
 
 <p>The limit <script type="math/tex">\pi = \lim_{t \to \infty} p_t</script> (when it exists) is called a <em>stationary distribution</em> of the Markov chain. We will construct below Markov chain with a stationary distribution <script type="math/tex">\pi</script> that exists and is the same for all <script type="math/tex">p_0</script>; we will refer to such <script type="math/tex">\pi</script> as <em>the</em> stationary distribution* of the chain.</p>
 
-<p>A necessary condition that must be satisfied by a stationary distribution is called <em>detailed balance</em>:</p>
+<p>A sufficent condition for a stationary distribution is called <em>detailed balance</em>:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \pi(x') T(x \mid x') = \pi(x) T(x' \mid x) \;\text{for all $x$}
 </script></div>
-<p>It is easy to show that such a <script type="math/tex">\pi</script> must form a stationary distribution (just sum both sides of the equation over <script type="math/tex">x</script> and simplify).</p>
+<p>It is easy to show that such a <script type="math/tex">\pi</script> must form a stationary distribution (just sum both sides of the equation over <script type="math/tex">x</script> and simplify). However, the reverse may not hold and indeed it is possible to have <a href="https://arxiv.org/pdf/1007.2262.pdf">MCMC without satisfying detailed balance</a>.</p>
 
 <h3 id="existence-of-a-stationary-distribution">Existence of a stationary distribution</h3>
 
