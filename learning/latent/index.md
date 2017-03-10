@@ -34,7 +34,7 @@ p(x|z=k) = \mathcal{N}(x; \mu_k, \Sigma_k)
 {%endmath%}
 is a multivariate Gaussian with mean and variance $$\mu_k, \Sigma_k$$.
 
-This model postulates that our observed data is comprised of $$K$$ clusters with proportions specified by $$\pi_1,...,\pi_K$$; the distribution within each cluster is a Gaussian. We can see that $$p(x)$$ is a mixture by explicitely writing out this probability:
+This model postulates that our observed data is comprised of $$K$$ clusters with proportions specified by $$\pi_1,...,\pi_K$$; the distribution within each cluster is a Gaussian. We can see that $$p(x)$$ is a mixture by explicitly writing out this probability:
 {%math%}
 p(x) = \sum_{k=1}^K p(x|z=k)p(z=k) = \sum_{k=1}^K \pi_k \mathcal{N}(x; \mu_k, \Sigma_k).
 {%endmath%}
@@ -94,7 +94,7 @@ By "hallucinating" the data, we mean computing the expected log-likelihood
 {%endmath%}
 This expectation is what gives the EM algorithm half of its name. If $$z$$ is not too high-dimensional (e.g. in GMMs it is a one-dimensional categorical variable), then we can compute this expectation. 
 
-Since the summation is now outside the log, we can maximize the expected log-likelihood. In particular, when $$p$$ is a directed model, $$\log p$$ again decomposes into a sum of log-CPD terms that can be optimized independely, as discussed in the chapter on directed graphical models.
+Since the summation is now outside the log, we can maximize the expected log-likelihood. In particular, when $$p$$ is a directed model, $$\log p$$ again decomposes into a sum of log-CPD terms that can be optimized independently, as discussed in the chapter on directed graphical models.
 
 We can formally define the EM algorithm as follows. Let $$D$$ be our dataset.
 
@@ -114,7 +114,7 @@ p(z \mid x; \theta_{t}) = \frac{p(z, x; \theta_{t})}{p(x; \theta_{t})} = \frac{p
 
 Note that each $$ p(x \mid z_k; \theta_{t}) p(z_k; \theta_{t}) $$ is simply the probability that $$x$$ originates from component $$k$$ given the current set of parameters $$\theta$$. After normalization, these form the $$K$$-dimensional vector of probabilities $$p(z \mid x; \theta_{t})$$.
 
-Recall that in the original model, $$z$$ is an indicator variable that chooses a component for $$x$$; we may view this a "hard" assignment of $$x$$ to one component. The result of the $$E$$ step is a $$K$$-dimensional vector (whose components sum to one) that specifies a "soft" assignment to components. In that sense, we have "hallucinated" a "soft" instantiation of $$z$$; this is what we meant earlier by an "intuitive interpretation" for $$p(z\mid x)$$.
+Recall that in the original model, $$z$$ is an indicator variable that chooses a component for $$x$$; we may view this as a "hard" assignment of $$x$$ to one component. The result of the $$E$$ step is a $$K$$-dimensional vector (whose components sum to one) that specifies a "soft" assignment to components. In that sense, we have "hallucinated" a "soft" instantiation of $$z$$; this is what we meant earlier by an "intuitive interpretation" for $$p(z\mid x)$$.
 
 At the M-step, we optimize the expected log-likelihood of our model.
 {%math%}
@@ -165,11 +165,11 @@ over distributions $$q$$. The ELBO satisfies the equation
 {%math%}
 \log p(x; \theta) = KL(q(z) || p(z|x; \theta)) + \mathcal{L}(p,q).
 {%endmath%}
-Hence, $$\mathcal{L}(p,q)$$ is maximized when $$q=p(z|x)$$; in that case the KL term becomes zero and the lowe bound is tight: $$\log p(x; \theta) = \mathcal{L}(p,q).$$
+Hence, $$\mathcal{L}(p,q)$$ is maximized when $$q=p(z|x)$$; in that case the KL term becomes zero and the lower bound is tight: $$\log p(x; \theta) = \mathcal{L}(p,q).$$
 
-The EM algorithm can be seen as iteratively optimizng the ELBO over $$q$$ (at the E step) and over $$\theta$$ (at the M) step.
+The EM algorithm can be seen as iteratively optimizing the ELBO over $$q$$ (at the E step) and over $$\theta$$ (at the M) step.
 
-Starting at some $$\theta_t$$, we compute the posterior $$p(z\mid x; \theta)$$ at the $$E$$ step. We evalute the ELBO for $$q = p(z\mid x; \theta)$$; this makes the ELBO tight:
+Starting at some $$\theta_t$$, we compute the posterior $$p(z\mid x; \theta)$$ at the $$E$$ step. We evaluate the ELBO for $$q = p(z\mid x; \theta)$$; this makes the ELBO tight:
 {%math%}
 \log p(x; \theta_t) = \mathbb{E}_{p(z|x; \theta_t)} \log p(x,z; \theta_t) - \mathbb{E}_{p(z|x; \theta_t)} \log p(z|x; \theta_t)
 {%endmath%}
