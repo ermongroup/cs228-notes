@@ -189,12 +189,12 @@ p, & \text{if $$p = 1$$}. \\
 \end{cases}
 {% endmath %}
 
-• **$$X$$ ∼ Binomial(n, p)** $$(where 0 \leq  p \leq  1)$$: the number of heads in n independent flips of a
+• **$$X$$ ∼ Binomial(n, p)** (where $$0 \leq  p \leq  1$$): the number of heads in n independent flips of a
 coin with heads probability p.
 \begin{equation}
 p(x) = \binom{n}{x} \cdot p^x q^{n-x}
 \end{equation}
-• **$$X$$ ∼ Geometric(p)** $$(where p > 0)$$: the number of flips of a coin with heads probability p
+• **$$X$$ ∼ Geometric(p)** (where $$p > 0$$): the number of flips of a coin with heads probability p
 until the first heads.
 \begin{equation} p(x) = p(1 − p)^{x-1}
 \end{equation}
