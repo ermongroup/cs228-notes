@@ -76,7 +76,7 @@ However, as we have seen, inference in general is intractable, and therefore so 
 
 We can similarly derive an expression for the Hessian of $$\log Z(\theta)$$:
 {% math %}
-\nabla_{\theta}^2 \log Z(\theta) = \mathbb{E}_{x \sim p} [ f(x) f(x)^T ] = \text{cov}[f(x)].
+\nabla_{\theta}^2 \log Z(\theta) = \mathbb{E}_{x \sim p} [ f(x) f(x)^T ] - \mathbb{E}_{x \sim p} [ f(x) ] \mathbb{E}_{x \sim p} [ f(x) ]^T = \text{cov}[f(x)].
 {% endmath %}
 Since covariance matrices are always positive semi-definite, this proves that $$\log Z (\theta)$$ is convex (and therefore that the log-likelihood is concave). Recall that this was one of the properties of exponential families that we stated earlier.
 
