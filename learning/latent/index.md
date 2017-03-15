@@ -141,7 +141,7 @@ Moreover, since $$p(x\mid z_k; \theta) = \mathcal{N}(x; \mu_k, \Sigma_k)$$ is in
 {%endmath%}
 and
 {%math%}
-\Sigma_Q = \frac{1}{|D|} \sum_{x \in D} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)} x x^T.
+\Sigma_Q = \frac{1}{|D|} \sum_{x \in D} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)} (x-\mu_Q) (x-\mu_Q)^T.
 {%endmath%}
 
 Note how these are the just the mean and variance of the data, weighted by their cluster affinities! Similarly, we may find out that the class priors are
