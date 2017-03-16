@@ -120,8 +120,8 @@ At the M-step, we optimize the expected log-likelihood of our model.
 {%math%}
 \begin{align*}
 \theta_{t+1} 
-& = \arg \max_{\theta} \frac{1}{|D|}\sum_{x \in D} \mathbb{E}_{z \sim p(z|x; \theta_{t})} \log p(x,z; \theta) \\
-& = \arg \max_{\theta} \sum_{k=1}^K \frac{1}{|D|}\sum_{x \in D} p(z_k|x; \theta_{t}) \log p(x|z_k; \theta) + \frac{1}{|D|}\sum_{x \in D} \sum_{k=1}^K p(z_k|x; \theta_{t}) \log p(z_k; \theta)
+& = \arg \max_{\theta} \sum_{x \in D} \mathbb{E}_{z \sim p(z|x; \theta_{t})} \log p(x,z; \theta) \\
+& = \arg \max_{\theta} \sum_{k=1}^K \sum_{x \in D} p(z_k|x; \theta_{t}) \log p(x|z_k; \theta) + \sum_{x \in D} \sum_{k=1}^K p(z_k|x; \theta_{t}) \log p(z_k; \theta)
 \end{align*}
 {%endmath%}
 
