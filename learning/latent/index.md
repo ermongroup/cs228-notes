@@ -132,16 +132,16 @@ We can optimize each of these terms separately. We will start with $$p(x\mid z_k
 {%endmath%}
 where $$c_k = \sum_{x \in D} p(z_k|x; \theta_t)$$ is a constant that does not depend on $$\theta$$ and $$Q_k(x)$$ is a probability distribution defined over $$D$$ as
 {%math%}
-Q_k(x) = \frac{p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)}.
+Q_k(x) = \frac{p(z_k|x; \theta)}{\sum_{x \in D} p(z_k|x; \theta)}.
 {%endmath%}
 Now we know that $$\mathbb{E}_{x \sim Q_k(x)} \log p(x|z_k; \theta_t)$$ is optimized when $$\log p(x|z_k; \theta_t)$$ equals $$Q_k(x)$$ (as discussed in the section on learning directed models, this objective equals the KL divergence between Q_k and P, plus a constant).
-Moreover, since $$p(x\mid z_k; \theta_t) = \mathcal{N}(x; \mu_k, \Sigma_k)$$ is in the exponential family, it is entirely described by its sufficient statistics (recall our discussion of exponential families in the section on learning undirected models). Thus, we may set the mean and variance $$\mu_k, \Sigma_k$$ to those of $$Q_k(x)$$, which are
+Moreover, since $$p(x\mid z_k; \theta) = \mathcal{N}(x; \mu_k, \Sigma_k)$$ is in the exponential family, it is entirely described by its sufficient statistics (recall our discussion of exponential families in the section on learning undirected models). Thus, we may set the mean and variance $$\mu_k, \Sigma_k$$ to those of $$Q_k(x)$$, which are
 {%math%}
-\mu_k = \mu_{Q_k} = \frac{\sum_{x \in D} p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} x
+\mu_k = \mu_{Q_k} = \sum_{x \in D} \frac{ p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} x
 {%endmath%}
 and
 {%math%}
-\Sigma_k = \Sigma_{Q_k} = \frac{\sum_{x \in D}  p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} (x-\mu_{Q_k}) (x-\mu_{Q_k})^T.
+\Sigma_k = \Sigma_{Q_k} = \sum_{x \in D} \frac{ p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} (x-\mu_{Q_k}) (x-\mu_{Q_k})^T.
 {%endmath%}
 
 Note how these are the just the mean and variance of the data, weighted by their cluster affinities! Similarly, we may find out that the class priors are
