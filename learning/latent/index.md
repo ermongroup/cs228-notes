@@ -114,7 +114,7 @@ p(z \mid x; \theta_{t}) = \frac{p(z, x; \theta_{t})}{p(x; \theta_{t})} = \frac{p
 
 Note that each $$ p(x \mid z_k; \theta_{t}) p(z_k; \theta_{t}) $$ is simply the probability that $$x$$ originates from component $$k$$ given the current set of parameters $$\theta_{t}$$. After normalization, these form the $$K$$-dimensional vector of probabilities $$p(z \mid x; \theta_{t})$$.
 
-Recall that in the original model, $$z$$ is an indicator variable that chooses a component for $$x$$; we may view this as a "hard" assignment of $$x$$ to one component. The result of the $$E$$ step is a $$K$$-dimensional vector (whose components sum to one) that specifies a "soft" assignment to components. In that sense, we have "hallucinated" a "soft" instantiation of $$z$$; this is what we meant earlier by an "intuitive interpretation" for $$p(z\mid x)$$.
+Recall that in the original model, $$z$$ is an indicator variable that chooses a component for $$x$$; we may view this as a "hard" assignment of $$x$$ to one component. The result of the $$E$$ step is a $$K$$-dimensional vector (whose components sum to one) that specifies a "soft" assignment to components. In that sense, we have "hallucinated" a "soft" instantiation of $$z$$; this is what we meant earlier by an "intuitive interpretation" for $$p(z\mid x; \theta_{t})$$.
 
 At the M-step, we optimize the expected log-likelihood of our model.
 {%math%}
