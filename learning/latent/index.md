@@ -134,7 +134,7 @@ where $$c_k = \sum_{x \in D} p(z_k|x; \theta_t)$$ is a constant that does not de
 {%math%}
 Q_k(x) = \frac{p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)}.
 {%endmath%}
-Now we know that $$\mathbb{E}_{x \sim Q_k(x)} \log p(x|z_k; \theta)$$ is optimized when $$\log p(x|z_k; \theta)$$ equals $$Q_k(x)$$ (as discussed in the section on learning directed models, this objective equals the KL divergence between Q_k and P, plus a constant).
+Now we know that $$\mathbb{E}_{x \sim Q_k(x)} \log p(x|z_k; \theta)$$ is optimized when $$\log p(x|z_k; \theta)$$ equals $$Q_k(x)$$ (as discussed in the section on learning directed models, this objective equals the KL divergence between $$Q_k$$ and $$P$$, plus a constant).
 Moreover, since $$p(x\mid z_k; \theta) = \mathcal{N}(x; \mu_k, \Sigma_k)$$ is in the exponential family, it is entirely described by its sufficient statistics (recall our discussion of exponential families in the section on learning undirected models). Thus, we may set the mean and variance $$\mu_k, \Sigma_k$$ to those of $$Q_k(x)$$, which are
 {%math%}
 \mu_k = \mu_{Q_k} = \sum_{x \in D} \frac{ p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} x
