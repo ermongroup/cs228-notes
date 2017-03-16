@@ -84,7 +84,7 @@ The EM algorithm relies on two simple observations.
 - If the latent $$z$$ were fully observed, then we could optimize the log-likelihood exactly using our previously seen closed form solution for $$p(x,z)$$.
 - Knowing the weights, we can often efficiently compute the posterior $$p(z\mid x; \theta)$$ (this is an assumption; it is not true for some models).
 
-EM follows a simple iterative two-step strategy: given an estimate $$\theta_t$$ of the weights, compute $$p(z\mid x; \theta_t)$$ and use it to "hallucinate" values for $$z$$. Then, find a new $$\theta_{t+1}$$ by optimizing the resulting tractable objective. This process will eventually converge.
+EM follows a simple iterative two-step strategy: given an estimate $$\theta_t$$ of the weights, compute $$p(z\mid x)$$ and use it to "hallucinate" values for $$z$$. Then, find a new $$\theta_{t+1}$$ by optimizing the resulting tractable objective. This process will eventually converge.
 
 We haven't exactly defined what we mean by "hallucinating" the data. The full definition is a bit technical, but its instantiation is very intuitive in most models like GMMs.
 
@@ -112,7 +112,7 @@ Let's look at this algorithm in the context of GMMs. Suppose we have a dataset $
 p(z \mid x; \theta_{t}) = \frac{p(z, x; \theta_{t})}{p(x; \theta_{t})} = \frac{p(x | z; \theta_{t}) p(z; \theta_{t})}{\sum_{k=1}^K p(x | z_k; \theta_{t}) p(z_k; \theta_{t})}.
 {%endmath%}
 
-Note that each $$ p(x \mid z_k; \theta_{t}) p(z_k; \theta_{t}) $$ is simply the probability that $$x$$ originates from component $$k$$ given the current set of parameters $$\theta_{t}$$. After normalization, these form the $$K$$-dimensional vector of probabilities $$p(z \mid x; \theta_{t})$$.
+Note that each $$ p(x \mid z_k; \theta_{t}) p(z_k; \theta_{t}) $$ is simply the probability that $$x$$ originates from component $$k$$ given the current set of parameters $$\theta$$. After normalization, these form the $$K$$-dimensional vector of probabilities $$p(z \mid x; \theta_{t})$$.
 
 Recall that in the original model, $$z$$ is an indicator variable that chooses a component for $$x$$; we may view this as a "hard" assignment of $$x$$ to one component. The result of the $$E$$ step is a $$K$$-dimensional vector (whose components sum to one) that specifies a "soft" assignment to components. In that sense, we have "hallucinated" a "soft" instantiation of $$z$$; this is what we meant earlier by an "intuitive interpretation" for $$p(z\mid x; \theta_{t})$$.
 
@@ -127,26 +127,26 @@ At the M-step, we optimize the expected log-likelihood of our model.
 
 We can optimize each of these terms separately. We will start with $$p(x\mid z_k; \theta) = \mathcal{N}(x; \mu_k, \Sigma_k)$$. We have to find $$\mu_k, \Sigma_k$$ that maximize
 {%math%}
-\frac{1}{|D|}\sum_{x \in D} p(z_k|x; \theta_{t}) \log p(x|z_k; \theta)
-= c \cdot \mathbb{E}_{x \sim Q(x)} \log p(x|z_k; \theta),
+\sum_{x \in D} p(z_k|x; \theta_{t}) \log p(x|z_k; \theta_t)
+= c_k \cdot \mathbb{E}_{x \sim Q_k(x)} \log p(x|z_k; \theta_t),
 {%endmath%}
-where $$c = \sum_{k=1}^K p(z_k|x; \theta_t)$$ is a constant that does not depend on $$\theta$$ and $$Q(x)$$ is a probability distribution defined over $$D$$ as
+where $$c_k = \sum_{x \in D} p(z_k|x; \theta_t)$$ is a constant that does not depend on $$\theta$$ and $$Q_k(x)$$ is a probability distribution defined over $$D$$ as
 {%math%}
-Q(x) = \frac{1}{|D|} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)}.
+Q_k(x) = \frac{p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)}.
 {%endmath%}
-Now we know that $$\mathbb{E}_{x \sim Q(x)} \log p(x|z_k; \theta)$$ is optimized when $$\log p(x|z_k; \theta)$$ equals $$Q(x)$$ (as discussed in the section on learning directed models, this objective equals the KL divergence between Q and P, plus a constant).
-Moreover, since $$p(x\mid z_k; \theta) = \mathcal{N}(x; \mu_k, \Sigma_k)$$ is in the exponential family, it is entirely described by its sufficient statistics (recall our discussion of exponential families in the section on learning undirected models). Thus, we may set the mean and variance $$\mu_k, \Sigma_k$$ to those of $$Q(x)$$, which are
+Now we know that $$\mathbb{E}_{x \sim Q_k(x)} \log p(x|z_k; \theta_t)$$ is optimized when $$\log p(x|z_k; \theta_t)$$ equals $$Q_k(x)$$ (as discussed in the section on learning directed models, this objective equals the KL divergence between Q_k and P, plus a constant).
+Moreover, since $$p(x\mid z_k; \theta_t) = \mathcal{N}(x; \mu_k, \Sigma_k)$$ is in the exponential family, it is entirely described by its sufficient statistics (recall our discussion of exponential families in the section on learning undirected models). Thus, we may set the mean and variance $$\mu_k, \Sigma_k$$ to those of $$Q_k(x)$$, which are
 {%math%}
-\mu_Q = \frac{1}{|D|} \sum_{x \in D} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)} x
+\mu_k = \mu_{Q_k} = \frac{\sum_{x \in D} p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} x
 {%endmath%}
 and
 {%math%}
-\Sigma_Q = \frac{1}{|D|} \sum_{x \in D} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)} (x-\mu_Q) (x-\mu_Q)^T.
+\Sigma_k = \Sigma_{Q_k} = \frac{\sum_{x \in D}  p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} (x-\mu_{Q_k}) (x-\mu_{Q_k})^T.
 {%endmath%}
 
 Note how these are the just the mean and variance of the data, weighted by their cluster affinities! Similarly, we may find out that the class priors are
 {%math%}
-\pi_k = \frac{1}{|D|} \sum_{x \in D} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)}.
+\pi_k = \frac{1}{|D|}\sum_{x \in D} p(z_k|x; \theta_t).
 {%endmath%}
 
 Although we have derived these results using general facts about exponential families, it's equally possible to derive them using standard calculus techniques.

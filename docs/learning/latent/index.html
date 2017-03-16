@@ -191,7 +191,7 @@ p(z \mid x; \theta_{t}) = \frac{p(z, x; \theta_{t})}{p(x; \theta_{t})} = \frac{p
 
 <p>Note that each <script type="math/tex">p(x \mid z_k; \theta_{t}) p(z_k; \theta_{t})</script> is simply the probability that <script type="math/tex">x</script> originates from component <script type="math/tex">k</script> given the current set of parameters <script type="math/tex">\theta</script>. After normalization, these form the <script type="math/tex">K</script>-dimensional vector of probabilities <script type="math/tex">p(z \mid x; \theta_{t})</script>.</p>
 
-<p>Recall that in the original model, <script type="math/tex">z</script> is an indicator variable that chooses a component for <script type="math/tex">x</script>; we may view this as a “hard” assignment of <script type="math/tex">x</script> to one component. The result of the <script type="math/tex">E</script> step is a <script type="math/tex">K</script>-dimensional vector (whose components sum to one) that specifies a “soft” assignment to components. In that sense, we have “hallucinated” a “soft” instantiation of <script type="math/tex">z</script>; this is what we meant earlier by an “intuitive interpretation” for <script type="math/tex">p(z\mid x)</script>.</p>
+<p>Recall that in the original model, <script type="math/tex">z</script> is an indicator variable that chooses a component for <script type="math/tex">x</script>; we may view this as a “hard” assignment of <script type="math/tex">x</script> to one component. The result of the <script type="math/tex">E</script> step is a <script type="math/tex">K</script>-dimensional vector (whose components sum to one) that specifies a “soft” assignment to components. In that sense, we have “hallucinated” a “soft” instantiation of <script type="math/tex">z</script>; this is what we meant earlier by an “intuitive interpretation” for <script type="math/tex">p(z\mid x; \theta_{t})</script>.</p>
 
 <p>At the M-step, we optimize the expected log-likelihood of our model.</p>
 <div class="mathblock"><script type="math/tex; mode=display">
@@ -204,26 +204,26 @@ p(z \mid x; \theta_{t}) = \frac{p(z, x; \theta_{t})}{p(x; \theta_{t})} = \frac{p
 
 <p>We can optimize each of these terms separately. We will start with <script type="math/tex">p(x\mid z_k; \theta) = \mathcal{N}(x; \mu_k, \Sigma_k)</script>. We have to find <script type="math/tex">\mu_k, \Sigma_k</script> that maximize</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\frac{1}{|D|}\sum_{x \in D} p(z_k|x; \theta_{t}) \log p(x|z_k; \theta)
-= c \cdot \mathbb{E}_{x \sim Q(x)} \log p(x|z_k; \theta),
+\sum_{x \in D} p(z_k|x; \theta_{t}) \log p(x|z_k; \theta_t)
+= c_k \cdot \mathbb{E}_{x \sim Q_k(x)} \log p(x|z_k; \theta_t),
 </script></div>
-<p>where <script type="math/tex">c = \sum_{k=1}^K p(z_k|x; \theta_t)</script> is a constant that does not depend on <script type="math/tex">\theta</script> and <script type="math/tex">Q(x)</script> is a probability distribution defined over <script type="math/tex">D</script> as</p>
+<p>where <script type="math/tex">c_k = \sum_{x \in D} p(z_k|x; \theta_t)</script> is a constant that does not depend on <script type="math/tex">\theta</script> and <script type="math/tex">Q_k(x)</script> is a probability distribution defined over <script type="math/tex">D</script> as</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-Q(x) = \frac{1}{|D|} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)}.
+Q_k(x) = \frac{p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)}.
 </script></div>
-<p>Now we know that <script type="math/tex">\mathbb{E}_{x \sim Q(x)} \log p(x|z_k; \theta)</script> is optimized when <script type="math/tex">\log p(x|z_k; \theta)</script> equals <script type="math/tex">Q(x)</script> (as discussed in the section on learning directed models, this objective equals the KL divergence between Q and P, plus a constant).
-Moreover, since <script type="math/tex">p(x\mid z_k; \theta) = \mathcal{N}(x; \mu_k, \Sigma_k)</script> is in the exponential family, it is entirely described by its sufficient statistics (recall our discussion of exponential families in the section on learning undirected models). Thus, we may set the mean and variance <script type="math/tex">\mu_k, \Sigma_k</script> to those of <script type="math/tex">Q(x)</script>, which are</p>
+<p>Now we know that <script type="math/tex">\mathbb{E}_{x \sim Q_k(x)} \log p(x|z_k; \theta_t)</script> is optimized when <script type="math/tex">\log p(x|z_k; \theta_t)</script> equals <script type="math/tex">Q_k(x)</script> (as discussed in the section on learning directed models, this objective equals the KL divergence between Q_k and P, plus a constant).
+Moreover, since <script type="math/tex">p(x\mid z_k; \theta_t) = \mathcal{N}(x; \mu_k, \Sigma_k)</script> is in the exponential family, it is entirely described by its sufficient statistics (recall our discussion of exponential families in the section on learning undirected models). Thus, we may set the mean and variance <script type="math/tex">\mu_k, \Sigma_k</script> to those of <script type="math/tex">Q_k(x)</script>, which are</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\mu_Q = \frac{1}{|D|} \sum_{x \in D} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)} x
+\mu_k = \mu_{Q_k} = \frac{\sum_{x \in D} p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} x
 </script></div>
 <p>and</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\Sigma_Q = \frac{1}{|D|} \sum_{x \in D} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)} x x^T.
+\Sigma_k = \Sigma_{Q_k} = \frac{\sum_{x \in D}  p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} (x-\mu_{Q_k}) (x-\mu_{Q_k})^T.
 </script></div>
 
 <p>Note how these are the just the mean and variance of the data, weighted by their cluster affinities! Similarly, we may find out that the class priors are</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\pi_k = \frac{1}{|D|} \sum_{x \in D} \frac{p(z_k|x; \theta_t)}{\sum_{k=1}^K p(z_k|x; \theta_t)}.
+\pi_k = \frac{1}{|D|}\sum_{x \in D} p(z_k|x; \theta_t).
 </script></div>
 
 <p>Although we have derived these results using general facts about exponential families, it’s equally possible to derive them using standard calculus techniques.</p>
