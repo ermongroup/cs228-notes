@@ -179,7 +179,7 @@ p(x) = \sum_z p(x|z) p(z)
   <li><em>M-Step</em>: Compute new weights via</li>
 </ul>
 <div class="mathblock"><script type="math/tex; mode=display">
-\theta_{t+1} = \arg \max_{\theta} \frac{1}{|D|} \sum_{x \in D} \mathbb{E}_{z \sim p(z|x; \theta_{t})} \log p(x,z; \theta).
+\theta_{t+1} = \arg \max_{\theta} \sum_{x \in D} \mathbb{E}_{z \sim p(z|x; \theta_{t})} \log p(x,z; \theta).
 </script></div>
 
 <h3 id="example-gaussian-mixture-models-1">Example: Gaussian mixture models</h3>
@@ -211,7 +211,7 @@ p(z \mid x; \theta_{t}) = \frac{p(z, x; \theta_{t})}{p(x; \theta_{t})} = \frac{p
 <div class="mathblock"><script type="math/tex; mode=display">
 Q_k(x) = \frac{p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)}.
 </script></div>
-<p>Now we know that <script type="math/tex">\mathbb{E}_{x \sim Q_k(x)} \log p(x|z_k; \theta)</script> is optimized when <script type="math/tex">\log p(x|z_k; \theta)</script> equals <script type="math/tex">Q_k(x)</script> (as discussed in the section on learning directed models, this objective equals the KL divergence between <script type="math/tex">Q_k</script> and <script type="math/tex">P</script>, plus a constant).
+<p>Now we know that <script type="math/tex">\mathbb{E}_{x \sim Q_k(x)} \log p(x|z_k; \theta)</script> is optimized when <script type="math/tex">p(x|z_k; \theta)</script> equals <script type="math/tex">Q_k(x)</script> (as discussed in the section on learning directed models, this objective equals the KL divergence between <script type="math/tex">Q_k</script> and <script type="math/tex">P</script>, plus a constant).
 Moreover, since <script type="math/tex">p(x\mid z_k; \theta) = \mathcal{N}(x; \mu_k, \Sigma_k)</script> is in the exponential family, it is entirely described by its sufficient statistics (recall our discussion of exponential families in the section on learning undirected models). Thus, we may set the mean and variance <script type="math/tex">\mu_k, \Sigma_k</script> to those of <script type="math/tex">Q_k(x)</script>, which are</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \mu_k = \mu_{Q_k} = \sum_{x \in D} \frac{ p(z_k|x; \theta_t)}{\sum_{x \in D} p(z_k|x; \theta_t)} x
