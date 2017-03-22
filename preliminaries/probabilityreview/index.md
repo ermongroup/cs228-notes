@@ -84,7 +84,7 @@ to directly specify the probability of each value that the random variable can a
 a probability mass function (PMF) is a function $$pX : \Omega \rightarrow I\!R$$ such that 
 $$p_X(x) = P(X = x)$$.
 
-In the case of discrete random variable, we use the notation V al(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.
+In the case of discrete random variable, we use the notation Val(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.
 
 ### **Properties**:
 - $$0 \leq p_X(x) \leq 1$$.
