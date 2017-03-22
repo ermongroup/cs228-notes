@@ -15,7 +15,7 @@ The score-based approach first defines a criterion by which we could evaluate ho
 The score metrics for a structure $$\mathcal{G}$$ and data $$D$$ can be generally defined as: 
 $$Score(G:D)= LL(G:D) - \phi(|D|) \|G\|.$$ 
 
-Here $$LL(G:D)$$ refers to the log-likelihood of the data under the graph structure $$\mathcal{G}.$$  The parameters in Bayesian network $$G$$ are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with a overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function. $$|D|$$ is the number of sample and $$\|G\|$$ is the number of parameters in the graph 
+Here $$LL(G:D)$$ refers to the log-likelihood of the data under the graph structure $$\mathcal{G}.$$  The parameters in Bayesian network $$G$$ are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with an overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function. $$|D|$$ is the number of sample and $$\|G\|$$ is the number of parameters in the graph 
 $$ \mathcal{G}.$$ With this extra term, we will penalize the over-complicated graph structure and avoid overfitting.  For AIC the function $$\phi(t) = 1, $$ while for BIC $$\phi(t) =  \log(t)/2.$$
 
 There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first define the probability of data $$D$$ conditional on the graph structure $$\mathcal{G}$$ as 
@@ -57,7 +57,7 @@ The constraint-based case employs the independence test to identify a set of edg
 
 ### Recent Advances
 
-In this section, we will briefly introduce two recent algorithm for graph search: order-search (OS) approach and integer linear programming (ILP) approach.
+In this section, we will briefly introduce two recent algorithms for graph search: order-search (OS) approach and integer linear programming (ILP) approach.
 
 The OS approach, as the name refers, conducts a search over the topological orders and the search over graph space at the same time. The K3 algorithm assumes a topological order in advance and do the search only over the graphs that obey the topological order. When the order specified is a poor one, it may end with a bad graph structure (with a low graph score). The OS algorithm resolves this problem by doing search over orders at the same time. It shifts two adjacent variable in an order at each step and employs the K3 algorithm as a sub-routine. 
 
