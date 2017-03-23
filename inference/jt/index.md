@@ -25,7 +25,7 @@ In a sense, when $$x_k$$ is marginalized out, it receives all the signal from va
 
 At the end of the VE run, $$x_i$$ receives messages from all of its immediate children, marginalizes them out, and we obtain the final marginal.
 
-Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all messages from its children. The key insight here is that the messages $$x_k$$ will receives from $$x_j$$ will be the same as when $$x_i$$ was the root{% sidenote 1 'Another reason why this is true is because there is only a single path connecting two nodes in the tree.'%}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
+Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all messages from its children. The key insight here is that the messages $$x_k$$ will receive from $$x_j$$ will be the same as when $$x_i$$ was the root{% sidenote 1 'Another reason why this is true is because there is only a single path connecting two nodes in the tree.'%}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
 
 ### A message-passing algorithm
 
@@ -171,7 +171,7 @@ First, we pick a set of variables $$x_{-k}$$ in a leaf $$c^{(j)}$$ of $$T$$ that
 
 Then we marginalize out $$x_{-k}$$ to obtain a factor $$m_{j \to k}(S_{ij})$$. We multiply $$m_{j \to k}(S_{ij})$$ with $$\psi(x_c^{(k)})$$ to obtain a new factor $$\tau(x_c^{(k)})$$. Doing so, we have effectively eliminated the factor $$\psi(x_c^{(j)})$$ and the unique variables it contained. In the running example, we may sum out $$f$$ and the resulting factor over $$(b, e)$$ may be folded into $$(b,c,e)$$. 
 
-Note that the messages computed in this case are exactly the same as those of JT. In particular, when $$c^{(k)}$$ is ready to send its message, it will have been multiplied by $$m_{j\ell \to k}(S_{ij})$$ from all neighbors except its parent, which is exactly how JT sends its message.
+Note that the messages computed in this case are exactly the same as those of JT. In particular, when $$c^{(k)}$$ is ready to send its message, it will have been multiplied by $$m_{\ell \to k}(S_{ij})$$ from all neighbors except its parent, which is exactly how JT sends its message.
 
 Repeating this procedure eventually produces a single factor $$\beta(x_c^{(i)})$$, which is our final belief. Since VE implements the messages of the JT algorithm, $$\beta(x_c^{(i)})$$ will correspond to the JT belief. Assuming we have convinced ourselves in the previous section that VE works, we know that this belief will be valid.
 
