@@ -60,7 +60,7 @@ We refer to this particular choice of independencies as the *Naive Bayes* assump
 P(y,x_1,...,x_n) = p(y) \prod_{i=1}^n p(x_i|y).
 {% endmath %}
 
-Each factor {%m%}p(x_i | y){%em%} can be completely described by a small number of parameters ($$2$$ to be exact). The entire distribution is parametrized by $$O(2n+1)$$ parameters, which we can tractably estimate from data and make predictions.
+Each factor {%m%}p(x_i | y){%em%} can be completely described by a small number of parameters ($$4$$ parameters with $$2$$ degrees of freedom to be exact). The entire distribution is parametrized by $$O(n)$$ parameters, which we can tractably estimate from data and make predictions.
 
 ## Describing probabilities with graphs
 
