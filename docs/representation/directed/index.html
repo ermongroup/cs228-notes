@@ -115,7 +115,7 @@ p(x_i \mid  x_{i-1}...x_1) = p(x_i \mid  x_{A_i}).
 
 <p>As an example, consider a model of a student’s grade <script type="math/tex">g</script> on an exam; this grade depends on several factors: the exam’s difficulty <script type="math/tex">d</script>, the student’s intelligence <script type="math/tex">i</script>, his SAT score <script type="math/tex">s</script>; it also affects the quality <script type="math/tex">l</script> of the reference letter from the professor who taught the course. Each variable is binary, except for <script type="math/tex">g</script>, which takes 3 possible values.<label for="nb1" class="margin-toggle">⊕</label><input type="checkbox" id="nb1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/grade-model.png" /><br />Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.</span> The joint probability distribution over the 5 variables naturally factorizes as follows:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
+p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid i).
 </script></div>
 <p>The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student’s intelligence and the difficulty of the exam.</p>
 
