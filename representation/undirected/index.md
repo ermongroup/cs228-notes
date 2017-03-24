@@ -74,7 +74,7 @@ They also possess several important drawbacks:
 It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique potential (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called *moralization*.
 {% maincolumn 'assets/img/moralization.png' 'A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.' %}
 
-Thus MRFs have more power than Bayesian networks, but are more difficult to deal with computationally. A general rule of thumb is to use Bayesian networks whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).
+Thus, MRFs have more power than Bayesian networks, but are more difficult to deal with computationally. A general rule of thumb is to use Bayesian networks whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).
 
 ## Independencies in Markov Random Fields
 
@@ -91,7 +91,7 @@ Formally, we define the *Markov blanket* $$U$$ of a variable $$X$$ as the minima
 
 In the directed case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$G$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
 
-{% maincolumn 'assets/img/mrf-bn-comparison.png' 'Examples of probability distributions that have a perfect directed graphical representation but no indirected representation, and vice-versa.' %}
+{% maincolumn 'assets/img/mrf-bn-comparison.png' 'Examples of probability distributions that have a perfect directed graphical representation but no undirected representation, and vice-versa.' %}
 
 
 ## Conditional Random Fields
