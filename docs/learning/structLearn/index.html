@@ -90,7 +90,7 @@
 <p>The score metrics for a structure <script type="math/tex">\mathcal{G}</script> and data <script type="math/tex">D</script> can be generally defined as: 
 <script type="math/tex">Score(G:D)= LL(G:D) - \phi(|D|) \|G\|.</script></p>
 
-<p>Here <script type="math/tex">LL(G:D)</script> refers to the log-likelihood of the data under the graph structure <script type="math/tex">\mathcal{G}.</script>  The parameters in Bayesian network <script type="math/tex">G</script> are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with a overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function. <script type="math/tex">|D|</script> is the number of sample and <script type="math/tex">\|G\|</script> is the number of parameters in the graph 
+<p>Here <script type="math/tex">LL(G:D)</script> refers to the log-likelihood of the data under the graph structure <script type="math/tex">\mathcal{G}.</script>  The parameters in Bayesian network <script type="math/tex">G</script> are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with an overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function. <script type="math/tex">|D|</script> is the number of sample and <script type="math/tex">\|G\|</script> is the number of parameters in the graph 
 <script type="math/tex">\mathcal{G}.</script> With this extra term, we will penalize the over-complicated graph structure and avoid overfitting.  For AIC the function <script type="math/tex">\phi(t) = 1,</script> while for BIC <script type="math/tex">\phi(t) =  \log(t)/2.</script></p>
 
 <p>There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first define the probability of data <script type="math/tex">D</script> conditional on the graph structure <script type="math/tex">\mathcal{G}</script> as</p>
@@ -131,7 +131,7 @@ P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N
 
 <h3 id="recent-advances">Recent Advances</h3>
 
-<p>In this section, we will briefly introduce two recent algorithm for graph search: order-search (OS) approach and integer linear programming (ILP) approach.</p>
+<p>In this section, we will briefly introduce two recent algorithms for graph search: order-search (OS) approach and integer linear programming (ILP) approach.</p>
 
 <p>The OS approach, as the name refers, conducts a search over the topological orders and the search over graph space at the same time. The K3 algorithm assumes a topological order in advance and do the search only over the graphs that obey the topological order. When the order specified is a poor one, it may end with a bad graph structure (with a low graph score). The OS algorithm resolves this problem by doing search over orders at the same time. It shifts two adjacent variable in an order at each step and employs the K3 algorithm as a sub-routine.</p>
 
