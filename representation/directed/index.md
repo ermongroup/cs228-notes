@@ -74,7 +74,7 @@ Let us use the notation $$I(p)$$ to denote the set of all conditional independen
 
 ### Independencies described by directed graphs
 
-It turns our that a Bayesian network $$p$$ very elegantly describes many independencies in $$I(p)$$; these independencies can be recovered from the graph by looking at three types of structures.
+It turns out that a Bayesian network $$p$$ very elegantly describes many independencies in $$I(p)$$; these independencies can be recovered from the graph by looking at three types of structures.
 
 For simplicity, let's start by looking at a Bayes net $$G$$ with three nodes: $$A$$, $$B$$, and $$C$$. In this case, $$G$$ essentially has only three possible structures, each of which leads to different independence assumptions. The interested reader can easily prove these results using a bit of algebra.
 
@@ -91,7 +91,7 @@ We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed i
 - $$X \leftarrow Y \leftarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
 - $$X \rightarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
 - $$X \leftarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
-- $$X \rightarrow Y \leftarrow Z$$, and $$Y$$ or any of its descendents are observed.
+- $$X \rightarrow Y \leftarrow Z$$, and $$Y$$ or any of its descendants are observed.
 {% marginfigure 'dp2' 'assets/img/dsep2.png' 'In this example, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$.' %}{% marginfigure 'dp1' 'assets/img/dsep1.png' 'However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$. There is an active pass which passed through the V-structure created when $$X_6$$ is observed.' %}
 
 For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
