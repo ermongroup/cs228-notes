@@ -5,7 +5,7 @@ title: The variational auto-encoder
 
 In this chapter, we are going to use various ideas that we have learned in the class in order to present a very influential recent probabilistic model called the *variational autoencoder*.
 
-Variational autoencoders (VAEs) are a deep learning technique for learning latent representations. They have also been used to [draw images](https://arxiv.org/pdf/1502.04623.pdf), achieve state-of-the-art results in [semi-supervised learning](https://arxiv.org/pdf/1602.05473.pdf), as well as to [interpolate between sentences](https://arxiv.org/abs/1511.06349).
+Variational autoencoders (VAEs) are a deep learning technique for learning latent representations. They have also been used to [draw images](https://arxiv.org/pdf/1502.04623.pdf), achieve state-of-the-art results in [semi-supervised learning](https://arxiv.org/pdf/1602.05473.pdf), as well as [interpolate between sentences](https://arxiv.org/abs/1511.06349).
 
 There are many online tutorials on VAEs. 
 Our presentation will probably be a bit more technical than the average, since our goal will be to highlight connections to ideas seen in class, as well as to show how these ideas are useful in machine learning research.
@@ -16,10 +16,10 @@ Consider a [directed](../../representation/directed) [latent-variable](../../lea
 {%math%}
 p(x,z) = p(x|z)p(z)
 {%endmath%}
-with observed $$x \in \mathcal{X}$$, where $$\mathcal{X}$$ can be either continuous or discrete, as well as latent $$z \in \mathbb{R}^k$$. 
+with observed $$x \in \mathcal{X}$$, where $$\mathcal{X}$$ can be continuous, discrete, or latent $$z \in \mathbb{R}^k$$. 
 
 {% marginfigure 'dp1' 'assets/img/faces.png' 'Variational autoencoder $$p(x|z)p(z)$$ applied to a face images (modeled by $$x$$). The learned latent space $$z$$ can be used to interpolate between facial expressions.'%}
-To make things concrete, you may think of $$x$$ as being an image (e.g. a human face), and $$z$$ as being latent factors (not seen during training) that explain features of the face. For example, one coordinate of $$z$$ can encode whether the face is happy or sad, another one whether the face is male or female, etc.
+To make things concrete, you may think of $$x$$ as being an image (e.g. a human face), and $$z$$ as latent factors (not seen during training) that explain features of the face. For example, one coordinate of $$z$$ can encode whether the face is happy or sad, another one whether the face is male or female, etc.
 
 We may also be interested in models with many layers, e.g. $$p(x \mid z_1)p(z_2 \mid z_3)\cdots p(z_{m-1}\mid z_m)p(z_m)$$. These are often called *deep generative models* and can learn hierarchies of latent representations.
 In this chapter, we will assume for simplicity that there is only one latent layer.
