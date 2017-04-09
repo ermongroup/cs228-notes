@@ -22,7 +22,7 @@ y = \beta^T x,
 
 where $$y$$ is an outcome variable that we want to predict, and $$x$$ are known (given) variables that affect the outcome. For example, $$y$$ may be the price of a house, and $$x$$ are a series of factors that affect this price, e.g. the location, the number of bedrooms, the age of the house, etc. We assume that $$y$$ is a linear function of this input (parameterized by $$\beta$$).
 
-Often, the real world that we are trying to model is very complicated; in particular, it often involves a significant amount of *uncertainty* (e.g., the price of a house has a certain chance of going up if a new subway station opens within a certain distance). It is therefore very natural to deal with this uncertainty by modeling the world in the form a probability distribution{% sidenote 2 'For a more philosophical discussion of why one should use probability theory as opposed to something else, see the [Dutch book argument](http://plato.stanford.edu/entries/dutch-book/) for probabilism.'%}
+Often, the real world that we are trying to model is very complicated; in particular, it often involves a significant amount of *uncertainty* (e.g., the price of a house has a certain chance of going up if a new subway station opens within a certain distance). It is therefore very natural to deal with this uncertainty by modeling the world in the form of a probability distribution{% sidenote 2 'For a more philosophical discussion of why one should use probability theory as opposed to something else, see the [Dutch book argument](http://plato.stanford.edu/entries/dutch-book/) for probabilism.'%}
 
 {% math %}
 p(x,y). 
