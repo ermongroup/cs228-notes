@@ -3,7 +3,7 @@ layout: post
 title: Contents
 ---
 {% newthought 'These notes'%} form a concise introductory course on probabilistic graphical models{% sidenote 1 'Probabilistic graphical models are a subfield of machine learning that studies how to describe and reason about the world in terms of probabilities.'%}.
-They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and have been written by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov), with the [help](https://github.com/ermongroup/cs228-notes/commits/master) of many students and course staff.
+They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and are written by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov), with the [help](https://github.com/ermongroup/cs228-notes/commits/master) of many students and course staff.
 {% marginnote 'mn-id-whatever' 'The notes are still **under construction**!
 Although we have written up most of the material, you will probably find several typos. If you do, please let us know, or submit a pull request with your fixes to our [Github repository](https://github.com/ermongroup/cs228-notes).'%}
 You too may help make these notes better by submitting your improvements to us via [Github](https://github.com/ermongroup/cs228-notes).
@@ -14,9 +14,9 @@ This course starts by introducing probabilistic graphical models from the very b
 
 1. [Introduction](preliminaries/introduction/) What is probabilistic graphical modeling? Overview of the course.
 
-2. [Review of probability theory](preliminaries/probabilityreview): Probability distributions. Conditional probability. Random variables.
+2. [Review of probability theory](preliminaries/probabilityreview): Probability distributions. Conditional probability. Random variables (*under construction*).
 
-3. [Examples of real-world applications](preliminaries/applications): Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recognition.
+3. [Examples of real-world applications](preliminaries/applications): Image denoising. RNA structure prediction. Syntactic analysis of sentences. Optical character recognition (*under construction*).
 
 ## Representation
 
@@ -44,9 +44,9 @@ This course starts by introducing probabilistic graphical models from the very b
 
 3. [Learning in latent variable models](learning/latent/): Latent variable models. Gaussian mixture models. Expectation maximization.
 
-4. [Bayesian learning](learning/bayesianlearning/): Bayesian paradigm. Conjugate priors. Examples.
+4. [Bayesian learning](learning/bayesianlearning/): Bayesian paradigm. Conjugate priors. Examples (*under construction*).
 
-5. [Structure learning](learning/structLearn/): Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning.
+5. [Structure learning](learning/structLearn/): Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning (*under construction*).
 
 ## Bringing it all together
 
