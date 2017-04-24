@@ -16,7 +16,7 @@ We will introduce two variants of this algorithm: belief propagation, and then t
 
 ### Variable elimination as message passing
 
-First, consider what happens if we run the VE algorithm on a tree in order to compute a marginal $$p(x_i)$$. We can easily find an optimal ordering for this problem by rooting the tree at $$x_i$$ and iterating through the nodes in post-order{% sidenote 1 'A postorder traversal of a rooted tree is one that starts from the leaves and goes up the tree such that a node if always visited after all of its children. The root is visited last.'%}.
+First, consider what happens if we run the VE algorithm on a tree in order to compute a marginal $$p(x_i)$$. We can easily find an optimal ordering for this problem by rooting the tree at $$x_i$$ and iterating through the nodes in post-order{% sidenote 1 'A postorder traversal of a rooted tree is one that starts from the leaves and goes up the tree such that a node is always visited after all of its children. The root is visited last.'%}.
 
 This ordering is optimal because the largest clique that formed during VE will be of size 2. At each step, we will eliminate $$x_j$$; this will involve computing the factor $$\tau_k(x_k) = \sum_{x_j} \phi(x_k, x_j) \tau_j(x_j)$$, where $$x_k$$ is the parent of $$x_j$$ in the tree. At a later step, $$x_k$$ will be eliminated, and $$\tau_k(x_k)$$ will be passed up the tree to the parent $$x_l$$ of $$x_k$$ in order to be multiplied by the factor $$\phi(x_l, x_k)$$ before being marginalized out. We can visualize this transfer of information using arrows on a tree.
 {% marginfigure 'mp1' 'assets/img/mp1.png' 'Message passing order when using VE to compute $$p(x_3)$$ on a small tree.'%}
