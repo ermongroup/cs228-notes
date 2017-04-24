@@ -79,7 +79,7 @@
 
 <p>In this chapter, we are going to use various ideas that we have learned in the class in order to present a very influential recent probabilistic model called the <em>variational autoencoder</em>.</p>
 
-<p>Variational autoencoders (VAEs) are a deep learning technique for learning latent representations. They have also been used to <a href="https://arxiv.org/pdf/1502.04623.pdf">draw images</a>, achieve state-of-the-art results in <a href="https://arxiv.org/pdf/1602.05473.pdf">semi-supervised learning</a>, as well as to <a href="https://arxiv.org/abs/1511.06349">interpolate between sentences</a>.</p>
+<p>Variational autoencoders (VAEs) are a deep learning technique for learning latent representations. They have also been used to <a href="https://arxiv.org/pdf/1502.04623.pdf">draw images</a>, achieve state-of-the-art results in <a href="https://arxiv.org/pdf/1602.05473.pdf">semi-supervised learning</a>, as well as <a href="https://arxiv.org/abs/1511.06349">interpolate between sentences</a>.</p>
 
 <p>There are many online tutorials on VAEs. 
 Our presentation will probably be a bit more technical than the average, since our goal will be to highlight connections to ideas seen in class, as well as to show how these ideas are useful in machine learning research.</p>
@@ -90,10 +90,10 @@ Our presentation will probably be a bit more technical than the average, since o
 <div class="mathblock"><script type="math/tex; mode=display">
 p(x,z) = p(x|z)p(z)
 </script></div>
-<p>with observed <script type="math/tex">x \in \mathcal{X}</script>, where <script type="math/tex">\mathcal{X}</script> can be either continuous or discrete, as well as latent <script type="math/tex">z \in \mathbb{R}^k</script>.</p>
+<p>with observed <script type="math/tex">x \in \mathcal{X}</script>, where <script type="math/tex">\mathcal{X}</script> can be continuous, discrete, or latent <script type="math/tex">z \in \mathbb{R}^k</script>.</p>
 
 <p><label for="dp1" class="margin-toggle">⊕</label><input type="checkbox" id="dp1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/faces.png" /><br />Variational autoencoder <script type="math/tex">p(x|z)p(z)</script> applied to a face images (modeled by <script type="math/tex">x</script>). The learned latent space <script type="math/tex">z</script> can be used to interpolate between facial expressions.</span>
-To make things concrete, you may think of <script type="math/tex">x</script> as being an image (e.g. a human face), and <script type="math/tex">z</script> as being latent factors (not seen during training) that explain features of the face. For example, one coordinate of <script type="math/tex">z</script> can encode whether the face is happy or sad, another one whether the face is male or female, etc.</p>
+To make things concrete, you may think of <script type="math/tex">x</script> as being an image (e.g. a human face), and <script type="math/tex">z</script> as latent factors (not seen during training) that explain features of the face. For example, one coordinate of <script type="math/tex">z</script> can encode whether the face is happy or sad, another one whether the face is male or female, etc.</p>
 
 <p>We may also be interested in models with many layers, e.g. <script type="math/tex">p(x \mid z_1)p(z_2 \mid z_3)\cdots p(z_{m-1}\mid z_m)p(z_m)</script>. These are often called <em>deep generative models</em> and can learn hierarchies of latent representations.
 In this chapter, we will assume for simplicity that there is only one latent layer.</p>

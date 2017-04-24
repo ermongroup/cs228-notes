@@ -83,7 +83,7 @@
 
 <h3 id="score-based-approach">Score-based approach</h3>
 
-<p>The score-based approach first defines a criterion by which we could evaluate how well the Bayesian network fits the data, then search over the space of DAGs for a structure with maximal score. In this way, the score-based approach is essentially a search problem and consists of two parts: the definition of score metric and the search algorithm.</p>
+<p>The score-based approach first defines a criterion to evaluate how well the Bayesian network fits the data, then searches over the space of DAGs for a structure with maximal score. In this way, the score-based approach is essentially a search problem and consists of two parts: the definition of score metric and the search algorithm.</p>
 
 <h3 id="score-metrics">Score metrics</h3>
 
@@ -91,15 +91,22 @@
 <script type="math/tex">Score(G:D)= LL(G:D) - \phi(|D|) \|G\|.</script></p>
 
 <p>Here <script type="math/tex">LL(G:D)</script> refers to the log-likelihood of the data under the graph structure <script type="math/tex">\mathcal{G}.</script>  The parameters in Bayesian network <script type="math/tex">G</script> are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If we consider only the log-likelihood in the score function, we will end up with an overfitting structure (namely, a complete graph.) That is why we have the second term in the scoring function. <script type="math/tex">|D|</script> is the number of sample and <script type="math/tex">\|G\|</script> is the number of parameters in the graph 
-<script type="math/tex">\mathcal{G}.</script> With this extra term, we will penalize the over-complicated graph structure and avoid overfitting.  For AIC the function <script type="math/tex">\phi(t) = 1,</script> while for BIC <script type="math/tex">\phi(t) =  \log(t)/2.</script></p>
+<script type="math/tex">\mathcal{G}.</script> With this extra term, we will penalize the over-complicated graph structure and avoid overfitting.  For AIC the function <script type="math/tex">\phi(t) = 1,</script> while for BIC <script type="math/tex">\phi(t) =  \log(t)/2.</script> It is important to note that in BIC, the influence of model complexity will decrease as M grows, allowing the log-likelihood term to eventually dominate the score.</p>
 
-<p>There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first define the probability of data <script type="math/tex">D</script> conditional on the graph structure <script type="math/tex">\mathcal{G}</script> as</p>
+<p>There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first defines the probability of data <script type="math/tex">D</script> conditional on the graph structure <script type="math/tex">\mathcal{G}</script> as</p>
 
 <div class="mathblock"><script type="math/tex; mode=display">
-P(D|\mathcal{G})=\int P(D|\Theta_{\mathcal{G}},\mathcal{G})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},
+P(D|\mathcal{G})=\int P(D|\mathcal{G}, \Theta_{\mathcal{G}})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},
 </script></div>
 
-<p>where <script type="math/tex">P(D\mid \Theta_{\mathcal{G}},\mathcal{G})</script> is the probability of the data given the network structure and parameters, and <script type="math/tex">P(\Theta_{\mathcal{G}}\mid \mathcal{G})</script> is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,</p>
+<table>
+  <tbody>
+    <tr>
+      <td>where $$P(D\mid</td>
+      <td>\mathcal{G} \Theta_{\mathcal{G}})<script type="math/tex">is the probability of the data given the network structure and parameters, and</script>P(\Theta_{\mathcal{G}}\mid \mathcal{G})$$ is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,</td>
+    </tr>
+  </tbody>
+</table>
 
 <div class="mathblock"><script type="math/tex; mode=display">
 P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N'_{i,\pi_i,j})}{\Gamma(\sum_j N'_{i,\pi_i,j} + N_{i,\pi_i,j} )} \prod_{j}\frac{\Gamma(N'_{i,\pi_i,j} + N_{i,\pi_i,j})}{\Gamma(N'_{i,\pi_i,j})}\right].
@@ -127,7 +134,7 @@ P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N
 
 <h3 id="constraint-based-approach">Constraint-based approach</h3>
 
-<p>The constraint-based case employs the independence test to identify a set of edge constraints for the graph and then finds the best DAG that satisfies the constraints. For example, we could distinguish V-structure and fork-structure by doing independence test for the two variables on the sides conditional on the variable in the middle. This approach works well with some other prior (expert) knowledge of structure but requires lots of data samples to guarantee testing power. So it is less reliable when the number of sample is small.</p>
+<p>The constraint-based case employs the independence test to identify a set of edge constraints for the graph and then finds the best DAG that satisfies the constraints. For example, we could distinguish V-structure and fork-structure by doing an independence test for the two variables on the sides conditional on the variable in the middle. This approach works well with some other prior (expert) knowledge of structure but requires lots of data samples to guarantee testing power. So it is less reliable when the number of sample is small.</p>
 
 <h3 id="recent-advances">Recent Advances</h3>
 
