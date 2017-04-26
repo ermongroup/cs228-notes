@@ -63,7 +63,7 @@ The first term is linear in $$\theta$$ and is easy to handle. The second term eq
 {% math %}
 \log Z(\theta) = \log \sum_x \exp(\theta^T f(x)).
 {% endmath %}
-Unlike the first term, this one does not decompose across $$x$$. It is not only hard optimize, but it is hard to even evaluate that term, as we have already seen in previous chapters.
+Unlike the first term, this one does not decompose across $$x$$. It is not only hard to optimize, but it is hard to even evaluate that term, as we have already seen in previous chapters.
 
 Now consider the gradient of the log likelihood. Obtaining the gradient of the linear part is obviously very easy. However, the gradient of $$\log Z(\theta)$$ takes a more complicated form:
 {% math %}
@@ -71,7 +71,7 @@ Now consider the gradient of the log likelihood. Obtaining the gradient of the l
 {% endmath %}
 This expression can be derived using simple algebra.
 
-Computing the expectation on the right hand side of the equation requires inference with respect to $$p$$. For example, we could sample from $$p$$ and construct a Monte-Carlo estimate of the expectation.
+Computing the expectation on the right-hand side of the equation requires inference with respect to $$p$$. For example, we could sample from $$p$$ and construct a Monte-Carlo estimate of the expectation.
 However, as we have seen, inference in general is intractable, and therefore so is computing the gradient.
 
 We can similarly derive an expression for the Hessian of $$\log Z(\theta)$$:

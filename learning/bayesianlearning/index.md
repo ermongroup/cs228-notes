@@ -24,7 +24,11 @@ Consider a language model for sentences based on the bag-of-words assumption. In
 For simplicity, assume that our language corpus consists of a single sentence, "Probabilistic graphical models are fun. They are also powerful.". We can estimate the probability of each of the individual words based on the counts. Our corpus contains 10 words with each word appearing once, and hence, each word in the corpus is assigned a probability of 0.1. Now, while testing the generalization of our model to the English language, we observe another sentence "Probabilistic graphical models are hard.". The probability of the sentence under our model is 
 $$0.1 \times 0.1 \times 0.1 \times 0.1 \times 0 = 0$$. We did not observe one of the words ("hard") during training which made our language model infer the sentence as impossible, even though it is a perfectly plausible sentence.
 
-Out-of-vocabulary words are a common phenomena even for language models trained on large corpus. One of the simplest ways to handle these words is to assign a prior probability of observing an out-of-vocabulary word such that the model will assign a low, but non-zero probability to test sentences containing such words. This mechanism of incorporating prior knowledge is a practical application of Bayesian learning, which we present next.
+Out-of-vocabulary words are a common phenomena even for language models trained on large corpus. Laplace smoothing is an easy way to combat this issue. The formula is as follows:
+
+$$P(hard) = \frac{num\_'hard'\_in\_dataset + 1}{total_num_words_in_dataset +  unique_words}
+
+Although Laplace smoothing does well in eliminating a probability of 0, it does not solve the problem of confidence presented in Example 1. A better method is to assign a prior probability of observing an out-of-vocabulary word such that the model will assign a low, but non-zero probability to test sentences containing such words. This mechanism of incorporating prior knowledge is a practical application of Bayesian learning, which we present next.
 
 ## Setup
 
@@ -65,6 +69,6 @@ $$P(\theta \mid N_{H}, N_{T}) = \frac{\theta^{N_{H}+ \alpha_{H} -1 }(1-\theta)^{
 which is another Beta distribution with parameters $$(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})$$. We can use this posterior distribution as the prior for more samples with the hyperparameters simply adding each extra piece of information as it comes from additional coin tosses. 
 
 
-{% maincolumn 'assets/img/beta.png' 'Here the exponents $$(3,2)$$ and $$(30,20)$$ can both be used to encode the belief that $$\theta$$ is $$0.6$$. But the second set of exponents imply a stronger belief as they are based on a larger sample.' %}
+{% maincolumn 'assets/img/beta.png' 'Here the exponents $$(3,2)$$ and $$(30,20)$$ can both be used to encode the belief that $$\theta$$ is $$0.6$$. But the second set of exponents imply a stronger belief as they are based on a larger sample. This can be graphically observed by the narrower curve of Beta(30,20).' %}
 
 
