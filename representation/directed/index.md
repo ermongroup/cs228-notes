@@ -121,9 +121,11 @@ A related question is whether perfect maps are unique when they exist. Again, th
 
 When are two Bayesian nets I-equivalent? To answer this, let's return to a simple example with three variables. We say that each of the graphs below have the same *skeleton*, meaning that if we drop the directionality of the arrows, we obtain the same undirected graph in each case.
 {% maincolumn 'assets/img/3node-bayesnets.png' 'Bayesian networks over three variables' %}
-The cascade-type structures (a,b) are clearly symmetric and the directionality of arrows does not matter. In fact, (a,b,c) encode exactly the same dependencies. We can change the directions of the arrows as long as we don't turn them into a V-structure (d). When we do have a V-structure, however, we cannot change any arrows: structure (d) is the only one that describes the dependency $$X \not\perp Y \mid Z$$. These examples provide intuitions of the following general results on I-equivalence.
+The cascade-type structures (a,b) are clearly symmetric and the directionality of arrows does not matter. In fact, (a,b,c) encode exactly the same dependencies. We can change the directions of the arrows as long as we don't turn them into a V-structure (d). When we do have a V-structure, however, we cannot change any arrows: structure (d) is the only one that describes the dependency $$X \not\perp Y \mid Z$$. These examples provide the intuition of I-equivalence, but having the same skeleton and same V-structures is not a strong enough definition.
 
 **Fact:**
-If $$G,G'$$ have the same skeleton and the same v-structures, then $$I(G) = I(G').$$
+If $$G,G'$$ have the same skeleton and the same set of immoralities, then $$I(G) = I(G').$$
 
-Again, it is easy to understand intuitively why this is true. Two graphs are I-equivalent if the $$d$$-separation between variables is the same. We can flip the directionality of any edge, unless it forms a v-structure, and the $$d$$-connectivity of the graph will be unchanged. We refer the reader to the textbook of Koller and Friedman for a full proof.
+A V-structure X->Z<-Y is an immorality if there is no direct edge between X and Y. 
+
+It is easy to understand intuitively why these conditions for I-equivalence are true. Two graphs are I-equivalent if the $$d$$-separation between variables is the same. We can flip the directionality of any edge, unless it forms an immorality, and the $$d$$-connectivity of the graph will be unchanged. We refer the reader to the textbook of Koller and Friedman for a full proof.
