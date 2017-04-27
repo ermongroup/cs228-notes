@@ -28,12 +28,36 @@ These three **properties** are called the **Axioms of Probability**.
 - **Law of Total Probability** If $$A_1, . . . , A_k$$ are a set of disjoint events such that $$\bigcup^k_{i=1} A_i = \Omega$$ then $$\sum^k_{i=1} P(A_k) = 1.$$
 
 
-## 1.1 Conditional probability and independence
+## 1.1 Conditional probability
 
 Let B be an event with non-zero probability. The conditional probability of any event A given B is defined as
 $$ P(A \mid B) = \frac {P(A \cap B)}{P(B)}$$
 In other words, $$P(A \mid B)$$ is the probability measure of the event A after observing the occurrence of
-event B. Two events are called independent if and only if $$P(A \cap B) = P(A)P(B)$$ (or equivalently,
+event B. 
+
+## 1.2 Chain Rule
+
+Let $$S_1, \cdots, S_k$$ be events, $$P(S_i) >0$$. Then
+
+\begin{equation}
+P(S_1 \cap S_2 \cap \cdots \cap S_k) = P(S_1) P(S_2 | S_1) P(S_3 | S_2 \cap S_1 ) \cdots  P(S_n | S_1 \cap S_2 \cap \cdots S_{n-1})
+\end{equation}
+
+Note that for $$k=2$$ events, this is just the definition of conditional probability
+
+\begin{equation}
+P(S_1 \cap S_2) = P(S_1) P(S_2 | S_1)
+\end{equation}
+
+In general, it is derived by applying the definition of conditional independence multiple times, as in the following example
+
+\begin{equation}
+P(S_1 \cap S_2 \cap S_3 \cap S_4) =  P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) = P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) = P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
+\end{equation}
+
+## 1.3 Independence
+
+Two events are called independent if and only if $$P(A \cap B) = P(A)P(B)$$ (or equivalently,
 $$P(A \mid B) = P(A)$$). Therefore, independence is equivalent to saying that observing B does not have
 any effect on the probability of A.
 
@@ -303,7 +327,15 @@ f_{Y \mid X}(y \mid x) = \frac{f_{XY} (x, y)}{f_X(x)}
 \end{equation}
 provided $$f_X(x) \neq 0$$.
 
-## 3.5 Bayes’s rule
+## 3.5 Chain rule
+
+The chain rule we derived earlier for events can be applied to random variables as follows:
+
+\begin{equation}
+p_{X_1, \cdots X_n} (x_1, \cdots, x_n) = p_{X_1} (x_1) p_{X_2 \mid X_1} (x_2 \mid x_1) \cdots p_{X_n \mid X_1, \cdots, X_{n-1}} (x_n \mid x_1, \cdots, x_{n-1})
+\end{equation}
+
+## 3.6 Bayes’s rule
 
 A useful formula that often arises when trying to derive expression for the conditional probability of
 one variable given another, is **Bayes’s rule**.
@@ -319,7 +351,7 @@ f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid
 {% endmath %}
 
 
-## 3.6 Independence
+## 3.7 Independence
 Two random variables X and Y are independent if $$F_{XY} (x, y) = F_X(x)F_Y(y)$$ for all values of x and y. Equivalently,
 - For discrete random variables, $$p_{XY} (x, y) = p_X(x)p_Y(y)$$ for all $$x \in Val(X)$$, $$y \in Val(Y)$$.
 - For discrete random variables, $$p_{Y\mid X}(y \mid x) = p_Y(y)$$ whenever $$p_X(x) \neq 0$$ for all $$y \in Val(Y)$$.
@@ -334,7 +366,7 @@ P(X \in A, Y \in B) = P(X \in A)P(Y \in B)
 \end{equation}
 By using the above lemma one can prove that if $$X$$ is independent of $$Y$$ then any function of X is independent of any function of Y.
 
-## 3.7 Expectation and covariance
+## 3.8 Expectation and covariance
 
 Suppose that we have two discrete random variables $$X, Y$$ and $$g : {I\!R}^2 \rightarrow I\!R$$ is a function of these two random variables. Then the expected value of g is defined in the following way, 
 \begin{equation}
