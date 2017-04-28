@@ -62,3 +62,8 @@ In this section, we will briefly introduce two recent algorithms for graph searc
 The OS approach, as the name refers, conducts a search over the topological orders and the search over graph space at the same time. The K3 algorithm assumes a topological order in advance and do the search only over the graphs that obey the topological order. When the order specified is a poor one, it may end with a bad graph structure (with a low graph score). The OS algorithm resolves this problem by doing search over orders at the same time. It shifts two adjacent variable in an order at each step and employs the K3 algorithm as a sub-routine. 
 
 The ILP approach encodes the graph structure, scoring and the acyclic constraints into a linear programming problem. Thus it can utilize the state-of-art integer programming solver. But this approach requires a bound on the maximum number of node parents in the graph (say to be 4 or 5). Otherwise, the number of constraints in the ILP will explode and the computation will be intractable.
+
+
+<br/>
+
+|[Index](../../) | [Previous](../bayesianlearning) |  [Next](../../extras/vae)|

@@ -8,11 +8,11 @@ They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.htm
 Although we have written up most of the material, you will probably find several typos. If you do, please let us know, or submit a pull request with your fixes to our [Github repository](https://github.com/ermongroup/cs228-notes).'%}
 You too may help make these notes better by submitting your improvements to us via [Github](https://github.com/ermongroup/cs228-notes).
 
-This course starts by introducing probabilistic graphical models from the very basics and concludes by explaining from first principles the [variational auto-encoder](), an important probabilistic model that is also one of the most influential recent results in deep learning.
+This course starts by introducing probabilistic graphical models from the very basics and concludes by explaining from first principles the [variational auto-encoder](extras/vae), an important probabilistic model that is also one of the most influential recent results in deep learning.
 
 ## Preliminaries
 
-1. [Introduction](preliminaries/introduction/) What is probabilistic graphical modeling? Overview of the course.
+1. [Introduction](preliminaries/introduction/): What is probabilistic graphical modeling? Overview of the course.
 
 2. [Review of probability theory](preliminaries/probabilityreview): Probability distributions. Conditional probability. Random variables (*under construction*).
 

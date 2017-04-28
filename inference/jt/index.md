@@ -212,3 +212,7 @@ In general, however, it may not converges and its analysis is still an area of a
 
 We will return to this algorithm later in the course and try to explain it as a special case of *variational inference* algorithms.
 
+
+<br/>
+
+|[Index](../../) | [Previous](../ve) |  [Next](../map)|

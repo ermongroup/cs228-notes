@@ -147,3 +147,6 @@ where $$\phi'_i(y_i) = \phi_i(x,y_i)$$. Using global features only changes the v
 
 This observation may be interpreted in a slightly more general form. If we were to model $$p(x,y)$$ using an MRF (viewed as a single model over $$x, y$$ with normalizing constant $$Z = \sum_{x,y} \tp(x,y)$$), then we need to fit two distributions to the data: $$p(y\mid x)$$ and $$p(x)$$. However, if all we are interested in is predicting $$y$$ given $$x$$, then modeling $$p(x)$$ is unnecessary. In fact, it may be disadvantageous to do so statistically (e.g. we may not have enough data to fit both $$p(y\mid x)$$ and $$p(x)$$; since the models have shared parameters, fitting one may result in the best parameters for the other) and it may not be a good idea computationally (we need to make simplifying assumptions in the distribution so that $$p(x)$$ can be handled tractably). CRFs forgo of this assumption, and often perform better on prediction tasks.
 
+<br/>
+
+|[Index](../../) | [Previous](../directed) |  [Next](../../inference/ve)|

@@ -40,3 +40,8 @@ title: Real World Applications
 
 # Error Correcting Codes
 ![codes](Picture1.png)
+
+
+<br/>
+
+|[Index](../../) | [Previous](../probabilityreview/) |  [Next](../../representation/directed/)|

@@ -68,3 +68,6 @@ which is another Beta distribution with parameters $$(N_{H}+ \alpha_{H},N_{T}+ \
 {% maincolumn 'assets/img/beta.png' 'Here the exponents $$(3,2)$$ and $$(30,20)$$ can both be used to encode the belief that $$\theta$$ is $$0.6$$. But the second set of exponents imply a stronger belief as they are based on a larger sample.' %}
 
 
+<br/>
+
+|[Index](../../) | [Previous](../latent) |  [Next](../structLearn)|

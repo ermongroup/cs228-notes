@@ -101,3 +101,8 @@ It turns out that inference is a very challenging task. For many probabilities o
 ### Learning
 
 Our last key task refers to fitting a model to a dataset, which could be for example a large number of labeled examples of spam. By looking at the data, we can infer useful patterns (e.g. which words are found more frequently in spam emails), which we can then use to make predictions about the future. However, we will see that learning and inference are also inherently linked in a more subtle way, since inference will turn out to be a key subroutine that we will repeatedly call within learning algorithms. Also, the topic of learning will feature important connections to the field of computational learning theory --- which deals with questions such as generalization from limited data and overfitting --- as well as to Bayesian statistics --- which tells us (among other things) about how to combine prior knowledge and observed evidence in a principled way.
+
+
+<br/>
+
+|[Index](../../) | [Previous](../../) |  [Next](../probabilityreview)|

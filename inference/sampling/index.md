@@ -224,3 +224,8 @@ This problem will also occur with complicated distributions that have two distin
 Another, perhaps more important problem, is that we may not know when to end the burn-in period, even if it is theoretically not too long. There exist many heuristics to determine whether a Markov chain has *mixed*; however, typically these heuristics involve plotting certain quantities and estimating them by eye; even the quantitative measures are not significantly more reliable than this approach. 
 
 In summary, even though MCMC is able to sample from the right distribution (which in turn can be used to solve any inference problem), doing so may sometimes require a very long time, and there is no easy way to judge the amount of computation that we need to spend to find a good solution.
+
+
+<br/>
+
+|[Index](../../) | [Previous](../map) |  [Next](../variational)|

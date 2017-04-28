@@ -127,3 +127,7 @@ The cascade-type structures (a,b) are clearly symmetric and the directionality o
 If $$G,G'$$ have the same skeleton and the same v-structures, then $$I(G) = I(G').$$
 
 Again, it is easy to understand intuitively why this is true. Two graphs are I-equivalent if the $$d$$-separation between variables is the same. We can flip the directionality of any edge, unless it forms a v-structure, and the $$d$$-connectivity of the graph will be unchanged. We refer the reader to the textbook of Koller and Friedman for a full proof.
+
+<br/>
+
+|[Index](../../) | [Previous](../../preliminaries/applications) |  [Next](../undirected)|

@@ -203,3 +203,8 @@ We may interpret the variational autoencoder as a directed latent-variable proba
 The VAE can be applied to images $$x$$ in order to learn interesting latent representations. The VAE paper contains a few examples on the Frey face dataset on the MNIST digits. On the face dataset, we can interpolate between facial expressions by interpolating between latent variables (e.g. we can generate smooth transitions between "angry" and "surprised"). On the MNIST dataset, we can similarly interpolate between numbers.
 
 The authors also compare their methods against three alternative approaches: the wake-sleep algorithm, Monte-Carlo EM, and hybrid Monte-Carlo. The latter two methods are sampling-based approaches; they are quite accurate, but don't scale well to large datasets. Wake-sleep is a variational inference algorithm that scales much better; however it does not use the exact gradient of the ELBO (it uses an approximation), and hence it is not as accurate as AEVB. The paper illustrates this by plotting learning curves.
+
+
+<br/>
+
+|[Index](../../) | [Previous](../../learning/structLearn) |  [Next]()|

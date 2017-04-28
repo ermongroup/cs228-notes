@@ -181,3 +181,8 @@ However, this by itself is not very useful. Although \mathbb{M} is convex, it is
 We will make this problem feasible by replacing 
 
 -->
+
+
+<br/>
+
+|[Index](../../) | [Previous](../sampling) |  [Next](../../learning/directed)|

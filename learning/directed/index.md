@@ -151,3 +151,8 @@ This is essentially the same as the head/tails example we saw earlier (except wi
 {% endmath %}
 
 We thus conclude that in Bayesian networks with discrete variables, the maximum-likelihood estimate has a closed-form solution. Even when the variables are not discrete, the task is equally simple: the log-factors are linearly separable, hence the log-likelihood reduces to estimating each of them separately. The simplicity of learning is one of the most convenient features of Bayesian networks.
+
+
+<br/>
+
+|[Index](../../) | [Previous](../../inference/variational) |  [Next](../undirected)|

@@ -399,3 +399,7 @@ Here, the key step in showing the equality of the two forms of covariance is in 
 - If $$X$$ and $$Y$$ are independent, then $$Cov[X, Y] = 0$$.
 - If $$X$$ and $$Y$$ are independent, then $$E[f(X)g(Y)] = E[f(X)]E[g(Y)]$$.
 
+
+<br/>
+
+|[Index](../../) | [Previous](../introduction/) |  [Next](../applications/)|

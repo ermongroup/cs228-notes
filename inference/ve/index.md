@@ -145,3 +145,8 @@ Unfortunately, choosing the optimal VE ordering is an NP-hard problem. However, 
 - *Min-fill*: Choose vertices to minimize the size of the factor that will be added to the graph.
 
 In practice, these methods often result in reasonably good performance in many interesting settings.
+
+
+<br/>
+
+|[Index](../../) | [Previous](../../representation/undirected) |  [Next](../jt)|

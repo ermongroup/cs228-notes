@@ -233,3 +233,7 @@ A third approach is to use sampling methods (e.g. Metropolis-Hastings) to sample
 
 The idea of simulated annealing is to run a sampling algorithm starting with a high $$t$$, and gradually decrease it, as the algorithm is being run. If the "cooling rate" is sufficiently slow, we are guaranteed to eventually find the mode of our distribution. In practice, however, choosing the rate requires a lot of tuning. This makes simulated annealing somewhat difficult to use in practice.
 
+
+<br/>
+
+|[Index](../../) | [Previous](../jt) |  [Next](../sampling)|

@@ -187,3 +187,8 @@ This makes learning CRFs more expensive that learning in MRFs. In practice, howe
 To deal with the computational difficulties introduced by the partition function, we may use simpler models in which exact inference is tractable. This was the approach taken in the OCR example introduced in our first discussion of CRFs. More generally, one should try to limit the number of variables or make sure that the model's graph is not too densely connected.
 
 Finally, we would like to add that there exists another popular objective for training CRFs called the max-margin loss, a generalization of the objective for training SVMs. Models trained using this loss are called *structured support vector machines* or *max-margin networks*. This loss is more widely used in practice because it often leads to better generalization, and also it requires only MAP inference to compute the gradient, rather than general (e.g. marginal) inference, which is often more expensive to perform.
+
+
+<br/>
+
+|[Index](../../) | [Previous](../directed) |  [Next](../latent)|
