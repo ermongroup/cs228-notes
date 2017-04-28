@@ -91,7 +91,7 @@
 
 <h3 id="variable-elimination-as-message-passing">Variable elimination as message passing</h3>
 
-<p>First, consider what happens if we run the VE algorithm on a tree in order to compute a marginal <script type="math/tex">p(x_i)</script>. We can easily find an optimal ordering for this problem by rooting the tree at <script type="math/tex">x_i</script> and iterating through the nodes in post-order<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">A postorder traversal of a rooted tree is one that starts from the leaves and goes up the tree such that a node if always visited after all of its children. The root is visited last. </span>.</p>
+<p>First, consider what happens if we run the VE algorithm on a tree in order to compute a marginal <script type="math/tex">p(x_i)</script>. We can easily find an optimal ordering for this problem by rooting the tree at <script type="math/tex">x_i</script> and iterating through the nodes in post-order<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">A postorder traversal of a rooted tree is one that starts from the leaves and goes up the tree such that a node is always visited after all of its children. The root is visited last. </span>.</p>
 
 <p>This ordering is optimal because the largest clique that formed during VE will be of size 2. At each step, we will eliminate <script type="math/tex">x_j</script>; this will involve computing the factor <script type="math/tex">\tau_k(x_k) = \sum_{x_j} \phi(x_k, x_j) \tau_j(x_j)</script>, where <script type="math/tex">x_k</script> is the parent of <script type="math/tex">x_j</script> in the tree. At a later step, <script type="math/tex">x_k</script> will be eliminated, and <script type="math/tex">\tau_k(x_k)</script> will be passed up the tree to the parent <script type="math/tex">x_l</script> of <script type="math/tex">x_k</script> in order to be multiplied by the factor <script type="math/tex">\phi(x_l, x_k)</script> before being marginalized out. We can visualize this transfer of information using arrows on a tree.
 <label for="mp1" class="margin-toggle">⊕</label><input type="checkbox" id="mp1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/mp1.png" /><br />Message passing order when using VE to compute <script type="math/tex">p(x_3)</script> on a small tree.</span></p>
@@ -288,6 +288,17 @@ In general, however, it may not converges and its analysis is still an area of a
 
 <p>We will return to this algorithm later in the course and try to explain it as a special case of <em>variational inference</em> algorithms.</p>
 
+<p><br /></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="../../">Index</a></td>
+      <td><a href="../ve">Previous</a></td>
+      <td><a href="../map">Next</a></td>
+    </tr>
+  </tbody>
+</table>
 
 
 

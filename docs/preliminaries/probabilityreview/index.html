@@ -108,12 +108,36 @@
   <li><strong>Law of Total Probability</strong> If <script type="math/tex">A_1, . . . , A_k</script> are a set of disjoint events such that <script type="math/tex">\bigcup^k_{i=1} A_i = \Omega</script> then <script type="math/tex">\sum^k_{i=1} P(A_k) = 1.</script></li>
 </ul>
 
-<h2 id="11-conditional-probability-and-independence">1.1 Conditional probability and independence</h2>
+<h2 id="11-conditional-probability">1.1 Conditional probability</h2>
 
 <p>Let B be an event with non-zero probability. The conditional probability of any event A given B is defined as
 <script type="math/tex">P(A \mid B) = \frac {P(A \cap B)}{P(B)}</script>
 In other words, <script type="math/tex">P(A \mid B)</script> is the probability measure of the event A after observing the occurrence of
-event B. Two events are called independent if and only if <script type="math/tex">P(A \cap B) = P(A)P(B)</script> (or equivalently,
+event B.</p>
+
+<h2 id="12-chain-rule">1.2 Chain Rule</h2>
+
+<p>Let <script type="math/tex">S_1, \cdots, S_k</script> be events, <script type="math/tex">P(S_i) >0</script>. Then</p>
+
+<p>\begin{equation}
+P(S_1 \cap S_2 \cap \cdots \cap S_k) = P(S_1) P(S_2 | S_1) P(S_3 | S_2 \cap S_1 ) \cdots  P(S_n | S_1 \cap S_2 \cap \cdots S_{n-1})
+\end{equation}</p>
+
+<p>Note that for <script type="math/tex">k=2</script> events, this is just the definition of conditional probability</p>
+
+<p>\begin{equation}
+P(S_1 \cap S_2) = P(S_1) P(S_2 | S_1)
+\end{equation}</p>
+
+<p>In general, it is derived by applying the definition of conditional independence multiple times, as in the following example</p>
+
+<p>\begin{equation}
+P(S_1 \cap S_2 \cap S_3 \cap S_4) =  P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) = P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) = P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
+\end{equation}</p>
+
+<h2 id="13-independence">1.3 Independence</h2>
+
+<p>Two events are called independent if and only if <script type="math/tex">P(A \cap B) = P(A)P(B)</script> (or equivalently,
 <script type="math/tex">P(A \mid B) = P(A)</script>). Therefore, independence is equivalent to saying that observing B does not have
 any effect on the probability of A.</p>
 
@@ -388,7 +412,15 @@ f_{Y \mid X}(y \mid x) = \frac{f_{XY} (x, y)}{f_X(x)}
 \end{equation}
 provided <script type="math/tex">f_X(x) \neq 0</script>.</p>
 
-<h2 id="35-bayess-rule">3.5 Bayes’s rule</h2>
+<h2 id="35-chain-rule">3.5 Chain rule</h2>
+
+<p>The chain rule we derived earlier for events can be applied to random variables as follows:</p>
+
+<p>\begin{equation}
+p_{X_1, \cdots X_n} (x_1, \cdots, x_n) = p_{X_1} (x_1) p_{X_2 \mid X_1} (x_2 \mid x_1) \cdots p_{X_n \mid X_1, \cdots, X_{n-1}} (x_n \mid x_1, \cdots, x_{n-1})
+\end{equation}</p>
+
+<h2 id="36-bayess-rule">3.6 Bayes’s rule</h2>
 
 <p>A useful formula that often arises when trying to derive expression for the conditional probability of
 one variable given another, is <strong>Bayes’s rule</strong>.</p>
@@ -403,7 +435,7 @@ P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mi
 f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}_{- \infty} f_{X\mid Y} (x \mid y') f_Y (y') dy'}
 </script></div>
 
-<h2 id="36-independence">3.6 Independence</h2>
+<h2 id="37-independence">3.7 Independence</h2>
 <p>Two random variables X and Y are independent if <script type="math/tex">F_{XY} (x, y) = F_X(x)F_Y(y)</script> for all values of x and y. Equivalently,</p>
 <ul>
   <li>For discrete random variables, <script type="math/tex">p_{XY} (x, y) = p_X(x)p_Y(y)</script> for all <script type="math/tex">x \in Val(X)</script>, <script type="math/tex">y \in Val(Y)</script>.</li>
@@ -420,7 +452,7 @@ P(X \in A, Y \in B) = P(X \in A)P(Y \in B)
 \end{equation}
 By using the above lemma one can prove that if <script type="math/tex">X</script> is independent of <script type="math/tex">Y</script> then any function of X is independent of any function of Y.</p>
 
-<h2 id="37-expectation-and-covariance">3.7 Expectation and covariance</h2>
+<h2 id="38-expectation-and-covariance">3.8 Expectation and covariance</h2>
 
 <p>Suppose that we have two discrete random variables <script type="math/tex">X, Y</script> and <script type="math/tex">g : {I\!R}^2 \rightarrow I\!R</script> is a function of these two random variables. Then the expected value of g is defined in the following way, 
 \begin{equation}
@@ -455,6 +487,17 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])] \\
   <li>If <script type="math/tex">X</script> and <script type="math/tex">Y</script> are independent, then <script type="math/tex">E[f(X)g(Y)] = E[f(X)]E[g(Y)]</script>.</li>
 </ul>
 
+<p><br /></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="../../">Index</a></td>
+      <td><a href="../introduction/">Previous</a></td>
+      <td><a href="../applications/">Next</a></td>
+    </tr>
+  </tbody>
+</table>
 
 
 
