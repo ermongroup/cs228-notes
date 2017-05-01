@@ -186,10 +186,10 @@ By using this function one can calculate the probability of any event.</p>
 <p>When a random variable X takes on a finite set of possible values (i.e., X is a discrete random
 variable), a simpler way to represent the probability measure associated with a random variable is
 to directly specify the probability of each value that the random variable can assume. In particular,
-a probability mass function (PMF) is a function <script type="math/tex">pX : \Omega \rightarrow I\!R</script> such that 
+a probability mass function (PMF) is a function <script type="math/tex">p_X : \Omega \rightarrow I\!R</script> such that 
 <script type="math/tex">p_X(x) = P(X = x)</script>.</p>
 
-<p>In the case of discrete random variable, we use the notation Val(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.</p>
+<p>In the case of discrete random variable, we use the notation Val(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then Val(X) = {0, 1, 2, . . . , 10}.</p>
 
 <h3 id="properties-2"><strong>Properties</strong>:</h3>
 <ul>
@@ -231,8 +231,8 @@ E[g(X)] = \sum_{x \in Val(X)} g(x)p_X(x).
 <p>If X is a continuous random variable with PDF <script type="math/tex">f_X(x)</script>, then the expected value of g(X) is defined as,</p>
 
 <p>\begin{equation}
-E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx
-\end{equation}.</p>
+E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx.
+\end{equation}</p>
 
 <p>Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by <script type="math/tex">p_X(x)</script> or <script type="math/tex">f_X(x)</script>. As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.</p>
 
