@@ -39,7 +39,7 @@ Distributions of this form can be naturally expressed as *directed acyclic graph
 
 As an example, consider a model of a student's grade $$g$$ on an exam; this grade depends on several factors: the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$; it also affects the quality $$l$$ of the reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values.{% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.'%} The joint probability distribution over the 5 variables naturally factorizes as follows:
 {% math %}
-p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid d).
+p(l, g, i, d, s) = p(l \mid  g) p(g \mid  i, d) p(i) p(d) p(s\mid i).
 {% endmath %}
 The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student's intelligence and the difficulty of the exam.
 
