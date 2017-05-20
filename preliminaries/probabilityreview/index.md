@@ -116,19 +116,19 @@ In the case of discrete random variable, we use the notation Val(X) for the set 
 - $$\sum_{x \in A} p_X(x) = P(X \in A)$$.
 
 ## 2.3 Probability density functions
-For some continuous random variables, the cumulative distribution function FX(x) is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,
+For some continuous random variables, the cumulative distribution function $$F_X(x)$$ is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,
 
 \begin{equation}
 f_X(x)  = \frac{dF_X(x)}{dx}.
 \end{equation}
 
-Note here, that the PDF for a continuous random variable may not always exist (i.e., if FX(x) is not differentiable everywhere).
+Note here, that the PDF for a continuous random variable may not always exist (i.e., if $$F_X(x)$$ is not differentiable everywhere).
 
 According to the **properties** of differentiation, for very small ∆x, 
 
 $$P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x$$.
 
-Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point $$x$$ is not the probability of that event, i.e., $$f_X(x) \neq P(X = x)$$. For example, $$f_X(x)$$ can take on values larger than one (but the integral of fX(x) over any subset of R will be at most one).
+Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point $$x$$ is not the probability of that event, i.e., $$f_X(x) \neq P(X = x)$$. For example, $$f_X(x)$$ can take on values larger than one (but the integral of $$f_X(x)$$ over any subset of R will be at most one).
 
 ### **Properties**:
 - $$f_X(x) \geq 0$$.
@@ -274,7 +274,7 @@ Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution f
 
 ## 3.2 Joint and marginal probability mass functions
 
-If X and Y are discrete random variables, then the joint probability mass function $$p_{XY} : I\!R \prod \!R \rightarrow [0, 1]$$ is defined by
+If X and Y are discrete random variables, then the joint probability mass function $$p_{XY} : I\!R \times \!R \rightarrow [0, 1]$$ is defined by
 \begin{equation}
 p_{XY}(x, y) = P(X = x, Y = y).
 \end{equation}
@@ -302,7 +302,7 @@ Like in the single-dimensional case, $$f_{XY} (x, y) \neq P(X = x, Y = y)$$, but
 \begin{equation}
 \int \int_{x \in A} f_{XY} (x, y)dx dy = P((X, Y ) \in A).
 \end{equation}
-Note that the values of the probability density function f_{XY}(x, y) are always nonnegative, but they
+Note that the values of the probability density function $$f_{XY}(x, y)$$ are always nonnegative, but they
 may be greater than 1. Nonetheless, it must be the case that $$\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1$$
 
 Analagous to the discrete case, we define
