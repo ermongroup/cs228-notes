@@ -186,10 +186,10 @@ By using this function one can calculate the probability of any event.</p>
 <p>When a random variable X takes on a finite set of possible values (i.e., X is a discrete random
 variable), a simpler way to represent the probability measure associated with a random variable is
 to directly specify the probability of each value that the random variable can assume. In particular,
-a probability mass function (PMF) is a function <script type="math/tex">p_X : \Omega \rightarrow I\!R</script> such that 
+a probability mass function (PMF) is a function <script type="math/tex">pX : \Omega \rightarrow I\!R</script> such that 
 <script type="math/tex">p_X(x) = P(X = x)</script>.</p>
 
-<p>In the case of discrete random variable, we use the notation Val(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then Val(X) = {0, 1, 2, . . . , 10}.</p>
+<p>In the case of discrete random variable, we use the notation Val(X) for the set of possible values that the random variable X may assume. For example, if X(ω) is a random variable indicating the number of heads out of ten tosses of coin, then V al(X) = {0, 1, 2, . . . , 10}.</p>
 
 <h3 id="properties-2"><strong>Properties</strong>:</h3>
 <ul>
@@ -199,19 +199,19 @@ a probability mass function (PMF) is a function <script type="math/tex">p_X : \O
 </ul>
 
 <h2 id="23-probability-density-functions">2.3 Probability density functions</h2>
-<p>For some continuous random variables, the cumulative distribution function FX(x) is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,</p>
+<p>For some continuous random variables, the cumulative distribution function <script type="math/tex">F_X(x)</script> is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,</p>
 
 <p>\begin{equation}
 f_X(x)  = \frac{dF_X(x)}{dx}.
 \end{equation}</p>
 
-<p>Note here, that the PDF for a continuous random variable may not always exist (i.e., if FX(x) is not differentiable everywhere).</p>
+<p>Note here, that the PDF for a continuous random variable may not always exist (i.e., if <script type="math/tex">F_X(x)</script> is not differentiable everywhere).</p>
 
 <p>According to the <strong>properties</strong> of differentiation, for very small ∆x,</p>
 
 <p><script type="math/tex">P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x</script>.</p>
 
-<p>Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point <script type="math/tex">x</script> is not the probability of that event, i.e., <script type="math/tex">f_X(x) \neq P(X = x)</script>. For example, <script type="math/tex">f_X(x)</script> can take on values larger than one (but the integral of fX(x) over any subset of R will be at most one).</p>
+<p>Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point <script type="math/tex">x</script> is not the probability of that event, i.e., <script type="math/tex">f_X(x) \neq P(X = x)</script>. For example, <script type="math/tex">f_X(x)</script> can take on values larger than one (but the integral of <script type="math/tex">f_X(x)</script> over any subset of R will be at most one).</p>
 
 <h3 id="properties-3"><strong>Properties</strong>:</h3>
 <ul>
@@ -231,8 +231,8 @@ E[g(X)] = \sum_{x \in Val(X)} g(x)p_X(x).
 <p>If X is a continuous random variable with PDF <script type="math/tex">f_X(x)</script>, then the expected value of g(X) is defined as,</p>
 
 <p>\begin{equation}
-E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx.
-\end{equation}</p>
+E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx
+\end{equation}.</p>
 
 <p>Intuitively, the expectation of g(X) can be thought of as a “weighted average” of the values that g(x) can taken on for different values of x, where the weights are given by <script type="math/tex">p_X(x)</script> or <script type="math/tex">f_X(x)</script>. As a special case of the above, note that the expectation, E[X] of a random variable itself is found by letting g(x) = x; this is also known as the mean of the random variable X.</p>
 
@@ -293,8 +293,8 @@ E[g(X)] = \int^{\infty}_{-\infty} 1\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) 
 <p>• <strong><script type="math/tex">X</script> ∼ Bernoulli(p)</strong> (where <script type="math/tex">0 \leq p \leq 1</script>): one if a coin with heads probability p comes up heads, zero otherwise.</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 p(x)=\begin{cases}
-p, & \text{if $$p = 1$$}. \\
-1-p, & \text{if $$p = 0$$}.
+p, & \text{if $$x = 1$$}. \\
+1-p, & \text{if $$x = 0$$}.
 \end{cases}
 </script></div>
 
@@ -360,7 +360,7 @@ Here, we call <script type="math/tex">F_X(x)</script> and <script type="math/tex
 
 <h2 id="32-joint-and-marginal-probability-mass-functions">3.2 Joint and marginal probability mass functions</h2>
 
-<p>If X and Y are discrete random variables, then the joint probability mass function <script type="math/tex">p_{XY} : I\!R \prod \!R \rightarrow [0, 1]</script> is defined by
+<p>If X and Y are discrete random variables, then the joint probability mass function <script type="math/tex">p_{XY} : I\!R \times \!R \rightarrow [0, 1]</script> is defined by
 \begin{equation}
 p_{XY}(x, y) = P(X = x, Y = y).
 \end{equation}
@@ -388,7 +388,7 @@ f_{XY}(x, y) = \frac{∂^2F_{XY}(x, y)}{∂x∂y}
 \begin{equation}
 \int \int_{x \in A} f_{XY} (x, y)dx dy = P((X, Y ) \in A).
 \end{equation}
-Note that the values of the probability density function f_{XY}(x, y) are always nonnegative, but they
+Note that the values of the probability density function <script type="math/tex">f_{XY}(x, y)</script> are always nonnegative, but they
 may be greater than 1. Nonetheless, it must be the case that <script type="math/tex">\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1</script></p>
 
 <p>Analagous to the discrete case, we define</p>
