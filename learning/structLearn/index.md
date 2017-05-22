@@ -24,7 +24,7 @@ There is another family of Bayesian score function called BD (Bayesian Dirichlet
 P(D|\mathcal{G})=\int P(D|\mathcal{G}, \Theta_{\mathcal{G}})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},
 {%endmath%}
 
-where $$P(D\mid| \mathcal{G} \Theta_{\mathcal{G}})$$ is the probability of the data given the network structure and parameters, and $$P(\Theta_{\mathcal{G}}\mid \mathcal{G})$$ is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,
+where $$P(D \mid \mathcal{G}, \Theta_{\mathcal{G}})$$ is the probability of the data given the network structure and parameters, and $$P(\Theta_{\mathcal{G}} \mid \mathcal{G})$$ is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,
 
 {%math%}
 P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N'_{i,\pi_i,j})}{\Gamma(\sum_j N'_{i,\pi_i,j} + N_{i,\pi_i,j} )} \prod_{j}\frac{\Gamma(N'_{i,\pi_i,j} + N_{i,\pi_i,j})}{\Gamma(N'_{i,\pi_i,j})}\right].
