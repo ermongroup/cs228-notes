@@ -188,7 +188,7 @@ We now repeat this procedure, computing $$p(z\mid x; \theta_{t+1})$$ (the E-step
 From our above discussion, it follows that EM has the following properties:
 
 - The marginal likelihood increases after each EM cycle.
-- Since the marginal likelihood is upper-bounded by its true global maximum, and it increases at every step, EM must eventually converge.
+- Since the marginal likelihood is lower-bounded by its true global maximum, and it increases at every step, EM must eventually converge.
 
 However, since we optimizing a non-convex objective, we have no guarantee to find the global optimum. In fact, EM in practice converges almost always to a local optimum, and moreover, that optimum heavily depends on the choice of initialization. Different initial $$\theta_0$$ can lead to very different solutions, and so it is very common to use multiple restarts of the algorithm and choose the best one in the end. In fact EM is so sensitive to the choice of initial parameters, that techniques for choosing these parameters are still an active area of research.
 
