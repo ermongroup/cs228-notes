@@ -27,7 +27,7 @@ where $$\phi(X,Y)$$ is a factor that assigns more weight to consistent votes amo
 \end{cases}
 \end{align*}
 {% endmath %} 
-The factors in the unnormalized distribution are often referred to as *potentials*.
+The factors in the unnormalized distribution are often referred to as *factors*.
 The final probability is then defined as
 {% math %}
 p(A,B,C,D) = \frac{1}{Z} \tilde p(A,B,C,D),
@@ -52,7 +52,7 @@ Z = \sum_{x_1,..,x_n}\prod_{c \in C} \phi_c(x_c)
 {% endmath %}
 is a normalizing constant that ensures that the distribution sums to one.
 
-Thus, given a graph $$G$$, our probability distribution may contain factors whose scope is any clique in $$G$$, which can be a single node, an edge, a triangle, etc. Note that we do not need to specify a factor for each clique. In our above example, we defined a factor over each edge (which is a clique of two nodes). However, we chose not to specify any unary potentials i.e. cliques over single nodes.
+Thus, given a graph $$G$$, our probability distribution may contain factors whose scope is any clique in $$G$$, which can be a single node, an edge, a triangle, etc. Note that we do not need to specify a factor for each clique. In our above example, we defined a factor over each edge (which is a clique of two nodes). However, we chose not to specify any unary factors i.e. cliques over single nodes.
 
 ### Comparison to Bayesian networks
 
@@ -71,7 +71,7 @@ They also possess several important drawbacks:
 - Undirected models may be difficult to interpret.
 - It is much easier to generate data from a Bayesian network, which is important in some applications.
 
-It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique potential (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called *moralization*.
+It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique factor (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called *moralization*.
 {% maincolumn 'assets/img/moralization.png' 'A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.' %}
 
 Thus, MRFs have more power than Bayesian networks, but are more difficult to deal with computationally. A general rule of thumb is to use Bayesian networks whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).
@@ -122,7 +122,7 @@ Note that in this case, the partition constant now depends on $$x$$ (therefore, 
 ### Example (continued)
 
 
-More formally, suppose $$p(y\mid x)$$ is a chain CRF with two types of potentials: image potentials $$\phi(x_i, y_i)$$ for $$i = 1, ..., n$$ — which assign higher values to $$y_i$$ that are consistent with an input $$x_i$$ — as well as pairwise potentials $$\phi(y_i, y_{i+1})$$ for $$i = 1, ..., n-1$$. We may also think of the $$\phi(x_i,y_i)$$ as probabilities $$p(y_i\mid x_i)$$ given by, say, standard (unstructured) softmax regression; the $$\phi(y_i, y_{i+1})$$ can be seen as empirical frequencies of letter co-occurrences obtained from a large corpus of English text (e.g. Wikipedia).
+More formally, suppose $$p(y\mid x)$$ is a chain CRF with two types of factors: image factors $$\phi(x_i, y_i)$$ for $$i = 1, ..., n$$ — which assign higher values to $$y_i$$ that are consistent with an input $$x_i$$ — as well as pairwise factors $$\phi(y_i, y_{i+1})$$ for $$i = 1, ..., n-1$$. We may also think of the $$\phi(x_i,y_i)$$ as probabilities $$p(y_i\mid x_i)$$ given by, say, standard (unstructured) softmax regression; the $$\phi(y_i, y_{i+1})$$ can be seen as empirical frequencies of letter co-occurrences obtained from a large corpus of English text (e.g. Wikipedia).
 
 Given a model of this form, we can jointly infer the structured label $$y$$ using MAP inference:
 {% math %} 
@@ -131,7 +131,7 @@ Given a model of this form, we can jointly infer the structured label $$y$$ usin
 
 ### CRF features
 
-In most practical applications, we further assume that the potentials $$\phi_c(x_c,y_c)$$ are of the form
+In most practical applications, we further assume that the factorss $$\phi_c(x_c,y_c)$$ are of the form
 {% math %}
 \phi_c(x_c,y_c) = \exp(w_c^T f_c(x_c, y_c)),
 {% endmath %}
@@ -139,7 +139,7 @@ where $$f_c(x_c, y_c)$$ can be an arbitrary set of features describing the compa
 
 In our OCR example, we may introduce features $$f(x_i, y_i)$$; that encode the compatibility of the letter $$y_i$$ with the pixels $$x_i$$. For example, $$f(x_i, y_i)$$; may be the probability of letter $$y_i$$ produced by logistic regression (or a deep neural network) evaluated on pixels $$x_i$$. In addition, we introduce features $$f(y_i, y_{i+1})$$ between adjacent letters. These may be indicators of the form $$f(y_i, y_{i+1}) = \Ind(y_i = \ell_1, y_{i+1} = \ell_2)$$, where $$\ell_1, \ell_2$$ are two letters of the alphabet. The CRF would then learn weights $$w$$ that would assign more weight to more common probability of consecutive letters $$(\ell_1, \ell_2)$$, while at the same time making sure that the predicted $$y_i$$ are consistent with the input $$x_i$$; this process would let us determine $$y_i$$ in cases where $$x_i$$ is ambiguous, like in our above example.
 
-The most important realization that need to be made about CRF features is that they can be arbitrarily complex. In fact, we may define an OCR model with potentials $$\phi_i(x,y_i) = \exp(w_i^T f(x, y_i))$$, that depend on the entire input $$x$$. This will not affect computational performance at all, because at inference time, the $$x$$ will be always observed, and our decoding problem will involve maximizing
+The most important realization that need to be made about CRF features is that they can be arbitrarily complex. In fact, we may define an OCR model with factors $$\phi_i(x,y_i) = \exp(w_i^T f(x, y_i))$$, that depend on the entire input $$x$$. This will not affect computational performance at all, because at inference time, the $$x$$ will be always observed, and our decoding problem will involve maximizing
 {% math %} 
 \phi_1(y_1, x) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi(y_i, x) = \phi_1'(y_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi'(y_i),
 {% endmath %}
