@@ -94,7 +94,7 @@ By "hallucinating" the data, we mean computing the expected log-likelihood
 {%endmath%}
 This expectation is what gives the EM algorithm half of its name. If $$z$$ is not too high-dimensional (e.g. in GMMs it is a one-dimensional categorical variable), then we can compute this expectation. 
 
-Since the summation is now outside the log, we can maximize the expected log-likelihood. In particular, when $$p$$ is a directed model, $$\log p$$ again decomposes into a sum of log-CPD terms that can be optimized independently, as discussed in the chapter on directed graphical models.
+Since the summation is now outside the log, we can maximize the expected log-likelihood. In particular, when $$p$$ is a directed model, $$\log p$$ again decomposes into a sum of log-CPD terms that can be optimized independently, as discussed in the chapter on directed graphical models. When $$p$$ is an undirected model, the $$Z(\theta)$$ term cannot be decomposed, making this calculation intractable unless $$Z(\theta)$$ is already known.
 
 We can formally define the EM algorithm as follows. Let $$D$$ be our dataset.
 
