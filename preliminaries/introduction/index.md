@@ -77,7 +77,7 @@ Our discussion of graphical models will be divided into three major parts: repre
 
 ### Representation
 
-How do we express a probability distribution that models some real-world phenomenon? This is not a trivial problem: we have seen that a naive model for classifying spam messages with $$n$$ possible words requires us in general to specify $$O(2^n)$$ parameters. We will address this difficulty via general techniques for constructing tractable models. These recipes will make heavy use of graph theory; probabilities will be described by graphs whose properties (e.g. connectivity, tree-width) will reveal probabilistic and algorithmic features of the model (e.g., independence, learning complexity).
+How do we express a probability distribution that models some real-world phenomenon? We have seen that a naive model for classifying spam messages with $$n$$ possible words requires us to specify $$O(2n+1)$$ parameters.  Naive Bayes is a special case, since in general a model requires a non-trivial number of $$O(k^n)$$ parameters, where k is the cardinality of the variables.  We will address this difficulty via general techniques for constructing tractable models. These recipes will make heavy use of graph theory; probabilities will be described by graphs whose properties (e.g. connectivity, tree-width) will reveal probabilistic and algorithmic features of the model (e.g., independence, learning complexity).
 
 ### Inference 
 
