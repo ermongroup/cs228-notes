@@ -131,7 +131,7 @@ Given a model of this form, we can jointly infer the structured label $$y$$ usin
 
 ### CRF features
 
-In most practical applications, we further assume that the factorss $$\phi_c(x_c,y_c)$$ are of the form
+In most practical applications, we further assume that the factors $$\phi_c(x_c,y_c)$$ are of the form
 {% math %}
 \phi_c(x_c,y_c) = \exp(w_c^T f_c(x_c, y_c)),
 {% endmath %}
