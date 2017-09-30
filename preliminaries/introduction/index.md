@@ -73,7 +73,7 @@ The take-away point we want to get across is that there is an intimate connectio
 
 ## A bird's eye overview of the course
 
-Our discussion of graphical models will be divided into three major parts: representation (how to specify a model), inference (how to ask the model questions), and learning (how to fit a model to real-world data). These three themes will also be closely linked: to derive efficient inference and learning algorithms, the model will need to be adequately represented; furthermore, learning models will require inference as a subroutine. Thus, it will best to always keep the three tasks in mind, rather than focusing on them in isolation{% sidenote 1 'For a more detailed overview, see this [writeup](https://docs.google.com/file/d/0B_hicYJxvbiOc1ViZTRxbnhSU1cza1VhOFlhRlRuQQ/edit) by Neal Parikh; this part of the notes is based on it.'%}.
+Our discussion of graphical models will be divided into three major parts: representation (how to specify a model), inference (how to ask the model questions), and learning (how to fit a model to real-world data). These three themes will also be closely linked: to derive efficient inference and learning algorithms, the model will need to be adequately represented; furthermore, learning models will require inference as a subroutine. Thus, it will be best to always keep the three tasks in mind, rather than focusing on them in isolation{% sidenote 1 'For a more detailed overview, see this [writeup](https://docs.google.com/file/d/0B_hicYJxvbiOc1ViZTRxbnhSU1cza1VhOFlhRlRuQQ/edit) by Neal Parikh; this part of the notes is based on it.'%}.
 
 ### Representation
 
