@@ -45,7 +45,7 @@ In addition, we will also see many examples of how to apply probabilistic techni
 
 ## The difficulties of probabilistic modeling
 
-To get a first taste of the of the challenges that lie ahead of us, consider a simple application of probabilistic modeling: spam classification.
+To get a first taste of the challenges that lie ahead of us, consider a simple application of probabilistic modeling: spam classification.
 
 Suppose we have a model $$p(y,x_1,...,x_n)$$ of word occurrences in spam and non-spam mail. Each binary variable $$x_i$$ encodes whether the $$i$$-th English word is present in the email; the binary variable $$y$$ indicates whether the email is spam. In order to classify a new email, we may look at the probability {%m%} P(y=1 | x_1,...,x_n) {%em%}.
 
