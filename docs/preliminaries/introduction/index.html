@@ -32,8 +32,8 @@
 
   </script>
 
-  <link rel="canonical" href="http://localhost:4000/cs228-notes/preliminaries/introduction/">
-  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
+  <link rel="canonical" href="/cs228-notes/preliminaries/introduction/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="/cs228-notes/feed.xml" />
 </head>
 
   <body>
@@ -123,7 +123,7 @@ p(x,y).
 
 <h2 id="the-difficulties-of-probabilistic-modeling">The difficulties of probabilistic modeling</h2>
 
-<p>To get a first taste of the of the challenges that lie ahead of us, consider a simple application of probabilistic modeling: spam classification.</p>
+<p>To get a first taste of the challenges that lie ahead of us, consider a simple application of probabilistic modeling: spam classification.</p>
 
 <p>Suppose we have a model <script type="math/tex">p(y,x_1,...,x_n)</script> of word occurrences in spam and non-spam mail. Each binary variable <script type="math/tex">x_i</script> encodes whether the <script type="math/tex">i</script>-th English word is present in the email; the binary variable <script type="math/tex">y</script> indicates whether the email is spam. In order to classify a new email, we may look at the probability <span>​<script type="math/tex"> P(y=1 | x_1,...,x_n) </script></span>.</p>
 
@@ -151,7 +151,7 @@ This representation has the immediate advantage of being easy to understand. It 
 
 <h2 id="a-birds-eye-overview-of-the-course">A bird’s eye overview of the course</h2>
 
-<p>Our discussion of graphical models will be divided into three major parts: representation (how to specify a model), inference (how to ask the model questions), and learning (how to fit a model to real-world data). These three themes will also be closely linked: to derive efficient inference and learning algorithms, the model will need to be adequately represented; furthermore, learning models will require inference as a subroutine. Thus, it will best to always keep the three tasks in mind, rather than focusing on them in isolation<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">For a more detailed overview, see this <a href="https://docs.google.com/file/d/0B_hicYJxvbiOc1ViZTRxbnhSU1cza1VhOFlhRlRuQQ/edit">writeup</a> by Neal Parikh; this part of the notes is based on it. </span>.</p>
+<p>Our discussion of graphical models will be divided into three major parts: representation (how to specify a model), inference (how to ask the model questions), and learning (how to fit a model to real-world data). These three themes will also be closely linked: to derive efficient inference and learning algorithms, the model will need to be adequately represented; furthermore, learning models will require inference as a subroutine. Thus, it will be best to always keep the three tasks in mind, rather than focusing on them in isolation<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">For a more detailed overview, see this <a href="https://docs.google.com/file/d/0B_hicYJxvbiOc1ViZTRxbnhSU1cza1VhOFlhRlRuQQ/edit">writeup</a> by Neal Parikh; this part of the notes is based on it. </span>.</p>
 
 <h3 id="representation">Representation</h3>
 
