@@ -5,8 +5,7 @@ title: Real World Applications
 
 # Image Denoising 
 
-![Image Denoising 1](imageDenoising.png)
-![Image Denoising 2](imageDenoising2.png)
+![Image Denoising](imageDenoising3.png)
 
 # In Painting
 
