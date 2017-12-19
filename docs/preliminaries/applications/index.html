@@ -77,47 +77,123 @@
 </script>
 
 
-<h1 id="image-denoising">Image Denoising</h1>
+<h1 id="image-models">Image Models</h1>
 
-<p><img src="imageDenoising.png" alt="Image Denoising 1" />
-<img src="imageDenoising2.png" alt="Image Denoising 2" /></p>
+<p>Suppose we are able to learn a probability distribution <script type="math/tex">p(x)</script> over images (a matrix of pixels) that assigns high probability to images that look realistic, and low probability to everything else. Given this model, there are a number of tasks that can be solved:</p>
 
-<h1 id="in-painting">In Painting</h1>
+<h2 id="sampling">Sampling</h2>
 
-<h2 id="generating-celebrity-faces">Generating Celebrity Faces</h2>
-<p><img src="inpainting.png" alt="inpainting" /></p>
+<p>Suppose we are somehow able to learn a probability distribution that assigns high probability to images that look like bedrooms (based on some training data):</p>
 
-<h2 id="completing-a-picture-of-a-face">Completing a picture of a Face</h2>
-<p><img src="inpainting2.png" alt="inpainting2" /></p>
-
-<h2 id="generating-images-of-bedroom-spaces">Generating Images of Bedroom Spaces</h2>
 <p><strong>Training Data</strong><br /> 
-<img src="bedroominpainting1.png" alt="bedroom1" /><br /> 
-<strong>Generated Data</strong><br /> 
-<img src="bedroominpainting2.png" alt="bedroom1" /></p>
+<img src="bedroominpainting1.png" alt="bedroom1" /><br /></p>
 
-<h1 id="speech-recognition">Speech Recognition</h1>
-<p><img src="speech.png" alt="Speech" /></p>
-<ul>
-  <li>Infer spoken words from audio signals</li>
-  <li>Hidden Markov Models</li>
-</ul>
+<p>If we sample <script type="math/tex">x \sim p(x)</script>, we are <strong>generating</strong> new (realistic) images:</p>
 
-<h1 id="evolutionary-biology">Evolutionary Biology</h1>
-<p><img src="philo.png" alt="philo" /></p>
-<ul>
-  <li>Reconstruct a phylogenetic tree from DNA sequences of current species</li>
-</ul>
+<p><strong>Generated Data</strong><br /> 
+<img src="bedroominpainting2.png" alt="bedroom2" /></p>
 
-<h1 id="ecology---bird-migration-patterns">Ecology - Bird Migration Patterns</h1>
-<p><img src="bird_new.gif" alt="birds" /></p>
+<p>If we train the model on human faces, we can generate new ones:</p>
 
-<h1 id="poverty-mapping">Poverty Mapping</h1>
-<p><img src="uganda.png.jpg" alt="uganda" />
-<a href="http://news.stanford.edu/2016/08/18/combining-satellite-data-machine-learning-to-map-poverty/">Stanford scientists combine satellite data, machine learning to map poverty</a></p>
+<p><img src="progressiveGAN.png" alt="faces1" /></p>
+
+<p><a href="https://arxiv.org/abs/1710.10196">Progressive Growing of GANs for Improved Quality, Stability, and Variation</a></p>
+
+<p>Other examples:</p>
+
+<p><img src="pnpgan.png" alt="faces1" /></p>
+
+<h2 id="in-painting">In Painting</h2>
+
+<p>Suppose we have our probability distribution <script type="math/tex">p(x)</script>, and a patch of an existing image (e.g., a piece of a photograph).  If we sample from <script type="math/tex">p(Image \mid patch)</script>, we will generate different possible ways of completing the image:</p>
+
+<p><img src="inpainting3.png" alt="inpainting2" /></p>
+
+<p>Note the importance of a probabilistic model that captures uncertainty: there could be multiple ways to complete the image!</p>
+
+<h2 id="image-denoising">Image Denoising</h2>
+
+<p>Given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like</p>
+
+<p><img src="imageDenoising4.png" alt="Image Denoising" /></p>
+
+<h1 id="text-models">Text Models</h1>
+
+<p>Suppose we can construct a probability distribution <script type="math/tex">p(x)</script> over sequences of words or characters <script type="math/tex">x</script> that assigns high probability to (English) sentences.</p>
+
+<h2 id="sampling-1">Sampling</h2>
+
+<p>Suppose we use Wikipedia as our training data, and learn a model <script type="math/tex">p(x)</script> based on it. We can then sample from the model, generating new Wikipedia-like articles like the following one:</p>
+
+<hr />
+<p>Naturalism and decision for the majority of Arab countries’ capitalide was grounded
+by the Irish language by [[John Clair]], [[An Imperial Japanese Revolt]], associated 
+with Guangzham’s sovereignty. His generals were the powerful ruler of the Portugal 
+in the [[Protestant Immineners]], which could be said to be directly in Cantonese 
+Communication, which followed a ceremony and set inspired prison, training. The 
+emperor travelled back to [[Antioch, Perth, October 25|21]] to note, the Kingdom 
+of Costa Rica, unsuccessful fashioned the [[Thrales]], [[Cynth’s Dajoard]], known 
+in western [[Scotland]], near Italy to the conquest of India with the conflict. 
+Copyright was the succession of independence in the slop of Syrian influence that 
+was a famous German movement based on a more popular servicious, non-doctrinal 
+and sexual power post. Many governments recognize the military housing of the 
+[[Civil Liberalization and Infantry Resolution 265 National Party in Hungary]], 
+that is sympathetic to be to the [[Punjab Resolution]]
+(PJS)[http://www.humah.yahoo.com/guardian.
+cfm/7754800786d17551963s89.htm Official economics Adjoint for the Nazism, Montgomery 
+was swear to advance to the resources for those Socialism’s rule, 
+was starting to signing a major tripad of aid exile.]]</p>
+
+<hr />
+
+<p><a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">The Unreasonable Effectiveness of Recurrent Neural Networks</a></p>
+
+<h2 id="translation">Translation</h2>
+
+<p>Suppose we have learned probabilistic models for both English and Chinese. We can use the model to generate an English sentence conditioned on the corresponding Chinese one (translation):</p>
+
+<p><img src="nmt-model-fast.gif" alt="Neural Machine Translation" /></p>
+
+<h1 id="audio-models">Audio Models</h1>
+
+<p>Suppose we can construct a probability distribution <script type="math/tex">p(x)</script> over audio signals that assigns high probability to ones that sounds like human speech.</p>
+
+<h2 id="upsampling-or-super-resolution">Upsampling or super-resolution</h2>
+
+<p>Given a low resolution version of an audio signal, we can attempt to increase its resolution</p>
+
+<p><a href="https://kuleshov.github.io/audio-super-res/">Super resolution of audio signals demo</a></p>
+
+<h2 id="speech-synthesis">Speech synthesis</h2>
+
+<p>As before, by sampling from the model we can generate (synthesize) speech signals.</p>
+
+<p><a href="https://deepmind.com/blog/wavenet-generative-model-raw-audio/">Super resolution of audio signals demo</a></p>
+
+<h2 id="speech-recognition">Speech recognition</h2>
+<p>Given a (joint) model of speech signals and language (text), we can attempt to infer spoken words from audio signals
+<img src="speech.png" alt="Speech" /></p>
 
 <h1 id="error-correcting-codes">Error Correcting Codes</h1>
-<p><img src="Picture1.png" alt="codes" /></p>
+<p>Probabilistic models are often used to model communication channels (e.g., Ethernet or Wifi), i.e., the fact that if you send a message over a channel, you might get something different on the other end due to noise. Error correcting codes and techniques based on graphical models are used to detect and correct communication errors.
+<img src="Picture1.png" alt="codes" /></p>
+
+<h1 id="computational-biology">Computational Biology</h1>
+
+<p>Graphical models are often used in computational biology. For example, given a model of how DNA sequences evolve over time, it is possible to reconstruct a phylogenetic tree from DNA sequences of current species
+<img src="philo.png" alt="philo" /></p>
+
+<h1 id="spatio-temporal-models">Spatio-temporal models</h1>
+
+<h2 id="ecology">Ecology</h2>
+<p>Graphical models are used to study phenomena that evolve over space and time, capturing spatial and temporal dependencies. For example, they can be used to study bird migrations</p>
+
+<p><img src="bird_new.gif" alt="birds" /></p>
+
+<h2 id="economics">Economics</h2>
+
+<p>Graphical models can be used to model spatial distributions of quantities of interests (e.g., assets or expenditures based measures of wealth)
+<img src="uganda.png.jpg" alt="birds" /></p>
 
 <p><br /></p>
 

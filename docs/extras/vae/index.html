@@ -235,7 +235,7 @@ z = g_{\mu, \sigma}(\epsilon) = \mu + \epsilon \cdot \sigma,
 
 <p>The biggest advantage of this approach is that we many now write the gradient of an expectation with respect to <script type="math/tex">q(z)</script> (for any <script type="math/tex">f</script>) as</p>
 <div class="mathblock"><script type="math/tex; mode=display">
- \nabla_\phi \mathbb{E}_{z \sim q(z\mid x)}\left[ f(x,z) \right] = \nabla_\phi \mathbb{E}_{\epsilon \sim p(\epsilon)}\left[ f(x,g(z,\epsilon)) \right] = \mathbb{E}_{\epsilon \sim p(\epsilon)}\left[ \nabla_\phi f(x,g(z,\epsilon)) \right].
+ \nabla_\phi \mathbb{E}_{z \sim q(z\mid x)}\left[ f(x,z) \right] = \nabla_\phi \mathbb{E}_{\epsilon \sim p(\epsilon)}\left[ f(x,g(\epsilon, x)) \right] = \mathbb{E}_{\epsilon \sim p(\epsilon)}\left[ \nabla_\phi f(x,g(\epsilon, x)) \right].
 </script></div>
 <p>The gradient is now inside the expectation and we may use Monte Carlo to get an estimate of the right-hand term.
 This approach will have a much lower variance<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">For more details as to why, have a look at the appendix of the paper by <a href="https://arxiv.org/pdf/1401.4082.pdf">Rezende et al.</a> </span> than the score function estimator, and will enable us to learn models that we otherwise couldn’t learn.</p>
