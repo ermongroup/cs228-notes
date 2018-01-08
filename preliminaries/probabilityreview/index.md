@@ -218,10 +218,12 @@ coin with heads probability $$p$$.
 \begin{equation}
 p(x) = \binom{n}{x} \cdot p^x (1-p)^{n-x}
 \end{equation}
+
 • **$$X$$ ∼ Geometric($$p$$)** (where $$p > 0$$): the number of flips of a coin with heads probability $$p$$
 until the first heads.
 \begin{equation} p(x) = p(1 − p)^{x-1}
 \end{equation}
+
 • **$$X$$ ∼ Poisson($$\lambda$$)** (where $$\lambda$$ > 0): a probability distribution over the nonnegative integers
 used for modeling the frequency of rare events.
 \begin{equation} 
