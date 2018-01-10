@@ -39,9 +39,12 @@ event $$B$$.
 
 Let $$S_1, \cdots, S_k$$ be events, $$P(S_i) >0$$. Then
 
-\begin{equation}
-P(S_1 \cap S_2 \cap \cdots \cap S_k) = P(S_1) P(S_2 | S_1) P(S_3 | S_2 \cap S_1 ) \cdots  P(S_k | S_1 \cap S_2 \cap \cdots S_{k-1})
-\end{equation}
+{% math %}
+\begin{aligned}
+  & P(S_1 \cap S_2 \cap \cdots \cap S_k) \\
+= & P(S_1) P(S_2 | S_1) P(S_3 | S_2 \cap S_1 ) \cdots  P(S_k | S_1 \cap S_2 \cap \cdots S_{k-1})
+\end{aligned}
+{% endmath %}
 
 Note that for $$k=2$$ events, this is just the definition of conditional probability
 
@@ -53,9 +56,10 @@ In general, it is derived by applying the definition of conditional independence
 
 {% math %}
 \begin{aligned}
-P(S_1 \cap S_2 \cap S_3 \cap S_4) & =  P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
-                                  & = P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
-                                  & = P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
+  & P(S_1 \cap S_2 \cap S_3 \cap S_4) \\
+= & P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
+= & P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
+= & P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
 \end{aligned}
 {% endmath %}
 
@@ -171,10 +175,10 @@ Using the **properties** in the previous section, we can derive an alternate exp
 
 {% math %}
 \begin{aligned}
-E[(X − E[X])^2] \\
-= E[X^2 − 2E[X]X + E[X]^2] \\
-= E[X^2] − 2E[X]E[X] + E[X]^2 \\
-= E[X^2] − E[X]^2,
+  & E[(X − E[X])^2] \\
+= & E[X^2 − 2E[X]X + E[X]^2] \\
+= & E[X^2] − 2E[X]E[X] + E[X]^2 \\
+= & E[X^2] − E[X]^2,
 \end{aligned}
 {% endmath %}
 
@@ -351,9 +355,12 @@ provided $$f_X(x) \neq 0$$.
 
 The chain rule we derived earlier for events can be applied to random variables as follows:
 
-\begin{equation}
-p_{X_1, \cdots X_n} (x_1, \cdots, x_n) = p_{X_1} (x_1) p_{X_2 \mid X_1} (x_2 \mid x_1) \cdots p_{X_n \mid X_1, \cdots, X_{n-1}} (x_n \mid x_1, \cdots, x_{n-1})
-\end{equation}
+{% math %}
+\begin{aligned}
+  & p_{X_1, \cdots X_n} (x_1, \cdots, x_n) \\
+= & p_{X_1} (x_1) p_{X_2 \mid X_1} (x_2 \mid x_1) \cdots p_{X_n \mid X_1, \cdots, X_{n-1}} (x_n \mid x_1, \cdots, x_{n-1})
+\end{aligned}
+{% endmath %}
 
 ## 3.6 Bayes’s rule
 
