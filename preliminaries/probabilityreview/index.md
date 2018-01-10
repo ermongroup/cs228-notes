@@ -31,7 +31,9 @@ These three **properties** are called the **Axioms of Probability**.
 ## 1.1 Conditional probability
 
 Let $$B$$ be an event with non-zero probability. The conditional probability of any event $$A$$ given $$B$$ is defined as
-$$ P(A \mid B) = \frac {P(A \cap B)}{P(B)}$$.
+\begin{equation} 
+P(A \mid B) = \frac {P(A \cap B)}{P(B)}.
+\end{equation}
 In other words, $$P(A \mid B)$$ is the probability measure of the event $$A$$ after observing the occurrence of
 event $$B$$. 
 
@@ -41,8 +43,8 @@ Let $$S_1, \cdots, S_k$$ be events, $$P(S_i) >0$$. Then
 
 {% math %}
 \begin{aligned}
-  & P(S_1 \cap S_2 \cap \cdots \cap S_k) \\
-= & P(S_1) P(S_2 | S_1) P(S_3 | S_2 \cap S_1 ) \cdots  P(S_k | S_1 \cap S_2 \cap \cdots S_{k-1})
+&   & P(S_1 \cap S_2 \cap \cdots \cap S_k) \\
+& = & P(S_1) P(S_2 | S_1) P(S_3 | S_2 \cap S_1 ) \cdots  P(S_k | S_1 \cap S_2 \cap \cdots S_{k-1})
 \end{aligned}
 {% endmath %}
 
@@ -56,10 +58,10 @@ In general, it is derived by applying the definition of conditional independence
 
 {% math %}
 \begin{aligned}
-  & P(S_1 \cap S_2 \cap S_3 \cap S_4) \\
-= & P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
-= & P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
-= & P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
+&   & P(S_1 \cap S_2 \cap S_3 \cap S_4) \\
+& = & P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
+& = & P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
+& = & P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
 \end{aligned}
 {% endmath %}
 
@@ -202,13 +204,13 @@ constant with respect to the outer expectation.
 ### **Discrete case**:
 
 \begin{equation}
-E[g(X)] = \sum_{x \in Val(X)} \mathbf{1}\{x \in A\}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
+E[g(X)] = \sum_{x \in Val(X)} \mathbf{1}{x \in A} P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
 \end{equation}
 
 ### **Continuous case**:
 
 \begin{equation}
-E[g(X)] = \int_{-\infty}^{\infty} \mathbf{1}\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
+E[g(X)] = \int_{-\infty}^{\infty} \mathbf{1}{x \in A} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
 \end{equation}
 
 
@@ -357,8 +359,8 @@ The chain rule we derived earlier for events can be applied to random variables 
 
 {% math %}
 \begin{aligned}
-  & p_{X_1, \cdots X_n} (x_1, \cdots, x_n) \\
-= & p_{X_1} (x_1) p_{X_2 \mid X_1} (x_2 \mid x_1) \cdots p_{X_n \mid X_1, \cdots, X_{n-1}} (x_n \mid x_1, \cdots, x_{n-1})
+&   & p_{X_1, \cdots X_n} (x_1, \cdots, x_n) \\
+& = & p_{X_1} (x_1) p_{X_2 \mid X_1} (x_2 \mid x_1) \cdots p_{X_n \mid X_1, \cdots, X_{n-1}} (x_n \mid x_1, \cdots, x_{n-1})
 \end{aligned}
 {% endmath %}
 
