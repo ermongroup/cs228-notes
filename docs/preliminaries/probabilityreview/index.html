@@ -111,7 +111,9 @@
 <h2 id="11-conditional-probability">1.1 Conditional probability</h2>
 
 <p>Let <script type="math/tex">B</script> be an event with non-zero probability. The conditional probability of any event <script type="math/tex">A</script> given <script type="math/tex">B</script> is defined as
-<script type="math/tex">P(A \mid B) = \frac {P(A \cap B)}{P(B)}</script>.
+\begin{equation}
+P(A \mid B) = \frac {P(A \cap B)}{P(B)}.
+\end{equation}
 In other words, <script type="math/tex">P(A \mid B)</script> is the probability measure of the event <script type="math/tex">A</script> after observing the occurrence of
 event <script type="math/tex">B</script>.</p>
 
@@ -119,9 +121,12 @@ event <script type="math/tex">B</script>.</p>
 
 <p>Let <script type="math/tex">S_1, \cdots, S_k</script> be events, <script type="math/tex">P(S_i) >0</script>. Then</p>
 
-<p>\begin{equation}
-P(S_1 \cap S_2 \cap \cdots \cap S_k) = P(S_1) P(S_2 | S_1) P(S_3 | S_2 \cap S_1 ) \cdots  P(S_k | S_1 \cap S_2 \cap \cdots S_{k-1})
-\end{equation}</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{aligned}
+  & P(S_1 \cap S_2 \cap \cdots \cap S_k) \\
+= & P(S_1) P(S_2 | S_1) P(S_3 | S_2 \cap S_1 ) \cdots  P(S_k | S_1 \cap S_2 \cap \cdots S_{k-1})
+\end{aligned}
+</script></div>
 
 <p>Note that for <script type="math/tex">k=2</script> events, this is just the definition of conditional probability</p>
 
@@ -131,9 +136,14 @@ P(S_1 \cap S_2) = P(S_1) P(S_2 | S_1)
 
 <p>In general, it is derived by applying the definition of conditional independence multiple times, as in the following example</p>
 
-<p>\begin{equation}
-P(S_1 \cap S_2 \cap S_3 \cap S_4) =  P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) = P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) = P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
-\end{equation}</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{aligned}
+  & P(S_1 \cap S_2 \cap S_3 \cap S_4) \\
+= & P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
+= & P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
+= & P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
+\end{aligned}
+</script></div>
 
 <h2 id="13-independence">1.3 Independence</h2>
 
@@ -251,12 +261,14 @@ E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx
 
 <p>Using the <strong>properties</strong> in the previous section, we can derive an alternate expression for the variance:</p>
 
-<p>\begin{equation}
-E[(X − E[X])^2] <br />
-= E[X^2 − 2E[X]X + E[X]^2] <br />
-= E[X^2] − 2E[X]E[X] + E[X]^2 <br />
-= E[X^2] − E[X]^2,
-\end{equation}</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{aligned}
+  & E[(X − E[X])^2] \\
+= & E[X^2 − 2E[X]X + E[X]^2] \\
+= & E[X^2] − 2E[X]E[X] + E[X]^2 \\
+= & E[X^2] − E[X]^2,
+\end{aligned}
+</script></div>
 
 <p>where the second equality follows from linearity of expectations and the fact that <script type="math/tex">E[X]</script> is actually a
 constant with respect to the outer expectation.</p>
@@ -285,14 +297,15 @@ constant with respect to the outer expectation.</p>
 
 <h3 id="discrete-case"><strong>Discrete case</strong>:</h3>
 
-<p>\begin{equation}
-E[g(X)] = \sum_{x \in Val(X)} \mathbf{1}{x \in A}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
-\end{equation}</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+E[g(X)] = \sum_{x \in Val(X)} \mathbf{1} \{x \in A \} P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
+</script></div>
 
 <h3 id="continuous-case"><strong>Continuous case</strong>:</h3>
-<p>\begin{equation}
-E[g(X)] = \int^{\infty}<em>{-\infty} \mathbf{1}{x \in A} f_X(x) dx = \int</em>{x\in A} f_X(x) dx = P(X \in A)
-\end{equation}</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+E[g(X)] = \int_{-\infty}^{\infty} \mathbf{1} \{x \in A \} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
+</script></div>
 
 <h2 id="26-some-common-random-variables">2.6 Some common random variables</h2>
 
@@ -437,9 +450,12 @@ provided <script type="math/tex">f_X(x) \neq 0</script>.</p>
 
 <p>The chain rule we derived earlier for events can be applied to random variables as follows:</p>
 
-<p>\begin{equation}
-p_{X_1, \cdots X_n} (x_1, \cdots, x_n) = p_{X_1} (x_1) p_{X_2 \mid X_1} (x_2 \mid x_1) \cdots p_{X_n \mid X_1, \cdots, X_{n-1}} (x_n \mid x_1, \cdots, x_{n-1})
-\end{equation}</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{aligned}
+  & p_{X_1, \cdots X_n} (x_1, \cdots, x_n) \\
+= & p_{X_1} (x_1) p_{X_2 \mid X_1} (x_2 \mid x_1) \cdots p_{X_n \mid X_1, \cdots, X_{n-1}} (x_n \mid x_1, \cdots, x_{n-1})
+\end{aligned}
+</script></div>
 
 <h2 id="36-bayess-rule">3.6 Bayes’s rule</h2>
 
@@ -490,13 +506,15 @@ E[g(X, Y)] = \int^{\infty}_{-\infty} \int^{\infty}_{-\infty} g(x, y)f_{XY}(x, y)
 Cov[X, Y] = E[(X − E[X])(Y − E[Y])]
 </script></div>
 
-<p>Using an argument similar to that for variance, we can rewrite this as,
+<p>Using an argument similar to that for variance, we can rewrite this as,</p>
+<div class="mathblock"><script type="math/tex; mode=display">
 \begin{aligned}
-Cov[X, Y] &amp; = E[(X − E[X])(Y − E[Y])] <br />
-&amp; = E[XY − XE[Y] − Y E[X] + E[X]E[Y]] <br />
-&amp; = E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y] <br />
-&amp; = E[XY] − E[X]E[Y].
-\end{aligned}</p>
+Cov[X, Y] & = E[(X − E[X])(Y − E[Y])] \\
+& = E[XY − XE[Y] − Y E[X] + E[X]E[Y]] \\
+& = E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y] \\
+& = E[XY] − E[X]E[Y].
+\end{aligned}
+</script></div>
 
 <p>Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that <script type="math/tex">E[X]</script> and <script type="math/tex">E[Y]</script> are actually constants which can be pulled out of the expectation. When <script type="math/tex">Cov[X, Y] = 0</script>, we say that <script type="math/tex">X</script> and <script type="math/tex">Y</script> are uncorrelated.</p>
 
