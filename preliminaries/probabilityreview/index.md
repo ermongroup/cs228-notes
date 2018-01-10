@@ -51,10 +51,6 @@ P(S_1 \cap S_2) = P(S_1) P(S_2 | S_1)
 
 In general, it is derived by applying the definition of conditional independence multiple times, as in the following example
 
-\begin{equation}
-P(S_1 \cap S_2 \cap S_3 \cap S_4) =  P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) = P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) = P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
-\end{equation}
-
 {% math %}
 \begin{aligned}
 P(S_1 \cap S_2 \cap S_3 \cap S_4) & =  P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
@@ -173,12 +169,14 @@ The variance of a random variable $$X$$ is a measure of how concentrated the dis
 
 Using the **properties** in the previous section, we can derive an alternate expression for the variance:
 
-\begin{equation}
+{% math %}
+\begin{aligned}
 E[(X − E[X])^2] \\
 = E[X^2 − 2E[X]X + E[X]^2] \\
 = E[X^2] − 2E[X]E[X] + E[X]^2 \\
 = E[X^2] − E[X]^2,
-\end{equation}
+\end{aligned}
+{% endmath %}
 
 where the second equality follows from linearity of expectations and the fact that $$E[X]$$ is actually a
 constant with respect to the outer expectation.
@@ -204,8 +202,9 @@ E[g(X)] = \sum_{x \in Val(X)} \mathbf{1}\{x \in A\}P_X(x)dx = \sum_{x \in A} P_X
 \end{equation}
 
 ### **Continuous case**:
+
 \begin{equation}
-E[g(X)] = \int^{\infty}_{-\infty} \mathbf{1}\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
+E[g(X)] = \int_{-\infty}^{\infty} \mathbf{1}\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
 \end{equation}
 
 
@@ -405,12 +404,14 @@ Cov[X, Y] = E[(X − E[X])(Y − E[Y])]
 {% endmath %}
 
 Using an argument similar to that for variance, we can rewrite this as,
+{% math %}
 \begin{aligned}
 Cov[X, Y] & = E[(X − E[X])(Y − E[Y])] \\
 & = E[XY − XE[Y] − Y E[X] + E[X]E[Y]] \\
 & = E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y] \\
 & = E[XY] − E[X]E[Y].
 \end{aligned}
+{% endmath %}
 
 Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$E[X]$$ and $$E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
 
