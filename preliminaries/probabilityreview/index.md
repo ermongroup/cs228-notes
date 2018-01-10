@@ -31,7 +31,9 @@ These three **properties** are called the **Axioms of Probability**.
 ## 1.1 Conditional probability
 
 Let $$B$$ be an event with non-zero probability. The conditional probability of any event $$A$$ given $$B$$ is defined as
-$$ P(A \mid B) = \frac {P(A \cap B)}{P(B)}$$.
+\begin{equation}
+P(A \mid B) = \frac {P(A \cap B)}{P(B)}.
+\end{equation}
 In other words, $$P(A \mid B)$$ is the probability measure of the event $$A$$ after observing the occurrence of
 event $$B$$. 
 
@@ -202,13 +204,13 @@ constant with respect to the outer expectation.
 ### **Discrete case**:
 
 \begin{equation}
-E[g(X)] = \sum_{x \in Val(X)} \mathbf{1}\{x \in A\}P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
+E[g(X)] = \sum_{x \in Val(X)} \mathbf{1} \{x \in A \} P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
 \end{equation}
 
 ### **Continuous case**:
 
 \begin{equation}
-E[g(X)] = \int_{-\infty}^{\infty} \mathbf{1}\{x \in A\} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
+E[g(X)] = \int_{-\infty}^{\infty} \mathbf{1} \{x \in A \} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
 \end{equation}
 
 
