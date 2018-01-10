@@ -205,13 +205,13 @@ constant with respect to the outer expectation.
 
 {% math %}
 E[g(X)] = \sum_{x \in Val(X)} \mathbf{1} \{x \in A \} P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
-{% math %}
+{% endmath %}
 
 ### **Continuous case**:
 
 {% math %}
 E[g(X)] = \int_{-\infty}^{\infty} \mathbf{1} \{x \in A \} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
-{% math %}
+{% endmath %}
 
 
 
