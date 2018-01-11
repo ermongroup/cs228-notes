@@ -3,20 +3,20 @@ layout: post
 title: Real World Applications
 ---
 
-Although probabilistic graphical models may seem like a very theoretical field, the applications of it are widespread. These concepts stem from the ability to draw conclusions from data or existing representations. Here, we will look into some of the ways probabilistic models are used.
+Probabilistic graphical models have numerous real-world applications, of which we give a brief overview here.
 
-# Image Models
+# Probabilistic Models of Images
 
-Images serve as a great example of how a probabilistic model can serve as a good base for other applications. Let's take the case of $$p(x)$$, where $$p(x)$$ is the probability distribution over images (a matrix of pixels) that assigns high probability to images that look realistic and low probability to everything else. Given this model, there are a number of tasks that can be solved:  
+Consider a distribution $$p(x)$$ over images (a matrix of pixels) that assigns high probability to images that look realistic and low probability to everything else. Given such model, we can solve a wide array of interesting tasks.
 
-## Sampling
+## Image Generation
 
-Suppose we are able to learn a [probability distribution](https://arxiv.org/abs/1710.10196) that assigns high probability to images that look like bedrooms (based on some training data):
+[Radford et al.](https://arxiv.org/abs/1710.10196) train a probabilistic model $$ p(x) $$ that assigns high probability to images that look like bedrooms (based on some training data):
 
 **Training Data**<br /> 
 ![bedroom1](bedroominpainting1.png)<br /> 
 
-If we sample $$x \sim p(x)$$, we are **generating** new (realistic) images: 
+If we sample $$x \sim p(x)$$, we are **generating** new (realistic) images. 
 
 **Generated Data**<br /> 
 ![bedroom2](bedroominpainting2.png)
@@ -28,7 +28,7 @@ Similiarly, we can learn a model for faces or objects:
 
 Note that the images are not perfect and may need to be refined; however, sampling generates images that are very similiar to what one might expect. 
 
-## In Painting
+## In-Painting
 
 Using the same $$p(x)$$, we can also 'fill in the rest of the image'. For example, given $$p(x)$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$p(Image \mid patch)$$ and generate different possible ways of completing the image:
 
@@ -42,13 +42,13 @@ Similarly, given an image corrupted by noise (e.g., an old photograph), we can a
 
 ![Image Denoising](imageDenoising4.png)
 
-# Text Models
+# Language Models
 
-Knowing the probability distribution can also help us with text models. Suppose we can construct a probability distribution $$p(x)$$ over sequences of words or characters $$x$$ that assign high probability to proper (English) sentences. This distribution can be gathered by using articles from Wikipedia. 
+Knowing the probability distribution can also help us model natural langauge utterances. In this case, we want to construct a probability distribution $$p(x)$$ over sequences of words or characters $$x$$ that assigns high probability to proper (English) sentences. This distribution can be gathered by using articles from Wikipedia. 
 
-## Sampling
+## Generation
 
-Using the $$p(x)$$ described above, we can sample from the model and generate new Wikipedia-like articles like the following one:
+We can sample from the model and generate new Wikipedia-like articles like the following one:
 
 ---
 Naturalism and decision for the majority of Arab countries' capitalide was grounded
@@ -75,13 +75,13 @@ was starting to signing a major tripad of aid exile.]]
 
 ## Translation
 
-Suppose that we now create another distribution $$p(x)$$ where the training set is paragraphs that were transcribed in both English and Chinese. We can use the model to generate an English sentence conditioned on the corresponding Chinese one (translation): 
+Suppose that we have gathered a training set of paragraphs that were transcribed in both English and Chinese. We can build a probabilistic mode $$ p(y|x) $$ to generate an English sentence $$ y $$ conditioned on the corresponding Chinese sentence $$ x $$; this is an instance of *machine translation*.
 
 ![Neural Machine Translation](nmt-model-fast.gif)
 
 # Audio Models
 
-Like we did for NLP and images, we can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sounds like human speech. We can then:
+We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sound like human speech.
 
 ## Upsampling or super-resolution
 
@@ -107,7 +107,7 @@ In the non-theoretical world, probabilistic models are often used to model commu
 
 ## Computational Biology
 
-Graphical models are often used in computational biology. For example, given a model of how DNA sequences evolve over time, it is possible to reconstruct a phylogenetic tree from DNA sequences of current species.
+Graphical models are also widely used in computational biology. For example, given a model of how DNA sequences evolve over time, it is possible to reconstruct a phylogenetic tree from DNA sequences of a given set of species.
 ![philo](philo.png)
 
 ## Ecology
