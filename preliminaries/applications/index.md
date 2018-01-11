@@ -26,7 +26,7 @@ Similiarly, we can learn a model for faces or objects:
 ![faces1](progressiveGAN.png)
 ![faces1](pnpgan.png) 
 
-Note that the model is not perfect and hence the images are not perfect and may need to be refined. In the above examples, some images do not represent the objects correctly; however, sampling generates images that are very similiar to what one might expect. 
+Note that the images are not perfect and may need to be refined; however, sampling generates images that are very similiar to what one might expect. 
 
 ## In Painting
 
