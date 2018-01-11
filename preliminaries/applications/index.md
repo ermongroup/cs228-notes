@@ -3,11 +3,11 @@ layout: post
 title: Real World Applications
 ---
 
-Although probabilistic graphical models may seem like a very theoretical field, the applications of it are widespread. The concepts stem from the ability to draw conclusions from data or an existing representation. Here we will look into many some of the ways probabilistic models are used in the real world. 
+Although probabilistic graphical models may seem like a very theoretical field, the applications of it are widespread. The concepts stem from the ability to draw conclusions from data or existing representations. Here, we will look into some of the ways probabilistic models are used.
 
 # Image Models
 
-Images serve as a great example of how a probabilistic model can serve as a good base for other applications. Let's take the case of $$p(x)$$, where $$p(x)$$ is the probability distribution over images (a matrix of pixels) that assigns high probability to images that look realistic, and low probability to everything else. Given this model, there are a number of tasks that can be solved:  
+Images serve as a great example of how a probabilistic model can serve as a good base for other applications. Let's take the case of $$p(x)$$, where $$p(x)$$ is the probability distribution over images (a matrix of pixels) that assigns high probability to images that look realistic and low probability to everything else. Given this model, there are a number of tasks that can be solved:  
 
 ## Sampling
 
@@ -26,11 +26,11 @@ Similiarly, we can learn a model for faces or objects:
 ![faces1](progressiveGAN.png)
 ![faces1](pnpgan.png) 
 
-Note that the models are not perfect and may need to be refined. In the above examples, some images do not represent the objects correctly; however sampling generates images that are very similiar to the what one might expect. 
+Note that the model is not perfect and hence the images are not perfect and may need to be refined. In the above examples, some images do not represent the objects correctly; however, sampling generates images that are very similiar to what one might expect. 
 
 ## In Painting
 
-Using the same $$p(x)$$, we can also 'fill in the rest of the image'. For example, given $$p(x)$$ and a patch of an existing image (e.g., a piece of a photograph), we sample from $$p(Image \mid patch)$$ and generate different possible ways of completing the image:
+Using the same $$p(x)$$, we can also 'fill in the rest of the image'. For example, given $$p(x)$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$p(Image \mid patch)$$ and generate different possible ways of completing the image:
 
 ![inpainting2](inpainting3.png)
 
