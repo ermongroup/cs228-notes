@@ -3,7 +3,7 @@ layout: post
 title: Real World Applications
 ---
 
-Although probabilistic graphical models may seem like a very theoretical field, the applications of it are widespread. The concepts stem from the ability to draw conclusions from data or existing representations. Here, we will look into some of the ways probabilistic models are used.
+Although probabilistic graphical models may seem like a very theoretical field, the applications of it are widespread. These concepts stem from the ability to draw conclusions from data or existing representations. Here, we will look into some of the ways probabilistic models are used.
 
 # Image Models
 
