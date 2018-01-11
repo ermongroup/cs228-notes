@@ -3,14 +3,15 @@ layout: post
 title: Real World Applications
 ---
 
+Although probabilistic graphical models may seem like a very theoretical field, the applications of it are widespread. The concepts stem from the ability to draw conclusions from data or an existing representation. Here we will look into many some of the ways probabilistic models are used in the real world. 
+
 # Image Models
 
-Suppose we are able to learn a probability distribution $$p(x)$$ over images (a matrix of pixels) that assigns high probability to images that look realistic, and low probability to everything else. Given this model, there are a number of tasks that can be solved:  
-
+Images serve as a great example of how a probabilistic model can serve as a good base for other applications. Let's take the case of $$p(x)$$, where $$p(x)$$ is the probability distribution over images (a matrix of pixels) that assigns high probability to images that look realistic, and low probability to everything else. Given this model, there are a number of tasks that can be solved:  
 
 ## Sampling
 
-Suppose we are somehow able to learn a probability distribution that assigns high probability to images that look like bedrooms (based on some training data):
+Suppose we are able to learn a [probability distribution](https://arxiv.org/abs/1710.10196) that assigns high probability to images that look like bedrooms (based on some training data):
 
 **Training Data**<br /> 
 ![bedroom1](bedroominpainting1.png)<br /> 
@@ -20,19 +21,16 @@ If we sample $$x \sim p(x)$$, we are **generating** new (realistic) images:
 **Generated Data**<br /> 
 ![bedroom2](bedroominpainting2.png)
 
-If we train the model on human faces, we can generate new ones:
+Similiarly, we can learn a model for faces or objects:
 
 ![faces1](progressiveGAN.png)
+![faces1](pnpgan.png) 
 
-[Progressive Growing of GANs for Improved Quality, Stability, and Variation](https://arxiv.org/abs/1710.10196)
-
-Other examples:
-
-![faces1](pnpgan.png)
+Note that the models are not perfect and may need to be refined. In the above examples, some images do not represent the objects correctly; however sampling generates images that are very similiar to the what one might expect. 
 
 ## In Painting
 
-Suppose we have our probability distribution $$p(x)$$, and a patch of an existing image (e.g., a piece of a photograph).  If we sample from $$p(Image \mid patch)$$, we will generate different possible ways of completing the image:
+Using the same $$p(x)$$, we can also 'fill in the rest of the image'. For example, given $$p(x)$$ and a patch of an existing image (e.g., a piece of a photograph), we sample from $$p(Image \mid patch)$$ and generate different possible ways of completing the image:
 
 ![inpainting2](inpainting3.png)
 
@@ -40,17 +38,17 @@ Note the importance of a probabilistic model that captures uncertainty: there co
 
 ## Image Denoising
 
-Given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like
+Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like:
 
 ![Image Denoising](imageDenoising4.png)
 
 # Text Models
 
-Suppose we can construct a probability distribution $$p(x)$$ over sequences of words or characters $$x$$ that assigns high probability to (English) sentences.
+Knowing the probability distribution can also help us with text models. Suppose we can construct a probability distribution $$p(x)$$ over sequences of words or characters $$x$$ that assign high probability to proper (English) sentences. This distribution can be gathered by using articles from Wikipedia. 
 
 ## Sampling
 
-Suppose we use Wikipedia as our training data, and learn a model $$p(x)$$ based on it. We can then sample from the model, generating new Wikipedia-like articles like the following one:
+Using the $$p(x)$$ described above, we can sample from the model and generate new Wikipedia-like articles like the following one:
 
 ---
 Naturalism and decision for the majority of Arab countries' capitalide was grounded
@@ -77,52 +75,53 @@ was starting to signing a major tripad of aid exile.]]
 
 ## Translation
 
-Suppose we have learned probabilistic models for both English and Chinese. We can use the model to generate an English sentence conditioned on the corresponding Chinese one (translation): 
+Suppose that we now create another distribution $$p(x)$$ where the training set is paragraphs that were transcribed in both English and Chinese. We can use the model to generate an English sentence conditioned on the corresponding Chinese one (translation): 
 
 ![Neural Machine Translation](nmt-model-fast.gif)
 
 # Audio Models
 
-Suppose we can construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sounds like human speech.
+Like we did for NLP and images, we can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sounds like human speech. We can then:
 
 ## Upsampling or super-resolution
 
-Given a low resolution version of an audio signal, we can attempt to increase its resolution
+Given a low resolution version of an audio signal, we can attempt to increase its resolution. 
 
 [Super resolution of audio signals demo](https://kuleshov.github.io/audio-super-res/)
 
 ## Speech synthesis
 
-As before, by sampling from the model we can generate (synthesize) speech signals.
+As we did in image processing, we can also sample the model and generate (synthesize) speech signals.
 
 [Super resolution of audio signals demo](https://deepmind.com/blog/wavenet-generative-model-raw-audio/)
 
 ## Speech recognition
-Given a (joint) model of speech signals and language (text), we can attempt to infer spoken words from audio signals
+Given a (joint) model of speech signals and language (text), we can attempt to infer spoken words from audio signals.
 ![Speech](speech.png)
 
-# Error Correcting Codes
-Probabilistic models are often used to model communication channels (e.g., Ethernet or Wifi), i.e., the fact that if you send a message over a channel, you might get something different on the other end due to noise. Error correcting codes and techniques based on graphical models are used to detect and correct communication errors.
+# Applications in Science Today
+## Error Correcting Codes
+In the non-theoretical world, probabilistic models are often used to model communication channels (e.g., Ethernet or Wifi). i.e., if you send a message over a channel, you might get something different on the other end due to noise. Error correcting codes and techniques based on graphical models are used to detect and correct communication errors.
 ![codes](Picture1.png)
 
 
-# Computational Biology
+## Computational Biology
 
-Graphical models are often used in computational biology. For example, given a model of how DNA sequences evolve over time, it is possible to reconstruct a phylogenetic tree from DNA sequences of current species
+Graphical models are often used in computational biology. For example, given a model of how DNA sequences evolve over time, it is possible to reconstruct a phylogenetic tree from DNA sequences of current species.
 ![philo](philo.png)
 
-# Spatio-temporal models
-
 ## Ecology
-Graphical models are used to study phenomena that evolve over space and time, capturing spatial and temporal dependencies. For example, they can be used to study bird migrations
+Graphical models are used to study phenomena that evolve over space and time, capturing spatial and temporal dependencies. For example, they can be used to study bird migrations.
 
 ![birds](bird_new.gif)
 
 ## Economics
 
-Graphical models can be used to model spatial distributions of quantities of interests (e.g., assets or expenditures based measures of wealth)
+Graphical models can be used to model spatial distributions of quantities of interests (e.g., assets or expenditures based measures of wealth).
 ![birds](uganda.png.jpg)
 
+
+The last two applications are what are known as spatio-temporal models. They depend on data that is collected across time as well as space.
 
 <br/>
 
