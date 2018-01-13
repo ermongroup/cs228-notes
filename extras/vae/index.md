@@ -184,7 +184,7 @@ This algorithm is applicable to any deep generative model $$p_\theta$$ with late
 A variational auto-encoder uses the AEVB algorithm to learn a specific model $$p$$ using a particular encoder $$q$$. The model $$p$$ is parametrized as
 {%math%}
 \begin{align*}
-p(x\mid z) & = \mathcal{N}(z; \vec\mu(z), \vec \sigma(z) \odot I) \\
+p(x\mid z) & = \mathcal{N}(x; \vec\mu(z), \vec \sigma(z) \odot I) \\
 p(z) & = \mathcal{N}(z; 0, I),
 \end{align*}
 {%endmath%}
