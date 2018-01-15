@@ -266,7 +266,7 @@ This algorithm is applicable to any deep generative model <script type="math/tex
 <p>A variational auto-encoder uses the AEVB algorithm to learn a specific model <script type="math/tex">p</script> using a particular encoder <script type="math/tex">q</script>. The model <script type="math/tex">p</script> is parametrized as</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \begin{align*}
-p(x\mid z) & = \mathcal{N}(z; \vec\mu(z), \vec \sigma(z) \odot I) \\
+p(x\mid z) & = \mathcal{N}(x; \vec\mu(z), \vec \sigma(z) \odot I) \\
 p(z) & = \mathcal{N}(z; 0, I),
 \end{align*}
 </script></div>
