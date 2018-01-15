@@ -171,7 +171,7 @@ Intuitively, the expectation of $$g(X)$$ can be thought of as a “weighted aver
 
 ## 2.5 Variance
 
-The variance of a random variable $$X$$ is a measure of how concentrated the distribution of a random variable $$X$$ is around its mean. Formally, the variance of a random variable $$X$$ is defined as $$Var[X] = E[(X − E[X]^2]$$.
+The variance of a random variable $$X$$ is a measure of how concentrated the distribution of a random variable $$X$$ is around its mean. Formally, the variance of a random variable $$X$$ is defined as $$Var[X] = E[(X − E[X])^2]$$.
 
 Using the **properties** in the previous section, we can derive an alternate expression for the variance:
 
