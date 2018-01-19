@@ -96,10 +96,10 @@ We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed i
 
 For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
 
-$$\boldsymbol Q$$, $$\boldsymbol W$$ , $$\boldsymbol O$$ can also represent set of nodes in $$G$$, in which case $$\boldsymbol Q$$ and $$\boldsymbol W$$ are $$d$$-separated given $$\boldsymbol O$$ if there is no *active path* between *any* node $$Q \in \boldsymbol Q$$ and $$W \in \boldsymbol W$$ given $$\boldsymbol O$$.
+When $$\boldsymbol Q$$ and $$\boldsymbol W$$ contain set of nodes, we say that $$\boldsymbol Q$$ and $$\boldsymbol W$$ are $$d$$-separated given $$\boldsymbol O$$ if there is no *active path* between *any* node $$Q \in \boldsymbol Q$$ and $$W \in \boldsymbol W$$ given $$\boldsymbol O$$.
 
 The notion of $$d$$-separation is  useful, because it lets us describe a large fraction of the dependencies that hold in our model.
-Let {%m%}I(G) = \{(Q \perp W \mid  O) : \text{$$Q,W$$ are $$d$$-sep given $$O$$}\}{%em%} be a set of variables that are $$d$$-separated in $$G$$.
+Let {%m%}I(G) = \{(X \perp Y \mid  Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}{%em%} be a set of variables that are $$d$$-separated in $$G$$.
 
 **Fact**{% sidenote 1 'We will not formally prove this, but the intuition is that if $$X,Y$$ and $$Y,Z$$ are mutually dependent, so are $$X,Z$$. Thus we can look at adjacent nodes and propagate dependencies according to the local dependency structures outlined above.'%}:
 If $$p$$ factorizes over $$G$$, then $$I(G) \subseteq I(p)$$. In this case, we say that $$G$$ is an $$I$$-map (independence map) for $$p$$
