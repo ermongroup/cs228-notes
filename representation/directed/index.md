@@ -96,7 +96,7 @@ We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed i
 
 For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
 
-$$\boldsymbol Q$$, $$\boldsymbol W$$ , $$\boldsymbol O$$ can also represent set of nodes in $$G$$, in which case $$\boldsymbol Q$$ and $$\boldsymbol W$$ are $$d$$-separated given $$\boldsymbol O$$ if there is no *active path* between any node $$Q \in \boldsymbol Q$$ and $$W \in \boldsymbol W$$ given $$\boldsymbol O$$.
+$$\boldsymbol Q$$, $$\boldsymbol W$$ , $$\boldsymbol O$$ can also represent set of nodes in $$G$$, in which case $$\boldsymbol Q$$ and $$\boldsymbol W$$ are $$d$$-separated given $$\boldsymbol O$$ if there is no *active path* between *any* node $$Q \in \boldsymbol Q$$ and $$W \in \boldsymbol W$$ given $$\boldsymbol O$$.
 
 The notion of $$d$$-separation is  useful, because it lets us describe a large fraction of the dependencies that hold in our model.
 Let {%m%}I(G) = \{(Q \perp W \mid  O) : \text{$$Q,W$$ are $$d$$-sep given $$O$$}\}{%em%} be a set of variables that are $$d$$-separated in $$G$$.
