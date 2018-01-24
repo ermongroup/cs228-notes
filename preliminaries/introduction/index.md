@@ -28,7 +28,7 @@ Often, the real world that we are trying to model is very complicated; in partic
 p(x,y). 
 {% endmath %}
 
-Given such a model, we could ask questions such as "what is the probability that house prices will rise over the next five years?", or "given that the house costs $100,000, what is the most probability that it has three bedrooms?" The probabilistic aspect of modeling is very important, because:
+Given such a model, we could ask questions such as "what is the probability that house prices will rise over the next five years?", or "given that the house costs $100,000, what is the probability that it has three bedrooms?" The probabilistic aspect of modeling is very important, because:
 
 - Typically, we cannot perfectly predict the future. We often don't have enough knowledge about the world, and often the world itself is stochastic.
 - We need to assess the confidence of our predictions; often, predicting a single value is not enough, we need the system to output its beliefs about what's going on in the world.
@@ -39,7 +39,7 @@ In this course, we will study principled ways of reasoning about uncertainty and
 - What are the tradeoffs between computational complexity and the richness of a probabilistic model?
 - What is the best model for inferring facts about the future, given a fixed dataset and computational budget?
 - How does one combine prior knowledge with observed evidence in a principled way to make predictions?
-- How can we rigorously analyze whether $$A$$ is the cause of $$B$$ or vice versa?
+- How can we rigorously analyze whether $$A$$ is the cause of $$B$$, or vice versa?
 
 In addition, we will also see many examples of how to apply probabilistic techniques to various problems, such as disease prediction, image understanding, language analysis, etc.
 
@@ -47,9 +47,9 @@ In addition, we will also see many examples of how to apply probabilistic techni
 
 To get a first taste of the challenges that lie ahead of us, consider a simple application of probabilistic modeling: spam classification.
 
-Suppose we have a model $$p(y,x_1,...,x_n)$$ of word occurrences in spam and non-spam mail. Each binary variable $$x_i$$ encodes whether the $$i$$-th English word is present in the email; the binary variable $$y$$ indicates whether the email is spam. In order to classify a new email, we may look at the probability {%m%} P(y=1 | x_1,...,x_n) {%em%}.
+Suppose we have a model $$\pt(y,x_1,...,x_n)$$ of word occurrences in spam and non-spam mail. Each binary variable $$x_i$$ encodes whether the $$i$$-th English word is present in the email; the binary variable $$y$$ indicates whether the email is spam. In order to classify a new email, we may look at the probability {%m%} P(y=1 | x_1,...,x_n) {%em%}.
 
-What is the "size" of the function $$\pt$$ that we just defined? Our model defines a probability in $$[0,1]$$ for each combination of inputs $$y,x_1,...,x_n$$;  specifying all these probabilities will require us to write down a staggering $$2^{n+1}$$ different values, one for each assignment to our $$n+1$$ binary variables. Since $$n$$ is the size of the English vocabulary, this is clearly impractical from both a computational (how do we store this large list?) and from a statistical (how do we efficiently estimates the parameters from limited data?) point of view. More generally, our example illustrates one of the main challenges that this course will deal with: probabilities are inherently exponentially-sized objects; the only way in which we can manipulate them is by making simplifying assumptions about their structure.
+What is the "size" of the function $$\pt$$ that we just defined? Our model defines a probability in $$[0,1]$$ for each combination of inputs $$y,x_1,...,x_n$$;  specifying all these probabilities will require us to write down a staggering $$2^{n+1}$$ different values, one for each assignment to our $$n+1$$ binary variables. Since $$n$$ is the size of the English vocabulary, this is clearly impractical from both a computational (how do we store this large list?) and from a statistical (how do we efficiently estimate the parameters from limited data?) point of view. More generally, our example illustrates one of the main challenges that this course will deal with: probabilities are inherently exponentially-sized objects; the only way in which we can manipulate them is by making simplifying assumptions about their structure.
 
 The main simplifying assumption that we will make in this course is that of *conditional independence* among the variables.
 For example, suppose that the English words are all conditionally independent given $$Y$$. In other words, the probabilities of seeing two words are independent given that a message is spam. This is clearly an oversimplification, as the probabilities of the words "pills" and "buy" are clearly correlated; however, for most words (e.g. "penguin" and "muffin") the probabilities will indeed be independent, and our assumption will not significantly degrade the accuracy of the model.
