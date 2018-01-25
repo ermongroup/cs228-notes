@@ -96,6 +96,7 @@ We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed i
 
 For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
 
+A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/dSepApp) for testing $$d$$-separation. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
 
 The notion of $$d$$-separation is  useful, because it lets us describe a large fraction of the dependencies that hold in our model.
 Let {%m%}I(G) = \{(X \perp Y \mid  Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}{%em%} be a set of variables that are $$d$$-separated in $$G$$.
