@@ -105,7 +105,7 @@ p(x_1,x_2,...,x_n) = p(x_1) p(x_2\mid x_1) \cdots p(x_n\mid x_{n-1},...,x_2,x_1)
 <div class="mathblock"><script type="math/tex; mode=display"> 
 p(x_i \mid  x_{i-1}...x_1) = p(x_i \mid  x_{A_i}). 
 </script></div>
-<p>For example, in a model with five variables, we may choose to approximate the factor <span>​<script type="math/tex">p(x_5\mid x_4, x_3, x_2, x_1)</script></span> with <span>​<script type="math/tex">p(x_5 \mid  x_4, x_3)</script></span>. In this case, we write <script type="math/tex">x_{A_i} = \{x_4, x_3\}</script>.</p>
+<p>For example, in a model with five variables, we may choose to approximate the factor <span>​<script type="math/tex">p(x_5\mid x_4, x_3, x_2, x_1)</script></span> with <span>​<script type="math/tex">p(x_5 \mid  x_4, x_3)</script></span>. In this case, we write <script type="math/tex">x_{A_5} = \{x_4, x_3\}</script>.</p>
 
 <p>When the variables are discrete (which will be often be the case in the problem we will consider), we may think of the factors <span>​<script type="math/tex">p(x_i\mid x_{A_i})</script></span> as <em>probability tables</em>, in which rows correspond to assignments to <script type="math/tex">x_{A_i}</script> and columns correspond to values of <script type="math/tex">x_i</script>; the entries contain the actual probabilities <span>​<script type="math/tex">p(x_i\mid x_{A_i})</script></span>. If each variable takes <script type="math/tex">d</script> values and has at most <script type="math/tex">k</script> ancestors, then the entire table will contain at most <script type="math/tex">O(d^{k+1})</script> entries. Since we have one table per variable, the entire probability distribution can be compactly described with only <script type="math/tex">O(nd^{k+1})</script> parameters (compared to <script type="math/tex">O(d^n)</script> with a naive approach).</p>
 
@@ -177,6 +177,8 @@ This question is important for two reasons: we should know precisely what model 
 </ul>
 
 <p>For example, in the graph below, <script type="math/tex">X_1</script> and <script type="math/tex">X_6</script> are <script type="math/tex">d</script>-separated given <script type="math/tex">X_2, X_3</script>. However, <script type="math/tex">X_2, X_3</script> are not <script type="math/tex">d</script>-separated given <script type="math/tex">X_1, X_6</script>, because we can find an active path <script type="math/tex">(X_2, X_6, X_5, X_3)</script></p>
+
+<p>A former CS228 student has created an <a href="http://pgmlearning.herokuapp.com/dSepApp">interactive web simulation</a> for testing <script type="math/tex">d</script>-separation. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.</p>
 
 <p>The notion of <script type="math/tex">d</script>-separation is  useful, because it lets us describe a large fraction of the dependencies that hold in our model.
 Let <span>​<script type="math/tex">I(G) = \{(X \perp Y \mid  Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}</script></span> be a set of variables that are <script type="math/tex">d</script>-separated in <script type="math/tex">G</script>.</p>
