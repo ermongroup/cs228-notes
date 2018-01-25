@@ -21,7 +21,7 @@ This chapter covers the first exact inference algorithm, *variable elimination*.
 
 ## An illustrative example
 
-Consider first the problem of marginal inference. Suppose for simplicity that we a given a chain Bayesian network, i.e. a probability of the form
+Consider first the problem of marginal inference. Suppose for simplicity that we are given a chain Bayesian network, i.e. a probability of the form
 {% math %}
 p(x_1,...,x_n) = p(x_1) \prod_{i=2}^n p(x_i \mid x_{i-1}).
 {% endmath %}
