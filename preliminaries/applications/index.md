@@ -81,7 +81,7 @@ Suppose that we have gathered a training set of paragraphs that were transcribed
 
 # Audio Models
 
-We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ overe audio signals that assigns high probability to ones that sound like human speech.
+We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sound like human speech.
 
 ## Upsampling or super-resolution
 
