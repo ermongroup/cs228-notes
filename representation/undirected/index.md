@@ -83,7 +83,7 @@ Recall that in the case of Bayesian networks, we defined a set of independencies
 {% marginfigure 'markovblanket' 'assets/img/markovblanket.png' 'In an MRF, a node $$X$$ is independent from the rest of the graph given its neighbors (which are reffered to at the Markov blanket of $$X$$.'%} 
 What independencies can be then described by an undirected MRF? The answer here is very simple and intuitive: variables $$x,y$$ are dependent if they are connected by a path of unobserved variables. However, if $$x$$'s neighbors are all observed, then $$x$$ is independent of all the other variables, since they influence $$x$$ only via its neighbors.
 
-In particular, if a set of observed variables forms a cutset between two halves of the graph, then variables in one half are independent from ones in the other.
+In particular, if a set of observed variables forms a cut-set between two halves of the graph, then variables in one half are independent from ones in the other.
 
 {% maincolumn 'assets/img/cutset.png' '' %}
 
