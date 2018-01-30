@@ -129,7 +129,7 @@ Here is an example of an MRF with graph $$G$$ and junction tree $$T$$. MRF poten
 
 Note that we may always find a trivial junction tree with one node containing all the variables in the original graph. However, such trees are useless because they will not result in efficient marginalization algorithms. 
 
-Optimal trees are one that make the clusters as small and modular as possible; unfortunately, it is again NP-hard to find the optimal tree. We will see below some practical ways in which we can find good junction trees 
+Optimal trees are one that make the clusters as small and modular as possible; unfortunately, it is again NP-hard to find the optimal tree. We will see below some practical ways in which we can find good junction trees. 
 
 A special case when we *can* find the optimal junction tree is when $$G$$ itself is a tree. In that case, we may define a cluster for each edge in the tree. It is not hard to check that the result satisfies the above definition.
 
