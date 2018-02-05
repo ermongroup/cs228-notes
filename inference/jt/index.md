@@ -208,7 +208,7 @@ We keep performing these updates for a fixed number of steps or until convergenc
 
 This heuristic approach often works surprisingly well in practice.
 {% marginfigure 'mp1' 'assets/img/lbp-performance.png' 'Marginals obtained via LBP compared to true marginals obtained from the JT algorithm on an intensive care monitoring task. Results are close to the diagonal, hence very similar.'%}
-In general, however, it may not converges and its analysis is still an area of active research. We know for example that it provably converges on trees and on graphs with at most one cycle. If the method does converge, its beliefs may not necessarily equal the true marginals, although very often in practice they will be close.
+In general, however, it may not converge and its analysis is still an area of active research. We know for example that it provably converges on trees and on graphs with at most one cycle. If the method does converge, its beliefs may not necessarily equal the true marginals, although very often in practice they will be close.
 
 We will return to this algorithm later in the course and try to explain it as a special case of *variational inference* algorithms.
 
