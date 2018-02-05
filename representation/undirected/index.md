@@ -58,7 +58,7 @@ Thus, given a graph $$G$$, our probability distribution may contain factors whos
 
 {% marginfigure 'nb1' 'assets/img/mrf2.png' 'Examples of directed models for our four-variable voting example. None of them can accurately express our prior knowledge about the dependency structure among the variables.'%}
 In our earlier voting example, we had a distribution over $$A,B,C,D$$ that satisfied $$A \perp C \mid  \{B,D\}$$ and $$B \perp D \mid  \{A,C\}$$ (because only friends directly influence a person's vote). We can easily check by counter-example that these independencies cannot be perfectly represented by a Bayesian network.
-However, the MRF turns out to a perfect map for this distribution.
+However, the MRF turns out to be a perfect map for this distribution.
 
 More generally, MRFs have several advantages over directed models:
 
