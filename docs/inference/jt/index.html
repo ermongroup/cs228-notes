@@ -104,7 +104,7 @@
 
 <h3 id="a-message-passing-algorithm">A message-passing algorithm</h3>
 
-<p>A key question here is how exactly do we compute all the message we need. Notice for example, that the messages to <script type="math/tex">x_k</script> from the side of <script type="math/tex">x_i</script> will need to be recomputed.</p>
+<p>A key question here is how exactly do we compute all the messages we need. Notice for example, that the messages to <script type="math/tex">x_k</script> from the side of <script type="math/tex">x_i</script> will need to be recomputed.</p>
 
 <p>The answer is very simple: a node <script type="math/tex">x_i</script> sends a message to a neighbor <script type="math/tex">x_j</script> whenever it has received messages from all nodes besides <script type="math/tex">x_j</script>. It’s a fun exercise to the reader to show that there will always be a node with a message to send, unless all the messages have been sent out. This will happen after precisely <span>​<script type="math/tex">2|E|</script></span> steps, since each edge can receive messages only twice: once from <script type="math/tex">x_i \to x_j</script>, and once more in the opposite direction.</p>
 
@@ -205,7 +205,7 @@ A junction tree <script type="math/tex">T=(C, E_T)</script> over <script type="m
 
 <p>Note that we may always find a trivial junction tree with one node containing all the variables in the original graph. However, such trees are useless because they will not result in efficient marginalization algorithms.</p>
 
-<p>Optimal trees are one that make the clusters as small and modular as possible; unfortunately, it is again NP-hard to find the optimal tree. We will see below some practical ways in which we can find good junction trees</p>
+<p>Optimal trees are one that make the clusters as small and modular as possible; unfortunately, it is again NP-hard to find the optimal tree. We will see below some practical ways in which we can find good junction trees.</p>
 
 <p>A special case when we <em>can</em> find the optimal junction tree is when <script type="math/tex">G</script> itself is a tree. In that case, we may define a cluster for each edge in the tree. It is not hard to check that the result satisfies the above definition.</p>
 
@@ -284,7 +284,7 @@ m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) 
 
 <p>This heuristic approach often works surprisingly well in practice.
 <label for="mp1" class="margin-toggle">⊕</label><input type="checkbox" id="mp1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/lbp-performance.png" /><br />Marginals obtained via LBP compared to true marginals obtained from the JT algorithm on an intensive care monitoring task. Results are close to the diagonal, hence very similar.</span>
-In general, however, it may not converges and its analysis is still an area of active research. We know for example that it provably converges on trees and on graphs with at most one cycle. If the method does converge, its beliefs may not necessarily equal the true marginals, although very often in practice they will be close.</p>
+In general, however, it may not converge and its analysis is still an area of active research. We know for example that it provably converges on trees and on graphs with at most one cycle. If the method does converge, its beliefs may not necessarily equal the true marginals, although very often in practice they will be close.</p>
 
 <p>We will return to this algorithm later in the course and try to explain it as a special case of <em>variational inference</em> algorithms.</p>
 

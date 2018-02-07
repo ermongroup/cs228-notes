@@ -103,7 +103,7 @@ y = \beta^T x,
 p(x,y). 
 </script></div>
 
-<p>Given such a model, we could ask questions such as “what is the probability that house prices will rise over the next five years?”, or “given that the house costs $100,000, what is the most probability that it has three bedrooms?” The probabilistic aspect of modeling is very important, because:</p>
+<p>Given such a model, we could ask questions such as “what is the probability that house prices will rise over the next five years?”, or “given that the house costs $100,000, what is the probability that it has three bedrooms?” The probabilistic aspect of modeling is very important, because:</p>
 
 <ul>
   <li>Typically, we cannot perfectly predict the future. We often don’t have enough knowledge about the world, and often the world itself is stochastic.</li>
@@ -116,7 +116,7 @@ p(x,y).
   <li>What are the tradeoffs between computational complexity and the richness of a probabilistic model?</li>
   <li>What is the best model for inferring facts about the future, given a fixed dataset and computational budget?</li>
   <li>How does one combine prior knowledge with observed evidence in a principled way to make predictions?</li>
-  <li>How can we rigorously analyze whether <script type="math/tex">A</script> is the cause of <script type="math/tex">B</script> or vice versa?</li>
+  <li>How can we rigorously analyze whether <script type="math/tex">A</script> is the cause of <script type="math/tex">B</script>, or vice versa?</li>
 </ul>
 
 <p>In addition, we will also see many examples of how to apply probabilistic techniques to various problems, such as disease prediction, image understanding, language analysis, etc.</p>
@@ -125,9 +125,9 @@ p(x,y).
 
 <p>To get a first taste of the challenges that lie ahead of us, consider a simple application of probabilistic modeling: spam classification.</p>
 
-<p>Suppose we have a model <script type="math/tex">p(y,x_1,...,x_n)</script> of word occurrences in spam and non-spam mail. Each binary variable <script type="math/tex">x_i</script> encodes whether the <script type="math/tex">i</script>-th English word is present in the email; the binary variable <script type="math/tex">y</script> indicates whether the email is spam. In order to classify a new email, we may look at the probability <span>​<script type="math/tex"> P(y=1 | x_1,...,x_n) </script></span>.</p>
+<p>Suppose we have a model <script type="math/tex">\pt(y,x_1,...,x_n)</script> of word occurrences in spam and non-spam mail. Each binary variable <script type="math/tex">x_i</script> encodes whether the <script type="math/tex">i</script>-th English word is present in the email; the binary variable <script type="math/tex">y</script> indicates whether the email is spam. In order to classify a new email, we may look at the probability <span>​<script type="math/tex"> P(y=1 | x_1,...,x_n) </script></span>.</p>
 
-<p>What is the “size” of the function <script type="math/tex">\pt</script> that we just defined? Our model defines a probability in <script type="math/tex">[0,1]</script> for each combination of inputs <script type="math/tex">y,x_1,...,x_n</script>;  specifying all these probabilities will require us to write down a staggering <script type="math/tex">2^{n+1}</script> different values, one for each assignment to our <script type="math/tex">n+1</script> binary variables. Since <script type="math/tex">n</script> is the size of the English vocabulary, this is clearly impractical from both a computational (how do we store this large list?) and from a statistical (how do we efficiently estimates the parameters from limited data?) point of view. More generally, our example illustrates one of the main challenges that this course will deal with: probabilities are inherently exponentially-sized objects; the only way in which we can manipulate them is by making simplifying assumptions about their structure.</p>
+<p>What is the “size” of the function <script type="math/tex">\pt</script> that we just defined? Our model defines a probability in <script type="math/tex">[0,1]</script> for each combination of inputs <script type="math/tex">y,x_1,...,x_n</script>;  specifying all these probabilities will require us to write down a staggering <script type="math/tex">2^{n+1}</script> different values, one for each assignment to our <script type="math/tex">n+1</script> binary variables. Since <script type="math/tex">n</script> is the size of the English vocabulary, this is clearly impractical from both a computational (how do we store this large list?) and from a statistical (how do we efficiently estimate the parameters from limited data?) point of view. More generally, our example illustrates one of the main challenges that this course will deal with: probabilities are inherently exponentially-sized objects; the only way in which we can manipulate them is by making simplifying assumptions about their structure.</p>
 
 <p>The main simplifying assumption that we will make in this course is that of <em>conditional independence</em> among the variables.
 For example, suppose that the English words are all conditionally independent given <script type="math/tex">Y</script>. In other words, the probabilities of seeing two words are independent given that a message is spam. This is clearly an oversimplification, as the probabilities of the words “pills” and “buy” are clearly correlated; however, for most words (e.g. “penguin” and “muffin”) the probabilities will indeed be independent, and our assumption will not significantly degrade the accuracy of the model.</p>
