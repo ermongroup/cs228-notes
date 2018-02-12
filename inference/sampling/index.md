@@ -26,6 +26,8 @@ Our technique for sampling from multinomials naturally extends to Bayesian netwo
 
 In our earlier model of a student's grade, we would first sample an exam difficulty $$d'$$ and an intelligence level $$i'$$. Then, once we have samples, $$d', i'$$ we generate a student grade $$g'$$ from $$p(g \mid d', i')$$. At each step, we simply perform standard multinomial sampling.
 
+A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/samplingApp) for visualizing Bayesian network forward sampling methods. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
+
 ## Monte Carlo estimation
 
 Sampling from a distribution lets us perform many useful tasks, including marginal and MAP inference, as well as computing integrals of the form
