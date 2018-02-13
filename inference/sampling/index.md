@@ -56,7 +56,7 @@ For example, we may use rejection sampling to compute marginal probabilities of 
 
 Unfortunately, this procedure is very wasteful. If $$p(x=x')$$ equals, say, 1%, then we will discard 99% of all samples.
 
-A better way of computing such integrals is via an approach called *importance sampling*. The main idea is to sample from a distribution $$q$$ (hopefully roughly proportional to $$f \cdot p$$), and then *reweigh* the samples in a principled way, so that their sum still approximates the desired integral.
+A better way of computing such integrals is via an approach called *importance sampling*. The main idea is to sample from a distribution $$q$$ (hopefully roughly proportional to $$f \cdot p$$), and then *reweight* the samples in a principled way, so that their sum still approximates the desired integral.
 
 More formally, suppose we are interested in computing $$\Exp_{x \sim p}[f(x)]$$. We may rewrite this integral as
 {% math %}
