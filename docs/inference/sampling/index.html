@@ -87,7 +87,7 @@
 
 <p>As a warm-up, let’s think for a minute how we might sample from a multinomial distribution with <script type="math/tex">k</script> possible outcomes and associated probabilities <script type="math/tex">\theta_1,...,\theta_k</script>.</p>
 
-<p>Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable form a truly random one. We call such sequences <em>pseudorandom</em>. </span>, such as the uniform distribution over <script type="math/tex">[0,1]</script>.
+<p>Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable from a truly random one. We call such sequences <em>pseudorandom</em>. </span>, such as the uniform distribution over <script type="math/tex">[0,1]</script>.
 All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.</p>
 
 <p>In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into <script type="math/tex">d</script> regions with region <script type="math/tex">i</script> having size <script type="math/tex">\theta_i</script>. We then sample uniformly from <script type="math/tex">[0,1]</script> and return the value of the region in which our sample falls.</p>
@@ -100,6 +100,8 @@ All sampling techniques involve calling some kind of simple subroutine multiple 
 <p>Our technique for sampling from multinomials naturally extends to Bayesian networks with multinomial variables, via a method called <em>ancestral</em> (or <em>forward</em>) sampling. Given a probability <script type="math/tex">p(x_1,...,x_n)</script> specified by a Bayes net, we sample variables in topological order. In other words, we start by sampling the variables with no parents; then we sample from the next generation by conditioning these variables’ CPDs to values sampled at the first step. We proceed like this until the <script type="math/tex">n</script> variables have been sampled.</p>
 
 <p>In our earlier model of a student’s grade, we would first sample an exam difficulty <script type="math/tex">d'</script> and an intelligence level <script type="math/tex">i'</script>. Then, once we have samples, <script type="math/tex">d', i'</script> we generate a student grade <script type="math/tex">g'</script> from <script type="math/tex">p(g \mid d', i')</script>. At each step, we simply perform standard multinomial sampling.</p>
+
+<p>A former CS228 student has created an <a href="http://pgmlearning.herokuapp.com/samplingApp">interactive web simulation</a> for visualizing Bayesian network forward sampling methods. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.</p>
 
 <h2 id="monte-carlo-estimation">Monte Carlo estimation</h2>
 
@@ -129,7 +131,7 @@ A special case of Monte Carlo integration is rejection sampling. We may use it t
 
 <p>Unfortunately, this procedure is very wasteful. If <script type="math/tex">p(x=x')</script> equals, say, 1%, then we will discard 99% of all samples.</p>
 
-<p>A better way of computing such integrals is via an approach called <em>importance sampling</em>. The main idea is to sample from a distribution <script type="math/tex">q</script> (hopefully roughly proportional to <script type="math/tex">f \cdot p</script>), and then <em>reweigh</em> the samples in a principled way, so that their sum still approximates the desired integral.</p>
+<p>A better way of computing such integrals is via an approach called <em>importance sampling</em>. The main idea is to sample from a distribution <script type="math/tex">q</script> (hopefully roughly proportional to <script type="math/tex">f \cdot p</script>), and then <em>reweight</em> the samples in a principled way, so that their sum still approximates the desired integral.</p>
 
 <p>More formally, suppose we are interested in computing <script type="math/tex">\Exp_{x \sim p}[f(x)]</script>. We may rewrite this integral as</p>
 <div class="mathblock"><script type="math/tex; mode=display">
