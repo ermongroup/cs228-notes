@@ -7,7 +7,7 @@ Given a probabilistic model (such as a Bayes net or an MRF), we are interested i
 
 - *Marginal inference*: what is the probability of a given variable in our model after we sum everything else out (e.g. probability of spam vs non-spam)?
 {% math %}
-p(y=1) = \sum_{x_2} \sum_{x_2}  \cdots \sum_{x_n} p(y=1,x_1, x_2, ..., x_n).
+p(y=1) = \sum_{x_1} \sum_{x_2}  \cdots \sum_{x_n} p(y=1,x_1, x_2, ..., x_n).
 {% endmath %}
 - *Maximum a posteriori (MAP) inference*: what is the most likely assignment to the variables in the model (possibly conditioned on evidence).
 {% math %}
