@@ -196,7 +196,7 @@ Loopy belief propagation (LBP) is another technique for performing inference on 
 
 ### Definition for pairwise models
 
-Suppose that we a given an MRF with pairwise potentials{% sidenote 1 'Arbitrary potentials can be handled using an algorithm called LBP on *factor graphs*. We will include this material at some point in the future'%}.
+Suppose that we are given an MRF with pairwise potentials{% sidenote 1 'Arbitrary potentials can be handled using an algorithm called LBP on *factor graphs*. We will include this material at some point in the future'%}.
 The main idea of LBP is to disregard loops in the graph and perform message passing anyway. In other words, given an ordering on the edges, at each time $$t$$ we iterate over a pair of adjacent variables $$x_i, x_j$$ in that order and simply perform the update
 {% math %}
 m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \setminus j} m^{t}_{\ell \to i}(x_i).
