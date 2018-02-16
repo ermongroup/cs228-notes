@@ -49,7 +49,7 @@ Note that the images are not perfect and may need to be refined; however, sampli
 <a id="image-inpainting"></a>
 ### In-Painting
 
-Using the same $$P(x)$$, we can also 'fill in the rest of the image'. For example, given $$P(x)$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$P(Image \mid patch)$$ and generate different possible ways of completing the image:
+Using the same $$P(x)$$, we can also 'fill in the rest of the image'. For example, given $$P(x)$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$P(\text{image} \mid \text{patch})$$ and generate different possible ways of completing the image:
 
 ![inpainting2](inpainting3.png)
 
