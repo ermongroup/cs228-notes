@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Real World Applications</title>
+  <title>Real-World Applications</title>
   <meta name="description" content="Lecture notes for Stanford cs228.">
 
 
@@ -47,7 +47,7 @@
 </header>
 
     <article class="group">
-      <h1>Real world applications</h1>
+      <h1>Real-world applications</h1>
 <p class="subtitle"></p>
 
 
@@ -77,20 +77,52 @@
 </script>
 
 
-<p>Probabilistic graphical models have numerous real-world applications, of which we give a brief overview here.</p>
+<p>Probabilistic graphical models have numerous and diverse real-world applications.  We provide an overview of the following applications of probablistic graphical models, which are just a few examples of their many practical uses.</p>
 
-<h1 id="probabilistic-models-of-images">Probabilistic Models of Images</h1>
+<ul>
+  <li><strong>Images</strong>
+    <ul>
+      <li><a href="#image-generation">Generation</a></li>
+      <li><a href="#image-inpainting">In-Painting</a></li>
+      <li><a href="#image-denoising">Denoising</a></li>
+    </ul>
+  </li>
+  <li><strong>Language</strong>
+    <ul>
+      <li><a href="#text-generation">Generation</a></li>
+      <li><a href="#text-translation">Translation</a></li>
+    </ul>
+  </li>
+  <li><strong>Audio</strong>
+    <ul>
+      <li><a href="#audio-superresolution">Super-Resolution</a></li>
+      <li><a href="#speech-synthesis">Speech Synthesis</a></li>
+      <li><a href="#speech-recognition">Speech Recognition</a></li>
+    </ul>
+  </li>
+  <li><strong>Science</strong>
+    <ul>
+      <li><a href="#error-correcting-codes">Error-Correcting Codes</a></li>
+      <li><a href="#comp-bio">Computational Biology</a></li>
+      <li><a href="#ecology">Ecology</a></li>
+      <li><a href="#economics">Economics</a></li>
+    </ul>
+  </li>
+</ul>
 
-<p>Consider a distribution <script type="math/tex">p(x)</script> over images (a matrix of pixels) that assigns high probability to images that look realistic and low probability to everything else. Given such model, we can solve a wide array of interesting tasks.</p>
+<h2 id="probabilistic-models-of-images">Probabilistic Models of Images</h2>
 
-<h2 id="image-generation">Image Generation</h2>
+<p>Consider a distribution <script type="math/tex">P(x)</script> over images (a matrix of pixels) that assigns high probability to images that look realistic and low probability to everything else. Given such model, we can solve a wide array of interesting tasks.</p>
 
-<p><a href="https://arxiv.org/abs/1710.10196">Radford et al.</a> train a probabilistic model <script type="math/tex">p(x)</script> that assigns high probability to images that look like bedrooms (based on some training data):</p>
+<p><a id="image-generation"></a></p>
+<h3 id="image-generation">Image Generation</h3>
+
+<p><a href="https://arxiv.org/abs/1710.10196">Radford et al.</a> train a probabilistic model <script type="math/tex">P(x)</script> that assigns high probability to images that look like bedrooms (based on some training data):</p>
 
 <p><strong>Training Data</strong><br /> 
 <img src="bedroominpainting1.png" alt="bedroom1" /><br /></p>
 
-<p>If we sample <script type="math/tex">x \sim p(x)</script>, we are <strong>generating</strong> new (realistic) images.</p>
+<p>If we sample <script type="math/tex">x \sim P(x)</script>, we are <strong>generating</strong> new (realistic) images.</p>
 
 <p><strong>Generated Data</strong><br /> 
 <img src="bedroominpainting2.png" alt="bedroom2" /></p>
@@ -102,30 +134,33 @@
 
 <p>Note that the images are not perfect and may need to be refined; however, sampling generates images that are very similiar to what one might expect.</p>
 
-<h2 id="in-painting">In-Painting</h2>
+<p><a id="image-inpainting"></a></p>
+<h3 id="in-painting">In-Painting</h3>
 
-<p>Using the same <script type="math/tex">p(x)</script>, we can also ‘fill in the rest of the image’. For example, given <script type="math/tex">p(x)</script> and a patch of an existing image (e.g., a piece of a photograph), we can sample from <script type="math/tex">p(Image \mid patch)</script> and generate different possible ways of completing the image:</p>
+<p>Using the same <script type="math/tex">P(x)</script>, we can also ‘fill in the rest of the image’. For example, given <script type="math/tex">P(x)</script> and a patch of an existing image (e.g., a piece of a photograph), we can sample from <script type="math/tex">P(\text{image} \mid \text{patch})</script> and generate different possible ways of completing the image:</p>
 
 <p><img src="inpainting3.png" alt="inpainting2" /></p>
 
 <p>Note the importance of a probabilistic model that captures uncertainty: there could be multiple ways to complete the image!</p>
 
-<h2 id="image-denoising">Image Denoising</h2>
+<p><a id="image-denoising"></a></p>
+<h3 id="image-denoising">Image Denoising</h3>
 
 <p>Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like:</p>
 
 <p><img src="imageDenoising4.png" alt="Image Denoising" /></p>
 
-<h1 id="language-models">Language Models</h1>
+<h2 id="language-models">Language Models</h2>
 
-<p>Knowing the probability distribution can also help us model natural langauge utterances. In this case, we want to construct a probability distribution <script type="math/tex">p(x)</script> over sequences of words or characters <script type="math/tex">x</script> that assigns high probability to proper (English) sentences. This distribution can be gathered by using articles from Wikipedia.</p>
+<p>Knowing the probability distribution can also help us model natural langauge utterances. In this case, we want to construct a probability distribution <script type="math/tex">P(x)</script> over sequences of words or characters <script type="math/tex">x</script> that assigns high probability to proper (English) sentences. This distribution can be gathered by using articles from Wikipedia.</p>
 
-<h2 id="generation">Generation</h2>
+<p><a id="text-generation"></a></p>
+<h3 id="generation">Generation</h3>
 
-<p>We can sample from the model and generate new Wikipedia-like articles like the following one:</p>
+<p>We can sample from the model and generate new Wikipedia-like articles like the one below<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">From <a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">The Unreasonable Effectiveness of Recurrent Neural Networks</a> </span>.</p>
 
-<hr />
-<p>Naturalism and decision for the majority of Arab countries’ capitalide was grounded
+<blockquote>
+  <p>Naturalism and decision for the majority of Arab countries’ capitalide was grounded
 by the Irish language by [[John Clair]], [[An Imperial Japanese Revolt]], associated 
 with Guangzham’s sovereignty. His generals were the powerful ruler of the Portugal 
 in the [[Protestant Immineners]], which could be said to be directly in Cantonese 
@@ -142,60 +177,59 @@ that is sympathetic to be to the [[Punjab Resolution]]
 cfm/7754800786d17551963s89.htm Official economics Adjoint for the Nazism, Montgomery 
 was swear to advance to the resources for those Socialism’s rule, 
 was starting to signing a major tripad of aid exile.]]</p>
+</blockquote>
 
-<hr />
+<p><a id="text-translation"></a></p>
+<h3 id="translation">Translation</h3>
 
-<p><a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">The Unreasonable Effectiveness of Recurrent Neural Networks</a></p>
-
-<h2 id="translation">Translation</h2>
-
-<table>
-  <tbody>
-    <tr>
-      <td>Suppose that we have gathered a training set of paragraphs that were transcribed in both English and Chinese. We can build a probabilistic mode $$p(y</td>
-      <td>x)<script type="math/tex">to generate an English sentence</script>y<script type="math/tex">conditioned on the corresponding Chinese sentence</script>x$$; this is an instance of <em>machine translation</em>.</td>
-    </tr>
-  </tbody>
-</table>
+<p>Suppose that we have gathered a training set of paragraphs that were transcribed in both English and Chinese. We can build a probabilistic model <script type="math/tex">P(y \mid x)</script> to generate an English sentence <script type="math/tex">y</script> conditioned on the corresponding Chinese sentence <script type="math/tex">x</script>; this is an instance of <em>machine translation</em>.</p>
 
 <p><img src="nmt-model-fast.gif" alt="Neural Machine Translation" /></p>
 
-<h1 id="audio-models">Audio Models</h1>
+<h2 id="audio-models">Audio Models</h2>
 
-<p>We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution <script type="math/tex">p(x)</script> over audio signals that assigns high probability to ones that sound like human speech.</p>
+<p>We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution <script type="math/tex">P(x)</script> over audio signals that assigns high probability to ones that sound like human speech.</p>
 
-<h2 id="upsampling-or-super-resolution">Upsampling or super-resolution</h2>
+<p><a id="audio-superresolution"></a></p>
+<h3 id="upsampling-or-super-resolution">Upsampling or Super-Resolution</h3>
 
 <p>Given a low resolution version of an audio signal, we can attempt to increase its resolution.</p>
 
 <p><a href="https://kuleshov.github.io/audio-super-res/">Super resolution of audio signals demo</a></p>
 
-<h2 id="speech-synthesis">Speech synthesis</h2>
+<p><a id="speech-synthesis"></a></p>
+<h3 id="speech-synthesis">Speech synthesis</h3>
 
 <p>As we did in image processing, we can also sample the model and generate (synthesize) speech signals.</p>
 
 <p><a href="https://deepmind.com/blog/wavenet-generative-model-raw-audio/">Super resolution of audio signals demo</a></p>
 
-<h2 id="speech-recognition">Speech recognition</h2>
+<p><a id="speech-recognition"></a></p>
+<h3 id="speech-recognition">Speech recognition</h3>
 <p>Given a (joint) model of speech signals and language (text), we can attempt to infer spoken words from audio signals.
 <img src="speech.png" alt="Speech" /></p>
 
-<h1 id="applications-in-science-today">Applications in Science Today</h1>
-<h2 id="error-correcting-codes">Error Correcting Codes</h2>
+<h2 id="applications-in-science-today">Applications in Science Today</h2>
+
+<p><a id="error-correcting-codes"></a></p>
+<h3 id="error-correcting-codes">Error Correcting Codes</h3>
 <p>In the non-theoretical world, probabilistic models are often used to model communication channels (e.g., Ethernet or Wifi). i.e., if you send a message over a channel, you might get something different on the other end due to noise. Error correcting codes and techniques based on graphical models are used to detect and correct communication errors.
 <img src="Picture1.png" alt="codes" /></p>
 
-<h2 id="computational-biology">Computational Biology</h2>
+<p><a id="comp-bio"></a></p>
+<h3 id="computational-biology">Computational Biology</h3>
 
 <p>Graphical models are also widely used in computational biology. For example, given a model of how DNA sequences evolve over time, it is possible to reconstruct a phylogenetic tree from DNA sequences of a given set of species.
 <img src="philo.png" alt="philo" /></p>
 
-<h2 id="ecology">Ecology</h2>
+<p><a id="ecology"></a></p>
+<h3 id="ecology">Ecology</h3>
 <p>Graphical models are used to study phenomena that evolve over space and time, capturing spatial and temporal dependencies. For example, they can be used to study bird migrations.</p>
 
 <p><img src="bird_new.gif" alt="birds" /></p>
 
-<h2 id="economics">Economics</h2>
+<p><a id="economics"></a></p>
+<h3 id="economics">Economics</h3>
 
 <p>Graphical models can be used to model spatial distributions of quantities of interests (e.g., assets or expenditures based measures of wealth).
 <img src="uganda.png.jpg" alt="birds" /></p>
@@ -217,7 +251,7 @@ was starting to signing a major tripad of aid exile.]]</p>
 
 
     </article>
-    <span class="print-footer">Real World Applications - Volodymyr Kuleshov</span>
+    <span class="print-footer">Real-World Applications - Volodymyr Kuleshov</span>
     <footer>
   <hr class="slender">
   <!-- <ul class="footer&#45;links"> -->
