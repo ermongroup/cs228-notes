@@ -24,17 +24,17 @@ Probabilistic graphical models have numerous and diverse real-world applications
 
 ## Probabilistic Models of Images
 
-Consider a distribution $$p(x)$$ over images (a matrix of pixels) that assigns high probability to images that look realistic and low probability to everything else. Given such model, we can solve a wide array of interesting tasks.
+Consider a distribution $$P(x)$$ over images (a matrix of pixels) that assigns high probability to images that look realistic and low probability to everything else. Given such model, we can solve a wide array of interesting tasks.
 
 <a id="image-generation"></a>
 ### Image Generation
 
-[Radford et al.](https://arxiv.org/abs/1710.10196) train a probabilistic model $$ p(x) $$ that assigns high probability to images that look like bedrooms (based on some training data):
+[Radford et al.](https://arxiv.org/abs/1710.10196) train a probabilistic model $$ P(x) $$ that assigns high probability to images that look like bedrooms (based on some training data):
 
 **Training Data**<br /> 
 ![bedroom1](bedroominpainting1.png)<br /> 
 
-If we sample $$x \sim p(x)$$, we are **generating** new (realistic) images. 
+If we sample $$x \sim P(x)$$, we are **generating** new (realistic) images. 
 
 **Generated Data**<br /> 
 ![bedroom2](bedroominpainting2.png)
@@ -49,7 +49,7 @@ Note that the images are not perfect and may need to be refined; however, sampli
 <a id="image-inpainting"></a>
 ### In-Painting
 
-Using the same $$p(x)$$, we can also 'fill in the rest of the image'. For example, given $$p(x)$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$p(Image \mid patch)$$ and generate different possible ways of completing the image:
+Using the same $$P(x)$$, we can also 'fill in the rest of the image'. For example, given $$P(x)$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$P(Image \mid patch)$$ and generate different possible ways of completing the image:
 
 ![inpainting2](inpainting3.png)
 
@@ -64,7 +64,7 @@ Similarly, given an image corrupted by noise (e.g., an old photograph), we can a
 
 ## Language Models
 
-Knowing the probability distribution can also help us model natural langauge utterances. In this case, we want to construct a probability distribution $$p(x)$$ over sequences of words or characters $$x$$ that assigns high probability to proper (English) sentences. This distribution can be gathered by using articles from Wikipedia. 
+Knowing the probability distribution can also help us model natural langauge utterances. In this case, we want to construct a probability distribution $$P(x)$$ over sequences of words or characters $$x$$ that assigns high probability to proper (English) sentences. This distribution can be gathered by using articles from Wikipedia. 
 
 <a id="text-generation"></a>
 ### Generation
@@ -92,13 +92,13 @@ was starting to signing a major tripad of aid exile.]]
 <a id="text-translation"></a>
 ### Translation
 
-Suppose that we have gathered a training set of paragraphs that were transcribed in both English and Chinese. We can build a probabilistic model $$p(y \mid x)$$ to generate an English sentence $$y$$ conditioned on the corresponding Chinese sentence $$x$$; this is an instance of *machine translation*.
+Suppose that we have gathered a training set of paragraphs that were transcribed in both English and Chinese. We can build a probabilistic model $$P(y \mid x)$$ to generate an English sentence $$y$$ conditioned on the corresponding Chinese sentence $$x$$; this is an instance of *machine translation*.
 
 ![Neural Machine Translation](nmt-model-fast.gif)
 
 ## Audio Models 
 
-We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sound like human speech.
+We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution $$P(x)$$ over audio signals that assigns high probability to ones that sound like human speech.
 
 <a id="audio-superresolution"></a>
 ### Upsampling or Super-Resolution
