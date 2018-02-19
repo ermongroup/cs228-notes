@@ -240,7 +240,7 @@ until the first heads.
 • **$$X$$ ∼ Poisson($$\lambda$$)** (where $$\lambda$$ > 0): a probability distribution over the nonnegative integers
 used for modeling the frequency of rare events.
 \begin{equation} 
-p(x) = e^{\lambda} \frac{\lambda^x}{x!}
+p(x) = e^{-\lambda} \frac{\lambda^x}{x!}
 \end{equation}
 
 ### Continuous random variables
