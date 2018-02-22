@@ -6,7 +6,7 @@ In practice, the probabilistic models that we use are often quite complex, and s
 
 There exist two main families of approximate algorithms: *variational* methods{% sidenote 1 'Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments.'%}, which formulate inference as an optimization problem, as well as *sampling* methods, which produce answers by repeatedly generating random numbers from a distribution of interest.
 
-Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can compute various interesting quantities, such as expectations $$\Exp[f(X)]$$ of random variables distributed according to a given probabilistic model. Sampling methods have historically been the main way of performing approximate inference, although over the past 15 years variational methods have emerged as viable (and often superior) alternatives.
+Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can compute various interesting quantities, such as expectations $$\mathbb{E}[f(X)]$$ of random variables distributed according to a given probabilistic model. Sampling methods have historically been the main way of performing approximate inference, although over the past 15 years variational methods have emerged as viable (and often superior) alternatives.
 
 ## Sampling from a probability distribution
 
@@ -32,25 +32,25 @@ A former CS228 student has created an [interactive web simulation](http://pgmlea
 
 Sampling from a distribution lets us perform many useful tasks, including marginal and MAP inference, as well as computing integrals of the form
 {% math %}
-\Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
+\mathbb{E}_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
 {% endmath %}
 If $$g$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
 
 Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
 This technique approximates a target expectation with
 {% math %}
-\Exp_{x \sim p}[f(x)] \approx \frac{1}{T} \sum_{t=1}^T f(x^t),
+\mathbb{E}_{x \sim p}[f(x)] \approx \frac{1}{T} \sum_{t=1}^T f(x^t),
 {% endmath %}
 where $$x^1,...,x^T$$ are samples drawn according to $$p$$.
 
-It easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(f(x))/T$$, which can be made arbitrarily small with $$T$$. 
+It easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\mathbb{E}_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \mathbb{E}_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(f(x))/T$$, which can be made arbitrarily small with $$T$$. 
 
 ### Rejection sampling
 
 {% marginfigure 'nb1' 'assets/img/rejection-sampling.png' 'Graphical illustration of rejection sampling. We may compute the area of circle by drawing uniform samples from the square; the fraction of points that fall in the circle represents its area. This method breaks down if the size of the circle is small relative to the size of the square.'%}
 A special case of Monte Carlo integration is rejection sampling. We may use it to compute the area of a region $$R$$ by sampling in a larger region with a known area and recording the fraction of samples that falls within $$R$$.
 
-For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x')$$: we may write this probability as $$\Exp_{x\sim p}[\Ind(x=x')]$$ and then take the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
+For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x')$$: we may write this probability as $$\mathbb{E}_{x\sim p}[\Ind(x=x')]$$ and then take the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
 
 ### Importance sampling
 
@@ -58,13 +58,13 @@ Unfortunately, this procedure is very wasteful. If $$p(x=x')$$ equals, say, 1%, 
 
 A better way of computing such integrals is via an approach called *importance sampling*. The main idea is to sample from a distribution $$q$$ (hopefully roughly proportional to $$f \cdot p$$), and then *reweight* the samples in a principled way, so that their sum still approximates the desired integral.
 
-More formally, suppose we are interested in computing $$\Exp_{x \sim p}[f(x)]$$. We may rewrite this integral as
+More formally, suppose we are interested in computing $$\mathbb{E}_{x \sim p}[f(x)]$$. We may rewrite this integral as
 {% math %}
 \begin{align*}
-\Exp_{x \sim p}[f(x)] 
+\mathbb{E}_{x \sim p}[f(x)] 
 & = \sum_{x} f(x) p(x) \\
 & = \sum_{x} f(x) \frac{p(x)}{q(x)} q(x) \\
-& = \Exp_{x \sim q}[f(x)w(x)] \\
+& = \mathbb{E}_{x \sim q}[f(x)w(x)] \\
 & \approx \frac{1}{T} \sum_{t=1}^T f(x^t) w(x^t) \\
 \end{align*}
 {% endmath %}
@@ -72,17 +72,17 @@ where $$w(x) = \frac{p(x)}{q(x)}$$. In other words, we may instead take samples 
 
 Now the variance of this new estimator equals 
 {% math %}
-\text{var}_{x \sim q}(f(x)w(x)) = \Exp_{x \sim q} [f^2(x) w^2(x)] - \Exp_{x \sim q} [f(x) w(x)]^2 \geq 0
+\text{var}_{x \sim q}(f(x)w(x)) = \mathbb{E}_{x \sim q} [f^2(x) w^2(x)] - \mathbb{E}_{x \sim q} [f(x) w(x)]^2 \geq 0
 {% endmath %}
 Note that we can set the variance to zero by choosing {%m%}q(x) = \frac{|f(x)|p(x)}{\int |f(x)|p(x) dx}{%em%}; this means that if we can sample from this $$q$$ (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a $$q$$ would be NP-hard in general, but this at least gives us an indication for what to strive for.
 
-In the context of our previous example for computing $$p(x=x') = \Exp_{z\sim p}[p(x'|z)]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
+In the context of our previous example for computing $$p(x=x') = \mathbb{E}_{z\sim p}[p(x'|z)]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
 {% math %}
 \begin{align*}
 p(x=x')
-& = \Exp_{z\sim p}[p(x'|z)] \\
-& = \Exp_{z\sim q}[p(x'|z)\frac{p(z)}{q(z)}] \\
-& = \Exp_{z\sim q}[\frac{p(x',z)}{q(z)}] \\
+& = \mathbb{E}_{z\sim p}[p(x'|z)] \\
+& = \mathbb{E}_{z\sim q}[p(x'|z)\frac{p(z)}{q(z)}] \\
+& = \mathbb{E}_{z\sim q}[\frac{p(x',z)}{q(z)}] \\
 & \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)} \\
 \end{align*}
 {% endmath %}
