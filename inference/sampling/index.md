@@ -15,7 +15,7 @@ As a warm-up, let's think for a minute how we might sample from a multinomial di
 Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% sidenote 1 'Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable from a truly random one. We call such sequences *pseudorandom*.'%}, such as the uniform distribution over $$[0,1]$$.
 All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.
 
-In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$d$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$[0,1]$$ and return the value of the region in which our sample falls.
+In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$k$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$[0,1]$$ and return the value of the region in which our sample falls.
 {% maincolumn 'assets/img/multinomial-sampling.png' 'Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1].'%}
 
 ### Sampling from directed graphical models
@@ -34,7 +34,7 @@ Sampling from a distribution lets us perform many useful tasks, including margin
 {% math %}
 \Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
 {% endmath %}
-If $$g$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
+If $$f(x)$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
 
 Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
 This technique approximates a target expectation with
