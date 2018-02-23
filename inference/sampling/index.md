@@ -34,7 +34,7 @@ Sampling from a distribution lets us perform many useful tasks, including margin
 {% math %}
 \Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
 {% endmath %}
-If $$g$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
+If $$f$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
 
 Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
 This technique approximates a target expectation with
@@ -102,14 +102,14 @@ The probability $$P(S_i \mid S_{i-1})$$ is the same at every step $$i$$; this me
 {% marginfigure 'mc' 'assets/img/markovchain.png' 'A Markov chain over three states. The weighted directed edges indicate probabilities of transitioning to a different state.'%}
 It is very convenient to represent the transition probability as a $$d \times d$$ matrix
 {% math %}
-T_{ij} = P(S_\text{new} = i \mid S_\text{prev} = j),
+T_{ij} = P(S_\text{new} = i \mid S_\text{prev} = j).
 {% endmath %}
-where $$T^t$$ denotes matrix exponentiation (we apply the matrix operator $$t$$ times).
 
 If the initial state $$S_0$$ is drawn from a vector probabilities $$p_0$$, we may represent the probability $$p_t$$ of ending up in each state after $$t$$ steps as
 {% math %}
-p_t = T^t p_0.
+p_t = T^t p_0,
 {% endmath %}
+where $$T^t$$ denotes matrix exponentiation (we apply the matrix operator $$t$$ times).
 
 The limit $$\pi = \lim_{t \to \infty} p_t$$ (when it exists) is called a *stationary distribution* of the Markov chain. We will construct below Markov chain with a stationary distribution $$\pi$$ that exists and is the same for all $$p_0$$; we will refer to such $$\pi$$ as *the* stationary distribution* of the chain.
 
@@ -170,7 +170,7 @@ A(x' \mid x) = \min \left(1, \frac{P(x')Q(x \mid x')}{P(x)Q(x' \mid x)} \right).
 
 At each step of the Markov chain, we choose a new point $$x'$$ according to $$Q$$. Then, we either accept this proposed change (with probability $$\alpha$$), or with probability $$1-\alpha$$ we remain at our current state.
 
-Notice that the acceptance probability encourages us to move towards more likely points in the distribution (imagine for example that $$Q$$ is uniform); when $$Q$$ suggests that we move is a low-probability region, we follow that move only a certain fraction of the time.
+Notice that the acceptance probability encourages us to move towards more likely points in the distribution (imagine for example that $$Q$$ is uniform); when $$Q$$ suggests that we move into a low-probability region, we follow that move only a certain fraction of the time.
 
 In practice, the distribution $$Q$$ is taken to be something simple, like a Gaussian centered at $$x$$ if we are dealing with continuous variables. 
 
