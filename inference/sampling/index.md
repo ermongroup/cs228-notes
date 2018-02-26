@@ -188,12 +188,17 @@ which is simply the detailed balance condition. We used $$T(x \mid x')$$ to deno
 
 ### Gibbs sampling
 
-A widely-used special case of the Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables $$x_1,...,x_n$$ and a starting configuration $$x^0 = (x_1^0,...,x_n^0)$$, we iterate through the variables one at a time; at each time step $$t$$, we:
+A widely-used special case of the Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables $$x_1,...,x_n$$ and a starting configuration $$x^0 = (x_1^0,...,x_n^0)$$, consider the following procedure.
 
-1. Sample $$x_i' \sim p(x_i \mid x_{-i}^t)$$
-2. Set $$x^{t+1} = (x_1^t, ..., x_i', ..., x_n^t).$$
+Repeat until convergence for $$t = 1, 2,\dots$$:
 
-We use $$x_{-i}^t$$ to denote all variables in $$x^t$$ except $$x_i$$. It is often very easy to performing this sampling step, since we only need to condition $$x_i$$ on its Markov blanket, which is typically small.
+- Set $$x \leftarrow x^{t-1}$$. 
+- For each variable $$x_i$$ in the order we fixed:
+	1. Sample $$x'_i \sim p(x_i \mid x_{-i})$$
+	2. Update $$x \leftarrow (x_1, ..., x'_i, ..., x_n).$$
+- Set $$x^t \leftarrow x$$
+
+We use $$x_{-i}$$ to denote all variables in $$x$$ except $$x_i$$. It is often very easy to performing each sampling step, since we only need to condition $$x_i$$ on its Markov blanket, which is typically small. Note that when we update $$x_i$$, we *immediately* use its new value for sampling other variables $$x_j$$. 
 
 Gibbs sampling can be seen as a special case of MH with proposal
 $$ Q(x_i', x_{-i} \mid x_i, x_{-i}) = P(x_i' \mid x_{-i}). $$
