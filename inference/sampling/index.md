@@ -15,7 +15,7 @@ As a warm-up, let's think for a minute how we might sample from a multinomial di
 Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% sidenote 1 'Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable from a truly random one. We call such sequences *pseudorandom*.'%}, such as the uniform distribution over $$[0,1]$$.
 All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.
 
-In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$d$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$[0,1]$$ and return the value of the region in which our sample falls.
+In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$k$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$[0,1]$$ and return the value of the region in which our sample falls.
 {% maincolumn 'assets/img/multinomial-sampling.png' 'Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1].'%}
 
 ### Sampling from directed graphical models
@@ -34,7 +34,8 @@ Sampling from a distribution lets us perform many useful tasks, including margin
 {% math %}
 \Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
 {% endmath %}
-If $$f$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
+If $$f(x)$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
+
 
 Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
 This technique approximates a target expectation with
@@ -188,12 +189,17 @@ which is simply the detailed balance condition. We used $$T(x \mid x')$$ to deno
 
 ### Gibbs sampling
 
-A widely-used special case of the Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables $$x_1,...,x_n$$ and a starting configuration $$x^0 = (x_1^0,...,x_n^0)$$, we iterate through the variables one at a time; at each time step $$t$$, we:
+A widely-used special case of the Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables $$x_1,...,x_n$$ and a starting configuration $$x^0 = (x_1^0,...,x_n^0)$$, consider the following procedure.
 
-1. Sample $$x_i' \sim p(x_i \mid x_{-i}^t)$$
-2. Set $$x^{t+1} = (x_1^t, ..., x_i', ..., x_n^t).$$
+Repeat until convergence for $$t = 1, 2,\dots$$:
 
-We use $$x_{-i}^t$$ to denote all variables in $$x^t$$ except $$x_i$$. It is often very easy to performing this sampling step, since we only need to condition $$x_i$$ on its Markov blanket, which is typically small.
+- Set $$x \leftarrow x^{t-1}$$. 
+- For each variable $$x_i$$ in the order we fixed:
+	1. Sample $$x'_i \sim p(x_i \mid x_{-i})$$
+	2. Update $$x \leftarrow (x_1, ..., x'_i, ..., x_n).$$
+- Set $$x^t \leftarrow x$$
+
+We use $$x_{-i}$$ to denote all variables in $$x$$ except $$x_i$$. It is often very easy to performing each sampling step, since we only need to condition $$x_i$$ on its Markov blanket, which is typically small. Note that when we update $$x_i$$, we *immediately* use its new value for sampling other variables $$x_j$$. 
 
 Gibbs sampling can be seen as a special case of MH with proposal
 $$ Q(x_i', x_{-i} \mid x_i, x_{-i}) = P(x_i' \mid x_{-i}). $$
