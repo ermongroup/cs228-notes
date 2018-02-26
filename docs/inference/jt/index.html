@@ -272,7 +272,7 @@ m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi(x_c) \prod_{\ell \in N(i)
 
 <h3 id="definition-for-pairwise-models">Definition for pairwise models</h3>
 
-<p>Suppose that we a given an MRF with pairwise potentials<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Arbitrary potentials can be handled using an algorithm called LBP on <em>factor graphs</em>. We will include this material at some point in the future </span>.
+<p>Suppose that we are given an MRF with pairwise potentials<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Arbitrary potentials can be handled using an algorithm called LBP on <em>factor graphs</em>. We will include this material at some point in the future </span>.
 The main idea of LBP is to disregard loops in the graph and perform message passing anyway. In other words, given an ordering on the edges, at each time <script type="math/tex">t</script> we iterate over a pair of adjacent variables <script type="math/tex">x_i, x_j</script> in that order and simply perform the update</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \setminus j} m^{t}_{\ell \to i}(x_i).
