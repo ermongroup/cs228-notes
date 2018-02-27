@@ -90,7 +90,7 @@
 <p>Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable from a truly random one. We call such sequences <em>pseudorandom</em>. </span>, such as the uniform distribution over <script type="math/tex">[0,1]</script>.
 All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.</p>
 
-<p>In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into <script type="math/tex">d</script> regions with region <script type="math/tex">i</script> having size <script type="math/tex">\theta_i</script>. We then sample uniformly from <script type="math/tex">[0,1]</script> and return the value of the region in which our sample falls.</p>
+<p>In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into <script type="math/tex">k</script> regions with region <script type="math/tex">i</script> having size <script type="math/tex">\theta_i</script>. We then sample uniformly from <script type="math/tex">[0,1]</script> and return the value of the region in which our sample falls.</p>
 <figure><figcaption>Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1].</figcaption><img src="/cs228-notes/assets/img/multinomial-sampling.png" /></figure>
 
 <h3 id="sampling-from-directed-graphical-models">Sampling from directed graphical models</h3>
@@ -109,7 +109,7 @@ All sampling techniques involve calling some kind of simple subroutine multiple 
 <div class="mathblock"><script type="math/tex; mode=display">
 \Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
 </script></div>
-<p>If <script type="math/tex">g</script> does not have a special structure that matches the Bayes net structure of <script type="math/tex">p</script>, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from <script type="math/tex">p</script>. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project. </span>.</p>
+<p>If <script type="math/tex">f(x)</script> does not have a special structure that matches the Bayes net structure of <script type="math/tex">p</script>, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from <script type="math/tex">p</script>. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project. </span>.</p>
 
 <p>Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
 This technique approximates a target expectation with</p>
@@ -177,14 +177,14 @@ We will solve these problems using a very powerful technique called Markov chain
 <p><label for="mc" class="margin-toggle">⊕</label><input type="checkbox" id="mc" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/markovchain.png" /><br />A Markov chain over three states. The weighted directed edges indicate probabilities of transitioning to a different state.</span>
 It is very convenient to represent the transition probability as a <script type="math/tex">d \times d</script> matrix</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-T_{ij} = P(S_\text{new} = i \mid S_\text{prev} = j),
+T_{ij} = P(S_\text{new} = i \mid S_\text{prev} = j).
 </script></div>
-<p>where <script type="math/tex">T^t</script> denotes matrix exponentiation (we apply the matrix operator <script type="math/tex">t</script> times).</p>
 
 <p>If the initial state <script type="math/tex">S_0</script> is drawn from a vector probabilities <script type="math/tex">p_0</script>, we may represent the probability <script type="math/tex">p_t</script> of ending up in each state after <script type="math/tex">t</script> steps as</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-p_t = T^t p_0.
+p_t = T^t p_0,
 </script></div>
+<p>where <script type="math/tex">T^t</script> denotes matrix exponentiation (we apply the matrix operator <script type="math/tex">t</script> times).</p>
 
 <p>The limit <script type="math/tex">\pi = \lim_{t \to \infty} p_t</script> (when it exists) is called a <em>stationary distribution</em> of the Markov chain. We will construct below Markov chain with a stationary distribution <script type="math/tex">\pi</script> that exists and is the same for all <script type="math/tex">p_0</script>; we will refer to such <script type="math/tex">\pi</script> as <em>the</em> stationary distribution* of the chain.</p>
 
@@ -250,7 +250,7 @@ A(x' \mid x) = \min \left(1, \frac{P(x')Q(x \mid x')}{P(x)Q(x' \mid x)} \right).
 
 <p>At each step of the Markov chain, we choose a new point <script type="math/tex">x'</script> according to <script type="math/tex">Q</script>. Then, we either accept this proposed change (with probability <script type="math/tex">\alpha</script>), or with probability <script type="math/tex">1-\alpha</script> we remain at our current state.</p>
 
-<p>Notice that the acceptance probability encourages us to move towards more likely points in the distribution (imagine for example that <script type="math/tex">Q</script> is uniform); when <script type="math/tex">Q</script> suggests that we move is a low-probability region, we follow that move only a certain fraction of the time.</p>
+<p>Notice that the acceptance probability encourages us to move towards more likely points in the distribution (imagine for example that <script type="math/tex">Q</script> is uniform); when <script type="math/tex">Q</script> suggests that we move into a low-probability region, we follow that move only a certain fraction of the time.</p>
 
 <p>In practice, the distribution <script type="math/tex">Q</script> is taken to be something simple, like a Gaussian centered at <script type="math/tex">x</script> if we are dealing with continuous variables.</p>
 
@@ -270,14 +270,22 @@ P(x')T(x \mid x') & =  P(x)T(x' \mid x),
 
 <h3 id="gibbs-sampling">Gibbs sampling</h3>
 
-<p>A widely-used special case of the Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables <script type="math/tex">x_1,...,x_n</script> and a starting configuration <script type="math/tex">x^0 = (x_1^0,...,x_n^0)</script>, we iterate through the variables one at a time; at each time step <script type="math/tex">t</script>, we:</p>
+<p>A widely-used special case of the Metropolis-Hastings methods is Gibbs sampling. Given an ordered set of variables <script type="math/tex">x_1,...,x_n</script> and a starting configuration <script type="math/tex">x^0 = (x_1^0,...,x_n^0)</script>, consider the following procedure.</p>
 
-<ol>
-  <li>Sample <script type="math/tex">x_i' \sim p(x_i \mid x_{-i}^t)</script></li>
-  <li>Set <script type="math/tex">x^{t+1} = (x_1^t, ..., x_i', ..., x_n^t).</script></li>
-</ol>
+<p>Repeat until convergence for <script type="math/tex">t = 1, 2,\dots</script>:</p>
 
-<p>We use <script type="math/tex">x_{-i}^t</script> to denote all variables in <script type="math/tex">x^t</script> except <script type="math/tex">x_i</script>. It is often very easy to performing this sampling step, since we only need to condition <script type="math/tex">x_i</script> on its Markov blanket, which is typically small.</p>
+<ul>
+  <li>Set <script type="math/tex">x \leftarrow x^{t-1}</script>.</li>
+  <li>For each variable <script type="math/tex">x_i</script> in the order we fixed:
+    <ol>
+      <li>Sample <script type="math/tex">x'_i \sim p(x_i \mid x_{-i})</script></li>
+      <li>Update <script type="math/tex">x \leftarrow (x_1, ..., x'_i, ..., x_n).</script></li>
+    </ol>
+  </li>
+  <li>Set <script type="math/tex">x^t \leftarrow x</script></li>
+</ul>
+
+<p>We use <script type="math/tex">x_{-i}</script> to denote all variables in <script type="math/tex">x</script> except <script type="math/tex">x_i</script>. It is often very easy to performing each sampling step, since we only need to condition <script type="math/tex">x_i</script> on its Markov blanket, which is typically small. Note that when we update <script type="math/tex">x_i</script>, we <em>immediately</em> use its new value for sampling other variables <script type="math/tex">x_j</script>.</p>
 
 <p>Gibbs sampling can be seen as a special case of MH with proposal
 <script type="math/tex">Q(x_i', x_{-i} \mid x_i, x_{-i}) = P(x_i' \mid x_{-i}).</script>

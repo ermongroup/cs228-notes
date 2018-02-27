@@ -402,6 +402,11 @@ ul {
   -webkit-padding-end: 5%;
   list-style-type: none; }
 
+ol {
+  -webkit-padding-start: 5%;
+  -webkit-padding-end: 5%;
+  list-style-type: decimal; }
+
 ul li {
   padding: 0.5em 0; }
 
