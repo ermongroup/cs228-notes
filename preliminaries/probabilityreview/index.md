@@ -276,7 +276,7 @@ random variables.
 
 ## 3.1 Joint and marginal distributions
 
-Suppose that we have two random variables $$X$$ and $$Y$$ . One way to work with these two random variables is to consider each of them separately. If we do that we will only need $$F_X(x)$$ and $$F_Y (y)$$. But if we want to know about the values that $$X$$ and $$Y$$ assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of $$X$$ and $$Y$$ , defined by 
+Suppose that we have two random variables $$X$$ and $$Y$$ . One way to work with these two random variables is to consider each of them separately. If we do that we will only need $$F_X(x)$$ and $$F_Y (y)$$. But if we want to know about the values that $$X$$ and $$Y$$ assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of $$X$$ and $$Y$$, defined by 
 \begin{equation}
 F_{XY} (x, y) = P(X \leq  x, Y \leq  y). 
 \end{equation}
