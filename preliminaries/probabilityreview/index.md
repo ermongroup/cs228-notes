@@ -300,7 +300,7 @@ Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution f
 
 ## 3.2 Joint and marginal probability mass functions
 
-If $$X$$ and $$Y$$ are discrete random variables, then the joint probability mass function $$p_{XY} : \mathbb{R} \times \mathbb{R} \rightarrow [0, 1]$$ is defined by
+If $$X$$ and $$Y$$ are discrete random variables, then the joint probability mass function $$p_{XY} : Val(X) \times Val(Y) \rightarrow [0, 1]$$ is defined by
 \begin{equation}
 p_{XY}(x, y) = P(X = x, Y = y).
 \end{equation}
