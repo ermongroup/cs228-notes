@@ -285,10 +285,10 @@ It can be shown that by knowing the joint cumulative distribution function, the 
 
 The joint CDF $$F_{XY} (x, y)$$ and the joint distribution functions $$F_X(x)$$ and $$F_Y (y)$$ of each variable separately are related by
 \begin{equation}
-F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)dy
+F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)
 \end{equation}
 \begin{equation}
-F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)dx
+F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)
 \end{equation}
 Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution functions** of $$F_{XY} (x, y)$$.
 
