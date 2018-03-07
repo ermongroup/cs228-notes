@@ -100,6 +100,8 @@ More formally, for each variable $$X_i$$ (ordered according to $$O$$),
 2. Marginalize out $$X_i$$ to obtain new factor $$\tau$$
 3. Replace the factors in $$\Phi_i$$ by $$\tau$$
 
+A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/vElimApp) for visualizing Bayesian network forward sampling methods. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
+
 ### Examples
 
 Let's try to understand what these steps correspond to in our chain example. In that case, the chosen ordering was $$x_1, x_2, ..., x_{n-1}.$$
