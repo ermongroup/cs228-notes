@@ -100,7 +100,7 @@ More formally, for each variable $$X_i$$ (ordered according to $$O$$),
 2. Marginalize out $$X_i$$ to obtain new factor $$\tau$$
 3. Replace the factors in $$\Phi_i$$ by $$\tau$$
 
-A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/vElimApp) for visualizing Bayesian network forward sampling methods. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
+A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/vElimApp) for visualizing the variable elimination algorithm. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
 
 ### Examples
 
