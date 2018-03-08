@@ -276,7 +276,7 @@ random variables.
 
 ## 3.1 Joint and marginal distributions
 
-Suppose that we have two random variables $$X$$ and $$Y$$ . One way to work with these two random variables is to consider each of them separately. If we do that we will only need $$F_X(x)$$ and $$F_Y (y)$$. But if we want to know about the values that $$X$$ and $$Y$$ assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of $$X$$ and $$Y$$ , defined by 
+Suppose that we have two random variables $$X$$ and $$Y$$ . One way to work with these two random variables is to consider each of them separately. If we do that we will only need $$F_X(x)$$ and $$F_Y (y)$$. But if we want to know about the values that $$X$$ and $$Y$$ assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of $$X$$ and $$Y$$, defined by 
 \begin{equation}
 F_{XY} (x, y) = P(X \leq  x, Y \leq  y). 
 \end{equation}
@@ -285,10 +285,10 @@ It can be shown that by knowing the joint cumulative distribution function, the 
 
 The joint CDF $$F_{XY} (x, y)$$ and the joint distribution functions $$F_X(x)$$ and $$F_Y (y)$$ of each variable separately are related by
 \begin{equation}
-F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)dy
+F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)
 \end{equation}
 \begin{equation}
-F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)dx
+F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)
 \end{equation}
 Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution functions** of $$F_{XY} (x, y)$$.
 
@@ -300,7 +300,7 @@ Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution f
 
 ## 3.2 Joint and marginal probability mass functions
 
-If $$X$$ and $$Y$$ are discrete random variables, then the joint probability mass function $$p_{XY} : \mathbb{R} \times \mathbb{R} \rightarrow [0, 1]$$ is defined by
+If $$X$$ and $$Y$$ are discrete random variables, then the joint probability mass function $$p_{XY} : Val(X) \times Val(Y) \rightarrow [0, 1]$$ is defined by
 \begin{equation}
 p_{XY}(x, y) = P(X = x, Y = y).
 \end{equation}
