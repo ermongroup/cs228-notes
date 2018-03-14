@@ -2,7 +2,7 @@
 layout: post
 title: Variational inference
 ---
-In the last chapter, we saw that inference in probabilistic models in often intractable, and we learned about algorithms that provide approximate solutions to the inference problem (e.g. marginal inference) by using subroutines that involve sampling random variables. Most sampling-based inference algorithms are instances of Markov Chain Monte-Carlo (MCMC); two popular MCMC methods are Gibbs sampling and Metropolis-Hastings.
+In the last chapter, we saw that inference in probabilistic models is often intractable, and we learned about algorithms that provide approximate solutions to the inference problem (e.g. marginal inference) by using subroutines that involve sampling random variables. Most sampling-based inference algorithms are instances of Markov Chain Monte-Carlo (MCMC); two popular MCMC methods are Gibbs sampling and Metropolis-Hastings.
 
 Unfortunately, these sampling-based methods have several important shortcomings.
 
@@ -21,7 +21,7 @@ The main differences between sampling and variational techniques are that:
 
 - Unlike sampling-based methods, variational approaches will almost never find the globally optimal solution.
 - However, we will always know if they have converged. In some cases, we will even have bounds on their accuracy.
-- In practice, variational inference methods often scale better are more amenable to techniques like stochastic gradient optimization, parallelization over multiple processors, and acceleration using GPUs.
+- In practice, variational inference methods often scale better and are more amenable to techniques like stochastic gradient optimization, parallelization over multiple processors, and acceleration using GPUs.
 
 Although sampling methods were historically invented first (in the 1940's), variational techniques have been steadily gaining popularity and are currently the more widely used inference technique.
 
@@ -43,7 +43,7 @@ These can be proven as an exercise. Note however that {%m%}KL(q||p) \neq KL(p||q
 
 ## The variational lower bound
 
-How perform variational inference with a KL divergence? First, let's fix a form for $$p$$. We'll that assume that $$p$$ is a general (discrete, for simplicity) undirected model of the form
+How do we perform variational inference with a KL divergence? First, let's fix a form for $$p$$. We'll assume that $$p$$ is a general (discrete, for simplicity) undirected model of the form
 {% math %}
 p(x_1,..,x_n; \theta) = \frac{\tilde p(x_1,...,x_n ; \theta)}{Z(\theta)} =\frac{1}{Z(\theta)} \prod_{k} \phi_k(x_k; \theta),
 {% endmath %}
