@@ -142,7 +142,7 @@ L(\theta, D) = \prod_{i=1}^n \prod_{j=1}^m \theta_{x_i^{(j)} \mid pa(x_i^{(j)})}
 {% endmath %}
 Taking logs and combining like terms, this becomes
 {% math %}
-\log L(\theta, D) = \sum_{i=1}^n \#(x_i, pa(x_i)) \cdot \theta_{x_i \mid pa(x_i)}.
+\log L(\theta, D) = \sum_{i=1}^n \#(x_i, pa(x_i)) \cdot \log(\theta_{x_i \mid pa(x_i)}).
 {% endmath %}
 Thus, maximization of the (log) likelihood function decomposes into separate maximizations for the local conditional distributions!
 This is essentially the same as the head/tails example we saw earlier (except with more categories). It's a simple calculus exercise to formally show that
