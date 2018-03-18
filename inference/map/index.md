@@ -5,8 +5,9 @@ title: MAP inference
 This section will explore in more detail the problem of MAP inference in graphical models. 
 Recall that MAP inference in a graphical model $$p$$ corresponds to the following optimization problem:
 {% math %}
-\max_x \log p(x) = \max_x \sum_c \phi_c(\bfx_c) - \log Z.
+\max_x \log p(x) = \max_x \sum_c \theta_c(\bfx_c) - \log Z
 {% endmath %}
+where $$\theta_c(\bfx_c) = \log\phi_c(\bfx_c)$$.
 
 In the previous section, we briefly showed how to solve this problem within the same message passing framework as marginal inference. We will now look at more efficient specialized methods.
 
@@ -14,7 +15,7 @@ In the previous section, we briefly showed how to solve this problem within the 
 
 In a way, MAP inference is easier than marginal inference. One reason for this is that the intractable partition constant $$\log Z$$ does not depend on $$x$$ and can be ignored:
 {% math %}
-\arg \max_x \sum_c \phi_c(\bfx_c).
+\arg \max_x \sum_c \theta_c(\bfx_c).
 {% endmath %}
 
 Marginal inference can also be seen as computing and summing all assignments to the model, one of which is the MAP assignment. If we replace summation with maximization, we can also find the assignment with the highest probability; however, there exist more efficient methods than this sort of enumeration-based approach.
@@ -29,7 +30,7 @@ Nonetheless, we will see that the MAP problem is easier than general inference, 
 
 Many interesting examples of MAP inference are instances of *structured prediction*, which involves doing inference in a conditional random field (CRF) model $$p(y|x)$$:
 {% math %}
-\arg \max_y \log p(y|x) =  \arg \max_y \sum_c \phi_c(\bfy_c, \bfx_c).
+\arg \max_y \log p(y|x) =  \arg \max_y \sum_c \theta_c(\bfy_c, \bfx_c).
 {% endmath %}
 
 {% marginfigure 'ocr' 'assets/img/ocr.png' 'Chain-structured conditional random field for optical character recognition.' %}
