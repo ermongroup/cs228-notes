@@ -80,8 +80,9 @@
 <p>This section will explore in more detail the problem of MAP inference in graphical models. 
 Recall that MAP inference in a graphical model <script type="math/tex">p</script> corresponds to the following optimization problem:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\max_x \log p(x) = \max_x \sum_c \phi_c(\bfx_c) - \log Z.
+\max_x \log p(x) = \max_x \sum_c \theta_c(\bfx_c) - \log Z
 </script></div>
+<p>where <script type="math/tex">\theta_c(\bfx_c) = \log\phi_c(\bfx_c)</script>.</p>
 
 <p>In the previous section, we briefly showed how to solve this problem within the same message passing framework as marginal inference. We will now look at more efficient specialized methods.</p>
 
@@ -89,7 +90,7 @@ Recall that MAP inference in a graphical model <script type="math/tex">p</script
 
 <p>In a way, MAP inference is easier than marginal inference. One reason for this is that the intractable partition constant <script type="math/tex">\log Z</script> does not depend on <script type="math/tex">x</script> and can be ignored:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\arg \max_x \sum_c \phi_c(\bfx_c).
+\arg \max_x \sum_c \theta_c(\bfx_c).
 </script></div>
 
 <p>Marginal inference can also be seen as computing and summing all assignments to the model, one of which is the MAP assignment. If we replace summation with maximization, we can also find the assignment with the highest probability; however, there exist more efficient methods than this sort of enumeration-based approach.</p>
@@ -104,7 +105,7 @@ clause <script type="math/tex">c</script>, and <script type="math/tex">\theta_c 
 
 <p>Many interesting examples of MAP inference are instances of <em>structured prediction</em>, which involves doing inference in a conditional random field (CRF) model <script type="math/tex">p(y|x)</script>:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\arg \max_y \log p(y|x) =  \arg \max_y \sum_c \phi_c(\bfy_c, \bfx_c).
+\arg \max_y \log p(y|x) =  \arg \max_y \sum_c \theta_c(\bfy_c, \bfx_c).
 </script></div>
 
 <p><label for="ocr" class="margin-toggle">⊕</label><input type="checkbox" id="ocr" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/ocr.png" /><br />Chain-structured conditional random field for optical character recognition.</span>
