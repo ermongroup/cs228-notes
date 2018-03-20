@@ -111,7 +111,7 @@ We can rewrite the MAP objective in terms of these variables as
 \max_\mu \sum_{i \in V} \sum_{x_i} \theta_i (x_i) \mu_i(x_i) + \sum_{i,j \in E} \sum_{x_i, x_j} \theta_{ij} (x_i, x_j) \mu_{ij}(x_i, x_j).
 {% endmath %}
 
-We would like to optimize over these $$\mu$$'s; for that we also need to introduce constrains.
+We would like to optimize over these $$\mu$$'s; for that we also need to introduce constraints.
 First, we need to force each cluster to choose a local assignment:
 {% math %}
 \begin{align*}
@@ -149,7 +149,7 @@ The above objective is difficult to optimize because the potentials are coupled.
 \sum_{i \in V} \max_{x_i}  \theta_i (x_i) + \sum_{f \in F} \max_{x^f} \theta_{f} (x^f) .
 {% endmath %}
 
-This would be easy optimize, but would only give us an upper bound on the value of the true MAP assignment.
+This would be easy to optimize, but would only give us an upper bound on the value of the true MAP assignment.
 To make our relaxation tight, we would need to introduce
 constraints that encourage consistency between the potentials:
 {% math %} 
@@ -226,7 +226,7 @@ A more heuristic-type solution consists in starting with an arbitrary assignment
 
 ### Branch and bound
 
-Alternatively, one may perform exhaustive search over space of assignments, while pruning branches that can be provably shown not to contain a MAP assignment. The LP relaxation or its dual to obtain upper bounds useful for pruning trees.
+Alternatively, one may perform exhaustive search over the space of assignments, while pruning branches that can be provably shown not to contain a MAP assignment. The LP relaxation or its dual can be used to obtain upper bounds useful for pruning trees.
 
 ### Simulated annealing
 

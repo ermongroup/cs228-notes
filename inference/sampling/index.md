@@ -34,7 +34,7 @@ Sampling from a distribution lets us perform many useful tasks, including margin
 {% math %}
 \Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
 {% endmath %}
-If $$f(x)$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project.'%}.
+If $$f(x)$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working on the atomic bomb as part of the secret Manhattan project.'%}.
 
 
 Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
@@ -44,7 +44,7 @@ This technique approximates a target expectation with
 {% endmath %}
 where $$x^1,...,x^T$$ are samples drawn according to $$p$$.
 
-It easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(f(x))/T$$, which can be made arbitrarily small with $$T$$. 
+It is easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(f(x))/T$$, which can be made arbitrarily small with $$T$$.
 
 ### Rejection sampling
 
