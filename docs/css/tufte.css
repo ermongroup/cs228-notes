@@ -289,6 +289,15 @@ p {
   padding-right: 0;
   vertical-align: baseline; }
 
+blockquote p {
+  font-size: 1.1rem;
+  line-height: 1.78181818;
+  margin-top: 1.78181818rem;
+  margin-bottom: 1.78181818rem;
+  width: 45%;
+  padding-left: 2.5%;
+  padding-right: 2.5%; }
+
 blockquote {
   font-size: 1.4rem; }
 
@@ -392,6 +401,11 @@ ul {
   -webkit-padding-start: 5%;
   -webkit-padding-end: 5%;
   list-style-type: none; }
+
+ol {
+  -webkit-padding-start: 5%;
+  -webkit-padding-end: 5%;
+  list-style-type: decimal; }
 
 ul li {
   padding: 0.5em 0; }

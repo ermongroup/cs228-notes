@@ -77,7 +77,7 @@
 </script>
 
 
-<p>In the last chapter, we saw that inference in probabilistic models in often intractable, and we learned about algorithms that provide approximate solutions to the inference problem (e.g. marginal inference) by using subroutines that involve sampling random variables. Most sampling-based inference algorithms are instances of Markov Chain Monte-Carlo (MCMC); two popular MCMC methods are Gibbs sampling and Metropolis-Hastings.</p>
+<p>In the last chapter, we saw that inference in probabilistic models is often intractable, and we learned about algorithms that provide approximate solutions to the inference problem (e.g. marginal inference) by using subroutines that involve sampling random variables. Most sampling-based inference algorithms are instances of Markov Chain Monte-Carlo (MCMC); two popular MCMC methods are Gibbs sampling and Metropolis-Hastings.</p>
 
 <p>Unfortunately, these sampling-based methods have several important shortcomings.</p>
 
@@ -99,7 +99,7 @@
 <ul>
   <li>Unlike sampling-based methods, variational approaches will almost never find the globally optimal solution.</li>
   <li>However, we will always know if they have converged. In some cases, we will even have bounds on their accuracy.</li>
-  <li>In practice, variational inference methods often scale better are more amenable to techniques like stochastic gradient optimization, parallelization over multiple processors, and acceleration using GPUs.</li>
+  <li>In practice, variational inference methods often scale better and are more amenable to techniques like stochastic gradient optimization, parallelization over multiple processors, and acceleration using GPUs.</li>
 </ul>
 
 <p>Although sampling methods were historically invented first (in the 1940’s), variational techniques have been steadily gaining popularity and are currently the more widely used inference technique.</p>
@@ -124,7 +124,7 @@ KL(q||p) = \sum_x q(x) \log \frac{q(x)}{p(x)}.
 
 <h2 id="the-variational-lower-bound">The variational lower bound</h2>
 
-<p>How perform variational inference with a KL divergence? First, let’s fix a form for <script type="math/tex">p</script>. We’ll that assume that <script type="math/tex">p</script> is a general (discrete, for simplicity) undirected model of the form</p>
+<p>How do we perform variational inference with a KL divergence? First, let’s fix a form for <script type="math/tex">p</script>. We’ll assume that <script type="math/tex">p</script> is a general (discrete, for simplicity) undirected model of the form</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 p(x_1,..,x_n; \theta) = \frac{\tilde p(x_1,...,x_n ; \theta)}{Z(\theta)} =\frac{1}{Z(\theta)} \prod_{k} \phi_k(x_k; \theta),
 </script></div>

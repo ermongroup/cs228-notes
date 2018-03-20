@@ -7,7 +7,7 @@ Given a probabilistic model (such as a Bayes net or an MRF), we are interested i
 
 - *Marginal inference*: what is the probability of a given variable in our model after we sum everything else out (e.g. probability of spam vs non-spam)?
 {% math %}
-p(y=1) = \sum_{x_2} \sum_{x_2}  \cdots \sum_{x_n} p(y=1,x_1, x_2, ..., x_n).
+p(y=1) = \sum_{x_1} \sum_{x_2}  \cdots \sum_{x_n} p(y=1,x_1, x_2, ..., x_n).
 {% endmath %}
 - *Maximum a posteriori (MAP) inference*: what is the most likely assignment to the variables in the model (possibly conditioned on evidence).
 {% math %}
@@ -99,6 +99,8 @@ More formally, for each variable $$X_i$$ (ordered according to $$O$$),
 1. Multiply all factors $$\Phi_i$$ containing $$X_i$$
 2. Marginalize out $$X_i$$ to obtain new factor $$\tau$$
 3. Replace the factors in $$\Phi_i$$ by $$\tau$$
+
+A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/vElimApp) for visualizing the variable elimination algorithm. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
 
 ### Examples
 

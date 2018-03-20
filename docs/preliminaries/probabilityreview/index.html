@@ -332,7 +332,7 @@ until the first heads.
 <p>• <strong><script type="math/tex">X</script> ∼ Poisson(<script type="math/tex">\lambda</script>)</strong> (where <script type="math/tex">\lambda</script> &gt; 0): a probability distribution over the nonnegative integers
 used for modeling the frequency of rare events.
 \begin{equation} 
-p(x) = e^{\lambda} \frac{\lambda^x}{x!}
+p(x) = e^{-\lambda} \frac{\lambda^x}{x!}
 \end{equation}</p>
 
 <h3 id="continuous-random-variables">Continuous random variables</h3>
@@ -368,7 +368,7 @@ random variables.</p>
 
 <h2 id="31-joint-and-marginal-distributions">3.1 Joint and marginal distributions</h2>
 
-<p>Suppose that we have two random variables <script type="math/tex">X</script> and <script type="math/tex">Y</script> . One way to work with these two random variables is to consider each of them separately. If we do that we will only need <script type="math/tex">F_X(x)</script> and <script type="math/tex">F_Y (y)</script>. But if we want to know about the values that <script type="math/tex">X</script> and <script type="math/tex">Y</script> assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of <script type="math/tex">X</script> and <script type="math/tex">Y</script> , defined by 
+<p>Suppose that we have two random variables <script type="math/tex">X</script> and <script type="math/tex">Y</script> . One way to work with these two random variables is to consider each of them separately. If we do that we will only need <script type="math/tex">F_X(x)</script> and <script type="math/tex">F_Y (y)</script>. But if we want to know about the values that <script type="math/tex">X</script> and <script type="math/tex">Y</script> assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of <script type="math/tex">X</script> and <script type="math/tex">Y</script>, defined by 
 \begin{equation}
 F_{XY} (x, y) = P(X \leq  x, Y \leq  y). 
 \end{equation}</p>
@@ -377,10 +377,10 @@ F_{XY} (x, y) = P(X \leq  x, Y \leq  y).
 
 <p>The joint CDF <script type="math/tex">F_{XY} (x, y)</script> and the joint distribution functions <script type="math/tex">F_X(x)</script> and <script type="math/tex">F_Y (y)</script> of each variable separately are related by
 \begin{equation}
-F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)dy
+F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)
 \end{equation}
 \begin{equation}
-F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)dx
+F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)
 \end{equation}
 Here, we call <script type="math/tex">F_X(x)</script> and <script type="math/tex">F_Y(y)</script> the <strong>marginal cumulative distribution functions</strong> of <script type="math/tex">F_{XY} (x, y)</script>.</p>
 
@@ -394,7 +394,7 @@ Here, we call <script type="math/tex">F_X(x)</script> and <script type="math/tex
 
 <h2 id="32-joint-and-marginal-probability-mass-functions">3.2 Joint and marginal probability mass functions</h2>
 
-<p>If <script type="math/tex">X</script> and <script type="math/tex">Y</script> are discrete random variables, then the joint probability mass function <script type="math/tex">p_{XY} : \mathbb{R} \times \mathbb{R} \rightarrow [0, 1]</script> is defined by
+<p>If <script type="math/tex">X</script> and <script type="math/tex">Y</script> are discrete random variables, then the joint probability mass function <script type="math/tex">p_{XY} : Val(X) \times Val(Y) \rightarrow [0, 1]</script> is defined by
 \begin{equation}
 p_{XY}(x, y) = P(X = x, Y = y).
 \end{equation}

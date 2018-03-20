@@ -5,8 +5,9 @@ title: MAP inference
 This section will explore in more detail the problem of MAP inference in graphical models. 
 Recall that MAP inference in a graphical model $$p$$ corresponds to the following optimization problem:
 {% math %}
-\max_x \log p(x) = \max_x \sum_c \phi_c(\bfx_c) - \log Z.
+\max_x \log p(x) = \max_x \sum_c \theta_c(\bfx_c) - \log Z
 {% endmath %}
+where $$\theta_c(\bfx_c) = \log\phi_c(\bfx_c)$$.
 
 In the previous section, we briefly showed how to solve this problem within the same message passing framework as marginal inference. We will now look at more efficient specialized methods.
 
@@ -14,7 +15,7 @@ In the previous section, we briefly showed how to solve this problem within the 
 
 In a way, MAP inference is easier than marginal inference. One reason for this is that the intractable partition constant $$\log Z$$ does not depend on $$x$$ and can be ignored:
 {% math %}
-\arg \max_x \sum_c \phi_c(\bfx_c).
+\arg \max_x \sum_c \theta_c(\bfx_c).
 {% endmath %}
 
 Marginal inference can also be seen as computing and summing all assignments to the model, one of which is the MAP assignment. If we replace summation with maximization, we can also find the assignment with the highest probability; however, there exist more efficient methods than this sort of enumeration-based approach.
@@ -29,7 +30,7 @@ Nonetheless, we will see that the MAP problem is easier than general inference, 
 
 Many interesting examples of MAP inference are instances of *structured prediction*, which involves doing inference in a conditional random field (CRF) model $$p(y|x)$$:
 {% math %}
-\arg \max_y \log p(y|x) =  \arg \max_y \sum_c \phi_c(\bfy_c, \bfx_c).
+\arg \max_y \log p(y|x) =  \arg \max_y \sum_c \theta_c(\bfy_c, \bfx_c).
 {% endmath %}
 
 {% marginfigure 'ocr' 'assets/img/ocr.png' 'Chain-structured conditional random field for optical character recognition.' %}
@@ -110,7 +111,7 @@ We can rewrite the MAP objective in terms of these variables as
 \max_\mu \sum_{i \in V} \sum_{x_i} \theta_i (x_i) \mu_i(x_i) + \sum_{i,j \in E} \sum_{x_i, x_j} \theta_{ij} (x_i, x_j) \mu_{ij}(x_i, x_j).
 {% endmath %}
 
-We would like to optimize over these $$\mu$$'s; for that we also need to introduce constrains.
+We would like to optimize over these $$\mu$$'s; for that we also need to introduce constraints.
 First, we need to force each cluster to choose a local assignment:
 {% math %}
 \begin{align*}
@@ -148,7 +149,7 @@ The above objective is difficult to optimize because the potentials are coupled.
 \sum_{i \in V} \max_{x_i}  \theta_i (x_i) + \sum_{f \in F} \max_{x^f} \theta_{f} (x^f) .
 {% endmath %}
 
-This would be easy optimize, but would only give us an upper bound on the value of the true MAP assignment.
+This would be easy to optimize, but would only give us an upper bound on the value of the true MAP assignment.
 To make our relaxation tight, we would need to introduce
 constraints that encourage consistency between the potentials:
 {% math %} 
@@ -225,7 +226,7 @@ A more heuristic-type solution consists in starting with an arbitrary assignment
 
 ### Branch and bound
 
-Alternatively, one may perform exhaustive search over space of assignments, while pruning branches that can be provably shown not to contain a MAP assignment. The LP relaxation or its dual to obtain upper bounds useful for pruning trees.
+Alternatively, one may perform exhaustive search over the space of assignments, while pruning branches that can be provably shown not to contain a MAP assignment. The LP relaxation or its dual can be used to obtain upper bounds useful for pruning trees.
 
 ### Simulated annealing
 

@@ -170,7 +170,7 @@ Z
 p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c),
 </script></div>
 
-<p>Crucially, we will assume that the cliques <script type="math/tex">c</script> have a form of path structure, meaning that we can find an ordering <script type="math/tex">x_c^{(1)}, ..., x_c^{(n)}</script> with the property that if <script type="math/tex">x_i \in x_c^{(j)}</script> and <script type="math/tex">x_i \in x_c^{(k)}</script> for some variable <script type="math/tex">x_i</script> then <script type="math/tex">x_i \in x_c^{(\ell)}</script> for all <script type="math/tex">x_c^{(\ell)}</script> on the path between <script type="math/tex">x_c^{(j)}</script> and <script type="math/tex">x_c^{(k)}</script>. We refer to this assumption as the <em>running intersection</em> (RIP) property.</p>
+<p>Crucially, we will assume that the cliques <script type="math/tex">c</script> have a form of path structure, meaning that we can find an ordering <script type="math/tex">x_c^{(1)}, ..., x_c^{(n)}</script> with the property that if <script type="math/tex">x_i \in x_c^{(j)}</script> and <script type="math/tex">x_i \in x_c^{(k)}</script> for some variable <script type="math/tex">x_i</script> then <script type="math/tex">x_i \in x_c^{(\ell)}</script> for all <script type="math/tex">x_c^{(\ell)}</script> on the path between <script type="math/tex">x_c^{(j)}</script> and <script type="math/tex">x_c^{(k)}</script>. We refer to this assumption as the <em>running intersection</em> property (RIP).</p>
 <figure><figcaption>A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques</figcaption><img src="/cs228-notes/assets/img/junctionpath.png" /></figure>
 
 <p>Suppose that we are interested in computing the marginal probability <script type="math/tex">p(x_1)</script> in the above example. Given our assumptions, we may again use a form of variable elimination to 
@@ -197,7 +197,7 @@ A junction tree <script type="math/tex">T=(C, E_T)</script> over <script type="m
   <li><em>Running intersection</em>: For every pair of clusters <script type="math/tex">c^{(i)}, c^{(j)}</script>, every cluster on the path between <script type="math/tex">c^{(i)}, c^{(j)}</script> contains <script type="math/tex">x_c^{(i)} \cap x_c^{(j)}</script>.</li>
 </ul>
 
-<p>Here is an example of an MRF with graph <script type="math/tex">G</script> and junction tree <script type="math/tex">T</script>. MRF potentials are denoted using different colors; circles indicates nodes of the junction trees; rectangular nodes represent <em>sepsets</em>, which are sets of variables shared by neighboring clusters.</p>
+<p>Here is an example of an MRF with graph <script type="math/tex">G</script> and junction tree <script type="math/tex">T</script>. MRF potentials are denoted using different colors; circles indicates nodes of the junction trees; rectangular nodes represent <em>sepsets</em> (short for “separation sets”), which are sets of variables shared by neighboring clusters.</p>
 
 <figure><figcaption>An MRF with graph G and its junction tree T.</figcaption><img src="/cs228-notes/assets/img/junctiontree.png" /></figure>
 <p><label for="jtt" class="margin-toggle">⊕</label><input type="checkbox" id="jtt" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/jt-over-tree.png" /><br />A junction tree defined over a tree graph. Clusters correspond to edges.</span>
@@ -220,12 +220,12 @@ p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \psi_c(x_c).
 
 <p>Then, at each step of the algorithm, we choose a pair of adjacent clusters <script type="math/tex">c^{(i)}, c^{(j)}</script> in <script type="math/tex">T</script> and compute a message whose scope is the sepset <script type="math/tex">S_{ij}</script> between the two clusters:</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi(x_c) \prod_{\ell \in N(i) \backslash j} m_{\ell \to i}(S_{\ell i}).
+m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi_c(x_c) \prod_{\ell \in N(i) \backslash j} m_{\ell \to i}(S_{\ell i}).
 </script></div>
 
 <p>We choose <script type="math/tex">c^{(i)}, c^{(j)}</script> only if <script type="math/tex">c^{(i)}</script> has received messages from all of its neighbors except <script type="math/tex">c^{(j)}</script>. Just as in belief propagation, this procedure will terminate in exactly <span>​<script type="math/tex">2|E_T|</script></span> steps. After it terminates, we will define the belief of each cluster based on all the messages that it receives</p>
 <div class="mathblock"><script type="math/tex; mode=display">
-\beta_c(x_c) = \psi(x_c) \prod_{\ell \in N(i)} m_{\ell \to i}(S_{\ell i}).
+\beta_c(x_c) = \psi_c(x_c) \prod_{\ell \in N(i)} m_{\ell \to i}(S_{\ell i}).
 </script></div>
 
 <p>These updates are often referred to as <em>Shafer-Shenoy</em>. After all the messages have been passed, beliefs will be proportional to the marginal probabilities over their scopes, i.e. <script type="math/tex">\beta_c(x_c) \propto p(x_c)</script>. We may answer queries of the form <script type="math/tex">\tp(x)</script> for <script type="math/tex">x \in x_c</script> by marginalizing out the variable in its belief<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Readers familiar with combinatorial optimization will recognize this as a special case of dynamic programming on a tree decomposition of a graph with bounded treewidth. </span></p>
@@ -272,7 +272,7 @@ m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi(x_c) \prod_{\ell \in N(i)
 
 <h3 id="definition-for-pairwise-models">Definition for pairwise models</h3>
 
-<p>Suppose that we a given an MRF with pairwise potentials<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Arbitrary potentials can be handled using an algorithm called LBP on <em>factor graphs</em>. We will include this material at some point in the future </span>.
+<p>Suppose that we are given an MRF with pairwise potentials<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Arbitrary potentials can be handled using an algorithm called LBP on <em>factor graphs</em>. We will include this material at some point in the future </span>.
 The main idea of LBP is to disregard loops in the graph and perform message passing anyway. In other words, given an ordering on the edges, at each time <script type="math/tex">t</script> we iterate over a pair of adjacent variables <script type="math/tex">x_i, x_j</script> in that order and simply perform the update</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \setminus j} m^{t}_{\ell \to i}(x_i).
