@@ -2,7 +2,7 @@
 layout: post
 title: Markov random fields
 ---
-Bayesian networks are a class of models that can compactly represent many interesting probability distributions. However, we have seen in the previous chapter that some distributions cannot be perfectly represented by a Bayesian network. 
+Bayesian networks are a class of models that can compactly represent many interesting probability distributions. However, we have seen in the previous chapter that some distributions cannot be perfectly represented by a Bayesian network.
 
 In such cases, unless we want to introduce false independencies among the variables of our model, we must fall back to a less compact representation (which can be viewed as a graph with additional, unnecessary edges). This leads to extra, unnecessary parameters in the model, and makes it more difficult to learn these parameters and to make predictions.
 
@@ -146,6 +146,14 @@ The most important realization that need to be made about CRF features is that t
 where $$\phi'_i(y_i) = \phi_i(x,y_i)$$. Using global features only changes the values of the factors, but not their scope, which possesses the same type of chain structure. We will see in the next section that this structure is all that is needed to ensure we can solve this optimization problem tractably.
 
 This observation may be interpreted in a slightly more general form. If we were to model $$p(x,y)$$ using an MRF (viewed as a single model over $$x, y$$ with normalizing constant $$Z = \sum_{x,y} \tp(x,y)$$), then we need to fit two distributions to the data: $$p(y\mid x)$$ and $$p(x)$$. However, if all we are interested in is predicting $$y$$ given $$x$$, then modeling $$p(x)$$ is unnecessary. In fact, it may be disadvantageous to do so statistically (e.g. we may not have enough data to fit both $$p(y\mid x)$$ and $$p(x)$$; since the models have shared parameters, fitting one may result in the best parameters for the other) and it may not be a good idea computationally (we need to make simplifying assumptions in the distribution so that $$p(x)$$ can be handled tractably). CRFs forgo of this assumption, and often perform better on prediction tasks.
+
+## Factor Graphs
+
+It is often useful to view MRFs in a way where factors and variables are explicit and separate in the representation. A factor graph is one such way to do this. A factor graph is a bipartite graph where one group is the variables in the distribution being modeled, and the other group is the factors defined on these variables. Edges go between factors and variables that those factors depend on. 
+
+{% maincolumn 'assets/img/factor-graph.png' 'Example of a factor graph with three variables and four factors.' %}
+
+This view allows us to more readily see the factor dependencies between variables, and later we'll see it allows us to compute some probability distributions more easily.
 
 <br/>
 
