@@ -24,24 +24,31 @@ Probabilistic graphical models have numerous and diverse real-world applications
 
 ## Probabilistic Models of Images
 
-Consider a distribution $$p(\mathbf{x})$$ over images, where $$\mathbf{x}$$ is an image represented as a vector of pixels, that assigns high probability to images that look realistic and low probability to everything else. Given such model, we can solve a wide array of interesting tasks.
+Consider a distribution $$p(\mathbf{x})$$ over images, where $$\mathbf{x}$$ is an image represented as a vector of pixels, that assigns high probability to images that look realistic and low probability to everything else. Given such a model, we can solve a wide array of interesting tasks.
 
 <a id="image-generation"></a>
 ### Image Generation
 
-[Radford et al.](https://arxiv.org/abs/1710.10196) train a probabilistic model $$ p(\mathbf{x}) $$ that assigns high probability to images that look like bedrooms (based on some training data):
+[Radford et al.](https://arxiv.org/abs/1710.10196) trained a probabilistic model $$ p(\mathbf{x}) $$ that assigns high probability to images that look like bedrooms.  To do so, they trained their model on a dataset of bedroom images, a sample of which is shown below:
 
 **Training Data**<br /> 
 ![bedroom1](bedroominpainting1.png)<br /> 
 
-If we sample a new image $$\hat{\mathbf{x}} \sim p(\mathbf{x})$$, we are **generating** new (realistic) images. 
+Now that we have this probablistic model of bedrooms, we can now _**generate**_ new realistic bedroom images by sampling from this distribution.  Specifically, new sampled images $$\hat{\mathbf{x}} \sim p(\mathbf{x})$$ are created directly from our model $$p(\mathbf{x})$$, which can now generate data similar to the bedroom images that we trained it with.  
+
+Moreover, one of the reasons why generative models are powerful lie in the fact that they have many fewer parameters than the amount of data that they are trained with --- as a result, the models have to efficiently distill the essence of the training data to be able to generate new samples.  We see that our particular probablistic model of bedrooms has done a good job of capturing the data's essence, and can therefore produce highly realistic images, some examples of which are shown below:
 
 **Generated Data**<br /> 
 ![bedroom2](bedroominpainting2.png)
 
-Similiarly, we can learn a model for faces or objects:
+Similiarly, we can learn a model for faces.  
 
 ![faces1](progressiveGAN.png)
+
+As with the bedroom images, these faces are completely synthetic --- these images are not of an actual person.  
+
+The same approach can be used for other objects.
+
 ![faces1](pnpgan.png) 
 
 Note that the images are not perfect and may need to be refined; however, sampling generates images that are very similiar to what one might expect. 
