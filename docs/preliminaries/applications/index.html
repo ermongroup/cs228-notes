@@ -112,32 +112,39 @@
 
 <h2 id="probabilistic-models-of-images">Probabilistic Models of Images</h2>
 
-<p>Consider a distribution <script type="math/tex">P(x)</script> over images (a matrix of pixels) that assigns high probability to images that look realistic and low probability to everything else. Given such model, we can solve a wide array of interesting tasks.</p>
+<p>Consider a distribution <script type="math/tex">p(\mathbf{x})</script> over images, where <script type="math/tex">\mathbf{x}</script> is an image represented as a vector of pixels, that assigns high probability to images that look realistic and low probability to everything else. Given such a model, we can solve a wide array of interesting tasks.</p>
 
 <p><a id="image-generation"></a></p>
 <h3 id="image-generation">Image Generation</h3>
 
-<p><a href="https://arxiv.org/abs/1710.10196">Radford et al.</a> train a probabilistic model <script type="math/tex">P(x)</script> that assigns high probability to images that look like bedrooms (based on some training data):</p>
+<p><a href="https://arxiv.org/abs/1710.10196">Radford et al.</a> trained a probabilistic model <script type="math/tex">p(\mathbf{x})</script> that assigns high probability to images that look like bedrooms.  To do so, they trained their model on a dataset of bedroom images, a sample of which is shown below:</p>
 
 <p><strong>Training Data</strong><br /> 
 <img src="bedroominpainting1.png" alt="bedroom1" /><br /></p>
 
-<p>If we sample <script type="math/tex">x \sim P(x)</script>, we are <strong>generating</strong> new (realistic) images.</p>
+<p>Now that we have this probablistic model of bedrooms, we can now <em><strong>generate</strong></em> new realistic bedroom images by sampling from this distribution.  Specifically, new sampled images <script type="math/tex">\hat{\mathbf{x}} \sim p(\mathbf{x})</script> are created directly from our model <script type="math/tex">p(\mathbf{x})</script>, which can now generate data similar to the bedroom images that we trained it with.</p>
+
+<p>Moreover, one of the reasons why generative models are powerful lie in the fact that they have many fewer parameters than the amount of data that they are trained with — as a result, the models have to efficiently distill the essence of the training data to be able to generate new samples.  We see that our particular probablistic model of bedrooms has done a good job of capturing the data’s essence, and can therefore produce highly realistic images, some examples of which are shown below:</p>
 
 <p><strong>Generated Data</strong><br /> 
 <img src="bedroominpainting2.png" alt="bedroom2" /></p>
 
-<p>Similiarly, we can learn a model for faces or objects:</p>
+<p>Similiarly, we can learn a model for faces.</p>
 
-<p><img src="progressiveGAN.png" alt="faces1" />
-<img src="pnpgan.png" alt="faces1" /></p>
+<p><img src="progressiveGAN.png" alt="faces1" /></p>
+
+<p>As with the bedroom images, these faces are completely synthetic — these images are not of an actual person.</p>
+
+<p>The same approach can be used for other objects.</p>
+
+<p><img src="pnpgan.png" alt="faces1" /></p>
 
 <p>Note that the images are not perfect and may need to be refined; however, sampling generates images that are very similiar to what one might expect.</p>
 
 <p><a id="image-inpainting"></a></p>
 <h3 id="in-painting">In-Painting</h3>
 
-<p>Using the same <script type="math/tex">P(x)</script>, we can also ‘fill in the rest of the image’. For example, given <script type="math/tex">P(x)</script> and a patch of an existing image (e.g., a piece of a photograph), we can sample from <script type="math/tex">P(\text{image} \mid \text{patch})</script> and generate different possible ways of completing the image:</p>
+<p>Using the same <script type="math/tex">p(x)</script>, we can also ‘fill in the rest of the image’. For example, given <script type="math/tex">p(x)</script> and a patch of an existing image (e.g., a piece of a photograph), we can sample from <script type="math/tex">p(\text{image} \mid \text{patch})</script> and generate different possible ways of completing the image:</p>
 
 <p><img src="inpainting3.png" alt="inpainting2" /></p>
 
@@ -146,18 +153,18 @@
 <p><a id="image-denoising"></a></p>
 <h3 id="image-denoising">Image Denoising</h3>
 
-<p>Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like:</p>
+<p>Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like.  Specifically, we want to generate a graphical model that does a good job at modeling the posterior distribution <script type="math/tex">p(\mathbf{O} \mid \mathbf{N}),</script> where <script type="math/tex">\mathbf{O}</script> and <script type="math/tex">\mathbf{N}</script> are the original and noisy images, respectively.  Then, by observing the noisy image <script type="math/tex">\mathbf{N}</script>, we can sample or use exact inference to predict the original image.</p>
 
 <p><img src="imageDenoising4.png" alt="Image Denoising" /></p>
 
 <h2 id="language-models">Language Models</h2>
 
-<p>Knowing the probability distribution can also help us model natural langauge utterances. In this case, we want to construct a probability distribution <script type="math/tex">P(x)</script> over sequences of words or characters <script type="math/tex">x</script> that assigns high probability to proper (English) sentences. This distribution can be gathered by using articles from Wikipedia.</p>
+<p>Knowing the probability distribution can also help us model natural langauge utterances. In this case, we want to construct a probability distribution <script type="math/tex">p(x)</script> over sequences of words or characters <script type="math/tex">x</script> that assigns high probability to proper (English) sentences.  This distribution can be learned from a variety of sources, such as Wikipedia articles.</p>
 
 <p><a id="text-generation"></a></p>
 <h3 id="generation">Generation</h3>
 
-<p>We can sample from the model and generate new Wikipedia-like articles like the one below<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">From <a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">The Unreasonable Effectiveness of Recurrent Neural Networks</a> </span>.</p>
+<p>Let’s say that we have constructed a distribution of word sequences from Wikipedia articles.  We can then sample from this distribution to generate new Wikipedia-like articles like the one below<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">From <a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">The Unreasonable Effectiveness of Recurrent Neural Networks</a> </span>.</p>
 
 <blockquote>
   <p>Naturalism and decision for the majority of Arab countries’ capitalide was grounded
@@ -182,13 +189,13 @@ was starting to signing a major tripad of aid exile.]]</p>
 <p><a id="text-translation"></a></p>
 <h3 id="translation">Translation</h3>
 
-<p>Suppose that we have gathered a training set of paragraphs that were transcribed in both English and Chinese. We can build a probabilistic model <script type="math/tex">P(y \mid x)</script> to generate an English sentence <script type="math/tex">y</script> conditioned on the corresponding Chinese sentence <script type="math/tex">x</script>; this is an instance of <em>machine translation</em>.</p>
+<p>Suppose that we have gathered a training set of paragraphs that were transcribed in both English and Chinese. We can build a probabilistic model <script type="math/tex">p(y \mid x)</script> to generate an English sentence <script type="math/tex">y</script> conditioned on the corresponding Chinese sentence <script type="math/tex">x</script>; this is an instance of <em>machine translation</em>.</p>
 
 <p><img src="nmt-model-fast.gif" alt="Neural Machine Translation" /></p>
 
 <h2 id="audio-models">Audio Models</h2>
 
-<p>We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution <script type="math/tex">P(x)</script> over audio signals that assigns high probability to ones that sound like human speech.</p>
+<p>We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution <script type="math/tex">p(x)</script> over audio signals that assigns high probability to ones that sound like human speech.</p>
 
 <p><a id="audio-superresolution"></a></p>
 <h3 id="upsampling-or-super-resolution">Upsampling or Super-Resolution</h3>
