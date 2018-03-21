@@ -7,13 +7,17 @@ The learning approaches we have discussed so far are based on the principle of m
 
 ## Example 1
 
-Let's suppose we are interested in modeling the outcome of a biased coin, $$X = \{heads, tails\}$$. We toss the coin 10 times, observing 6 heads. If $$\theta$$ denotes the probability of observing heads, the maximum likelihood estimate (MLE) is given by, 
+Let's suppose we are interested in modeling the outcome of a biased coin, $$X = \{heads, tails\}$$. We toss the coin 10 times, observing 6 heads. If $$\theta$$ denotes the probability of observing heads, the maximum likelihood estimate (MLE) is given by,
 
-$$\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6$$
+{% math %}
+\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6
+{% endmath %}
 
 Now, suppose we continue tossing the coin such that after a 100 total trials (including the 10 initial trials), we observe 60 heads. Again, we can compute the MLE as,
 
-$$\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6$$
+{% math %}
+\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6
+{% endmath %}
 
 In both the above situations, the maximum likelihood estimate does not change as we observe more data. This seems counterintuitive - our _confidence_ in predicting heads with probability 0.6 should be higher in the second setting where we have seen many more trials of the coin! The reason why MLE fails to distinguish the two settings is due to an implicit assumption we have been making all along. MLE assumes that the only source of uncertainty is due to the variables, $$X$$ and the quantification of this uncertainty is based on a fixed parameter $$\theta_{MLE}$$. 
 
@@ -34,9 +38,13 @@ A _prior_ distribution over the parameters, $$p(\theta)$$ encodes our initial be
 
 Observing data $$D$$ in the form of evidence allows us to update our beliefs using Bayes' rule,
 
-$$p(\theta \mid D) = \frac{p(D \mid \theta) \, p(\theta)}{p(D)} \propto p(D \mid \theta) \, p(\theta)$$
+{% math %}
+p(\theta \mid D) = \frac{p(D \mid \theta) \, p(\theta)}{p(D)} \propto p(D \mid \theta) \, p(\theta)
+{% endmath %}
 
-$$posterior \propto likelihood \times prior$$
+{% math %}
+posterior \propto likelihood \times prior
+{% endmath %}
 
 Hence, Bayesian learning provides a principled mechanism for incorporating prior knowledge into our model. This prior knowledge is useful in many situations such as when want to provide uncertainty estimates about the model parameters (Example 1) or when the data available for learning a model is limited (Example 2).
 
@@ -47,20 +55,26 @@ When calculating posterior distribution using Bayes' rule, as in the above, it s
 
 To tackle this issue, we use a conjugate prior. A parametric family $$\varphi$$ is conjugate for the likelihood $$P(D \mid \theta)$$ if:
 
-$$P(\theta) \in \varphi \Longrightarrow P(\theta \mid D) \in \varphi$$
+{% math %}
+P(\theta) \in \varphi \Longrightarrow P(\theta \mid D) \in \varphi
+{% endmath %}
 
 This is convenient because if we know the normalizing constant of $$\varphi$$, then we get the denominator in Bayes' rule "for free". Thus it essentially reduces the computation of the posterior from a tricky numerical integral to some simple algebra. 
 
 To see conjugate prior in action, let's consider an example. Suppose we are given a sequence of $$N$$ coin tosses, $$D = \{X_{1},...,X_{N}\}$$. We want to infer the probability of getting heads which we denote by $$\theta$$.  Now, we can model this as a sequence of Bernoulli trials with parameter $$\theta$$. A natural conjugate prior in this case is the beta distribution with
 
-$$P(\theta) = Beta(\theta \mid \alpha_{H}, \alpha_{T}) = \frac{\theta^{\alpha_{H} -1 }(1-\theta)^{\alpha_{T} -1 }}{B(\alpha_{H},\alpha_{T})}$$
+{% math %}
+P(\theta) = Beta(\theta \mid \alpha_{H}, \alpha_{T}) = \frac{\theta^{\alpha_{H} -1 }(1-\theta)^{\alpha_{T} -1 }}{B(\alpha_{H},\alpha_{T})}
+{% endmath %}
 
 where the normalization constant $$B(\cdot)$$ is the beta function. Here $$\alpha = (\alpha_{H},\alpha_{T})$$ are called the hyperparameters of the prior. The expected value of $$\theta$$ is $$\frac{\alpha_{H}}{\alpha_{H}+\alpha_{T}}$$. Here the sum of the hyperparameters $$(\alpha_{H}+\alpha_{T})$$ can be interpreted as a measure of confidence in the expectations they lead to. Intuitively, we can think of $$\alpha_{H}$$ as the number of heads we have observed before the current dataset. 
 
 Out of $$N$$ coin tosses, if the number of heads and the number of tails are $$N_{H}$$
 and $$N_{T}$$ respectively, then it can be shown that the posterior is:
 
-$$P(\theta \mid N_{H}, N_{T}) = \frac{\theta^{N_{H}+ \alpha_{H} -1 }(1-\theta)^{ N_{T}+ \alpha_{T} -1 }}{B(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})}$$
+{% math %}
+P(\theta \mid N_{H}, N_{T}) = \frac{\theta^{N_{H}+ \alpha_{H} -1 }(1-\theta)^{ N_{T}+ \alpha_{T} -1 }}{B(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})}
+{% endmath %}
 
 which is another Beta distribution with parameters $$(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})$$. We can use this posterior distribution as the prior for more samples with the hyperparameters simply adding each extra piece of information as it comes from additional coin tosses. 
 
