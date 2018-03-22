@@ -49,6 +49,24 @@ Because of this observation, after we have computed all messages, we may answer 
 p(x_i) = \prod_{\ell \in N(i)} m_{\ell \to i}(x_i).
 {% endmath %}
 
+### Sum-product message passing for factor trees
+
+The sum-product message passing variant of belief propgation can also be applied to factor trees, with a slight modification. Recall that a factor graphs is a bipartite graph with edges goign between variables and factors, with an edge signifying a factor depends on a variable. We can perform VE on factor graphs through a modified version of the above algorithm.
+
+On factor graphs, we have two types of messages: variable-to-factor messages $$\nu$$ and factor-to-variable messages $$\mu$$.
+
+{% maincolumn 'assets/img/factor-graph-messages.png' %}
+
+Both messages require taking a product, but only the factor-to-variable messages $$\mu$$ require a sum.
+
+{% math %}
+\nu_{var(i)\to fac(s)}(x_i) = \prod_{t\in\mathcal N(i)\setminus s}\mu_{fac(t)\to var(i)}(x_i) \\
+
+\mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{\mathcal N(s)\setminus i}}f_s(x_{\mathcal N(s)})\prod_{t\in\mathcal N(i)\setminus s}\nu_{var(j)\to fac(s)}(x_j)
+{% endmath %}
+
+So now the algorithm proceeds in the same way as above: as long as their is a factor or variable ready to transmit to a variable or factor, respectively, send the appropriate factor-to-variable or variable-to-factor message as defined above.
+
 ### Max-product message passing
 
 So far, we have said very little about the second type of inference we are interested to perform, which are MAP queries
@@ -76,7 +94,7 @@ To compute the mode $$\tp^*$$ of $$\tp(x_1,...,x_n)$$, we simply replace sums wi
 \end{align*}
 {% endmath %}
 
-The key property that makes this work is the distributivity of both the sum and the max operator over products. Since both problems are essentially equivalent (after swapping the corresponding operators), we may reuse all of the machinery developed for marginal inference and apply it directly to MAP inference.
+The key property that makes this work is the distributivity of both the sum and the max operator over products. Since both problems are essentially equivalent (after swapping the corresponding operators), we may reuse all of the machinery developed for marginal inference and apply it directly to MAP inference. Note that this also applies to factor trees.
 
 There is a small caveat in that we often want not just the mode of a distribution, but also its most probable assignment. This problem can be easily solved by keeping *back-pointers* during the optimization procedure. For instance, in the above example, we would keep a backpointer to the best assignment to $$x_1$$ given each assignment to $$x_2$$, a pointer to the best assignment to $$x_2$$ given each assignment to $$x_3$$, and so on.
 
