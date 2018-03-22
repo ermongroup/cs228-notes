@@ -69,6 +69,8 @@ P(\theta) = Beta(\theta \mid \alpha_{H}, \alpha_{T}) = \frac{\theta^{\alpha_{H} 
 
 where the normalization constant $$B(\cdot)$$ is the beta function. Here $$\alpha = (\alpha_{H},\alpha_{T})$$ are called the hyperparameters of the prior. The expected value of $$\theta$$ is $$\frac{\alpha_{H}}{\alpha_{H}+\alpha_{T}}$$. Here the sum of the hyperparameters $$(\alpha_{H}+\alpha_{T})$$ can be interpreted as a measure of confidence in the expectations they lead to. Intuitively, we can think of $$\alpha_{H}$$ as the number of heads we have observed before the current dataset. 
 
+{% marginfigure 'nb1' 'assets/img/beta.png' 'Here the exponents $$(3,2)$$ and $$(30,20)$$ can both be used to encode the belief that $$\theta$$ is $$0.6.$$ But the second set of exponents imply a stronger belief as they are based on a larger sample.' %}
+
 Out of $$N$$ coin tosses, if the number of heads and the number of tails are $$N_{H}$$
 and $$N_{T}$$ respectively, then it can be shown that the posterior is:
 
@@ -77,10 +79,6 @@ P(\theta \mid N_{H}, N_{T}) = \frac{\theta^{N_{H}+ \alpha_{H} -1 }(1-\theta)^{ N
 {% endmath %}
 
 which is another Beta distribution with parameters $$(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})$$. We can use this posterior distribution as the prior for more samples with the hyperparameters simply adding each extra piece of information as it comes from additional coin tosses. 
-
-
-{% maincolumn 'assets/img/beta.png' 'Here the exponents $$(3,2)$$ and $$(30,20)$$ can both be used to encode the belief that $$\theta$$ is $$0.6$$. But the second set of exponents imply a stronger belief as they are based on a larger sample.' %}
-
 
 <br/>
 
