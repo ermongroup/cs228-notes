@@ -136,7 +136,7 @@ Given a (joint) model of speech signals and language (text), we can attempt to i
 
 <a id="error-correcting-codes"></a>
 ### Error Correcting Codes
-In the non-theoretical world, probabilistic models are often used to model communication channels (e.g., Ethernet or Wifi). i.e., if you send a message over a channel, you might get something different on the other end due to noise. Error correcting codes and techniques based on graphical models are used to detect and correct communication errors.
+In the non-theoretical world, probabilistic models are often used to model communication channels (e.g., Ethernet or Wifi). I.e., if you send a message over a channel, you might get something different on the other end due to noise. Error correcting codes and techniques based on graphical models are used to detect and correct communication errors.
 ![codes](Picture1.png)
 
 <a id="comp-bio"></a>

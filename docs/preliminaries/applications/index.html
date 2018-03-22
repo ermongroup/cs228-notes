@@ -144,7 +144,7 @@
 <p><a id="image-inpainting"></a></p>
 <h3 id="in-painting">In-Painting</h3>
 
-<p>Using the same <script type="math/tex">p(x)</script>, we can also ‘fill in the rest of the image’. For example, given <script type="math/tex">p(x)</script> and a patch of an existing image (e.g., a piece of a photograph), we can sample from <script type="math/tex">p(\text{image} \mid \text{patch})</script> and generate different possible ways of completing the image:</p>
+<p>Using the same <script type="math/tex">p(\mathbf{x})</script> for faces as before, we can also “fill in” the rest of an image. For example, given <script type="math/tex">p(\mathbf{x})</script> and a patch of an existing image (e.g., a piece of a photograph), we can sample from <script type="math/tex">p(\textsf{image} \mid \textsf{patch})</script> and generate different possible ways of completing the image:</p>
 
 <p><img src="inpainting3.png" alt="inpainting2" /></p>
 
@@ -153,7 +153,7 @@
 <p><a id="image-denoising"></a></p>
 <h3 id="image-denoising">Image Denoising</h3>
 
-<p>Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like.  Specifically, we want to generate a graphical model that does a good job at modeling the posterior distribution <script type="math/tex">p(\mathbf{O} \mid \mathbf{N}),</script> where <script type="math/tex">\mathbf{O}</script> and <script type="math/tex">\mathbf{N}</script> are the original and noisy images, respectively.  Then, by observing the noisy image <script type="math/tex">\mathbf{N}</script>, we can sample or use exact inference to predict the original image.</p>
+<p>Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like.  Specifically, we want to generate a graphical model that does a good job at modeling the posterior distribution <script type="math/tex">p(\textsf{original image} \mid \textsf{noisy image}).</script>  Then, by observing the noisy image, we can sample or use exact inference to predict the original image.</p>
 
 <p><img src="imageDenoising4.png" alt="Image Denoising" /></p>
 
@@ -200,7 +200,13 @@ was starting to signing a major tripad of aid exile.]]</p>
 <p><a id="audio-superresolution"></a></p>
 <h3 id="upsampling-or-super-resolution">Upsampling or Super-Resolution</h3>
 
-<p>Given a low resolution version of an audio signal, we can attempt to increase its resolution.</p>
+<p>Given a low resolution version of an audio signal, we can attempt to increase its resolution.  We can formulate this problem as follows: given our speech probability distribution <script type="math/tex">p(x)</script> that “knows” what typical human speech sounds like and some observed values of an audio signal, we aim to calculate signal values at intermediate time points.</p>
+
+<p>In the diagram below, given observed audio signals (blue) and some underlying model of the audio, we aim to reconstruct a higher-fidelity version of the original signal (dotted line) by predicting intermediate signals (white).</p>
+
+<p><img src="audioSuperresolution.png" alt="Audio Super-Resolution" /></p>
+
+<p>We can solve this by sampling or performing inference on <script type="math/tex">p(\textbf{I} \mid \textbf{O})</script>, where <script type="math/tex">\textbf{I}</script> are the intermediate signals that we want to predict, and <script type="math/tex">\textbf{O}</script> are the observed low-resolution audio signals.</p>
 
 <p><a href="https://kuleshov.github.io/audio-super-res/">Super resolution of audio signals demo</a></p>
 
@@ -220,7 +226,7 @@ was starting to signing a major tripad of aid exile.]]</p>
 
 <p><a id="error-correcting-codes"></a></p>
 <h3 id="error-correcting-codes">Error Correcting Codes</h3>
-<p>In the non-theoretical world, probabilistic models are often used to model communication channels (e.g., Ethernet or Wifi). i.e., if you send a message over a channel, you might get something different on the other end due to noise. Error correcting codes and techniques based on graphical models are used to detect and correct communication errors.
+<p>In the non-theoretical world, probabilistic models are often used to model communication channels (e.g., Ethernet or Wifi). I.e., if you send a message over a channel, you might get something different on the other end due to noise. Error correcting codes and techniques based on graphical models are used to detect and correct communication errors.
 <img src="Picture1.png" alt="codes" /></p>
 
 <p><a id="comp-bio"></a></p>
