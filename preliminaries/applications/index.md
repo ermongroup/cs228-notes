@@ -56,7 +56,7 @@ Note that the images are not perfect and may need to be refined; however, sampli
 <a id="image-inpainting"></a>
 ### In-Painting
 
-Using the same $$p(x)$$, we can also 'fill in the rest of the image'. For example, given $$p(x)$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$p(\text{image} \mid \text{patch})$$ and generate different possible ways of completing the image:
+Using the same $$p(\mathbf{x})$$ for faces as before, we can also "fill in" the rest of an image. For example, given $$p(\mathbf{x})$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$p(\textsf{image} \mid \textsf{patch})$$ and generate different possible ways of completing the image:
 
 ![inpainting2](inpainting3.png)
 
@@ -65,7 +65,7 @@ Note the importance of a probabilistic model that captures uncertainty: there co
 <a id="image-denoising"></a>
 ### Image Denoising
 
-Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like.  Specifically, we want to generate a graphical model that does a good job at modeling the posterior distribution $$p(\mathbf{O} \mid \mathbf{N}),$$ where $$\mathbf{O}$$ and $$\mathbf{N}$$ are the original and noisy images, respectively.  Then, by observing the noisy image $$\mathbf{N}$$, we can sample or use exact inference to predict the original image.
+Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like.  Specifically, we want to generate a graphical model that does a good job at modeling the posterior distribution $$p(\textsf{original image} \mid \textsf{noisy image}).$$  Then, by observing the noisy image, we can sample or use exact inference to predict the original image.
 
 ![Image Denoising](imageDenoising4.png)
 
@@ -110,7 +110,13 @@ We can also use probabilitic graphical models for audio applications. Suppose we
 <a id="audio-superresolution"></a>
 ### Upsampling or Super-Resolution
 
-Given a low resolution version of an audio signal, we can attempt to increase its resolution. 
+Given a low resolution version of an audio signal, we can attempt to increase its resolution.  We can formulate this problem as follows: given our speech probability distribution $$p(x)$$ that "knows" what typical human speech sounds like and some observed values of an audio signal, we aim to calculate signal values at intermediate time points.
+
+In the diagram below, given observed audio signals (blue) and some underlying model of the audio, we aim to reconstruct a higher-fidelity version of the original signal (dotted line) by predicting intermediate signals (white).
+
+![Audio Super-Resolution](audioSuperresolution.png)
+
+We can solve this by sampling or performing inference on $$p(\textbf{I} \mid \textbf{O})$$, where $$\textbf{I}$$ are the intermediate signals that we want to predict, and $$\textbf{O}$$ are the observed low-resolution audio signals.
 
 [Super resolution of audio signals demo](https://kuleshov.github.io/audio-super-res/)
 
