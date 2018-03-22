@@ -123,6 +123,8 @@ P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N
 
 <p>For greedy search (namely the K3 algorithm), we first assume a topological order of the graph. For each variable, we restrict its parent set to the variables with a higher order. While searching for parent set for each variable, it takes a greedy approach by adding the parent that increases the score most until no improvement can be made.</p>
 
+<p>A former CS228 student has created an <a href="http://pgmlearning.herokuapp.com/k3LearningApp">interactive web simulation</a> for visualizing the K3 learning algorithm. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.</p>
+
 <p>Although both approach are computational tractable, neither of them have a guarantee of the quality of the graph that we end up with. The graph space is highly “non-convex” and both algorithm might get stuck at some sub-optimal regions.</p>
 
 <h3 id="constraint-based-approach">Constraint-based approach</h3>

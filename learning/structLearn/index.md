@@ -48,6 +48,8 @@ For local search algorithm, it starts with an empty graph or a complete graph. A
 
 For greedy search (namely the K3 algorithm), we first assume a topological order of the graph. For each variable, we restrict its parent set to the variables with a higher order. While searching for parent set for each variable, it takes a greedy approach by adding the parent that increases the score most until no improvement can be made.  
 
+A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/k3LearningApp) for visualizing the K3 learning algorithm. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
+
 Although both approach are computational tractable, neither of them have a guarantee of the quality of the graph that we end up with. The graph space is highly "non-convex" and both algorithm might get stuck at some sub-optimal regions.
 
 

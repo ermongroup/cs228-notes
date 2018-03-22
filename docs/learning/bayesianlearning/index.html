@@ -83,11 +83,15 @@
 
 <p>Let’s suppose we are interested in modeling the outcome of a biased coin, <script type="math/tex">X = \{heads, tails\}</script>. We toss the coin 10 times, observing 6 heads. If <script type="math/tex">\theta</script> denotes the probability of observing heads, the maximum likelihood estimate (MLE) is given by,</p>
 
-<script type="math/tex; mode=display">\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6</script>
+<div class="mathblock"><script type="math/tex; mode=display">
+\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6
+</script></div>
 
 <p>Now, suppose we continue tossing the coin such that after a 100 total trials (including the 10 initial trials), we observe 60 heads. Again, we can compute the MLE as,</p>
 
-<script type="math/tex; mode=display">\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6</script>
+<div class="mathblock"><script type="math/tex; mode=display">
+\theta_{MLE} = \frac{num\_heads}{num\_heads + num\_tails} = 0.6
+</script></div>
 
 <p>In both the above situations, the maximum likelihood estimate does not change as we observe more data. This seems counterintuitive - our <em>confidence</em> in predicting heads with probability 0.6 should be higher in the second setting where we have seen many more trials of the coin! The reason why MLE fails to distinguish the two settings is due to an implicit assumption we have been making all along. MLE assumes that the only source of uncertainty is due to the variables, <script type="math/tex">X</script> and the quantification of this uncertainty is based on a fixed parameter <script type="math/tex">\theta_{MLE}</script>.</p>
 
@@ -108,9 +112,13 @@
 
 <p>Observing data <script type="math/tex">D</script> in the form of evidence allows us to update our beliefs using Bayes’ rule,</p>
 
-<script type="math/tex; mode=display">p(\theta \mid D) = \frac{p(D \mid \theta) \, p(\theta)}{p(D)} \propto p(D \mid \theta) \, p(\theta)</script>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(\theta \mid D) = \frac{p(D \mid \theta) \, p(\theta)}{p(D)} \propto p(D \mid \theta) \, p(\theta)
+</script></div>
 
-<script type="math/tex; mode=display">posterior \propto likelihood \times prior</script>
+<div class="mathblock"><script type="math/tex; mode=display">
+posterior \propto likelihood \times prior
+</script></div>
 
 <p>Hence, Bayesian learning provides a principled mechanism for incorporating prior knowledge into our model. This prior knowledge is useful in many situations such as when want to provide uncertainty estimates about the model parameters (Example 1) or when the data available for learning a model is limited (Example 2).</p>
 
@@ -119,20 +127,26 @@
 
 <p>To tackle this issue, we use a conjugate prior. A parametric family <script type="math/tex">\varphi</script> is conjugate for the likelihood <script type="math/tex">P(D \mid \theta)</script> if:</p>
 
-<script type="math/tex; mode=display">P(\theta) \in \varphi \Longrightarrow P(\theta \mid D) \in \varphi</script>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(\theta) \in \varphi \Longrightarrow P(\theta \mid D) \in \varphi
+</script></div>
 
 <p>This is convenient because if we know the normalizing constant of <script type="math/tex">\varphi</script>, then we get the denominator in Bayes’ rule “for free”. Thus it essentially reduces the computation of the posterior from a tricky numerical integral to some simple algebra.</p>
 
 <p>To see conjugate prior in action, let’s consider an example. Suppose we are given a sequence of <script type="math/tex">N</script> coin tosses, <script type="math/tex">D = \{X_{1},...,X_{N}\}</script>. We want to infer the probability of getting heads which we denote by <script type="math/tex">\theta</script>.  Now, we can model this as a sequence of Bernoulli trials with parameter <script type="math/tex">\theta</script>. A natural conjugate prior in this case is the beta distribution with</p>
 
-<script type="math/tex; mode=display">P(\theta) = Beta(\theta \mid \alpha_{H}, \alpha_{T}) = \frac{\theta^{\alpha_{H} -1 }(1-\theta)^{\alpha_{T} -1 }}{B(\alpha_{H},\alpha_{T})}</script>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(\theta) = Beta(\theta \mid \alpha_{H}, \alpha_{T}) = \frac{\theta^{\alpha_{H} -1 }(1-\theta)^{\alpha_{T} -1 }}{B(\alpha_{H},\alpha_{T})}
+</script></div>
 
 <p>where the normalization constant <script type="math/tex">B(\cdot)</script> is the beta function. Here <script type="math/tex">\alpha = (\alpha_{H},\alpha_{T})</script> are called the hyperparameters of the prior. The expected value of <script type="math/tex">\theta</script> is <script type="math/tex">\frac{\alpha_{H}}{\alpha_{H}+\alpha_{T}}</script>. Here the sum of the hyperparameters <script type="math/tex">(\alpha_{H}+\alpha_{T})</script> can be interpreted as a measure of confidence in the expectations they lead to. Intuitively, we can think of <script type="math/tex">\alpha_{H}</script> as the number of heads we have observed before the current dataset.</p>
 
 <p>Out of <script type="math/tex">N</script> coin tosses, if the number of heads and the number of tails are <script type="math/tex">N_{H}</script>
 and <script type="math/tex">N_{T}</script> respectively, then it can be shown that the posterior is:</p>
 
-<script type="math/tex; mode=display">P(\theta \mid N_{H}, N_{T}) = \frac{\theta^{N_{H}+ \alpha_{H} -1 }(1-\theta)^{ N_{T}+ \alpha_{T} -1 }}{B(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})}</script>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(\theta \mid N_{H}, N_{T}) = \frac{\theta^{N_{H}+ \alpha_{H} -1 }(1-\theta)^{ N_{T}+ \alpha_{T} -1 }}{B(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})}
+</script></div>
 
 <p>which is another Beta distribution with parameters <script type="math/tex">(N_{H}+ \alpha_{H},N_{T}+ \alpha_{T})</script>. We can use this posterior distribution as the prior for more samples with the hyperparameters simply adding each extra piece of information as it comes from additional coin tosses.</p>
 

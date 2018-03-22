@@ -109,7 +109,7 @@ All sampling techniques involve calling some kind of simple subroutine multiple 
 <div class="mathblock"><script type="math/tex; mode=display">
 \Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
 </script></div>
-<p>If <script type="math/tex">f(x)</script> does not have a special structure that matches the Bayes net structure of <script type="math/tex">p</script>, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from <script type="math/tex">p</script>. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working the atomic bomb as part of the secret Manhattan project. </span>.</p>
+<p>If <script type="math/tex">f(x)</script> does not have a special structure that matches the Bayes net structure of <script type="math/tex">p</script>, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from <script type="math/tex">p</script>. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working on the atomic bomb as part of the secret Manhattan project. </span>.</p>
 
 <p>Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
 This technique approximates a target expectation with</p>
@@ -118,7 +118,7 @@ This technique approximates a target expectation with</p>
 </script></div>
 <p>where <script type="math/tex">x^1,...,x^T</script> are samples drawn according to <script type="math/tex">p</script>.</p>
 
-<p>It easy to show that the expected value of <script type="math/tex">I_T</script>, the MC estimate, equals the true integral. We say that <script type="math/tex">I_T</script> is an unbiased estimator for <script type="math/tex">\Exp_{x \sim p}[f(x)]</script>. Moreover as <script type="math/tex">I_T \to \Exp_{x \sim p}[f(x)]</script> as <script type="math/tex">T \to \infty</script>. Finally, we can show that the variance of <script type="math/tex">I_T</script> equals <script type="math/tex">\text{var}_P(f(x))/T</script>, which can be made arbitrarily small with <script type="math/tex">T</script>.</p>
+<p>It is easy to show that the expected value of <script type="math/tex">I_T</script>, the MC estimate, equals the true integral. We say that <script type="math/tex">I_T</script> is an unbiased estimator for <script type="math/tex">\Exp_{x \sim p}[f(x)]</script>. Moreover as <script type="math/tex">I_T \to \Exp_{x \sim p}[f(x)]</script> as <script type="math/tex">T \to \infty</script>. Finally, we can show that the variance of <script type="math/tex">I_T</script> equals <script type="math/tex">\text{var}_P(f(x))/T</script>, which can be made arbitrarily small with <script type="math/tex">T</script>.</p>
 
 <h3 id="rejection-sampling">Rejection sampling</h3>
 
