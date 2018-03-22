@@ -81,6 +81,41 @@ which is another Beta distribution with parameters $$(N_{H}+ \alpha_{H},N_{T}+ \
 
 {% maincolumn 'assets/img/beta.png' 'Here the exponents $$(3,2)$$ and $$(30,20)$$ can both be used to encode the belief that $$\theta$$ is $$0.6$$. But the second set of exponents imply a stronger belief as they are based on a larger sample.' %}
 
+### Categorical Generalization
+
+We can now extend the binary model to its categorical generalization.  Instead of being limited to binary outcomes, we can now consider the categorical dataset of a $$K$$-sided dice rolled $$N$$ times.  Let $$\mathcal{D} = \{ X_1 = k_1, ..., X_N = K_N \}$$, where $$X_j \in \{ 1, ..., K \}$$ for the $$j$$th outcome.  The parameterization of the model is $$\theta = (P(X_j = 1), ..., P(X_j = K))$$, which denotes the probability of each outcome, and where $$\sum_{k = 1}^K P(X_j = k) = 1$$. 
+
+The likelihood of observing our dataset given a specific parameterization is
+
+{% math %}
+P(\mathcal{D} \mid \theta) = \prod_{k=1}^K P(X_j = k)^{\sum_{j=1}^N  1\{ X_j = k \}}
+{% endmath %}
+
+In the same manner as with the binary model, the conjugate prior for this categorical model is the Dirichlet distribution, which has hyperparameters $$\mathbf{\alpha} = (\alpha_1, ..., \alpha_K)$$, indicating the number of observations of each outcome.  Letting $$\alpha$$ be the "virtual" counts of the $$K$$ outcomes before we observe the dataset, our prior is
+
+{% math %}
+P(\theta) = \textsf{Dirichlet}(\theta \mid \mathbf{\alpha}) = \frac{1}{B(\alpha)} \prod_{k=1}^K P(X_j = k)^{\alpha_k - 1}
+{% endmath %}
+
+where $$B(\cdot)$$ is still a normalization factor.
+
+Because we use a Dirichlet prior, the posterior is also a Dirichlet distribution, and is formulated as follows:
+
+{% math %}
+P(\theta \mid \mathcal{D}) \propto P(\mathcal{D} \mid \theta) P(\theta) \propto \prod_{k=1}^K P(X_j = k)^{\sum_{j=1}^N  1\{ X_j = k \} + \alpha_k - 1}
+{% endmath %}
+
+We can see that this is equivalent to a Dirichlet distribution with updated counts $$\alpha'$$.  Specifically,
+
+{% math %}
+P(\theta \mid \mathcal{D}) \propto \mathsf{Dirichlet}(\theta \mid \alpha')
+{% endmath %}
+
+where the updated count $$\alpha'$$ is given by
+
+{% math %}
+\alpha'_k = \underbrace{\sum_{j=1}^N 1\{ X_j = k \}}_\text{observed data count} + \underbrace{\alpha_k}_\text{prior virtual count}
+{% endmath %}
 
 <br/>
 
