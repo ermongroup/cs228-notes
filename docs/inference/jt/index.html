@@ -126,7 +126,7 @@ p(x_i) = \prod_{\ell \in N(i)} m_{\ell \to i}(x_i).
 
 <h3 id="sum-product-message-passing-for-factor-trees">Sum-product message passing for factor trees</h3>
 
-<p>The sum-product message passing variant of belief propgation can also be applied to factor trees, with a slight modification. Recall that a factor graphs is a bipartite graph with edges goign between variables and factors, with an edge signifying a factor depends on a variable. We can perform VE on factor graphs through a modified version of the above algorithm.</p>
+<p>The sum-product message passing variant of belief propgation can also be applied to factor trees, with a slight modification. Recall that a factor graph is a bipartite graph with edges going between variables and factors, with an edge signifying a factor depends on a variable. We can perform VE on factor graphs through a modified version of the above algorithm.</p>
 
 <p>On factor graphs, we have two types of messages: variable-to-factor messages <script type="math/tex">\nu</script> and factor-to-variable messages <script type="math/tex">\mu</script>.</p>
 
@@ -140,11 +140,11 @@ p(x_i) = \prod_{\ell \in N(i)} m_{\ell \to i}(x_i).
 \mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{\mathcal N(s)\setminus i}}f_s(x_{\mathcal N(s)})\prod_{t\in\mathcal N(i)\setminus s}\nu_{var(j)\to fac(s)}(x_j)
 </script></div>
 
-<p>So now the algorithm proceeds in the same way as above: as long as their is a factor or variable ready to transmit to a variable or factor, respectively, send the appropriate factor-to-variable or variable-to-factor message as defined above.</p>
+<p>So now the algorithm proceeds in the same way as above: as long as there is a factor or variable ready to transmit to a variable or factor, respectively, send the appropriate factor-to-variable or variable-to-factor message as defined above.</p>
 
 <h3 id="max-product-message-passing">Max-product message passing</h3>
 
-<p>So far, we have said very little about the second type of inference we are interested to perform, which are MAP queries</p>
+<p>So far, we have said very little about the second type of inference we are interested in performing, which are MAP queries</p>
 <div class="mathblock"><script type="math/tex; mode=display">
 \max_{x_1, \dots, x_n} p(x_1,...,x_n).
 </script></div>
@@ -171,7 +171,7 @@ Z
 
 <p>The key property that makes this work is the distributivity of both the sum and the max operator over products. Since both problems are essentially equivalent (after swapping the corresponding operators), we may reuse all of the machinery developed for marginal inference and apply it directly to MAP inference. Note that this also applies to factor trees.</p>
 
-<p>There is a small caveat in that we often want not just the mode of a distribution, but also its most probable assignment. This problem can be easily solved by keeping <em>back-pointers</em> during the optimization procedure. For instance, in the above example, we would keep a backpointer to the best assignment to <script type="math/tex">x_1</script> given each assignment to <script type="math/tex">x_2</script>, a pointer to the best assignment to <script type="math/tex">x_2</script> given each assignment to <script type="math/tex">x_3</script>, and so on.</p>
+<p>There is a small caveat in that we often want not just the mode of a distribution, but also its most probable assignment. This problem can be easily solved by keeping <em>back-pointers</em> during the optimization procedure. For instance, in the above example, we would keep a backpointer to the best assignment to <script type="math/tex">x_1</script> given each assignment to <script type="math/tex">x_2</script>, a pointer to the best assignment to <script type="math/tex">x_2</script> given each assignment to <script type="math/tex">x_3,</script> and so on.</p>
 
 <h2 id="junction-tree-algorithm">Junction tree algorithm</h2>
 
