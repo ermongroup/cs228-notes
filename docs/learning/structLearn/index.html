@@ -115,6 +115,52 @@ P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N
 
 <p>Notice there is no penalty term appending to the BD score due to that it will penalize the overfitting implicitly via the integral over parameter space.</p>
 
+<h3 id="chow-liu-algorithm">Chow-Liu Algorithm</h3>
+
+<p>The Chow-Liu Algorithm is a specific type of score based approach. The Chow-Liu algorithm finds the maximum-likelihood tree structure where each node has at nmost one parent. Note that here our score is simply the maximum lieklihood, we do not need to penalize the complexity since we are already limiting complexity by restricting ourselves to tree structures.</p>
+
+<p>The algorithm has three steps:</p>
+
+<p>1) Compute the mutual information for all pairs of variables <script type="math/tex">X,U</script>, and form the mutual information graph where the edge between variables <script type="math/tex">X,U</script> has weight <script type="math/tex">MI(X,U)</script>:</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+ MI(X,U) =\sum_{x,u} \hat p(x,u)\log\left[\frac{\hat{p} (x,u)}{\hat p(x) \hat p(u)}\right]
+ </script></div>
+
+<figure><figcaption></figcaption><img src="/cs228-notes/assets/img/mi-graph.png" /></figure>
+
+<p>Remember that from our empirical distribution <script type="math/tex">\hat p(x,u) = \frac{Count(x,u)}{\# \text{ data points}}</script>.</p>
+
+<p>2) Find the <strong>maximum</strong> weight spanning tree: the maximal-weight tree that connects all vertices in a graph. This can be found using Kruskal or Prim Algorithms.</p>
+
+<figure><figcaption></figcaption><img src="/cs228-notes/assets/img/max-spanning-tree.png" /></figure>
+
+<p>3) Pick any node, and assign directions rading outward from node (arrows go away from it).</p>
+
+<figure><figcaption></figcaption><img src="/cs228-notes/assets/img/chow-liu-tree.png" /></figure>
+
+<p>The Chow-Liu Algorithm has a complexity of order <script type="math/tex">n^2</script>, as it takes <script type="math/tex">O(n^2)</script> to compute mutual information for all pairs, and <script type="math/tex">O(n^2)</script> to compute the maximum spanning tree.</p>
+
+<p>Now that we have described the algorithm, lets explain why this works. It turns out that the likelihood score decomposes into mutual information and entropy terms:</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\log p(\mathcal D\mid \theta^{ML},G) = |\mathcal D| \sum_i MI_{\hat p}(X_i,X_{pa(i)}) - |\mathcal D| \sum_i H_{\hat p}(X_i)
+</script></div>
+
+<p>We would like to find a graph <script type="math/tex">G</script> that maximizes this log-likelihood. Since the entropies are independent of the dependency ordering in the tree, the only terms that change with choice of <script type="math/tex">G</script> are the mutual information terms. So we want</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\arg\max_G \log P(\mathcal D\mid  \theta^{ML}(G),G) = \arg\max_G\sum_i MI(X_i,X_{pa(i)})
+</script></div>
+
+<p>Now if we assume <script type="math/tex">G = (V,E)</script> is a tree where each node has at most one parent, we get</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\arg\max_{G:G\text{ is tree}} \log P(\mathcal D\mid  \theta^{ML}(G),G) = \arg\max_{G:G\text{ is tree}}\sum_{(i,j)\in E} MI(X_i,X_j)
+</script></div>
+
+<p>Note that the orientations of edges do not matter because mutual information is symmetric. Thus we can see why the Chow-Liu algorithm finds the best approximate tree structure where nodes are restricted to have at most one parent.</p>
+
 <h3 id="search-algorithms">Search algorithms</h3>
 
 <p>The most common choice for search algorithms are local search and  greedy search.</p>
@@ -123,9 +169,13 @@ P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N
 
 <p>For greedy search (namely the K3 algorithm), we first assume a topological order of the graph. For each variable, we restrict its parent set to the variables with a higher order. While searching for parent set for each variable, it takes a greedy approach by adding the parent that increases the score most until no improvement can be made.</p>
 
+<<<<<<< HEAD
 <p>A former CS228 student has created an <a href="http://pgmlearning.herokuapp.com/k3LearningApp">interactive web simulation</a> for visualizing the K3 learning algorithm. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.</p>
 
 <p>Although both approach are computational tractable, neither of them have a guarantee of the quality of the graph that we end up with. The graph space is highly “non-convex” and both algorithm might get stuck at some sub-optimal regions.</p>
+=======
+<p>Although both approach are computational tractable, neither of them have a guaraainntee of the quality of the graph that we end up with. The graph space is highly “non-convex” and both algorithm might get stuck at some sub-optimal regions.</p>
+>>>>>>> a2c3e39ede846e3dd6ae873dece84999b4dd773c
 
 <h3 id="constraint-based-approach">Constraint-based approach</h3>
 

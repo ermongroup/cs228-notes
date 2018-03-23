@@ -40,6 +40,52 @@ With a prior for the graph structure $$P(\Theta_{\mathcal{G}})$$ (say, a uniform
 
 Notice there is no penalty term appending to the BD score due to that it will penalize the overfitting implicitly via the integral over parameter space.
 
+### Chow-Liu Algorithm
+
+The Chow-Liu Algorithm is a specific type of score based approach. The Chow-Liu algorithm finds the maximum-likelihood tree structure where each node has at nmost one parent. Note that here our score is simply the maximum lieklihood, we do not need to penalize the complexity since we are already limiting complexity by restricting ourselves to tree structures.
+
+The algorithm has three steps:
+
+1) Compute the mutual information for all pairs of variables $$X,U$$, and form the mutual information graph where the edge between variables $$X,U$$ has weight $$MI(X,U)$$:
+
+ {% math %}
+ MI(X,U) =\sum_{x,u} \hat p(x,u)\log\left[\frac{\hat{p} (x,u)}{\hat p(x) \hat p(u)}\right]
+ {% endmath %}
+ 
+ {% maincolumn 'assets/img/mi-graph.png' %}
+ 
+ Remember that from our empirical distribution $$\hat p(x,u) = \frac{Count(x,u)}{\# \text{ data points}}$$.
+
+2) Find the **maximum** weight spanning tree: the maximal-weight tree that connects all vertices in a graph. This can be found using Kruskal or Prim Algorithms.
+
+ {% maincolumn 'assets/img/max-spanning-tree.png' %}
+ 
+3) Pick any node, and assign directions rading outward from node (arrows go away from it).
+
+ {% maincolumn 'assets/img/chow-liu-tree.png' %}
+ 
+The Chow-Liu Algorithm has a complexity of order $$n^2$$, as it takes $$O(n^2)$$ to compute mutual information for all pairs, and $$O(n^2)$$ to compute the maximum spanning tree. 
+
+Now that we have described the algorithm, lets explain why this works. It turns out that the likelihood score decomposes into mutual information and entropy terms:
+
+{% math %}
+\log p(\mathcal D\mid \theta^{ML},G) = |\mathcal D| \sum_i MI_{\hat p}(X_i,X_{pa(i)}) - |\mathcal D| \sum_i H_{\hat p}(X_i)
+{% endmath %}
+
+We would like to find a graph $$G$$ that maximizes this log-likelihood. Since the entropies are independent of the dependency ordering in the tree, the only terms that change with choice of $$G$$ are the mutual information terms. So we want
+
+{% math %}
+\arg\max_G \log P(\mathcal D\mid  \theta^{ML}(G),G) = \arg\max_G\sum_i MI(X_i,X_{pa(i)})
+{% endmath %}
+
+Now if we assume $$G = (V,E)$$ is a tree where each node has at most one parent, we get
+
+{% math %}
+\arg\max_{G:G\text{ is tree}} \log P(\mathcal D\mid  \theta^{ML}(G),G) = \arg\max_{G:G\text{ is tree}}\sum_{(i,j)\in E} MI(X_i,X_j)
+{% endmath %}
+
+Note that the orientations of edges do not matter because mutual information is symmetric. Thus we can see why the Chow-Liu algorithm finds the best approximate tree structure where nodes are restricted to have at most one parent.
+
 ### Search algorithms
 
 The most common choice for search algorithms are local search and  greedy search. 
@@ -51,6 +97,7 @@ For greedy search (namely the K3 algorithm), we first assume a topological order
 A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/k3LearningApp) for visualizing the K3 learning algorithm. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
 
 Although both approach are computational tractable, neither of them have a guarantee of the quality of the graph that we end up with. The graph space is highly "non-convex" and both algorithm might get stuck at some sub-optimal regions.
+
 
 
 ### Constraint-based approach
