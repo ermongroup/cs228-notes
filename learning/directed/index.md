@@ -53,6 +53,44 @@ Maximum likelihood learning is then defined as
 \max_{p \in M} \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
 {% endmath %}
 
+## A Step-by-Step Proof With the Empirical Distribution
+
+The Monte Carlo samples provide empirical samples from the true, data distribution. Suppose we call this empirical distribution $$\tilde{p}$$, composed of $$N$$ samples from $$\mathcal{D}$$. The empirical data distribution states that if we find some new data point $$x$$, its probability is proportional to the number of times it is found in the training data set $$\mathcal{D}$$, which may be zero times.
+
+{% math %}
+\tilde{p}(x) = \frac{1}{N}\sum\limits_{i=1}^N \delta(x, \bar{x}_i)
+{% endmath %}
+
+The KL Divergence between the density defined by the empirical distribution $$\tilde{p}$$ and the distribution $$p(x \mid w)$$ estimated by our model is
+
+{% math %}
+D_{KL}(\tilde{p}(x)||p(x\mid w)) = \sum_x \tilde{p}(x) \log \frac{\tilde{p}(x)}{p(x \mid w)} = \sum_x \tilde{p}(x) \log \tilde{p}(x) - \sum_x \tilde{p}(x) \log  p(x \mid w)
+{% endmath %}
+
+We want to *minimize this divergence*.  We ignore the left term (equivalent to $$-H(\tilde{p}(x))$$, as we showed earlier) because it does not depend on our model parameters $$w$$. Our minimization problem becomes
+
+{% math %}
+\underset{w}{\mbox{min }} D_{KL}(\tilde{p}(x)||p(x\mid w)) = \underset{w}{\mbox{min }}  - \sum_x \tilde{p}(x) \log  p(x \mid w)
+{% endmath %}
+
+We convert the problem to a maximization problem by swapping the sign:
+
+{% math %}
+\underset{w}{\mbox{max }} - D_{KL}(\tilde{p}(x)||p(x\mid w)) = \underset{w}{\mbox{max }} \sum_x \tilde{p}(x) \log  p(x \mid w)
+{% endmath %}
+
+Plugging in our definition of the empirical distribution $$\tilde{p}$$, we see,
+
+{% math %}
+\underset{w}{\mbox{max }} \sum_x \frac{1}{N}\sum\limits_{i=1}^N \delta(x, \bar{x}_i) \log  p(x \mid w)
+{% endmath %}
+
+Swapping the order of two finite sums is always legal, and the sum over $$x$$ only provides non-zero components when $$x=\bar{x}_i$$ because the $$\delta$$ function evaluates to 0 unless the two arguments are the same (similar to the Kronecker delta). The optimization problem reduces to maximizing the expected log likelihood:
+
+{% math %}
+\underset{w}{\mbox{max }} \frac{1}{N} \sum\limits_{i=1}^N \log  p(\bar{x}_i \mid w)
+{% endmath %}
+
 ### An example
 
 As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution $$p^*(x)$$ where $$x \in \{h,t\}$$. Our class of models $$M$$ is going to be the set of all probability distributions over $$\{h,t\}$$.

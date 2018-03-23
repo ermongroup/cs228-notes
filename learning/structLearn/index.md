@@ -42,7 +42,7 @@ Notice there is no penalty term appending to the BD score due to that it will pe
 
 ### Chow-Liu Algorithm
 
-The Chow-Liu Algorithm is a specific type of score based approach. The Chow-Liu algorithm finds the maximum-likelihood tree structure where each node has at nmost one parent. Note that here our score is simply the maximum lieklihood, we do not need to penalize the complexity since we are already limiting complexity by restricting ourselves to tree structures.
+The Chow-Liu Algorithm is a specific type of score based approach. The Chow-Liu algorithm finds the maximum-likelihood tree structure where each node has at most one parent. Note that here our score is simply the maximum likelihood, we do not need to penalize the complexity since we are already limiting complexity by restricting ourselves to tree structures.
 
 The algorithm has three steps:
 
@@ -51,6 +51,8 @@ The algorithm has three steps:
  {% math %}
  MI(X,U) =\sum_{x,u} \hat p(x,u)\log\left[\frac{\hat{p} (x,u)}{\hat p(x) \hat p(u)}\right]
  {% endmath %}
+
+ This function measures how much information $$U$$ provides about $$X$$. The graph with computed MI edge weights might resemble:
  
  {% maincolumn 'assets/img/mi-graph.png' %}
  
@@ -60,7 +62,7 @@ The algorithm has three steps:
 
  {% maincolumn 'assets/img/max-spanning-tree.png' %}
  
-3) Pick any node, and assign directions rading outward from node (arrows go away from it).
+3) Pick any node to be the *root variable*, and assign directions radiating outward from this node (arrows go away from it). This step transforms the resulting undirected tree to a directed one.
 
  {% maincolumn 'assets/img/chow-liu-tree.png' %}
  
