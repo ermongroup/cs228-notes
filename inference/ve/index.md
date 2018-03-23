@@ -72,7 +72,7 @@ The factor product operation simply defines the product $$\phi_3 := \phi_1 \time
 {% endmath %}
 The scope of $$\phi_3$$ is defined as the union of the variables in the scopes of $$\phi_1, \phi_2$$; also $$x_c^{(i)}$$ denotes an assignment to the variables in the scope of $$\phi_i$$ defined by the restriction of $$x_c$$ to that scope. For example, we define $$\phi_3(a,b,c) := \phi_1(a,b) \times \phi_2(b,c)$$.
 
-Next, the marginalization operation "locally" eliminates a set of variable from a factor. If we have a factor $$\phi(X,Y)$$ over two sets of variables $$X,Y$$, marginalizing $$Y$$ produces a new factor 
+Next, the marginalization operation "locally" eliminates a set of variables from a factor. If we have a factor $$\phi(X,Y)$$ over two sets of variables $$X,Y$$, marginalizing $$Y$$ produces a new factor 
 {% math %}
 \tau(x) = \sum_{y} \phi(x, y),
 {% endmath %}

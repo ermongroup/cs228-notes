@@ -203,7 +203,7 @@ We use $$x_{-i}$$ to denote all variables in $$x$$ except $$x_i$$. It is often v
 
 Gibbs sampling can be seen as a special case of MH with proposal
 $$ Q(x_i', x_{-i} \mid x_i, x_{-i}) = P(x_i' \mid x_{-i}). $$
-It is easy check that the acceptance probability simplifies to one.
+It is easy to check that the acceptance probability simplifies to one.
 
 Assuming the right transition operator, both Gibbs sampling and MH will eventually produce samples from their stationary distribution, which by construction is $$P$$. 
 
