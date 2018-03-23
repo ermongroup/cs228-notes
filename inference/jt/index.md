@@ -69,7 +69,7 @@ So now the algorithm proceeds in the same way as above: as long as there is a fa
 
 ### Max-product message passing
 
-So far, we have said very little about the second type of inference we are interested to perform, which are MAP queries
+So far, we have said very little about the second type of inference we are interested in performing, which are MAP queries
 {% math %}
 \max_{x_1, \dots, x_n} p(x_1,...,x_n).
 {% endmath %}
