@@ -65,7 +65,7 @@ Both messages require taking a product, but only the factor-to-variable messages
 \mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{\mathcal N(s)\setminus i}}f_s(x_{\mathcal N(s)})\prod_{t\in\mathcal N(i)\setminus s}\nu_{var(j)\to fac(s)}(x_j)
 {% endmath %}
 
-So now the algorithm proceeds in the same way as above: as long as their is a factor or variable ready to transmit to a variable or factor, respectively, send the appropriate factor-to-variable or variable-to-factor message as defined above.
+So now the algorithm proceeds in the same way as above: as long as there is a factor or variable ready to transmit to a variable or factor, respectively, send the appropriate factor-to-variable or variable-to-factor message as defined above.
 
 ### Max-product message passing
 
