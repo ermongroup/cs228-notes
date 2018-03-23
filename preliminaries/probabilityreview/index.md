@@ -340,7 +340,7 @@ as the **marginal probability density function** (or **marginal density**) of $$
 
 ## 3.4 Conditional distributions
 
-Conditional distributions seek to answer the question, what is the probability distribution over $$Y$$, when we know that $$X$$ must take on a certain value $$x$$? In the discrete case, the conditional probability mass function of $$X$$ given $$Y$$ is simply 
+Conditional distributions seek to answer the question, *what is the probability distribution over* $$Y$$, *when we know that* $$X$$ *must take on a certain value* $$x$$*?* In the discrete case, the conditional probability mass function of $$X$$ given $$Y$$ is simply 
 \begin{equation}
 p_{Y \mid X} (y \mid x) = \frac{p_{XY}(x, y)}{p_X(x)},
 \end{equation}
@@ -367,7 +367,7 @@ The chain rule we derived earlier for events can be applied to random variables 
 ## 3.6 Bayes’s rule
 
 A useful formula that often arises when trying to derive expression for the conditional probability of
-one variable given another, is **Bayes’s rule**.
+one variable given another, is **Bayes’ rule**.
 
 In the case of discrete random variables $$X$$ and $$Y$$ ,
 {% math %}

@@ -29,7 +29,7 @@ Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as 
 
 ### A message-passing algorithm
 
-A key question here is how exactly do we compute all the messages we need. Notice for example, that the messages to $$x_k$$ from the side of $$x_i$$ will need to be recomputed.
+A key question here is, *how exactly do we compute all the messages we need?* Notice for example, that the messages to $$x_k$$ from the side of $$x_i$$ will need to be recomputed.
 
 The answer is very simple: a node $$x_i$$ sends a message to a neighbor $$x_j$$ whenever it has received messages from all nodes besides $$x_j$$. It's a fun exercise to the reader to show that there will always be a node with a message to send, unless all the messages have been sent out. This will happen after precisely {%m%}2|E|{%em%} steps, since each edge can receive messages only twice: once from $$x_i \to x_j$$, and once more in the opposite direction.
 

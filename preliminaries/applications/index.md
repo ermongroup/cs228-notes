@@ -3,7 +3,7 @@ layout: post
 title: Real-World Applications
 ---
 
-Probabilistic graphical models have numerous and diverse real-world applications.  We provide an overview of the following applications of probablistic graphical models, which are just a few examples of their many practical uses.
+Probabilistic graphical models have numerous and diverse real-world applications.  We provide an overview of the following applications of probabilistic graphical models, which are just a few examples of their many practical uses.
 
   + **Images**
     - [Generation](#image-generation)
@@ -34,9 +34,9 @@ Consider a distribution $$p(\mathbf{x})$$ over images, where $$\mathbf{x}$$ is a
 **Training Data**<br /> 
 ![bedroom1](bedroominpainting1.png)<br /> 
 
-Now that we have this probablistic model of bedrooms, we can now _**generate**_ new realistic bedroom images by sampling from this distribution.  Specifically, new sampled images $$\hat{\mathbf{x}} \sim p(\mathbf{x})$$ are created directly from our model $$p(\mathbf{x})$$, which can now generate data similar to the bedroom images that we trained it with.  
+Now that we have this probabilistic model of bedrooms, we can now _**generate**_ new realistic bedroom images by sampling from this distribution.  Specifically, new sampled images $$\hat{\mathbf{x}} \sim p(\mathbf{x})$$ are created directly from our model $$p(\mathbf{x})$$, which can now generate data similar to the bedroom images that we trained it with.  
 
-Moreover, one of the reasons why generative models are powerful lie in the fact that they have many fewer parameters than the amount of data that they are trained with --- as a result, the models have to efficiently distill the essence of the training data to be able to generate new samples.  We see that our particular probablistic model of bedrooms has done a good job of capturing the data's essence, and can therefore produce highly realistic images, some examples of which are shown below:
+Moreover, one of the reasons why generative models are powerful lies in the fact that they have many fewer parameters than the amount of data that they are trained with --- as a result, the models have to efficiently distill the essence of the training data to be able to generate new samples.  We see that our particular probabilistic model of bedrooms has done a good job of capturing the data's essence, and can therefore produce highly realistic images, some examples of which are shown below:
 
 **Generated Data**<br /> 
 ![bedroom2](bedroominpainting2.png)

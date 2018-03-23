@@ -138,7 +138,11 @@ Note that this is precisely the difference between the expectations of the natur
 
 This gives us an insight into how MRFs are trained. The log-likelihood objective forces the model marginals to match the empirical marginals.
 
-We refer to the above property as *moment matching*. This property of maximum-likelihood learning is very general: whenever we choose distribution $$q$$ to minimize the inclusive KL-divergence {%m%}KL(p||q){%em%} across $$q$$ in an exponential family, the minimizer $$q^*$$ will match the moments of the sufficient statistics to the corresponding moments of $$p$$. Recall that the MLE estimate is the minimizer over $$q$$ of $$D(\hat{p}||q)$$, where $$\hat{p}$$ is the empirical distribution of the data, so MLE estimation is a special case of this minimization. This property has connections to variational inference, where this minimization over $$q$$ in a smaller set of distributions $$Q$$ is known as M-projection (``moment projection'').
+We refer to the above property as *moment matching*. This property of maximum-likelihood learning is very general: whenever we choose distribution $$q$$ to minimize the inclusive KL-divergence 
+{% math %}
+KL(p||q)
+{% endmath %} 
+across $$q$$ in an exponential family, the minimizer $$q^*$$ will match the moments of the sufficient statistics to the corresponding moments of $$p$$. Recall that the MLE estimate is the minimizer over $$q$$ of $$D(\hat{p}||q)$$, where $$\hat{p}$$ is the empirical distribution of the data, so MLE estimation is a special case of this minimization. This property has connections to variational inference, where this minimization over $$q$$ in a smaller set of distributions $$Q$$ is known as M-projection (``moment projection'').
 
 
 ## Learning in conditional random fields

@@ -216,17 +216,11 @@ we can show that as the number of data points gets large, <script type="math/tex
 
 <p>This gives us an insight into how MRFs are trained. The log-likelihood objective forces the model marginals to match the empirical marginals.</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>We refer to the above property as <em>moment matching</em>. This property of maximum-likelihood learning is very general: whenever we choose distribution <script type="math/tex">q</script> to minimize the inclusive KL-divergence <span>​<script type="math/tex">KL(p</script></span></td>
-      <td> </td>
-      <td>q)&lt;/script&gt;&lt;/span&gt; across <script type="math/tex">q</script> in an exponential family, the minimizer <script type="math/tex">q^*</script> will match the moments of the sufficient statistics to the corresponding moments of <script type="math/tex">p</script>. Recall that the MLE estimate is the minimizer over <script type="math/tex">q</script> of $$D(\hat{p}</td>
-      <td> </td>
-      <td>q)<script type="math/tex">, where</script>\hat{p}<script type="math/tex">is the empirical distribution of the data, so MLE estimation is a special case of this minimization. This property has connections to variational inference, where this minimization over</script>q<script type="math/tex">in a smaller set of distributions</script>Q$$ is known as M-projection (``moment projection’’).</td>
-    </tr>
-  </tbody>
-</table>
+<p>We refer to the above property as <em>moment matching</em>. This property of maximum-likelihood learning is very general: whenever we choose distribution <script type="math/tex">q</script> to minimize the inclusive KL-divergence</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+KL(p||q)
+</script></div>
+<p>across <script type="math/tex">q</script> in an exponential family, the minimizer <script type="math/tex">q^*</script> will match the moments of the sufficient statistics to the corresponding moments of <script type="math/tex">p</script>. Recall that the MLE estimate is the minimizer over <script type="math/tex">q</script> of <script type="math/tex">D(\hat{p}||q)</script>, where <script type="math/tex">\hat{p}</script> is the empirical distribution of the data, so MLE estimation is a special case of this minimization. This property has connections to variational inference, where this minimization over <script type="math/tex">q</script> in a smaller set of distributions <script type="math/tex">Q</script> is known as M-projection (``moment projection’’).</p>
 
 <h2 id="learning-in-conditional-random-fields">Learning in conditional random fields</h2>
 
