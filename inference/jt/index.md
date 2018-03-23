@@ -51,7 +51,7 @@ p(x_i) = \prod_{\ell \in N(i)} m_{\ell \to i}(x_i).
 
 ### Sum-product message passing for factor trees
 
-The sum-product message passing variant of belief propgation can also be applied to factor trees, with a slight modification. Recall that a factor graphs is a bipartite graph with edges going between variables and factors, with an edge signifying a factor depends on a variable. We can perform VE on factor graphs through a modified version of the above algorithm.
+The sum-product message passing variant of belief propgation can also be applied to factor trees, with a slight modification. Recall that a factor graph is a bipartite graph with edges going between variables and factors, with an edge signifying a factor depends on a variable. We can perform VE on factor graphs through a modified version of the above algorithm.
 
 On factor graphs, we have two types of messages: variable-to-factor messages $$\nu$$ and factor-to-variable messages $$\mu$$.
 
