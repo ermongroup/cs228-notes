@@ -52,4 +52,4 @@ This course starts by introducing probabilistic graphical models from the very b
 
 1. [The variational autoencoder](extras/vae): Deep generative models. The reparametrization trick. Learning latent visual representations.
 
-2. List of further readings: Structured support vector machines. Bayesian non-parametrics.
+2. [List of further readings](extras/readings): Structured support vector machines. Bayesian non-parametrics.
