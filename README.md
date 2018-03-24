@@ -24,7 +24,7 @@ run the following commands from the root of your cloned version of the https://g
 5) git commit -am "your commit message describing what you did"
 6) git push origin master
 
-Note that if you cloned the ermongroup/cs228-notes repo directly onto your local machine (instead of forking it) then you may see an error like "remote: Permission to ermongroup/cs228-notes.git denied to userjanedoe". If that is the case, then you need to fork their repo first and then, if your github profile were userjanedoe, you would need to first push your local updates to your forked repo like so:
+Note that if you cloned the ermongroup/cs228-notes repo directly onto your local machine (instead of forking it) then you may see an error like "remote: Permission to ermongroup/cs228-notes.git denied to userjanedoe". If that is the case, then you need to fork their repo first. Then, if your github profile were userjanedoe, you would need to first push your local updates to your forked repo like so:
 
 git push https://github.com/userjanedoe/cs228-notes.git master
 
