@@ -17,8 +17,7 @@ Note that jekyll is only supported on GNU/Linux, Unix, or macOS. Thus, if you ru
 To compile Markdown to HTML (i.e. after you have made changes to markdown and want them to be accessible to students viewing the docs), 
 run the following commands from the root of your cloned version of the https://github.com/ermongroup/cs228-notes repo:
 1) rm -r docs/
-2) jekyll serve  # This should create a folder called _site 
-                 # Note: This creates a running server; press Ctrl-C to stop the server before proceeding
+2) jekyll serve  # This should create a folder called _site. Note: This creates a running server; press Ctrl-C to stop the server before proceeding
 3) mv _site docs  # Change the name of the _site folder to "docs". This won't work if the server is still running.
 4) git add file_names
 5) git commit -am "your commit message describing what you did"
