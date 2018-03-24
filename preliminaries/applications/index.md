@@ -169,7 +169,7 @@ The last two applications are what are known as spatio-temporal models. They dep
 
 Probabilistic graphical models can assist doctors in diagnosing diseases and predicting adverse outcomes. For example, in 1998 the LDS Hospital in Salt Lake City, Utah developed a Bayesian network for diagnosing pneumonia. Their model was able to distinguish patients with pneumonia from patients with other diseases with high sensitivity (0.95) and specificity (0.965), and was used for many years in the clinic. Their network model is outlined below:
 
-![diagnosis](diagnostic_bayes_net.png)
+![diagnosis](diagnostic_bayes_net.PNG)
 
 You can read more about the development of their model <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2232064/">here.</a>
 <br/>
