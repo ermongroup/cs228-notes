@@ -132,6 +132,44 @@ Although we can now compare models, since we are not computing <script type="mat
 \max_{p \in M} \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
 </script></div>
 
+<h2 id="a-step-by-step-proof-with-the-empirical-distribution">A Step-by-Step Proof With the Empirical Distribution</h2>
+
+<p>The Monte Carlo samples provide empirical samples from the true, data distribution. Suppose we call this empirical distribution <script type="math/tex">\tilde{p}</script>, composed of <script type="math/tex">N</script> samples from <script type="math/tex">\mathcal{D}</script>. The empirical data distribution states that if we find some new data point <script type="math/tex">x</script>, its probability is proportional to the number of times it is found in the training data set <script type="math/tex">\mathcal{D}</script>, which may be zero times.</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\tilde{p}(x) = \frac{1}{N}\sum\limits_{i=1}^N \delta(x, \bar{x}_i)
+</script></div>
+
+<p>The KL Divergence between the density defined by the empirical distribution <script type="math/tex">\tilde{p}</script> and the distribution <script type="math/tex">p(x \mid w)</script> estimated by our model is</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+D_{KL}(\tilde{p}(x)||p(x\mid w)) = \sum_x \tilde{p}(x) \log \frac{\tilde{p}(x)}{p(x \mid w)} = \sum_x \tilde{p}(x) \log \tilde{p}(x) - \sum_x \tilde{p}(x) \log  p(x \mid w)
+</script></div>
+
+<p>We want to <em>minimize this divergence</em>.  We ignore the left term (equivalent to <script type="math/tex">-H(\tilde{p}(x))</script>, as we showed earlier) because it does not depend on our model parameters <script type="math/tex">w</script>. Our minimization problem becomes</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\underset{w}{\mbox{min }} D_{KL}(\tilde{p}(x)||p(x\mid w)) = \underset{w}{\mbox{min }}  - \sum_x \tilde{p}(x) \log  p(x \mid w)
+</script></div>
+
+<p>We convert the problem to a maximization problem by swapping the sign:</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\underset{w}{\mbox{max }} - D_{KL}(\tilde{p}(x)||p(x\mid w)) = \underset{w}{\mbox{max }} \sum_x \tilde{p}(x) \log  p(x \mid w)
+</script></div>
+
+<p>Plugging in our definition of the empirical distribution <script type="math/tex">\tilde{p}</script>, we see,</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\underset{w}{\mbox{max }} \sum_x \frac{1}{N}\sum\limits_{i=1}^N \delta(x, \bar{x}_i) \log  p(x \mid w)
+</script></div>
+
+<p>Swapping the order of two finite sums is always legal, and the sum over <script type="math/tex">x</script> only provides non-zero components when <script type="math/tex">x=\bar{x}_i</script> because the <script type="math/tex">\delta</script> function evaluates to 0 unless the two arguments are the same (similar to the Kronecker delta). The optimization problem reduces to maximizing the expected log likelihood:</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\underset{w}{\mbox{max }} \frac{1}{N} \sum\limits_{i=1}^N \log  p(\bar{x}_i \mid w)
+</script></div>
+
 <h3 id="an-example">An example</h3>
 
 <p>As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution <script type="math/tex">p^*(x)</script> where <script type="math/tex">x \in \{h,t\}</script>. Our class of models <script type="math/tex">M</script> is going to be the set of all probability distributions over <script type="math/tex">\{h,t\}</script>.</p>

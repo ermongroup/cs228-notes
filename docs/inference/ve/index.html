@@ -220,6 +220,43 @@ P(Y \mid E = e) = \frac{P(Y, E = e)}{P(E=e)},
 
 <p>Clearly some ordering are much more efficient than others. In fact, the running time of Variable Elimination will equal <script type="math/tex">O(m d^M)</script>, where <script type="math/tex">M</script> is the maximum size of any factor during the elimination process and <script type="math/tex">m</script> is the number of variables.</p>
 
+<h3 id="variable-elimination-in-undirected-models-as-graph-transformation">Variable Elimination in Undirected Models as Graph Transformation</h3>
+
+<p>When a variable <script type="math/tex">X</script> is eliminated, we create a single factor <script type="math/tex">\psi</script> that contains <script type="math/tex">X</script> and all of the variables <script type="math/tex">\mathbf{Y}</script> with which <script type="math/tex">X</script> appears in factors.</p>
+
+<p>We eliminate (marginalize) <script type="math/tex">X</script> from <script type="math/tex">\psi</script>, replacing it with a new factor <script type="math/tex">\tau</script> that contains all of the variables <script type="math/tex">\mathbf{Y}</script>, but not <script type="math/tex">X</script>.</p>
+
+<p>How does this modify the graph?  Constructing <script type="math/tex">\psi</script> generates edges between all of the variables <script type="math/tex">Y \in \mathbf{Y}</script> (rendering it a clique). Some of these edges were already there, some are new.</p>
+
+<p>The new edges are called <em>fill edges</em>.</p>
+
+<h2 id="graph-transformation-example">Graph Transformation Example</h2>
+
+<figure><figcaption>Each time a node is eliminated, all of its neighbors are connected, forming a clique.</figcaption><img src="/cs228-notes/assets/img/resized_mrf_elimination_ordering_example.png" /></figure>
+<p><label for="jtt" class="margin-toggle">⊕</label><input type="checkbox" id="jtt" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/mrf_induced_graph_example.png" /><br /></span></p>
+
+<h2 id="induced-graph">Induced Graph</h2>
+
+<p>We can summarize the computation cost using a single graph that is the <b><em>union</em></b> of all the graphs <em>resulting from each step of the elimination</em>.  We call this the <b>induced graph</b>, <script type="math/tex">\mathcal{I}_{\phi,\prec}</script>, where <script type="math/tex">\prec</script> is the elimination ordering for a set of factors <script type="math/tex">\phi</script>.</p>
+
+<p>Let’s define <script type="math/tex">N_{max}</script> as the size of the largest clique in <script type="math/tex">\mathcal{I}_{\phi,\prec}</script>.
+The running time of VE, <script type="math/tex">\mathcal{O}(mv^{N_{max}} )</script>, is exponential in the size of the largest clique of the induced graph,</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+v = \underset{i}{\mbox{max }} |\text{Val}(X_i)|
+</script></div>
+
+<p>The width of an induced graph is # nodes in largest clique - 1.</p>
+
+<p>We define the induced width <script type="math/tex">w_{\mathcal{G}, \prec}</script> to be the width of the graph <script type="math/tex">\mathcal{I}_{\mathcal{G}, \prec}</script>
+induced by applying VE to <script type="math/tex">\mathcal{G}</script> using ordering <script type="math/tex">\prec</script></p>
+
+<p>The <em>treewidth</em>, or “minimal induced width” of graph G is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+w_{\mathcal{G}}^* = \underset{\prec}{\mbox{min }} w_{\mathcal{G}, \prec}
+</script></div>
+
+<p>Thus, the treewidth is computed with the best ordering over all possible elimination orderings.</p>
+
 <h3 id="choosing-variable-elimination-orderings">Choosing variable elimination orderings</h3>
 
 <p>Unfortunately, choosing the optimal VE ordering is an NP-hard problem. However, in practice, we may resort to the following heuristics:</p>

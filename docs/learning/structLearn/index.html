@@ -117,7 +117,7 @@ P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N
 
 <h3 id="chow-liu-algorithm">Chow-Liu Algorithm</h3>
 
-<p>The Chow-Liu Algorithm is a specific type of score based approach. The Chow-Liu algorithm finds the maximum-likelihood tree structure where each node has at nmost one parent. Note that here our score is simply the maximum lieklihood, we do not need to penalize the complexity since we are already limiting complexity by restricting ourselves to tree structures.</p>
+<p>The Chow-Liu Algorithm is a specific type of score based approach. The Chow-Liu algorithm finds the maximum-likelihood tree structure where each node has at most one parent. Note that here our score is simply the maximum likelihood, we do not need to penalize the complexity since we are already limiting complexity by restricting ourselves to tree structures.</p>
 
 <p>The algorithm has three steps:</p>
 
@@ -127,6 +127,8 @@ P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N
  MI(X,U) =\sum_{x,u} \hat p(x,u)\log\left[\frac{\hat{p} (x,u)}{\hat p(x) \hat p(u)}\right]
  </script></div>
 
+<p>This function measures how much information <script type="math/tex">U</script> provides about <script type="math/tex">X</script>. The graph with computed MI edge weights might resemble:</p>
+
 <figure><figcaption></figcaption><img src="/cs228-notes/assets/img/mi-graph.png" /></figure>
 
 <p>Remember that from our empirical distribution <script type="math/tex">\hat p(x,u) = \frac{Count(x,u)}{\# \text{ data points}}</script>.</p>
@@ -135,7 +137,7 @@ P(D|\Theta_{\mathcal{G}}) = \prod_{i} \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N
 
 <figure><figcaption></figcaption><img src="/cs228-notes/assets/img/max-spanning-tree.png" /></figure>
 
-<p>3) Pick any node, and assign directions rading outward from node (arrows go away from it).</p>
+<p>3) Pick any node to be the <em>root variable</em>, and assign directions radiating outward from this node (arrows go away from it). This step transforms the resulting undirected tree to a directed one.</p>
 
 <figure><figcaption></figcaption><img src="/cs228-notes/assets/img/chow-liu-tree.png" /></figure>
 
