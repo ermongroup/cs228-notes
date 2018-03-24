@@ -89,6 +89,34 @@ p(x=x')
 {% endmath %}
 Unlike rejection sampling, this will use all the examples; if $$p(z|x')$$ is not too far from uniform, this will converge to the true probability after only a very small number of samples.
 
+### Normalized importance sampling
+
+Unfortunately, unnormalized importance sampling is not suitable for estimating conditional probabilities.
+
+{% math %}
+\begin{align*}
+P(x=x'|e=e')
+& = \frac{P(x=x', e=e')}{P(e=e')}
+\end{align*}
+{% endmath %}
+
+Because we would estimate the numerator using one approximation and the denominator using another approximation, the errors in the approximations may compound. For example, if the numerator is an under-estimate and the denominator is an over-estimate, the final probability could be a severe under-estimate.
+
+To avoid this issue, we first generate samples to approximate the denominator $$P(e=e')$$. The numerator can then be estimated by counting the weighted number of samples with values $$x=x'$$. Since the numerator and denominator are both approximated using the same samples, the potential issue of errors compounding is avoided.
+
+The final form of normalized importance sampling is thus
+
+{% math %}
+\begin{align*}
+P(x=x'|e=e')
+& = \frac{P(x=x', e=e')}{P(e=e')}
+& \approx \frac{\frac{1}{T}\sum_{t=1}^{T}{\delta_{x'}(z^t)w(z^t)}}{\frac{1}{T}\sum_{t=1}^{T}{w(z^t)}}
+\end{align*}
+{% endmath %}
+
+
+
+
 ## Markov chain Monte Carlo
 
 Let us now turn our attention from computing expectations to performing marginal and MAP inference using sampling.
@@ -203,7 +231,7 @@ We use $$x_{-i}$$ to denote all variables in $$x$$ except $$x_i$$. It is often v
 
 Gibbs sampling can be seen as a special case of MH with proposal
 $$ Q(x_i', x_{-i} \mid x_i, x_{-i}) = P(x_i' \mid x_{-i}). $$
-It is easy to check that the acceptance probability simplifies to one.
+It is easy check that the acceptance probability simplifies to one.
 
 Assuming the right transition operator, both Gibbs sampling and MH will eventually produce samples from their stationary distribution, which by construction is $$P$$. 
 
