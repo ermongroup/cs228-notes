@@ -39,7 +39,7 @@ event $$B$$.
 
 ## 1.2 Chain Rule
 
-Let $$S_1, \cdots, S_k$$ be events, $$P(S_i) >0$$. Then
+Let $$S_1, \cdots, S_k$$ be events, $$P(S_i) >0$$. Then the chain rule states that:
 
 {% math %}
 \begin{aligned}
@@ -48,13 +48,13 @@ Let $$S_1, \cdots, S_k$$ be events, $$P(S_i) >0$$. Then
 \end{aligned}
 {% endmath %}
 
-Note that for $$k=2$$ events, this is just the definition of conditional probability
+Note that for $$k=2$$ events, this is just the definition of conditional probability:
 
 \begin{equation}
 P(S_1 \cap S_2) = P(S_1) P(S_2 | S_1)
 \end{equation}
 
-In general, it is derived by applying the definition of conditional independence multiple times, as in the following example
+In general, the chain rule is derived by applying the definition of conditional independence multiple times, as in the following example:
 
 {% math %}
 \begin{aligned}
