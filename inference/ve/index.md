@@ -2,12 +2,11 @@
 layout: post
 title: Variable Elimination
 ---
-Next, we turn our attention to the problem of *inference* in graphical models.
-Given a probabilistic model (such as a Bayes net or an MRF), we are interested in using it to answer useful questions, e.g., determining the probability that a given email is spam.  More formally, we will be focusing on two types of questions:
+Next, we turn our attention to the problem of *inference* in graphical models. Given a probabilistic model (such as a Bayes net or an MRF), we are interested in using it to answer useful questions, e.g., determining the probability that a given email is spam. More formally, we will be focusing on two types of questions:
 
 - *Marginal inference*: what is the probability of a given variable in our model after we sum everything else out (e.g. probability of spam vs non-spam)?
 {% math %}
-p(y=1) = \sum_{x_1} \sum_{x_2}  \cdots \sum_{x_n} p(y=1,x_1, x_2, ..., x_n).
+p(y=1) = \sum_{x_1} \sum_{x_2} \cdots \sum_{x_n} p(y=1,x_1, x_2, ..., x_n).
 {% endmath %}
 - *Maximum a posteriori (MAP) inference*: what is the most likely assignment to the variables in the model (possibly conditioned on evidence).
 {% math %}
@@ -35,7 +34,7 @@ p(x_n) = \sum_{x_1} \cdots \sum_{x_{n-1}} p(x_1,...,x_n).
 However, we can do much better by leveraging the factorization of our probability distribution. We may rewrite the sum in a way that ``pushes in" certain variables deeper into the product.
 {% math %}
 \begin{align*}
-p(x_n) 
+p(x_n)
 & = \sum_{x_1} \cdots \sum_{x_{n-1}} p(x_1) \prod_{i=2}^n p(x_i \mid x_{i-1}) \\
 & = \sum_{x_{n-1}} p(x_n \mid x_{n-1}) \sum_{x_{n-2}} p(x_{n-1} \mid x_{n-2}) \cdots \sum_{x_1} p(x_2 \mid x_1) p(x_1) .
 \end{align*}
@@ -72,7 +71,7 @@ The factor product operation simply defines the product $$\phi_3 := \phi_1 \time
 {% endmath %}
 The scope of $$\phi_3$$ is defined as the union of the variables in the scopes of $$\phi_1, \phi_2$$; also $$x_c^{(i)}$$ denotes an assignment to the variables in the scope of $$\phi_i$$ defined by the restriction of $$x_c$$ to that scope. For example, we define $$\phi_3(a,b,c) := \phi_1(a,b) \times \phi_2(b,c)$$.
 
-Next, the marginalization operation "locally" eliminates a set of variables from a factor. If we have a factor $$\phi(X,Y)$$ over two sets of variables $$X,Y$$, marginalizing $$Y$$ produces a new factor 
+Next, the marginalization operation "locally" eliminates a set of variables from a factor. If we have a factor $$\phi(X,Y)$$ over two sets of variables $$X,Y$$, marginalizing $$Y$$ produces a new factor
 {% math %}
 \tau(x) = \sum_{y} \phi(x, y),
 {% endmath %}
@@ -84,7 +83,7 @@ We use $$\tau$$ to refer to the marginalized factor. It is important to understa
 
 Finally, the variable elimination algorithm requires an ordering over the variables according to which variables will be "eliminated". In our chain example, we took the ordering implied by the DAG. It is important note that:
 
-- Different ordering dramatically alter the running time of the variable elimination algorithm.
+- Different ordering may dramatically alter the running time of the variable elimination algorithm.
 - It is NP-hard to find the best ordering.
 
 We will come back to these complications later, but for now let the ordering be fixed.
@@ -104,17 +103,16 @@ A former CS228 student has created an [interactive web simulation](http://pgmlea
 
 ### Examples
 
-Let's try to understand what these steps correspond to in our chain example. In that case, the chosen ordering was $$x_1, x_2, ..., x_{n-1}.$$
-Starting with $$x_1$$, we collected all the factors involving $$x_1$$, which were $$p(x_1)$$ and $$p(x_2 \mid x_1)$$. We then used them to construct a new factor $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$. This can be seen as the results of steps 2 and 3 of the VE algorithm: first we form a large factor $$\sigma(x_2, x_1) = p(x_2 \mid x_1) p(x_1)$$; then we eliminate $$x_1$$ from that factor to produce $$\tau$$. Then, we repeat the same procedure for $$x_2$$, except that the factors are now $$p(x_3 \mid x_2), \tau(x_2)$$.
+Let's try to understand what these steps correspond to in our chain example. In that case, the chosen ordering was $$x_1, x_2, ..., x_{n-1}$$. Starting with $$x_1$$, we collected all the factors involving $$x_1$$, which were $$p(x_1)$$ and $$p(x_2 \mid x_1)$$. We then used them to construct a new factor $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$. This can be seen as the results of steps 2 and 3 of the VE algorithm: first we form a large factor $$\sigma(x_2, x_1) = p(x_2 \mid x_1) p(x_1)$$; then we eliminate $$x_1$$ from that factor to produce $$\tau$$. Then, we repeat the same procedure for $$x_2$$, except that the factors are now $$p(x_3 \mid x_2), \tau(x_2)$$.
 
 For a slightly more complex example, recall the graphical model of a student's grade that we introduced earlier.{% marginfigure 'nb1' 'assets/img/grade-model.png' "Bayes net model of a student's grade $$g$$ on an exam; in addition to $$g$$, we also model other aspects of the problem, such as the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$, and the quality $$l$$ of a reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values."%}
 The probability specified by the model is of the form
 {% math %}
-p(l, g, i, d, s) = p(l \mid  g) p(s \mid i) p(i) p(g \mid  i, d) p(d).
+p(l, g, i, d, s) = p(l \mid g) p(s \mid i) p(i) p(g \mid i, d) p(d).
 {% endmath %}
-Let's suppose that we are computing $$p(l)$$ and are eliminating variables in their topological ordering in the graph. First, we eliminate $$d$$, which corresponds to creating a new factor $$\tau_1(g,i) = \sum_{d} p(g \mid  i, d) p(d)$$. Next, we eliminate $$i$$ to produce a factor $$\tau_2(g,s) = \sum_{i} \tau_1(g,i) p(i) p(s \mid i)$$; then we eliminate $$s$$ yielding $$\tau_3(g) = \sum_{s} \tau_2(g,s)$$, and so forth. Note that these operations are equivalent to summing out the factored probability distribution as follows:
+Let's suppose that we are computing $$p(l)$$ and are eliminating variables in their topological ordering in the graph. First, we eliminate $$d$$, which corresponds to creating a new factor $$\tau_1(g,i) = \sum_{d} p(g \mid i, d) p(d)$$. Next, we eliminate $$i$$ to produce a factor $$\tau_2(g,s) = \sum_{i} \tau_1(g,i) p(i) p(s \mid i)$$; then we eliminate $$s$$ yielding $$\tau_3(g) = \sum_{s} \tau_2(g,s)$$, and so forth. Note that these operations are equivalent to summing out the factored probability distribution as follows:
 {% math %}
-p(l) = \sum_{g} p(l \mid  g) \sum_{s} \sum_{i} p(s\mid i) p(i) \sum_{d} p(g \mid  i, d) p(d).
+p(l) = \sum_{g} p(l \mid g) \sum_{s} \sum_{i} p(s\mid i) p(i) \sum_{d} p(g \mid i, d) p(d).
 {% endmath %}
 Note that this example requires computing at most $$d^3$$ operations per step, since each factor is at most over 2 variables, and one variable is summed out at each step (the dimensionality $$d$$ in this example is either 2 or 3).
 
@@ -151,4 +149,4 @@ In practice, these methods often result in reasonably good performance in many i
 
 <br/>
 
-|[Index](../../) | [Previous](../../representation/undirected) |  [Next](../jt)|
+|[Index](../../) | [Previous](../../representation/undirected) | [Next](../jt)|

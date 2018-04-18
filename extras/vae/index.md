@@ -7,8 +7,7 @@ In this chapter, we are going to use various ideas that we have learned in the c
 
 Variational autoencoders (VAEs) are a deep learning technique for learning latent representations. They have also been used to [draw images](https://arxiv.org/pdf/1502.04623.pdf), achieve state-of-the-art results in [semi-supervised learning](https://arxiv.org/pdf/1602.05473.pdf), as well as [interpolate between sentences](https://arxiv.org/abs/1511.06349).
 
-There are many online tutorials on VAEs. 
-Our presentation will probably be a bit more technical than the average, since our goal will be to highlight connections to ideas seen in class, as well as to show how these ideas are useful in machine learning research.
+There are many online tutorials on VAEs. Our presentation will probably be a bit more technical than the average, since our goal will be to highlight connections to ideas seen in class, as well as to show how these ideas are useful in machine learning research.
 
 ## Deep generative models
 
@@ -32,7 +31,7 @@ Suppose now that we are given a dataset $$D = \{x^1,x^2,...,x^n\}$$. We are inte
 - Approximate posterior inference over $$z$$: given an image $$x$$, what are its latent factors?
 - Approximate marginal inference over $$x$$: given an image $$x$$ with missing parts, how do we fill-in these parts?
 
-We are also going to make the following additional assumptions
+We are also going to make the following additional assumptions:
 
 - *Intractability*: computing the posterior probability $$p(z\mid x)$$ is intractable.
 - *Big data*: the dataset $$D$$ is too large to fit in memory; we can only work with small, subsampled batches of $$D$$.
@@ -48,7 +47,7 @@ The [EM algorithm](../../learning/latent/) can be used to learn latent-variable 
 To perform approximate inference, we may use [mean field](../../inference/variational/). 
 Recall, however, that one step of mean field requires us to compute an expectation whose time complexity scales exponentially with the size of  the Markov blanket of the target variable. 
 
-What is the size of the [Markov blanket](../../representation/undirected/) for $$z$$? If we assume that at least one component of $$x$$ depends on each component of $$z$$, then this introduces a [V-structure](../../representation/directed/) into the graph of our model (the $$x$$, which are observed, are [explaining away](../../representation/directed/) the differences among the $$z$$). Thus, we know that all the $$z$$ variables will depend on each other and the Markov blanket of some $$z_i$$ will contain all the other $$z$$-variables. This will make mean-field intractable{% sidenote 1 'The authors refer to this when they say "the required integrals for any reasonable mean-field VB algorithm are also intractable". They also discuss the limitations of EM and sampling methods in the introduction and the methods section.'%}. An equivalent (and simpler) explanation is that $$p$$ will contain a factor $$p(x_i \mid z_1,...,z_K)$$, in which all the $$z$$ variables are tied.
+What is the size of the [Markov blanket](../../representation/undirected/) for $$z$$? If we assume that at least one component of $$x$$ depends on each component of $$z$$, then this introduces a [V-structure](../../representation/directed/) into the graph of our model (the $$x$$, which are observed, are [explaining away](../../representation/directed/) the differences among the $$z$$). Thus, we know that all the $$z$$ variables will depend on each other and the Markov blanket of some $$z_i$$ will contain all the other $$z$$-variables. This will make mean-field intractable{% sidenote 1 'The authors refer to this when they say "the required integrals for any reasonable mean-field VB algorithm are also intractable". They also discuss the limitations of EM and sampling methods in the introduction and the methods section.'%}. An equivalent (and simpler) explanation is that $$p$$ will contain a factor $$p(x_i \mid z_1,...,z_k)$$, in which all the $$z$$ variables are tied.
 
 Another approach would be to use [sampling-based methods](../../inference/sampling/). In their seminal 2013 [paper](https://arxiv.org/abs/1312.6114) first describing the variational autoencoder, Kingma and Welling compare the VAE against these kinds of algorithms, but they find that these sampling-based methods don't scale well to large datasets. In addition, techniques such as [Metropolis-Hastings](../../inference/sampling/) require a hand-crafted proposal distribution, which might be difficult to choose.
 
@@ -56,8 +55,7 @@ Another approach would be to use [sampling-based methods](../../inference/sampli
 
 We will now going to learn about Auto-encoding variational Bayes (AEVB), an algorithm that can efficiently solve our three inference and learning tasks; the variational auto-encoder will be one instantiation of this algorithm. 
 
-AEVB is based on ideas from [variational inference](../../inference/variational/). Recall that in variational inference, we are interested in 
-maximizing the [evidence lower bound](../../inference/variational/) (ELBO)
+AEVB is based on ideas from [variational inference](../../inference/variational/). Recall that in variational inference, we are interested in  maximizing the [evidence lower bound](../../inference/variational/) (ELBO)
 {%math%}
 \mathcal{L}(p_\theta,q_\phi) = \mathbb{E}_{q_\phi(z|x)} \left[ \log p_\theta(x,z) - \log q_\phi(z|x) \right]
 {%endmath%}
@@ -73,7 +71,7 @@ How exactly do we optimize over $$q(z\mid x)$$? We may use [mean field](../../in
 
 The first important idea used in the AEVB algorithm is a general purpose approach for optimizing $$q$$ that works for large classes of $$q$$ (that are more complex than in mean field). We later combine this algorithm with specific choices of $$q$$.
 
-This approach -- called *black-box variational inference*{%sidenote 1 'The term *black-box variational inference* was first coined by [Ranganath et al.](http://www.cs.columbia.edu/~blei/papers/RanganathGerrishBlei2014.pdf), with the ideas being inspired by earlier work, such as the Wake-Sleep algorithm.'%} -- consists in maximizing the ELBO using [gradient descent](../../learning/undirected/) over $$\phi$$ (instead of e.g., using a coordinate descent algorithm like mean field). Hence, it only assumes that $$q_\phi$$ is differentiable in its parameters $$\phi$$.
+This approach -- called *black-box variational inference*{%sidenote 1 'The term *black-box variational inference* was first coined by [Ranganath et al.](http://www.cs.columbia.edu/~blei/papers/RanganathGerrishBlei2014.pdf), with the ideas being inspired by earlier work, such as the Wake-Sleep algorithm.'%} -- consists of maximizing the ELBO using [gradient descent](../../learning/undirected/) over $$\phi$$ (instead of e.g., using a coordinate descent algorithm like mean field). Hence, it only assumes that $$q_\phi$$ is differentiable in its parameters $$\phi$$.
 
 Furthermore, instead of only doing inference, we will simultaneously  perform learning via gradient descent on both $$\phi$$ and $$\theta$$ (jointly). Optimization over $$\phi$$ will keep ELBO tight around $$\log p(x)$$; optimization over $$\theta$$ will keep pushing the lower bound (and hence $$\log p(x)$$) up. This is somewhat similar to how the [EM algorithm](../../learning/latent/) optimizes a lower bound on the marginal likelihood.
 
@@ -110,15 +108,13 @@ This is done in two steps: we first reformulate the ELBO so that parts of it can
 
 ### The SGVB estimator
 
-The reformulation of the ELBO is as follows.
+The reformulation of the ELBO is as follows:
 {%math%}
 \log p(x) \geq \mathbb{E}_{q_\phi(z|x)} \left[ \log p_\theta(x|z) \right] - KL(q_\phi(z|x) || p(z))
 {%endmath%}
 It is straightforward to verify that this is the same using ELBO using some algebra.
 
-This reparametrization has a very interesting interpretation.
-First, think of $$x$$ as an observed data point.
-The left-hand side consists of two terms; both involve taking a sample $$z \sim q(z\mid x)$$, which we can interpret as a code describing $$x$$. We are also going to call $$q$$ the *encoder*.
+This reparametrization has a very interesting interpretation. First, think of $$x$$ as an observed data point. The left-hand side consists of two terms; both involve taking a sample $$z \sim q(z\mid x)$$, which we can interpret as a code describing $$x$$. We are also going to call $$q$$ the *encoder*.
 
 In the first term, $$\log p(x\mid z)$$ is the log-likelihood of the observed $$x$$ given the code $$z$$ that we have sampled. This term is maximized when $$p(x\mid z)$$ assigns high probability to the original $$x$$. It is trying to reconstruct $$x$$ given the code $$z$$; for that reason we call $$p(x\mid z)$$ the *decoder* network and the term is called the *reconstruction error*.
 
@@ -131,8 +127,7 @@ Thus, our optimization objective is trying to fit a $$q(z\mid x)$$ that will map
 As we have seen earlier, optimizing our objective requires a good estimate of the gradient. 
 The main technical contribution of the VAE paper is a low-variance gradient estimator based on the *reparametrization trick*.
 
-Under certain mild conditions, 
-we may express the distribution $$q_\phi(z\mid x)$$ as the following two-step generative process.
+Under certain mild conditions, we may express the distribution $$q_\phi(z\mid x)$$ as the following two-step generative process.
 
 - First, we sample a noise variable $$\epsilon$$ from a simple distribution $$p(\epsilon)$$ like the standard Normal $$\mathcal{N}(0,1)$$ 
 {%math%}
@@ -155,19 +150,17 @@ The biggest advantage of this approach is that we many now write the gradient of
 {%math%}
  \nabla_\phi \mathbb{E}_{z \sim q(z\mid x)}\left[ f(x,z) \right] = \nabla_\phi \mathbb{E}_{\epsilon \sim p(\epsilon)}\left[ f(x,g(\epsilon, x)) \right] = \mathbb{E}_{\epsilon \sim p(\epsilon)}\left[ \nabla_\phi f(x,g(\epsilon, x)) \right].
 {%endmath%}
-The gradient is now inside the expectation and we may use Monte Carlo to get an estimate of the right-hand term.
-This approach will have a much lower variance{%sidenote 1 'For more details as to why, have a look at the appendix of the paper by [Rezende et al.](https://arxiv.org/pdf/1401.4082.pdf)'%} than the score function estimator, and will enable us to learn models that we otherwise couldn't learn.
+The gradient is now inside the expectation and we may use Monte Carlo to get an estimate of the right-hand term. This approach will have a much lower variance{%sidenote 1 'For more details as to why, have a look at the appendix of the paper by [Rezende et al.](https://arxiv.org/pdf/1401.4082.pdf)'%} than the score function estimator, and will enable us to learn models that we otherwise couldn't learn.
 
 ### Choosing $$q$$ and $$p$$
 
-Until now, we did not specify the exact form of $$p$$ or $$q$$, besides saying that these could be arbitrary functions.
-How should one parametrize these distributions? The best $$q(z\mid x)$$ should be able to approximate the true posterior $$p(z\mid x)$$.  Similarly, $$p(x)$$ should be flexible enough to represent the richness of the data.
+Until now, we did not specify the exact form of $$p$$ or $$q$$, besides saying that these could be arbitrary functions. How should one parametrize these distributions? The best $$q(z\mid x)$$ should be able to approximate the true posterior $$p(z\mid x)$$. Similarly, $$p(x)$$ should be flexible enough to represent the richness of the data.
 
 For these reasons, we are going to parametrize $$q$$ and $$p$$ by *neural networks*. These are extremely expressive function approximators that can be efficiently optimized over large datasets. This choice also draws a fascinating bridge between classical machine learning methods (approximate Bayesian inference in this case) and modern deep learning.
 
 But what does it mean to parametrize a distribution with a neural network? Let's assume again that $$q(z\mid x)$$ and $$p(x\mid z)$$ are Normal distributions; we may write them as
 {%math%}
- q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \vec \sigma(x) \odot I)
+q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \vec \sigma(x) \odot I)
 {%endmath%}
 where $$\vec\mu(x), \vec \sigma(x)$$ are deterministic vector-valued functions of $$x$$ parametrized by an arbitrary complex neural network.
 
@@ -177,9 +170,7 @@ More generally, the same technique can be applied to any exponential family dist
 
 We are now ready to define the AEVB algorithm and the variational autoencoder, its most popular instantiation.
 
-The AEVB algorithm is simply the combination of (1) the auto-encoding ELBO reformulation, (2) the black-box variational inference approach, and (3) the reparametrization-based low-variance gradient estimator. 
-It optimizes the auto-encoding ELBO using black-box variational inference with the reparametrized gradient estimator.
-This algorithm is applicable to any deep generative model $$p_\theta$$ with latent variables that is differentiable in $$\theta$$.
+The AEVB algorithm is simply the combination of (1) the auto-encoding ELBO reformulation, (2) the black-box variational inference approach, and (3) the reparametrization-based low-variance gradient estimator. It optimizes the auto-encoding ELBO using black-box variational inference with the reparametrized gradient estimator. This algorithm is applicable to any deep generative model $$p_\theta$$ with latent variables that is differentiable in $$\theta$$.
 
 A variational auto-encoder uses the AEVB algorithm to learn a specific model $$p$$ using a particular encoder $$q$$. The model $$p$$ is parametrized as
 {%math%}
@@ -190,7 +181,7 @@ p(z) & = \mathcal{N}(z; 0, I),
 {%endmath%}
 where $$\vec\mu(z), \vec \sigma(z)$$ are parametrized by a neural network (typically, two dense hidden layers of 500 units each). The model $$q$$ is similarly parametrized as
 {%math%}
- q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \vec \sigma(x) \odot I).
+q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \vec \sigma(x) \odot I).
 {%endmath%}
 
 This choice of $$p$$ and $$q$$ allows us to further simplify the auto-encoding ELBO. In particular, we can use a closed form expression to compute the regularization term, and we only use Monte-Carlo estimates for the reconstruction term. These expressions are given in the paper.
