@@ -23,7 +23,7 @@ The main differences between sampling and variational techniques are that:
 - However, we will always know if they have converged. In some cases, we will even have bounds on their accuracy.
 - In practice, variational inference methods often scale better and are more amenable to techniques like stochastic gradient optimization, parallelization over multiple processors, and acceleration using GPUs.
 
-Although sampling methods were historically invented first (in the 1940's), variational techniques have been steadily gaining popularity and are currently the more widely used inference technique.
+Although sampling methods were historically invented first (in the 1940s), variational techniques have been steadily gaining popularity and are currently the more widely used inference technique.
 
 ## The Kullback-Leibler divergence
 
@@ -78,7 +78,7 @@ Because of this property, $$-J(q)$$ is called the variational lower bound or the
 \log Z(\theta) \geq \mathbb{E}_{q(x)} \left[ \log \tilde p(x) - \log q(x) \right].
 {% endmath %}
 
-Crucially, the difference between $$\log Z(\theta)$$ and $$-J(q)$$ is precisely {%m%}KL(q||p){%em%}. Thus, by maximizing the evidence-lower bound, we are minimizing {%m%}KL(q||p){%em%} by "squeezing" it between $$J(q)$$ and $$\log Z(\theta)$$.
+Crucially, the difference between $$\log Z(\theta)$$ and $$-J(q)$$ is precisely {%m%}KL(q||p){%em%}. Thus, by maximizing the evidence-lower bound, we are minimizing {%m%}KL(q||p){%em%} by "squeezing" it between $$-J(q)$$ and $$\log Z(\theta)$$.
 
 ## On the choice of KL divergence
 
@@ -88,14 +88,13 @@ Recall how we said earlier that {%m%}KL(q||p) \neq KL(p||q){%em%}; both divergen
 
 Perhaps the most important difference is computational: optimizing {%m%}KL(q||p){%em%} involves an expectation with respect to $$q$$, while {%m%}KL(p||q){%em%} requires computing expectations with respect to $$p$$, which is typically intractable even to evaluate.
 
-However, choosing this particular divergence affects the returned solution when the approximating family $$\mathcal{Q}$$ does not contain the true $$p$$. Observe that {%m%}KL(q||p){%em%} --- which is called the I-projection or information projection --- is infinite if $$p(x) == 0$$ and $$q(x) > 0$$:
+However, choosing this particular divergence affects the returned solution when the approximating family $$\mathcal{Q}$$ does not contain the true $$p$$. Observe that {%m%}KL(q||p){%em%} --- which is called the I-projection or information projection --- is infinite if $$p(x) = 0$$ and $$q(x) > 0$$:
 {% math %}
 KL(q||p) = \sum_x q(x) \log \frac{q(x)}{p(x)}.
 {% endmath %}
-This means that if $$p(x) = 0$$ we must have $$q(x) = 0$$. We say that {%m%}KL(q||p){%em%} is zero-forcing for $$q$$ and it will typically under-estimate the support of $$q$$
+This means that if $$p(x) = 0$$ we must have $$q(x) = 0$$. We say that {%m%}KL(q||p){%em%} is zero-forcing for $$q$$ and it will typically under-estimate the support of $$q$$.
 
-On the other hand, {%m%}KL(p||q){%em%} --- known as the M-projection or the moment projection --- is infinite if $$q(x) == 0$$ and $$p(x) > 0$$.
-Thus, if $$p(x) > 0$$ we must have $$q(x) > 0$$. We say that {%m%}KL(p||q){%em%} is zero-avoiding for $$q$$ and it will typically over-estimate the support of $$q$$.
+On the other hand, {%m%}KL(p||q){%em%} --- known as the M-projection or the moment projection --- is infinite if $$q(x) = 0$$ and $$p(x) > 0$$. Thus, if $$p(x) > 0$$ we must have $$q(x) > 0$$. We say that {%m%}KL(p||q){%em%} is zero-avoiding for $$q$$ and it will typically over-estimate the support of $$q$$.
 
 The figure below illustrates this phenomenon graphically.
 

@@ -83,7 +83,7 @@ We use $$\tau$$ to refer to the marginalized factor. It is important to understa
 
 Finally, the variable elimination algorithm requires an ordering over the variables according to which variables will be "eliminated". In our chain example, we took the ordering implied by the DAG. It is important note that:
 
-- Different ordering may dramatically alter the running time of the variable elimination algorithm.
+- Different orderings may dramatically alter the running time of the variable elimination algorithm.
 - It is NP-hard to find the best ordering.
 
 We will come back to these complications later, but for now let the ordering be fixed.
