@@ -118,7 +118,7 @@ It is straightforward to verify that this is the same using ELBO using some alge
 
 This reparametrization has a very interesting interpretation.
 First, think of $$x$$ as an observed data point.
-The left-hand side consists of two terms; both involve taking a sample $$z \sim q(z\mid x)$$, which we can interpret as a code describing $$x$$. We are also going to call $$q$$ the *encoder*.
+The right-hand side consists of two terms; both involve taking a sample $$z \sim q(z\mid x)$$, which we can interpret as a code describing $$x$$. We are also going to call $$q$$ the *encoder*.
 
 In the first term, $$\log p(x\mid z)$$ is the log-likelihood of the observed $$x$$ given the code $$z$$ that we have sampled. This term is maximized when $$p(x\mid z)$$ assigns high probability to the original $$x$$. It is trying to reconstruct $$x$$ given the code $$z$$; for that reason we call $$p(x\mid z)$$ the *decoder* network and the term is called the *reconstruction error*.
 
