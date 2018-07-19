@@ -119,7 +119,7 @@ event <script type="math/tex">B</script>.</p>
 
 <h2 id="12-chain-rule">1.2 Chain Rule</h2>
 
-<p>Let <script type="math/tex">S_1, \cdots, S_k</script> be events, <script type="math/tex">P(S_i) >0</script>. Then</p>
+<p>Let <script type="math/tex">S_1, \cdots, S_k</script> be events, <script type="math/tex">P(S_i) >0</script>. Then the chain rule states that:</p>
 
 <div class="mathblock"><script type="math/tex; mode=display">
 \begin{aligned}
@@ -128,13 +128,13 @@ event <script type="math/tex">B</script>.</p>
 \end{aligned}
 </script></div>
 
-<p>Note that for <script type="math/tex">k=2</script> events, this is just the definition of conditional probability</p>
+<p>Note that for <script type="math/tex">k=2</script> events, this is just the definition of conditional probability:</p>
 
 <p>\begin{equation}
 P(S_1 \cap S_2) = P(S_1) P(S_2 | S_1)
 \end{equation}</p>
 
-<p>In general, it is derived by applying the definition of conditional independence multiple times, as in the following example</p>
+<p>In general, the chain rule is derived by applying the definition of conditional independence multiple times, as in the following example:</p>
 
 <div class="mathblock"><script type="math/tex; mode=display">
 \begin{aligned}
@@ -162,7 +162,7 @@ technical conditions, are known as <strong>random variables</strong>.</p>
 <p>More formally, a random variable <script type="math/tex">X</script> is a function <script type="math/tex">X : \Omega \rightarrow \mathbb{R}</script>. Typically, we will denote random
 variables using upper case letters <script type="math/tex">X(\omega)</script> or more simply <script type="math/tex">X</script> (where the dependence on the random
 outcome <script type="math/tex">\omega</script> is implied). We will denote the value that a random variable may take on using lower
-case letters <script type="math/tex">x</script>.</p>
+case letters <script type="math/tex">x</script>. Thus, <script type="math/tex">X = x</script> means that we are assigning the value <script type="math/tex">x \in \mathbb{R}</script> to the random variable <script type="math/tex">X</script>.</p>
 
 <p><strong>Example</strong>: In our experiment above, suppose that <script type="math/tex">X(\omega)</script> is the number of heads which occur in the
 sequence of tosses <script type="math/tex">ω</script>. Given that only 10 coins are tossed, <script type="math/tex">X(\omega)</script> can take only a finite number of
@@ -189,7 +189,7 @@ By using this function one can calculate the probability of any event.</p>
 <ul>
   <li><script type="math/tex">0 \leq  F_X(x) \leq  1</script>.</li>
   <li><script type="math/tex">lim_{x \rightarrow -\infty} F_X(x) = 0</script>.</li>
-  <li><script type="math/tex">lim_{x \rightarrow \infty} F_X(x) = 1</script>.</li>
+  <li><script type="math/tex">lim_{x \rightarrow +\infty} F_X(x) = 1</script>.</li>
   <li><script type="math/tex">x \leq y ⇒ F_X(x) \leq F_X(y)</script>.</li>
 </ul>
 

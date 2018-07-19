@@ -21,7 +21,9 @@ Probabilistic graphical models have numerous and diverse real-world applications
     - [Computational Biology](#comp-bio)
     - [Ecology](#ecology)
     - [Economics](#economics)
-
+  + **Health Care and Medicine**
+    - [Diagnosis](#diagnosis)
+    
 ## Probabilistic Models of Images
 
 Consider a distribution $$p(\mathbf{x})$$ over images, where $$\mathbf{x}$$ is an image represented as a vector of pixels, that assigns high probability to images that look realistic and low probability to everything else. Given such a model, we can solve a wide array of interesting tasks.
@@ -160,6 +162,16 @@ Graphical models can be used to model spatial distributions of quantities of int
 
 The last two applications are what are known as spatio-temporal models. They depend on data that is collected across time as well as space.
 
+## Applications in Health Care and Medicine
+
+<a id="diagnosis"></a>
+### Medical Diagnosis
+
+Probabilistic graphical models can assist doctors in diagnosing diseases and predicting adverse outcomes. For example, in 1998 the LDS Hospital in Salt Lake City, Utah developed a Bayesian network for diagnosing pneumonia. Their model was able to distinguish patients with pneumonia from patients with other diseases with high sensitivity (0.95) and specificity (0.965), and was used for many years in the clinic. Their network model is outlined below:
+
+![diagnosis](diagnostic_bayes_net.PNG)
+
+You can read more about the development of their model <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2232064/">here.</a>
 <br/>
 
 |[Index](../../) | [Previous](../probabilityreview/) |  [Next](../../representation/directed/)|
