@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The variational auto-encoder</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/extras/vae/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/ermongroup/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>The variational auto-encoder</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>In this chapter, we are going to use various ideas that we have learned in the class in order to present a very influential recent probabilistic model called the <em>variational autoencoder</em>.</p>
+
+<p>Variational autoencoders (VAEs) are a deep learning technique for learning latent representations. They have also been used to <a href="https://arxiv.org/pdf/1502.04623.pdf">draw images</a>, achieve state-of-the-art results in <a href="https://arxiv.org/pdf/1602.05473.pdf">semi-supervised learning</a>, as well as <a href="https://arxiv.org/abs/1511.06349">interpolate between sentences</a>.</p>
+
+<p>There are many online tutorials on VAEs. 
+Our presentation will probably be a bit more technical than the average, since our goal will be to highlight connections to ideas seen in class, as well as to show how these ideas are useful in machine learning research.</p>
+
+<h2 id="deep-generative-models">Deep generative models</h2>
+
+<p>Consider a <a href="../../representation/directed">directed</a> <a href="../../learning/latent">latent-variable</a> model of the form</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x,z) = p(x|z)p(z)
+</script></div>
+<p>with observed <script type="math/tex">x \in \mathcal{X}</script>, where <script type="math/tex">\mathcal{X}</script> can be continuous, discrete, or latent <script type="math/tex">z \in \mathbb{R}^k</script>.</p>
+
+<p><label for="dp1" class="margin-toggle">⊕</label><input type="checkbox" id="dp1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/faces.png" /><br />Variational autoencoder <script type="math/tex">p(x|z)p(z)</script> applied to a face images (modeled by <script type="math/tex">x</script>). The learned latent space <script type="math/tex">z</script> can be used to interpolate between facial expressions.</span>
+To make things concrete, you may think of <script type="math/tex">x</script> as being an image (e.g. a human face), and <script type="math/tex">z</script> as latent factors (not seen during training) that explain features of the face. For example, one coordinate of <script type="math/tex">z</script> can encode whether the face is happy or sad, another one whether the face is male or female, etc.</p>
+
+<p>We may also be interested in models with many layers, e.g. <script type="math/tex">p(x \mid z_1)p(z_2 \mid z_3)\cdots p(z_{m-1}\mid z_m)p(z_m)</script>. These are often called <em>deep generative models</em> and can learn hierarchies of latent representations.
+In this chapter, we will assume for simplicity that there is only one latent layer.</p>
+
+<h3 id="learning-deep-generative-models">Learning deep generative models</h3>
+
+<p>Suppose now that we are given a dataset <script type="math/tex">D = \{x^1,x^2,...,x^n\}</script>. We are interested in the following <a href="../../inference/variational/">inference</a> and <a href="../../learning/directed/">learning</a> tasks:</p>
+
+<ul>
+  <li>Learning the parameters <script type="math/tex">\theta</script> of <script type="math/tex">p</script>.</li>
+  <li>Approximate posterior inference over <script type="math/tex">z</script>: given an image <script type="math/tex">x</script>, what are its latent factors?</li>
+  <li>Approximate marginal inference over <script type="math/tex">x</script>: given an image <script type="math/tex">x</script> with missing parts, how do we fill-in these parts?</li>
+</ul>
+
+<p>We are also going to make the following additional assumptions</p>
+
+<ul>
+  <li><em>Intractability</em>: computing the posterior probability <script type="math/tex">p(z\mid x)</script> is intractable.</li>
+  <li><em>Big data</em>: the dataset <script type="math/tex">D</script> is too large to fit in memory; we can only work with small, subsampled batches of <script type="math/tex">D</script>.</li>
+</ul>
+
+<p>Many interesting models fall in this class; the variational auto-encoder will be one such model.</p>
+
+<h2 id="trying-out-the-standard-approaches">Trying out the standard approaches</h2>
+
+<p>We have learned several techniques in the class that could be used to solve our three tasks. Let’s try them out.</p>
+
+<p>The <a href="../../learning/latent/">EM algorithm</a> can be used to learn latent-variable models. Recall, however, that performing the E step requires computing the approximate posterior <script type="math/tex">p(z\mid x)</script>, which we have assumed to be intractable. In the M step, we learn the <script type="math/tex">\theta</script> by looking at the entire dataset<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Note, however, that there exists a generalization called online EM, which performs the M-step over mini-batches. </span>, which is going to be too large to hold in memory.</p>
+
+<p>To perform approximate inference, we may use <a href="../../inference/variational/">mean field</a>. 
+Recall, however, that one step of mean field requires us to compute an expectation whose time complexity scales exponentially with the size of  the Markov blanket of the target variable.</p>
+
+<p>What is the size of the <a href="../../representation/undirected/">Markov blanket</a> for <script type="math/tex">z</script>? If we assume that at least one component of <script type="math/tex">x</script> depends on each component of <script type="math/tex">z</script>, then this introduces a <a href="../../representation/directed/">V-structure</a> into the graph of our model (the <script type="math/tex">x</script>, which are observed, are <a href="../../representation/directed/">explaining away</a> the differences among the <script type="math/tex">z</script>). Thus, we know that all the <script type="math/tex">z</script> variables will depend on each other and the Markov blanket of some <script type="math/tex">z_i</script> will contain all the other <script type="math/tex">z</script>-variables. This will make mean-field intractable<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">The authors refer to this when they say “the required integrals for any reasonable mean-field VB algorithm are also intractable”. They also discuss the limitations of EM and sampling methods in the introduction and the methods section. </span>. An equivalent (and simpler) explanation is that <script type="math/tex">p</script> will contain a factor <script type="math/tex">p(x_i \mid z_1,...,z_K)</script>, in which all the <script type="math/tex">z</script> variables are tied.</p>
+
+<p>Another approach would be to use <a href="../../inference/sampling/">sampling-based methods</a>. In their seminal 2013 <a href="https://arxiv.org/abs/1312.6114">paper</a> first describing the variational autoencoder, Kingma and Welling compare the VAE against these kinds of algorithms, but they find that these sampling-based methods don’t scale well to large datasets. In addition, techniques such as <a href="../../inference/sampling/">Metropolis-Hastings</a> require a hand-crafted proposal distribution, which might be difficult to choose.</p>
+
+<h2 id="auto-encoding-variational-bayes">Auto-encoding variational Bayes</h2>
+
+<p>We will now going to learn about Auto-encoding variational Bayes (AEVB), an algorithm that can efficiently solve our three inference and learning tasks; the variational auto-encoder will be one instantiation of this algorithm.</p>
+
+<p>AEVB is based on ideas from <a href="../../inference/variational/">variational inference</a>. Recall that in variational inference, we are interested in 
+maximizing the <a href="../../inference/variational/">evidence lower bound</a> (ELBO)</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathcal{L}(p_\theta,q_\phi) = \mathbb{E}_{q_\phi(z|x)} \left[ \log p_\theta(x,z) - \log q_\phi(z|x) \right]
+</script></div>
+<p>over the space of all <script type="math/tex">q_\phi</script>. The ELBO satisfies the equation</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\log p_\theta(x) = KL(q_\phi(z|x) || p(z|x)) + \mathcal{L}(p_\theta,q_\phi).
+</script></div>
+<p>Since <script type="math/tex">x</script> is fixed, we can define <script type="math/tex">q(z\mid x)</script> to be conditioned on <script type="math/tex">x</script>. This means that we are effectively choosing a different <script type="math/tex">q(z)</script> for every <script type="math/tex">x</script>, which will produce a better posterior approximation than always choosing the same <script type="math/tex">q(z)</script>.</p>
+
+<p>How exactly do we optimize over <script type="math/tex">q(z\mid x)</script>? We may use <a href="../../inference/variational/">mean field</a>, but this turns out to be insufficiently accurate for our purposes. The assumption that <script type="math/tex">q</script> is fully factored is too strong, and the coordinate descent optimization algorithm is too simplistic.</p>
+
+<h3 id="black-box-variational-inference">Black-box variational inference</h3>
+
+<p>The first important idea used in the AEVB algorithm is a general purpose approach for optimizing <script type="math/tex">q</script> that works for large classes of <script type="math/tex">q</script> (that are more complex than in mean field). We later combine this algorithm with specific choices of <script type="math/tex">q</script>.</p>
+
+<p>This approach – called <em>black-box variational inference</em><label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">The term <em>black-box variational inference</em> was first coined by <a href="http://www.cs.columbia.edu/~blei/papers/RanganathGerrishBlei2014.pdf">Ranganath et al.</a>, with the ideas being inspired by earlier work, such as the Wake-Sleep algorithm. </span> – consists in maximizing the ELBO using <a href="../../learning/undirected/">gradient descent</a> over <script type="math/tex">\phi</script> (instead of e.g., using a coordinate descent algorithm like mean field). Hence, it only assumes that <script type="math/tex">q_\phi</script> is differentiable in its parameters <script type="math/tex">\phi</script>.</p>
+
+<p>Furthermore, instead of only doing inference, we will simultaneously  perform learning via gradient descent on both <script type="math/tex">\phi</script> and <script type="math/tex">\theta</script> (jointly). Optimization over <script type="math/tex">\phi</script> will keep ELBO tight around <script type="math/tex">\log p(x)</script>; optimization over <script type="math/tex">\theta</script> will keep pushing the lower bound (and hence <script type="math/tex">\log p(x)</script>) up. This is somewhat similar to how the <a href="../../learning/latent/">EM algorithm</a> optimizes a lower bound on the marginal likelihood.</p>
+
+<h3 id="the-score-function-gradient-estimator">The score function gradient estimator</h3>
+
+<p>To perform black-box variational inference, we need to compute the gradient</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\nabla_{\theta, \phi} \mathbb{E}_{q_\phi(z)} \left[ \log p_\theta(x,z) - \log q_\phi(z) \right]
+</script></div>
+
+<p>Taking the expectation with respect to <script type="math/tex">q</script> in closed form will often not be possible. Instead, we may take <a href="../../inference/sampling/">Monte Carlo</a> estimates of the gradient by sampling from <script type="math/tex">q</script>. This is easy to do for the gradient of <script type="math/tex">p</script>: we may swap the gradient and the expectation and estimate the following expression via Monte Carlo</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\mathbb{E}_{q_\phi(z)} \left[ \nabla_{\theta} \log p_\theta(x,z) \right]
+</script></div>
+
+<p>However, taking the gradient with respect to <script type="math/tex">q</script> is more difficult. Notice that we cannot swap the gradient and the expectation, since the expectation is being taken with respect to the distribution that we are trying to differentiate!</p>
+
+<p>One way to estimate this gradient is via the so-called score function estimator:</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\nabla_{\phi} \mathbb{E}_{q_\phi(z)} \left[ \log p_\theta(x,z)  - \log q_\phi(z) \right] = \mathbb{E}_{q_\phi(z)} \left[ \left(\log p_\theta(x,z)  - \log q_\phi(z) \right) \nabla_{\phi} \log  q_\phi(z) \right]
+</script></div>
+
+<p>This follows from some basic algebra and calculus and takes about half a page to derive. We leave it as an exercise to the reader, but for those interested, the full derivation may found in Appendix B of this <a href="https://www.cs.toronto.edu/~amnih/papers/nvil.pdf">paper</a>.</p>
+
+<p>The above identity places the gradient inside the expectation, which we may now evaluate using Monte Carlo. We refer to this as the <em>score function</em> estimator of the gradient.</p>
+
+<p>Unfortunately, the score function estimator has an important shortcoming: it has a high variance. What does this mean? Suppose you are using Monte Carlo to estimate an expectation whose mean is 1. If your samples are <script type="math/tex">0.9, 1.1, 0.96, 1.05,..</script> and are close to 1, then after a few samples, you will get a good estimate of the true expectation. If on the other hand you sample zero 99 times out of 100, and you sample 100 once, the expectation is still correct, but you will have to take a very large number of samples to figure out that the true expectation is actually one. We refer to the latter case as being high variance.</p>
+
+<p>This is the kind of problem we often run into with the score function estimator. In fact, its variance is so high, that we cannot use it to learn many models.</p>
+
+<p>The key contribution of the VAE paper is to propose an alternative estimator that is much better behaved.
+This is done in two steps: we first reformulate the ELBO so that parts of it can be computed in closed form (without Monte Carlo), and then we use an alternative gradient estimator, based on the so-called reparametrization trick.</p>
+
+<h3 id="the-sgvb-estimator">The SGVB estimator</h3>
+
+<p>The reformulation of the ELBO is as follows.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\log p(x) \geq \mathbb{E}_{q_\phi(z|x)} \left[ \log p_\theta(x|z) \right] - KL(q_\phi(z|x) || p(z))
+</script></div>
+<p>It is straightforward to verify that this is the same using ELBO using some algebra.</p>
+
+<p>This reparametrization has a very interesting interpretation.
+First, think of <script type="math/tex">x</script> as an observed data point.
+The right-hand side consists of two terms; both involve taking a sample <script type="math/tex">z \sim q(z\mid x)</script>, which we can interpret as a code describing <script type="math/tex">x</script>. We are also going to call <script type="math/tex">q</script> the <em>encoder</em>.</p>
+
+<p>In the first term, <script type="math/tex">\log p(x\mid z)</script> is the log-likelihood of the observed <script type="math/tex">x</script> given the code <script type="math/tex">z</script> that we have sampled. This term is maximized when <script type="math/tex">p(x\mid z)</script> assigns high probability to the original <script type="math/tex">x</script>. It is trying to reconstruct <script type="math/tex">x</script> given the code <script type="math/tex">z</script>; for that reason we call <script type="math/tex">p(x\mid z)</script> the <em>decoder</em> network and the term is called the <em>reconstruction error</em>.</p>
+
+<p>The second term is the divergence between <script type="math/tex">q(z\mid x)</script> and the prior <script type="math/tex">p(z)</script>, which we will fix to be a unit Normal. It encourages the codes <script type="math/tex">z</script> to look Gaussian. We call it the <em>regularization</em> term. It prevents <script type="math/tex">q(z\mid x)</script> from simply encoding an identity mapping, and instead forces it to learn some more interesting representation (e.g. facial features in our first example).</p>
+
+<p>Thus, our optimization objective is trying to fit a <script type="math/tex">q(z\mid x)</script> that will map <script type="math/tex">x</script> into a useful latent space <script type="math/tex">z</script> from which we are able to reconstruct <script type="math/tex">x</script> via <script type="math/tex">p(x\mid z)</script>. This type of objective is reminiscent of <em>auto-encoder</em> neural networks<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">An auto-encoder is a pair of neural networks <script type="math/tex">f, g</script> that are composed as <script type="math/tex">\bar x=f(g(x))</script>. They are trained to minimize the reconstruction error <script type="math/tex">||\bar x - x||</script>. In practice, <script type="math/tex">g(x)</script> learns to embed <script type="math/tex">x</script> in a latent space that often has an intuitive interpretation. </span>. This is where the AEVB algorithm takes its name.</p>
+
+<h3 id="the-reparametrization-trick">The reparametrization trick</h3>
+
+<p>As we have seen earlier, optimizing our objective requires a good estimate of the gradient. 
+The main technical contribution of the VAE paper is a low-variance gradient estimator based on the <em>reparametrization trick</em>.</p>
+
+<p>Under certain mild conditions, 
+we may express the distribution <script type="math/tex">q_\phi(z\mid x)</script> as the following two-step generative process.</p>
+
+<ul>
+  <li>First, we sample a noise variable <script type="math/tex">\epsilon</script> from a simple distribution <script type="math/tex">p(\epsilon)</script> like the standard Normal <script type="math/tex">\mathcal{N}(0,1)</script></li>
+</ul>
+<div class="mathblock"><script type="math/tex; mode=display">
+\epsilon \sim p(\epsilon)
+</script></div>
+<ul>
+  <li>Then, we apply a deterministic transformation <script type="math/tex">g_\phi(\epsilon, x)</script> that maps the random noise into a more complex distribution.</li>
+</ul>
+<div class="mathblock"><script type="math/tex; mode=display">
+z = g_\phi(\epsilon, x)
+</script></div>
+
+<p>For many interesting classes of <script type="math/tex">q_\phi</script>, it is possible to choose a <script type="math/tex">g_\phi(\epsilon, x)</script>, such that <script type="math/tex">z = g_\phi(\epsilon, x)</script> will be distributed according to <script type="math/tex">q_\phi(z\mid x)</script>.</p>
+
+<p>Gaussian variables provide the simplest example of the reparametrization trick. Instead of writing <script type="math/tex">z \sim q_{\mu, \sigma}(z) = \mathcal{N}(\mu, \sigma)</script>, we may write</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+z = g_{\mu, \sigma}(\epsilon) = \mu + \epsilon \cdot \sigma,
+</script></div>
+<p>where <script type="math/tex">\epsilon \sim \mathcal{N}(0,1)</script>. It is easy to check that the two ways of expressing the random variable <script type="math/tex">z</script> lead to the same distribution.</p>
+
+<p>The biggest advantage of this approach is that we many now write the gradient of an expectation with respect to <script type="math/tex">q(z)</script> (for any <script type="math/tex">f</script>) as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+ \nabla_\phi \mathbb{E}_{z \sim q(z\mid x)}\left[ f(x,z) \right] = \nabla_\phi \mathbb{E}_{\epsilon \sim p(\epsilon)}\left[ f(x,g(\epsilon, x)) \right] = \mathbb{E}_{\epsilon \sim p(\epsilon)}\left[ \nabla_\phi f(x,g(\epsilon, x)) \right].
+</script></div>
+<p>The gradient is now inside the expectation and we may use Monte Carlo to get an estimate of the right-hand term.
+This approach will have a much lower variance<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">For more details as to why, have a look at the appendix of the paper by <a href="https://arxiv.org/pdf/1401.4082.pdf">Rezende et al.</a> </span> than the score function estimator, and will enable us to learn models that we otherwise couldn’t learn.</p>
+
+<h3 id="choosing-q-and-p">Choosing <script type="math/tex">q</script> and <script type="math/tex">p</script></h3>
+
+<p>Until now, we did not specify the exact form of <script type="math/tex">p</script> or <script type="math/tex">q</script>, besides saying that these could be arbitrary functions.
+How should one parametrize these distributions? The best <script type="math/tex">q(z\mid x)</script> should be able to approximate the true posterior <script type="math/tex">p(z\mid x)</script>.  Similarly, <script type="math/tex">p(x)</script> should be flexible enough to represent the richness of the data.</p>
+
+<p>For these reasons, we are going to parametrize <script type="math/tex">q</script> and <script type="math/tex">p</script> by <em>neural networks</em>. These are extremely expressive function approximators that can be efficiently optimized over large datasets. This choice also draws a fascinating bridge between classical machine learning methods (approximate Bayesian inference in this case) and modern deep learning.</p>
+
+<p>But what does it mean to parametrize a distribution with a neural network? Let’s assume again that <script type="math/tex">q(z\mid x)</script> and <script type="math/tex">p(x\mid z)</script> are Normal distributions; we may write them as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+ q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \vec \sigma(x) \odot I)
+</script></div>
+<p>where <script type="math/tex">\vec\mu(x), \vec \sigma(x)</script> are deterministic vector-valued functions of <script type="math/tex">x</script> parametrized by an arbitrary complex neural network.</p>
+
+<p>More generally, the same technique can be applied to any exponential family distribution by parameterizing the sufficient statistics by a function of <script type="math/tex">x</script>.</p>
+
+<h2 id="the-variational-auto-encoder">The variational auto-encoder</h2>
+
+<p>We are now ready to define the AEVB algorithm and the variational autoencoder, its most popular instantiation.</p>
+
+<p>The AEVB algorithm is simply the combination of (1) the auto-encoding ELBO reformulation, (2) the black-box variational inference approach, and (3) the reparametrization-based low-variance gradient estimator. 
+It optimizes the auto-encoding ELBO using black-box variational inference with the reparametrized gradient estimator.
+This algorithm is applicable to any deep generative model <script type="math/tex">p_\theta</script> with latent variables that is differentiable in <script type="math/tex">\theta</script>.</p>
+
+<p>A variational auto-encoder uses the AEVB algorithm to learn a specific model <script type="math/tex">p</script> using a particular encoder <script type="math/tex">q</script>. The model <script type="math/tex">p</script> is parametrized as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{align*}
+p(x\mid z) & = \mathcal{N}(x; \vec\mu(z), \vec \sigma(z) \odot I) \\
+p(z) & = \mathcal{N}(z; 0, I),
+\end{align*}
+</script></div>
+<p>where <script type="math/tex">\vec\mu(z), \vec \sigma(z)</script> are parametrized by a neural network (typically, two dense hidden layers of 500 units each). The model <script type="math/tex">q</script> is similarly parametrized as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+ q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \vec \sigma(x) \odot I).
+</script></div>
+
+<p>This choice of <script type="math/tex">p</script> and <script type="math/tex">q</script> allows us to further simplify the auto-encoding ELBO. In particular, we can use a closed form expression to compute the regularization term, and we only use Monte-Carlo estimates for the reconstruction term. These expressions are given in the paper.</p>
+
+<p>We may interpret the variational autoencoder as a directed latent-variable probabilistic graphical model. We may also view it as a particular objective for training an auto-encoder neural network; unlike previous approaches, this objective derives reconstruction and regularization terms from a more principled, Bayesian perspective.</p>
+
+<h3 id="experimental-results">Experimental results</h3>
+
+<p><label for="dp1" class="margin-toggle">⊕</label><input type="checkbox" id="dp1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/mnist.png" /><br />Interpolating over MNIST digits by interpolating over latent variables</span>
+The VAE can be applied to images <script type="math/tex">x</script> in order to learn interesting latent representations. The VAE paper contains a few examples on the Frey face dataset on the MNIST digits. On the face dataset, we can interpolate between facial expressions by interpolating between latent variables (e.g. we can generate smooth transitions between “angry” and “surprised”). On the MNIST dataset, we can similarly interpolate between numbers.</p>
+
+<p>The authors also compare their methods against three alternative approaches: the wake-sleep algorithm, Monte-Carlo EM, and hybrid Monte-Carlo. The latter two methods are sampling-based approaches; they are quite accurate, but don’t scale well to large datasets. Wake-sleep is a variational inference algorithm that scales much better; however it does not use the exact gradient of the ELBO (it uses an approximation), and hence it is not as accurate as AEVB. The paper illustrates this by plotting learning curves.</p>
+
+<p><br /></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="../../">Index</a></td>
+      <td><a href="../../learning/structLearn">Previous</a></td>
+      <td><a href="">Next</a></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+    </article>
+    <span class="print-footer">The variational auto-encoder - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

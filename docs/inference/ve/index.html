@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Variable Elimination</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/inference/ve/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/ermongroup/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Variable elimination</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>Next, we turn our attention to the problem of <em>inference</em> in graphical models.
+Given a probabilistic model (such as a Bayes net or an MRF), we are interested in using it to answer useful questions, e.g., determining the probability that a given email is spam.  More formally, we will be focusing on two types of questions:</p>
+
+<ul>
+  <li><em>Marginal inference</em>: what is the probability of a given variable in our model after we sum everything else out (e.g. probability of spam vs non-spam)?</li>
+</ul>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(y=1) = \sum_{x_1} \sum_{x_2}  \cdots \sum_{x_n} p(y=1,x_1, x_2, ..., x_n).
+</script></div>
+<ul>
+  <li><em>Maximum a posteriori (MAP) inference</em>: what is the most likely assignment to the variables in the model (possibly conditioned on evidence).</li>
+</ul>
+<div class="mathblock"><script type="math/tex; mode=display">
+\max_{x_1, \dots, x_n} p(y=1, x_1,...,x_n)
+</script></div>
+
+<p>It turns out that inference is a challenging task. For many probabilities of interest, it will be NP-hard to answer any of these questions. Crucially, whether inference is tractable will depend on the structure of the graph that describes that probability. If a problem is intractable, we will still be able to obtain useful answers via approximate inference methods.</p>
+
+<p>This chapter covers the first exact inference algorithm, <em>variable elimination</em>. We will discuss approximate inference in later chapters.</p>
+
+<h2 id="an-illustrative-example">An illustrative example</h2>
+
+<p>Consider first the problem of marginal inference. Suppose for simplicity that we are given a chain Bayesian network, i.e. a probability of the form</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x_1,...,x_n) = p(x_1) \prod_{i=2}^n p(x_i \mid x_{i-1}).
+</script></div>
+<p>We are interested in computing the marginal probability <script type="math/tex">p(x_n)</script>. We will assume for the rest of the chapter that the <script type="math/tex">x_i</script> are discrete variables taking <script type="math/tex">d</script> possible values each<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">The principles behind variable elimination also extend to many continuous distributions (e.g. Gaussians), but we will not discuss these extensions here. </span>.</p>
+
+<p>The naive way of performing this is to sum the probability over all the <script type="math/tex">d^{n-1}</script> assignments to <script type="math/tex">x_1,...,x_{n-1}</script>:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x_n) = \sum_{x_1} \cdots \sum_{x_{n-1}} p(x_1,...,x_n).
+</script></div>
+
+<p>However, we can do much better by leveraging the factorization of our probability distribution. We may rewrite the sum in a way that ``pushes in” certain variables deeper into the product.</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{align*}
+p(x_n) 
+& = \sum_{x_1} \cdots \sum_{x_{n-1}} p(x_1) \prod_{i=2}^n p(x_i \mid x_{i-1}) \\
+& = \sum_{x_{n-1}} p(x_n \mid x_{n-1}) \sum_{x_{n-2}} p(x_{n-1} \mid x_{n-2}) \cdots \sum_{x_1} p(x_2 \mid x_1) p(x_1) .
+\end{align*}
+</script></div>
+<p>We perform this summation by first summing the inner terms, starting from <script type="math/tex">x_1</script>, and ending with <script type="math/tex">x_{n-1}</script>. More concretely, we start by computing an intermediary <em>factor</em> <script type="math/tex">\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)</script> by summing out <script type="math/tex">x_1</script>. This takes <script type="math/tex">O(d^2)</script> time because we must sum over <script type="math/tex">x_1</script> for each assignment to <script type="math/tex">x_2</script>. The resulting factor <script type="math/tex">\tau(x_2)</script> can be thought of as a table of values (though not necessarily probabilities), with one entry for each assignment to <script type="math/tex">x_2</script> (just as factor <script type="math/tex">p(x_1)</script> can be represented as a table. We may then rewrite the marginal probability using <script type="math/tex">\tau</script> as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x_n) = \sum_{x_{n-1}} p(x_n \mid x_{n-1}) \sum_{x_{n-2}} p(x_{n-1} \mid x_{n-2}) \cdots \sum_{x_2} p(x_3 \mid x_2) \tau(x_2).
+</script></div>
+
+<p>Note that this has the same form as the initial expression, except that we are summing over one fewer variable<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">This technique is a special case of <em>dynamic programming</em>, a general algorithm design approach in which we break apart a larger problem into a sequence of smaller ones. </span>. We may therefore compute another factor <script type="math/tex">\tau(x_3) = \sum_{x_2} p(x_3 \mid x_2) \tau(x_2)</script>, and repeat the process until we are only left with <script type="math/tex">x_n</script>. Since each step takes <script type="math/tex">O(d^2)</script> time, and we perform <script type="math/tex">O(n)</script> steps, inference now takes <script type="math/tex">O(n d^2)</script> time, which is much better than our naive <script type="math/tex">O(d^n)</script> solution.</p>
+
+<p>Also, at each time, we are <em>eliminating</em> a variable, which gives the algorithm its name.</p>
+
+<h2 id="eliminating-variables">Eliminating Variables</h2>
+
+<p>Having established some intuitions, with a special case, we will now introduce the variable elimination algorithm in its most general form.</p>
+
+<h3 id="factors">Factors</h3>
+
+<p>We will assume that we are given a graphical model as a product of factors</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x_1,..,x_n) = \prod_{c \in C} \phi_c(x_c).
+</script></div>
+
+<p>Recall that we can view a factor as a multi-dimensional table assigning a value to each assignment of a set of variables <script type="math/tex">x_c</script>. In the context of a Bayesian network, the factors correspond to conditional probability distributions; however, this definition also makes our algorithm equally applicable to Markov Random Fields. In this latter case, the factors encode an unnormalized distribution; to compute marginals, we first calculate the partition function (also using variable elimination), then we compute marginals using the unnormalized distribution, and finally we divide the result by the partition constant to construct a valid marginal probability.</p>
+
+<h3 id="factor-operations">Factor Operations</h3>
+
+<p>The variable elimination algorithm will repeatedly perform two factor operations: product and marginalization. We have been implicitly performing these operations in our chain example.</p>
+
+<p>The factor product operation simply defines the product <script type="math/tex">\phi_3 := \phi_1 \times \phi_2</script> of two factors <script type="math/tex">\phi_1, \phi_2</script> as</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\phi_3(x_c) = \phi_1(x_c^{(1)}) \times \phi_2(x_c^{(2)}).
+</script></div>
+<p>The scope of <script type="math/tex">\phi_3</script> is defined as the union of the variables in the scopes of <script type="math/tex">\phi_1, \phi_2</script>; also <script type="math/tex">x_c^{(i)}</script> denotes an assignment to the variables in the scope of <script type="math/tex">\phi_i</script> defined by the restriction of <script type="math/tex">x_c</script> to that scope. For example, we define <script type="math/tex">\phi_3(a,b,c) := \phi_1(a,b) \times \phi_2(b,c)</script>.</p>
+
+<p>Next, the marginalization operation “locally” eliminates a set of variables from a factor. If we have a factor <script type="math/tex">\phi(X,Y)</script> over two sets of variables <script type="math/tex">X,Y</script>, marginalizing <script type="math/tex">Y</script> produces a new factor</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\tau(x) = \sum_{y} \phi(x, y),
+</script></div>
+<p>where the sum is over all joint assignments to the set of variables <script type="math/tex">Y</script>.<label for="marg" class="margin-toggle">⊕</label><input type="checkbox" id="marg" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/marginalization.png" /><br />Here, we are marginalizing out variable <script type="math/tex">B</script> from factor <script type="math/tex">\phi(A,B,C).</script></span></p>
+
+<p>We use <script type="math/tex">\tau</script> to refer to the marginalized factor. It is important to understand that this factor does not necessarily correspond to a probability distribution, even if <script type="math/tex">\phi</script> was a CPD.</p>
+
+<h3 id="orderings">Orderings</h3>
+
+<p>Finally, the variable elimination algorithm requires an ordering over the variables according to which variables will be “eliminated”. In our chain example, we took the ordering implied by the DAG. It is important note that:</p>
+
+<ul>
+  <li>Different ordering dramatically alter the running time of the variable elimination algorithm.</li>
+  <li>It is NP-hard to find the best ordering.</li>
+</ul>
+
+<p>We will come back to these complications later, but for now let the ordering be fixed.</p>
+
+<h3 id="the-variable-elimination-algorithm">The variable elimination algorithm</h3>
+
+<p>We are now ready to formally define the variable elimination (VE) algorithm.
+Essentially, we loop over the variables as ordered by <script type="math/tex">O</script> and eliminate them in that ordering. Intuitively, this corresponds to choosing a sum and “pushing it in” as far as possible inside the product of the factors, as we did in the chain example.</p>
+
+<p>More formally, for each variable <script type="math/tex">X_i</script> (ordered according to <script type="math/tex">O</script>),</p>
+
+<ol>
+  <li>Multiply all factors <script type="math/tex">\Phi_i</script> containing <script type="math/tex">X_i</script></li>
+  <li>Marginalize out <script type="math/tex">X_i</script> to obtain new factor <script type="math/tex">\tau</script></li>
+  <li>Replace the factors in <script type="math/tex">\Phi_i</script> by <script type="math/tex">\tau</script></li>
+</ol>
+
+<p>A former CS228 student has created an <a href="http://pgmlearning.herokuapp.com/vElimApp">interactive web simulation</a> for visualizing the variable elimination algorithm. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.</p>
+
+<h3 id="examples">Examples</h3>
+
+<p>Let’s try to understand what these steps correspond to in our chain example. In that case, the chosen ordering was <script type="math/tex">x_1, x_2, ..., x_{n-1}.</script>
+Starting with <script type="math/tex">x_1</script>, we collected all the factors involving <script type="math/tex">x_1</script>, which were <script type="math/tex">p(x_1)</script> and <script type="math/tex">p(x_2 \mid x_1)</script>. We then used them to construct a new factor <script type="math/tex">\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)</script>. This can be seen as the results of steps 2 and 3 of the VE algorithm: first we form a large factor <script type="math/tex">\sigma(x_2, x_1) = p(x_2 \mid x_1) p(x_1)</script>; then we eliminate <script type="math/tex">x_1</script> from that factor to produce <script type="math/tex">\tau</script>. Then, we repeat the same procedure for <script type="math/tex">x_2</script>, except that the factors are now <script type="math/tex">p(x_3 \mid x_2), \tau(x_2)</script>.</p>
+
+<p>For a slightly more complex example, recall the graphical model of a student’s grade that we introduced earlier.<label for="nb1" class="margin-toggle">⊕</label><input type="checkbox" id="nb1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/cs228-notes/assets/img/grade-model.png" /><br />Bayes net model of a student’s grade <script type="math/tex">g</script> on an exam; in addition to <script type="math/tex">g</script>, we also model other aspects of the problem, such as the exam’s difficulty <script type="math/tex">d</script>, the student’s intelligence <script type="math/tex">i</script>, his SAT score <script type="math/tex">s</script>, and the quality <script type="math/tex">l</script> of a reference letter from the professor who taught the course. Each variable is binary, except for <script type="math/tex">g</script>, which takes 3 possible values.</span>
+The probability specified by the model is of the form</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(l, g, i, d, s) = p(l \mid  g) p(s \mid i) p(i) p(g \mid  i, d) p(d).
+</script></div>
+<p>Let’s suppose that we are computing <script type="math/tex">p(l)</script> and are eliminating variables in their topological ordering in the graph. First, we eliminate <script type="math/tex">d</script>, which corresponds to creating a new factor <script type="math/tex">\tau_1(g,i) = \sum_{d} p(g \mid  i, d) p(d)</script>. Next, we eliminate <script type="math/tex">i</script> to produce a factor <script type="math/tex">\tau_2(g,s) = \sum_{i} \tau_1(g,i) p(i) p(s \mid i)</script>; then we eliminate <script type="math/tex">s</script> yielding <script type="math/tex">\tau_3(g) = \sum_{s} \tau_2(g,s)</script>, and so forth. Note that these operations are equivalent to summing out the factored probability distribution as follows:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(l) = \sum_{g} p(l \mid  g) \sum_{s} \sum_{i} p(s\mid i) p(i) \sum_{d} p(g \mid  i, d) p(d).
+</script></div>
+<p>Note that this example requires computing at most <script type="math/tex">d^3</script> operations per step, since each factor is at most over 2 variables, and one variable is summed out at each step (the dimensionality <script type="math/tex">d</script> in this example is either 2 or 3).</p>
+
+<h2 id="introducing-evidence">Introducing evidence</h2>
+
+<p>A closely related and equally important problem is computing conditional probabilities of the form</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+P(Y \mid E = e) = \frac{P(Y, E = e)}{P(E=e)},
+</script></div>
+<p>where <script type="math/tex">P(X,Y,E)</script> is a probability distribution, over sets of query variables <script type="math/tex">Y</script>, observed evidence variables <script type="math/tex">E</script>, and unobserved variables <script type="math/tex">X</script>.</p>
+
+<p>We can compute this probability by performing variable elimination once on <script type="math/tex">P(Y, E = e)</script> and then once more on <script type="math/tex">P(E = e)</script>.</p>
+
+<p>To compute <script type="math/tex">P(Y, E = e)</script>, we simply take every factor <script type="math/tex">\phi(X', Y', E')</script> which has scope over variables <script type="math/tex">E' \subseteq E</script> that are also found in <script type="math/tex">E</script>, and we set their values as specified by <script type="math/tex">e</script>. Then we perform standard variable elimination over <script type="math/tex">X</script> to obtain a factor over only <script type="math/tex">Y</script>.</p>
+
+<h2 id="running-time-of-variable-elimination">Running Time of Variable Elimination</h2>
+
+<p>It is very important to understand that the running time of Variable Elimination depends heavily on the structure of the graph.</p>
+
+<p>In the previous example, suppose we eliminated <script type="math/tex">g</script> first. Then, we would have had to transform the factors <script type="math/tex">p(g \mid i, d), \phi(l \mid g)</script> into a big factor <script type="math/tex">\tau(d, i, l)</script> over 3 variables, which would require <script type="math/tex">O(d^4)</script> time to compute. If we had a factor <script type="math/tex">S \rightarrow G</script>, then we would have had to eliminate <script type="math/tex">p(g \mid s)</script> as well, producing a single giant factor <script type="math/tex">\tau(d, i, l, s)</script> in <script type="math/tex">O(d^5)</script> time. Then, eliminating any variable from this factor would require almost as much work as if we had started with the original distribution, since all the variable have become coupled.</p>
+
+<p>Clearly some ordering are much more efficient than others. In fact, the running time of Variable Elimination will equal <script type="math/tex">O(m d^M)</script>, where <script type="math/tex">M</script> is the maximum size of any factor during the elimination process and <script type="math/tex">m</script> is the number of variables.</p>
+
+<h3 id="choosing-variable-elimination-orderings">Choosing variable elimination orderings</h3>
+
+<p>Unfortunately, choosing the optimal VE ordering is an NP-hard problem. However, in practice, we may resort to the following heuristics:</p>
+
+<ul>
+  <li><em>Min-neighbors</em>: Choose a variable with the fewest dependent variables.</li>
+  <li><em>Min-weight</em>: Choose variables to minimize the product of the cardinalities of its dependent variables.</li>
+  <li><em>Min-fill</em>: Choose vertices to minimize the size of the factor that will be added to the graph.</li>
+</ul>
+
+<p>In practice, these methods often result in reasonably good performance in many interesting settings.</p>
+
+<p><br /></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="../../">Index</a></td>
+      <td><a href="../../representation/undirected">Previous</a></td>
+      <td><a href="../jt">Next</a></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+    </article>
+    <span class="print-footer">Variable Elimination - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

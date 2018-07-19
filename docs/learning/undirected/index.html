@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Learning in undirected models</title>
+  <meta name="description" content="Lecture notes for Stanford cs228.">
+
+
+  <link rel="stylesheet" href="/cs228-notes/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/cs228-notes/learning/undirected/">
+  <link rel="alternate" type="application/rss+xml" title="Probabilistic graphical modeling course" href="http://localhost:4000/cs228-notes/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/cs228-notes/">Contents</a>
+	<a href="http://cs.stanford.edu/~ermon/cs228/index.html">Class</a>
+	<a href="http://github.com/ermongroup/cs228-notes">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Learning in undirected models</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>Let us now look at parameter learning in undirected graphical models.
+Unfortunately, as in the case of inference, the higher expressivity of undirected models also makes them significantly more difficult to deal with. Fortunately, maximum likelihood learning in these models can be reduced to repeatedly performing inference, which will allow us to apply all the approximate inference techniques that we have seen earlier.</p>
+
+<h2 id="learning-markov-random-fields">Learning Markov random fields</h2>
+
+<p>Let us start with a Markov random field (MRF) of the form</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x_1,..,x_n) = \frac{1}{Z(\varphi)} \prod_{c \in C} \phi_c(x_c; \varphi),
+</script></div>
+<p>where</p>
+<div class="mathblock"><script type="math/tex; mode=display"> 
+Z(\varphi) = \sum_{x_1,..,x_n}\prod_{c \in C} \phi_c(x_c; \varphi) 
+</script></div>
+<p>is the normalizing constant.</p>
+
+<p>We can reparametrize <script type="math/tex">p</script> as follows:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\begin{align*}
+p(x_1,..,x_n) 
+& = \frac{1}{Z(\varphi)} \exp(\sum_{c \in C} \log\phi_c(x_c; \varphi)) \\
+& = \frac{1}{Z(\varphi)} \exp(\sum_{c \in C} \sum_{x'_c} 1\{x'_c = x_c\} \log\phi_c(x'_c; \varphi)) \\
+& = \frac{\exp(\theta^T f(x))}{Z(\theta)},
+\end{align*}
+</script></div>
+<p>where <script type="math/tex">f(x)</script> is a vector of indicator functions and <script type="math/tex">\theta</script> is the set of all the model parameters, as defined by the <script type="math/tex">\log \phi_c(x_c'; \varphi)</script>.</p>
+
+<p>Note that <script type="math/tex">Z(\theta)</script> is different for each set of parameters <script type="math/tex">\theta</script>; therefore, we also refer to it as the <em>partition function</em>.
+Bayesian networks are constructed such that <script type="math/tex">Z(\theta) = 1</script> for all <script type="math/tex">\theta</script>; MRFs do not make this modeling assumption, which makes them more flexible, but also more difficult to learn.</p>
+
+<h3 id="exponential-families">Exponential families</h3>
+
+<p>More generally, distributions of this form are members of the <em>exponential family</em> of distributions, about which you can learn more in CS229. Many other distributions are in the exponential family, including the Bernoulli, Multinomial, Normal, Poisson, and many other distributions.</p>
+
+<p>Exponential families are widely used in machine learning<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">We refer the reader to the CS229 course notes for a more thorough presentation of this topic. </span>. 
+Suppose that you have an exponential family distribution of the form<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">Actually, exponential families have a slightly more general form, but this one will be enough for our purposes </span></p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(x; \theta) = \frac{\exp(\theta^T f(x))}{Z(\theta)}.
+</script></div>
+<p>Here are few facts about these distributions that you should know about.</p>
+
+<ul>
+  <li>Exponential families are log-concave in their <em>natural parameters</em> <script type="math/tex">\theta</script>. The partition function <script type="math/tex">Z(\theta)</script> is also log-convex in <script type="math/tex">\theta</script>.</li>
+  <li>The vector <script type="math/tex">f(x)</script> is called the vector of <em>sufficient statistics</em>; these fully describe the distribution <script type="math/tex">p</script>; e.g. if <script type="math/tex">p</script> is Gaussian, <script type="math/tex">f(x)</script> contains (simple reparametrizations of) the mean and the variance of <script type="math/tex">p</script>.</li>
+  <li>Exponential families make the fewest unnecessary assumptions about the data distribution. More formally, the distribution maximizing the entropy <script type="math/tex">H(p)</script> under the constraint <script type="math/tex">\mathbb{E}_p[\phi(x)] = \alpha</script> (i.e. the sufficient statistics equal some value <script type="math/tex">\alpha</script>) is in the exponential family.</li>
+</ul>
+
+<p>Exponential families are also very convenient to work with computationally. 
+Their sufficient statistics can summarize arbitrary amounts of i.i.d. variables from the same distribution, and they admit so-called conjugate priors which makes them easily applicable in variational inference.
+In short, it definitely pays off to learn more about exponential families!</p>
+
+<h2 id="maximum-likelihood-learning-of-mrfs">Maximum likelihood learning of MRFs</h2>
+
+<p>Suppose now that we are given a dataset <script type="math/tex">D</script> and we want to estimate <script type="math/tex">\theta</script> via maximum likelihood. Since we are working with an exponential family, the maximum likelihood will be concave. The log-likelihood is:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x \in D} \theta^T f(x) - \log Z(\theta).
+</script></div>
+
+<p>The first term is linear in <script type="math/tex">\theta</script> and is easy to handle. The second term equals</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\log Z(\theta) = \log \sum_x \exp(\theta^T f(x)).
+</script></div>
+<p>Unlike the first term, this one does not decompose across <script type="math/tex">x</script>. It is not only hard optimize, but it is hard to even evaluate that term, as we have already seen in previous chapters.</p>
+
+<p>Now consider the gradient of the log likelihood. Obtaining the gradient of the linear part is obviously very easy. However, the gradient of <script type="math/tex">\log Z(\theta)</script> takes a more complicated form:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\nabla_{\theta} \log Z(\theta) = \mathbb{E}_{x \sim p} [ f(x) ].
+</script></div>
+<p>This expression can be derived using simple algebra.</p>
+
+<p>Computing the expectation on the right hand side of the equation requires inference with respect to <script type="math/tex">p</script>. For example, we could sample from <script type="math/tex">p</script> and construct a Monte-Carlo estimate of the expectation.
+However, as we have seen, inference in general is intractable, and therefore so is computing the gradient.</p>
+
+<p>We can similarly derive an expression for the Hessian of <script type="math/tex">\log Z(\theta)</script>:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\nabla_{\theta}^2 \log Z(\theta) = \mathbb{E}_{x \sim p} [ f(x) f(x)^T ] - \mathbb{E}_{x \sim p} [ f(x) ] \mathbb{E}_{x \sim p} [ f(x) ]^T = \text{cov}[f(x)].
+</script></div>
+<p>Since covariance matrices are always positive semi-definite, this proves that <script type="math/tex">\log Z (\theta)</script> is convex (and therefore that the log-likelihood is concave). Recall that this was one of the properties of exponential families that we stated earlier.</p>
+
+<p>In summary, even though the log-likelihood objective is convex, optimizing it is hard; usually non-convexity is what makes optimization intractable, but in this case, it is the computation of the gradient.</p>
+
+<h3 id="approximate-learning-techniques">Approximate learning techniques</h3>
+
+<p>Interestingly, however, maximum-likelihood learning reduces to inference in the sense that we may repeatedly use inference to compute the gradient and determine the model weights using gradient descent.</p>
+
+<p>This observation lets us apply to learning many of the approximate inference methods that we have seen in previous chapters, such as:</p>
+
+<ul>
+  <li>Gibbs sampling from the distribution at each step of gradient descent; we then approximate the gradient using Monte-Carlo.</li>
+  <li>Persistent contrastive divergence<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote"><a href="http://www.cs.utoronto.ca/~tijmen/pcd/pcd.pdf">Persistent contrastive divergence</a> (PCD) is one of the most popular methods for training <a href="https://en.wikipedia.org/wiki/Restricted_Boltzmann_machine">Restricted Boltzmann Machines</a> (RBMs), a very important deep learning model that is also an undirected graphical model. Have a look at this great practical <a href="http://deeplearning.net/tutorial/rbm.html">tutorial</a> on RBMs. </span>, a variant of Gibbs sampling which re-uses the same Markov Chain between iterations. After a step of gradient descent, our model has changed very little: hence we can essentially keep taking samples from the same Gibbs sampler, instead of starting a new one from scratch.</li>
+</ul>
+
+<h3 id="pseudo-likelihood">Pseudo-likelihood</h3>
+
+<p>Another popular approach to learning <script type="math/tex">p</script> is called <em>pseudo-likelihood</em>. The pseudo-likelihood replaces the likelihood</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x\in D} \log p(x; \theta)
+</script></div>
+<p>with the following approximation:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\ell_\text{PL}(\theta ; D) = \frac{1}{|D|} \sum_{x\in D} \sum_{i} \log p(x_i \mid x_{N(i)}; \theta),
+</script></div>
+<p>where <script type="math/tex">x_i</script> is the <script type="math/tex">i</script>-th variable in <script type="math/tex">x</script> and <script type="math/tex">N(i)</script> is the set of neighbors of <script type="math/tex">i</script> in the graph of <script type="math/tex">g</script> (i.e. the Markov blanket of <script type="math/tex">i</script>).</p>
+
+<p>Note that each term <script type="math/tex">\log p(x_i \mid x_{N(i)}; \theta)</script> only involves one variable <script type="math/tex">x_i</script> and hence its partition function is going to be tractable (we only need to sum over the values of one variable).</p>
+
+<p>However, it is not equal to the likelihood. Note that the correct way to expand the likelihood would involve the chain rule, i.e. the terms would be <script type="math/tex">\log p(x_i \mid x_{-i}; \theta)</script> objective, where <script type="math/tex">x_{-i}</script> are variables preceding <script type="math/tex">i</script> in some ordering.</p>
+
+<p>Intuitively, the pseudo-likelihood objective assumes that <script type="math/tex">x_i</script> depends mainly on its neighbors in the graph, and ignores the dependencies on other, more distant variables. 
+Observe also that if pseudo-likelihood succeeds in matching all the conditional distributions to the data, a Gibbs sampler run on the model distribution will have the same invariant distribution as a Gibbs sampler run on the true data distribution, ensuring that they are the same.</p>
+
+<p>More formally, we can show that the pseudo-likelihood objective is concave. Assuming the data is drawn from an MRF with parameters <script type="math/tex">\theta^∗</script>,
+we can show that as the number of data points gets large, <script type="math/tex">\theta_\text{PL} \to \theta^∗</script>.</p>
+
+<p>Pseudo-likelihood often works very well in practice, although there are exceptions.</p>
+
+<h3 id="moment-matching">Moment matching</h3>
+
+<p>We will end with an interesting observation about the maximum likelihood estimate <script type="math/tex">\theta^*</script> of the MRF parameters.</p>
+
+<p>Recall that the log-likelihood of an MRF is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x \in D} \theta^T f(x) - \log Z(\theta).
+</script></div>
+
+<p>Taking the gradient, and using our expression for the gradient of the partition function, we obtain the expression</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{|D|} \sum_{x \in D} f(x) - \mathbb{E}_{x \sim p} [ f(x) ]
+</script></div>
+
+<p>Note that this is precisely the difference between the expectations of the natural parameters under the empirical (i.e. data) and the model distribution. Let’s now look at one component of <script type="math/tex">f(x)</script>. Recall that we have defined <script type="math/tex">f</script> in the context of MRFs to be the vector of indicator functions for the variables of a clique: one entry of <script type="math/tex">f</script> equals <script type="math/tex">\mathbb{I}[x_c = \bar x_c]</script> for some <script type="math/tex">x_c, \bar x_c</script>. The gradient over that component equals</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{|D|} \sum_{x \in D} \mathbb{I}[x_c = \bar x_c] - \mathbb{E}_{x \sim p} [ \mathbb{I}[x_c = \bar x_c] ]
+</script></div>
+
+<p>This gives us an insight into how MRFs are trained. The log-likelihood objective forces the model marginals to match the empirical marginals.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>We refer to the above property as <em>moment matching</em>. This property of maximum-likelihood learning is very general: whenever we choose distribution <script type="math/tex">q</script> to minimize the inclusive KL-divergence <span>​<script type="math/tex">KL(p</script></span></td>
+      <td> </td>
+      <td>q)&lt;/script&gt;&lt;/span&gt; across <script type="math/tex">q</script> in an exponential family, the minimizer <script type="math/tex">q^*</script> will match the moments of the sufficient statistics to the corresponding moments of <script type="math/tex">p</script>. Recall that the MLE estimate is the minimizer over <script type="math/tex">q</script> of $$D(\hat{p}</td>
+      <td> </td>
+      <td>q)<script type="math/tex">, where</script>\hat{p}<script type="math/tex">is the empirical distribution of the data, so MLE estimation is a special case of this minimization. This property has connections to variational inference, where this minimization over</script>q<script type="math/tex">in a smaller set of distributions</script>Q$$ is known as M-projection (``moment projection’’).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="learning-in-conditional-random-fields">Learning in conditional random fields</h2>
+
+<p>Finally, let us look how maximum-likelihood learning extends to conditional random fields (CRFs), the other important type of undirected graphical models that we have seen.</p>
+
+<p>Recall that a CRF is a probability distribution of the form</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(y \mid x) = \frac{1}{Z(x, \varphi)} \prod_{c \in C} \phi_c(y_c, x; \varphi),
+</script></div>
+<p>where</p>
+<div class="mathblock"><script type="math/tex; mode=display"> 
+Z(x, \varphi) = \sum_{y_1,..,y_n}\prod_{c \in C} \phi_c(y_c, x; \varphi) 
+</script></div>
+<p>is the partition function. The feature functions now depend on <script type="math/tex">x</script> in addition to <script type="math/tex">y</script>. The <script type="math/tex">x</script> variables are fixed and the distribution is only over <script type="math/tex">y</script>; the partition function is thus a function of both <script type="math/tex">x</script> and <script type="math/tex">\varphi</script>.</p>
+
+<p>We can reparametrize <script type="math/tex">p</script> as we did for MRFs:</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+p(y\mid x) = \frac{\exp(\theta^T f(x, y))}{Z(x, \theta)},
+</script></div>
+<p>where <script type="math/tex">f(y, x)</script> is again a vector of indicator functions and <script type="math/tex">\theta</script> is a reparametrization of the model parameters.</p>
+
+<p>The log-likelihood for this model given a dataset <script type="math/tex">D</script> is</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{|D|} \log p(D; \theta) = \frac{1}{|D|} \sum_{x,y \in D} \theta^T f(x, y) - \frac{1}{|D|} \sum_{x \in D} \log Z(x, \theta).
+</script></div>
+<p>Note that this is almost the same form as we had for MRFs, except that now there is a different partition function <script type="math/tex">\log Z(x, \theta)</script> for each data point <script type="math/tex">x,y</script>.</p>
+
+<p>The gradient is now</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\frac{1}{|D|} \sum_{x, y \in D} f(x, y) - \frac{1}{|D|} \sum_{x \in D} \mathbb{E}_{y \sim p(y|x)} [ f(x,y) ]
+</script></div>
+<p>Similarly, the Hessian is going to be the covariance matrix</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\text{cov}_{y \sim p(y \mid x)} [ f(x,y) ]
+</script></div>
+
+<p>The good news is that this means that the conditional log-likelihood is still a concave function. We can optimize it using gradient ascent as before.</p>
+
+<p>The bad news is that computing the gradient now requires one inference per training data point <script type="math/tex">x, y</script> in order to compute the term</p>
+<div class="mathblock"><script type="math/tex; mode=display">
+\sum_{x, y \in D} \log Z(x, \theta).
+</script></div>
+
+<p>This makes learning CRFs more expensive that learning in MRFs. In practice, however, CRFs are much more widely used than MRFs because supervised learning is a more widely used type of learning, and discriminative models (like CRFs) often learn a better classifier than their generative counterparts (which model <script type="math/tex">p(x,y)</script>).</p>
+
+<p>To deal with the computational difficulties introduced by the partition function, we may use simpler models in which exact inference is tractable. This was the approach taken in the OCR example introduced in our first discussion of CRFs. More generally, one should try to limit the number of variables or make sure that the model’s graph is not too densely connected.</p>
+
+<p>Finally, we would like to add that there exists another popular objective for training CRFs called the max-margin loss, a generalization of the objective for training SVMs. Models trained using this loss are called <em>structured support vector machines</em> or <em>max-margin networks</em>. This loss is more widely used in practice because it often leads to better generalization, and also it requires only MAP inference to compute the gradient, rather than general (e.g. marginal) inference, which is often more expensive to perform.</p>
+
+<p><br /></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="../../">Index</a></td>
+      <td><a href="../directed">Previous</a></td>
+      <td><a href="../latent">Next</a></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+    </article>
+    <span class="print-footer">Learning in undirected models - Volodymyr Kuleshov</span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;VOLODYMYR KULESHOV &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
