@@ -53,10 +53,10 @@ Suppose we are given a binary pairwise MRF in which edge energies (i.e. log-edge
 E_{uv}(x_u, x_v) =
 \begin{cases}
 0 & \; \text{if} \; x_u = x_v \\
-\lambda_{st} & \; \text{if} \; x_u \neq x_v,
+\lambda_{uv} & \; \text{if} \; x_u \neq x_v,
 \end{cases}
 {% endmath %}
-where $$\lambda_{st} \geq 0$$ is a cost that penalizes edge mismatches.
+where $$\lambda_{uv} \geq 0$$ is a cost that penalizes edge mismatches.
 Assume also that nodes have unary potentials; we can always normalize the nodes' energies so that $$E_u(1) = 0$$ or $$E_u(0) = 0$$ and $$E_u \geq 0$$.
 
 
