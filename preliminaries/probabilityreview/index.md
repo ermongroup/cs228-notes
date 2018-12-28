@@ -193,7 +193,7 @@ constant with respect to the outer expectation.
 
 **Example** Calculate the mean and the variance of the uniform random variable $$X$$ with PDF $$f_X(x) = 1, ∀x  \in  [0, 1], 0$$ elsewhere.
 
-- $$E[X] = \int^{\infty}_{-\infty} x f_x(x) dx = \int^1_0 x dx = \frac{1}{2}$$
+- $$E[X] = \int^{\infty}_{-\infty} x f_X(x) dx = \int^1_0 x dx = \frac{1}{2}$$
 
 - $$E[X^2] = \int^{\infty}_{-\infty} x^2 f_X(x)dx = \int^1_0 x^2 dx = \frac{1}{3}$$
 
