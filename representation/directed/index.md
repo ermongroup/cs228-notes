@@ -28,15 +28,15 @@ A compact Bayesian network is a distribution in which each factor on the right h
 {% math %}
 p(x_i \mid x_{i-1},...,x_1) = p(x_i \mid x_{A_i}).
 {% endmath %}
-For example, in a model with five variables, we may choose to approximate the factor {%m%}p(x_5\mid x_4, x_3, x_2, x_1){%em%} with {%m%}p(x_5 \mid x_4, x_3){%em%}. In this case, we write $$x_{A_5} = \{x_4, x_3\}$$.
+For example, in a model with five variables, we may choose to approximate the factor $$p(x_5\mid x_4, x_3, x_2, x_1)$$ with $$p(x_5 \mid x_4, x_3)$$. In this case, we write $$x_{A_5} = \{x_4, x_3\}$$.
 
-When the variables are discrete (which will be often be the case in the problem we will consider), we may think of the factors {%m%}p(x_i\mid x_{A_i}){%em%} as *probability tables*, in which rows correspond to assignments to $$x_{A_i}$$ and columns correspond to values of $$x_i$$; the entries contain the actual probabilities {%m%}p(x_i\mid x_{A_i}){%em%}. If each variable takes $$d$$ values and has at most $$k$$ ancestors, then the entire table will contain at most $$O(d^{k+1})$$ entries. Since we have one table per variable, the entire probability distribution can be compactly described with only $$O(nd^{k+1})$$ parameters (compared to $$O(d^n)$$ with a naive approach).
+When the variables are discrete (which will be often be the case in the problem we will consider), we may think of the factors $$p(x_i\mid x_{A_i})$$ as *probability tables*, in which rows correspond to assignments to $$x_{A_i}$$ and columns correspond to values of $$x_i$$; the entries contain the actual probabilities $$p(x_i\mid x_{A_i})$$. If each variable takes $$d$$ values and has at most $$k$$ ancestors, then the entire table will contain at most $$O(d^{k+1})$$ entries. Since we have one table per variable, the entire probability distribution can be compactly described with only $$O(nd^{k+1})$$ parameters (compared to $$O(d^n)$$ with a naive approach).
 
 ### Graphical representation.
 
 Distributions of this form can be naturally expressed as *directed acyclic graphs*, in which vertices correspond to variables $$x_i$$ and edges indicate dependency relationships. In particular we set the parents of each node to $$x_i$$ to its ancestors $$x_{A_i}$$.
 
-As an example, consider a model of a student's grade $$g$$ on an exam; this grade depends on several factors: the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$; it also affects the quality $$l$$ of the reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values.{% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph.'%} The joint probability distribution over the 5 variables naturally factorizes as follows:
+As an example, consider a model of a student's grade $$g$$ on an exam; this grade depends on several factors: the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$; it also affects the quality $$l$$ of the reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values.{% include marginfigure.html id="nb1" url="assets/img/grade-model.png" description="Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph." %} The joint probability distribution over the 5 variables naturally factorizes as follows:
 {% math %}
 p(l, g, i, d, s) = p(l \mid g) p(g \mid i, d) p(i) p(d) p(s\mid i).
 {% endmath %}
@@ -51,7 +51,7 @@ In the previous spam classification example, we implicitly postulated that email
 Formally, a Bayesian network is a directed graph $$G = (V,E)$$ together with
 
 - A random variable $$x_i$$ for each node $$i \in V$$.
-- One conditional probability distribution (CPD) {%m%}p(x_i \mid x_{A_i}){%em%} per node, specifying the probability of $$x_i$$ conditioned on its parents' values.
+- One conditional probability distribution (CPD) $$p(x_i \mid x_{A_i})$$ per node, specifying the probability of $$x_i$$ conditioned on its parents' values.
 
 Thus, a Bayesian network defines a probability distribution $$p$$. Conversely, we say that a probability $$p$$ *factorizes* over a DAG $$G$$ if it can be decomposed into a product of factors, as specified by $$G$$.
 
@@ -72,9 +72,9 @@ It turns out that a Bayesian network $$p$$ very elegantly describes many indepen
 
 For simplicity, let's start by looking at a Bayes net $$G$$ with three nodes: $$A$$, $$B$$, and $$C$$. In this case, $$G$$ essentially has only three possible structures, each of which leads to different independence assumptions. The interested reader can easily prove these results using a bit of algebra.
 
-- {% marginfigure 'bn' 'assets/img/3node-bayesnets.png' 'Bayesian networks over three variables, encoding different types of dependencies: cascade (a,b), common parent (c), and v-structure (d).' %}*Common parent.* If $$G$$ is of the form $$A \leftarrow B \rightarrow C$$, and $$B$$ is observed, then {%m%}A \perp C \mid B{%em%}. However, if $$B$$ is unobserved, then $$A \not\perp C$$. Intuitively this stems from the fact that $$B$$ contains all the information that determines the outcomes of $$A$$ and $$C$$; once it is observed, there is nothing else that affects these variables' outcomes.
-- *Cascade*: If $$G$$ equals $$A \rightarrow B \rightarrow C$$, and $$B$$ is again observed, then, again {%m%}A \perp C \mid B{%em%}. However, if $$B$$ is unobserved, then $$A \not\perp C$$. Here, the intuition is again that $$B$$ holds all the information that determines the outcome of $$C$$; thus, it does not matter what value $$A$$ takes.
-- *V-structure* (also known as *explaining away*): If $$G$$ is $$A \rightarrow C \leftarrow B$$, then knowing $$C$$ couples $$A$$ and $$B$$. In other words, $$A \perp B$$ if $$C$$ is unobserved, but {%m%}A \not\perp B \mid C{%em%} if $$C$$ is observed.
+- {% include marginfigure.html id="bn" url="assets/img/3node-bayesnets.png" description="Bayesian networks over three variables, encoding different types of dependencies: cascade (a,b), common parent (c), and v-structure (d)." %}*Common parent.* If $$G$$ is of the form $$A \leftarrow B \rightarrow C$$, and $$B$$ is observed, then $$A \perp C \mid B$$. However, if $$B$$ is unobserved, then $$A \not\perp C$$. Intuitively this stems from the fact that $$B$$ contains all the information that determines the outcomes of $$A$$ and $$C$$; once it is observed, there is nothing else that affects these variables' outcomes.
+- *Cascade*: If $$G$$ equals $$A \rightarrow B \rightarrow C$$, and $$B$$ is again observed, then, again $$A \perp C \mid B$$. However, if $$B$$ is unobserved, then $$A \not\perp C$$. Here, the intuition is again that $$B$$ holds all the information that determines the outcome of $$C$$; thus, it does not matter what value $$A$$ takes.
+- *V-structure* (also known as *explaining away*): If $$G$$ is $$A \rightarrow C \leftarrow B$$, then knowing $$C$$ couples $$A$$ and $$B$$. In other words, $$A \perp B$$ if $$C$$ is unobserved, but $$A \not\perp B \mid C$$ if $$C$$ is observed.
 
 The latter case requires additional explanation. Suppose that $$C$$ is a Boolean variable that indicates whether our lawn is wet one morning; $$A$$ and $$B$$ are two explanations for it being wet: either it rained (indicated by $$A$$), or the sprinkler turned on (indicated by $$B$$). If we know that the grass is wet ($$C$$ is true) and the sprinkler didn't go on ($$B$$ is false), then the probability that $$A$$ is true must be one, because that is the only other possible explanation. Hence, $$A$$ and $$B$$ are not independent given $$C$$.
 
@@ -86,27 +86,27 @@ We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed i
 - $$X \rightarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
 - $$X \leftarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
 - $$X \rightarrow Y \leftarrow Z$$, and $$Y$$ or any of its descendants are observed.
-{% marginfigure 'dp2' 'assets/img/dsep2.png' 'In this example, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$.' %}{% marginfigure 'dp1' 'assets/img/dsep1.png' 'However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$. There is an active pass which passed through the V-structure created when $$X_6$$ is observed.' %}
+{% include marginfigure.html id="dp2" url="assets/img/dsep2.png" description="In this example, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$." %}{% include marginfigure.html id="dp1" url="assets/img/dsep1.png" description="However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$. There is an active pass which passed through the V-structure created when $$X_6$$ is observed." %}
 
 For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
 
 A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/dSepApp) for testing $$d$$-separation. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
 
 The notion of $$d$$-separation is useful, because it lets us describe a large fraction of the dependencies that hold in our model.
-Let {%m%}I(G) = \{(X \perp Y \mid Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}{%em%} be a set of variables that are $$d$$-separated in $$G$$.
+Let $$I(G) = \{(X \perp Y \mid Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}$$ be a set of variables that are $$d$$-separated in $$G$$.
 
 **Fact**{% sidenote 1 'We will not formally prove this, but the intuition is that if $$X,Y$$ and $$Y,Z$$ are mutually dependent, so are $$X,Z$$. Thus we can look at adjacent nodes and propagate dependencies according to the local dependency structures outlined above.'%}:
 If $$p$$ factorizes over $$G$$, then $$I(G) \subseteq I(p)$$. In this case, we say that $$G$$ is an $$I$$-map (independence map) for $$p$$
 
 In other words, all the independencies encoded in $$G$$ are sound: variables that are $$d$$-separated in $$G$$ are truly independent in $$p$$. However, the converse is not true: a distribution may factorize over $$G$$, yet have independencies that are not captured in $$G$$.
 
-In a way this is almost a trivial statement. If $$p(x,y) = p(x)p(y)$$, then this distribution still factorizes over the graph $$y \rightarrow x$$, since we can always write it as {%m%}p(x,y) = p(x\mid y)p(y){%em%} with a CPD {%m%}p(x\mid y){%em%} in which the probability of $$x$$ does not actually vary with $$y$$. However, we can construct a graph that matches the structure of $$p$$ by simply removing that unnecessary edge.
+In a way this is almost a trivial statement. If $$p(x,y) = p(x)p(y)$$, then this distribution still factorizes over the graph $$y \rightarrow x$$, since we can always write it as $$p(x,y) = p(x\mid y)p(y)$$ with a CPD $$p(x\mid y)$$ in which the probability of $$x$$ does not actually vary with $$y$$. However, we can construct a graph that matches the structure of $$p$$ by simply removing that unnecessary edge.
 
 ### The representational power of directed graphs
 
 This raises our last and perhaps most important question: can directed graphs express all the independencies of any distribution $$p$$? More formally, given a distribution $$p$$, can we construct a graph $$G$$ such that $$I(G) = I(p)$$?
 
-First, note that it is very easy to construct a $$G$$ such that $$I(G) \subseteq I(p)$$. A fully connected DAG $$G$$ is an I-map for any distribution since $$I(G) = \emptyset$$. {% marginfigure 'dp1' 'assets/img/full-bayesnet.png' 'A fully connected Bayesian network over four variables. There are no independencies in this model, and it is an I-map for any distribution.' %}
+First, note that it is very easy to construct a $$G$$ such that $$I(G) \subseteq I(p)$$. A fully connected DAG $$G$$ is an I-map for any distribution since $$I(G) = \emptyset$$. {% include marginfigure.html id="dp1" url="assets/img/full-bayesnet.png" description="A fully connected Bayesian network over four variables. There are no independencies in this model, and it is an I-map for any distribution." %}
 
 A more interesting question is can we find a *minimal* $$I$$-map $$G$$ for $$p$$, i.e. an $$I$$-map $$G$$ such that the removal of even a single edge from $$G$$ will result in it no longer being an $$I$$-map. This is quite easy: we may start with a fully connected $$G$$ and remove edges until $$G$$ is no longer an $$I$$-map. One way to do this is by following the natural topological ordering of the graph, and removing node ancestors until this is no longer possible; we will revisit this pruning method towards the end of course when performing structure learning.
 
@@ -115,7 +115,7 @@ However, what we are truly interested in is to determine whether the probability
 A related question is whether perfect maps are unique when they exist. Again, this is not the case, as $$X \rightarrow Y$$ and $$X \leftarrow Y$$ encode the same independencies, yet form different graphs. More generally, we say that two Bayes nets $$G_1, G_2$$ are I-equivalent if they encode the same dependencies $$I(G_1) = I(G_2)$$.
 
 When are two Bayesian nets I-equivalent? To answer this, let's return to a simple example with three variables. We say that each of the graphs below have the same *skeleton*, meaning that if we drop the directionality of the arrows, we obtain the same undirected graph in each case.
-{% maincolumn 'assets/img/3node-bayesnets.png' 'Bayesian networks over three variables' %}
+{% include maincolumn_img.html url='assets/img/3node-bayesnets.png' description='Bayesian networks over three variables' %}
 The cascade-type structures (a,b) are clearly symmetric and the directionality of arrows does not matter. In fact, (a,b,c) encode exactly the same dependencies. We can change the directions of the arrows as long as we don't turn them into a V-structure (d). When we do have a V-structure, however, we cannot change any arrows: structure (d) is the only one that describes the dependency $$X \not\perp Y \mid Z$$. These examples provide intuitions of the following general results on I-equivalence.
 
 **Fact:**

@@ -33,13 +33,13 @@ Many interesting examples of MAP inference are instances of *structured predicti
 \arg \max_y \log p(y|x) =  \arg \max_y \sum_c \theta_c(\bfy_c, \bfx_c).
 {% endmath %}
 
-{% marginfigure 'ocr' 'assets/img/ocr.png' 'Chain-structured conditional random field for optical character recognition.' %}
+{% include marginfigure.html id="ocr" url="assets/img/ocr.png" description="Chain-structured conditional random field for optical character recognition." %}
 We discussed structured prediction in detail when we covered CRFs.
 Recall that our main example was handwriting recognition, in which we are given 
 images $$x_i \in [0, 1]^{d\times d}$$ of characters in the form of pixel matrices; MAP inference in this setting amounts to jointly recognizing the most likely word $$(y_i)_{i=1}^n$$ encoded by the images.
 
 Another example of MAP inference is image segmentation; here, we are interested in locating an entity in an image and label all its pixels. Our input $$\bfx \in [0, 1]^{d\times d}$$ is a matrix of image pixels, and our task is to predict the label $$y \in \{0, 1\}^{d\times d}$$, indicating whether each pixel encodes the object we want to recover. Intuitively, neighboring pixels should have similar values in $$\bfy$$, i.e. pixels associated with the horse should form one continuous blob (rather than white noise).
-{% marginfigure 'ocr' 'assets/img/imagesegmentation.png' 'An illustration of the image segmentation problem.' %}
+{% include marginfigure.html id="ocr" url="assets/img/imagesegmentation.png" description="An illustration of the image segmentation problem." %}
 
 This prior knowledge can be naturally modeled in the language of graphical models via a [Potts model](https://en.wikipedia.org/wiki/Potts_model). As in our first example, we can introduce potentials $$\phi(y_i,x)$$ that encode the likelihood that any given pixel is from our subject. We then augment them with pairwise potentials $$\phi(y_i, y_j )$$ for neighboring $$y_i, y_j$$, which will encourage adjacent $$y$$'s to have the same value with higher probability.
 
@@ -60,7 +60,7 @@ where $$\lambda_{uv} \geq 0$$ is a cost that penalizes edge mismatches.
 Assume also that nodes have unary potentials; we can always normalize the nodes' energies so that $$E_u(1) = 0$$ or $$E_u(0) = 0$$ and $$E_u \geq 0$$.
 
 
-{% marginfigure 'mincut' 'assets/img/mincut.png' 'Formulating the segmentation task in a 2x2 MRF as a graph cut problem. Dashed edges are part of the min-cut. (Source: Machine Learning: A Probabilistic Perspective).' %}
+{% include marginfigure.html id="mincut" url="assets/img/mincut.png" description="Formulating the segmentation task in a 2x2 MRF as a graph cut problem. Dashed edges are part of the min-cut. (Source: Machine Learning: A Probabilistic Perspective)." %}
 The motivation for this model comes from image segmentation. We are looking for an assignment that minimizes the energy, which (among other things) tries to reduce discordance between adjacent variables.
 
 We can formulate energy minimization in this type of model as a min-cut problem in an augmented graph $$G'$$:

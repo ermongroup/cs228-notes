@@ -19,7 +19,7 @@ We will introduce two variants of this algorithm: belief propagation, and then t
 First, consider what happens if we run the VE algorithm on a tree in order to compute a marginal $$p(x_i)$$. We can easily find an optimal ordering for this problem by rooting the tree at $$x_i$$ and iterating through the nodes in post-order{% sidenote 1 'A postorder traversal of a rooted tree is one that starts from the leaves and goes up the tree such that a node is always visited after all of its children. The root is visited last.'%}.
 
 This ordering is optimal because the largest clique that formed during VE will be of size 2. At each step, we will eliminate $$x_j$$; this will involve computing the factor $$\tau_k(x_k) = \sum_{x_j} \phi(x_k, x_j) \tau_j(x_j)$$, where $$x_k$$ is the parent of $$x_j$$ in the tree. At a later step, $$x_k$$ will be eliminated, and $$\tau_k(x_k)$$ will be passed up the tree to the parent $$x_l$$ of $$x_k$$ in order to be multiplied by the factor $$\phi(x_l, x_k)$$ before being marginalized out. We can visualize this transfer of information using arrows on a tree.
-{% marginfigure 'mp1' 'assets/img/mp1.png' 'Message passing order when using VE to compute $$p(x_3)$$ on a small tree.'%}
+{% include marginfigure.html id="mp1" url="assets/img/mp1.png" description="Message passing order when using VE to compute $$p(x_3)$$ on a small tree." %}
 
 In a sense, when $$x_k$$ is marginalized out, it receives all the signal from variables underneath it from the tree. Because of the tree structure (variables affect each other only through their direct neighbors), this signal can be completely summarized in a factor $$\tau(x_j)$$. Thus, it makes sense to think of the $$\tau(x_j)$$ as a message that $$x_j$$ sends to $$x_k$$ to summarize all it knows about its children variables.
 
@@ -31,7 +31,7 @@ Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as 
 
 A key question here is how exactly do we compute all the messages we need. Notice for example, that the messages to $$x_k$$ from the side of $$x_i$$ will need to be recomputed.
 
-The answer is very simple: a node $$x_i$$ sends a message to a neighbor $$x_j$$ whenever it has received messages from all nodes besides $$x_j$$. It's a fun exercise to the reader to show that there will always be a node with a message to send, unless all the messages have been sent out. This will happen after precisely {%m%}2|E|{%em%} steps, since each edge can receive messages only twice: once from $$x_i \to x_j$$, and once more in the opposite direction.
+The answer is very simple: a node $$x_i$$ sends a message to a neighbor $$x_j$$ whenever it has received messages from all nodes besides $$x_j$$. It's a fun exercise to the reader to show that there will always be a node with a message to send, unless all the messages have been sent out. This will happen after precisely $$2 \vert E \vert$$ steps, since each edge can receive messages only twice: once from $$x_i \to x_j$$, and once more in the opposite direction.
 
 Finally, this algorithm will be correct because our messages are defined as the intermediate factors in the VE algorithm.
 
@@ -55,7 +55,7 @@ The sum-product message passing variant of belief propgation can also be applied
 
 On factor graphs, we have two types of messages: variable-to-factor messages $$\nu$$ and factor-to-variable messages $$\mu$$.
 
-{% maincolumn 'assets/img/factor-graph-messages.png' %}
+{% include maincolumn_img.html url='assets/img/factor-graph-messages.png' %}
 
 Both messages require taking a product, but only the factor-to-variable messages $$\mu$$ require a sum.
 
@@ -114,10 +114,10 @@ p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c),
 {% endmath %}
 
 Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, ..., x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(j)}$$ and $$x_c^{(k)}$$. We refer to this assumption as the *running intersection* property (RIP).
-{% maincolumn 'assets/img/junctionpath.png' 'A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques'%}
+{% include maincolumn_img.html url='assets/img/junctionpath.png' description='A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques' %}
 
-Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to 
-"push in" certain variables deeper into the product of cluster potentials:
+Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to "push in" certain variables deeper into the product of cluster potentials:
+
 {% math %}
 \begin{align*}
 \phi(x_1) \sum_{x_2} \phi(x_1,x_2) \sum_{x_3} \phi(x_1,x_2,x_3) \sum_{x_5} \phi(x_2,x_3,x_5) \sum_{x_6} \phi(x_2,x_5,x_6).
@@ -141,9 +141,9 @@ A junction tree $$T=(C, E_T)$$ over $$G = (\Xc, E_G)$$ is a tree whose nodes $$c
 
 Here is an example of an MRF with graph $$G$$ and junction tree $$T$$. MRF potentials are denoted using different colors; circles indicates nodes of the junction trees; rectangular nodes represent *sepsets* (short for "separation sets"), which are sets of variables shared by neighboring clusters.
 
-{% maincolumn 'assets/img/junctiontree.png' 'An MRF with graph G and its junction tree T.'%}
-{% marginfigure 'jtt' 'assets/img/jt-over-tree.png' 'A junction tree defined over a tree graph. Clusters correspond to edges.'%}
-{% marginfigure 'bjt' 'assets/img/badjunctiontree.png' 'Example of an invalid junction tree that does not satisfy the running intersection property.'%}
+{% include maincolumn_img.html url='assets/img/junctiontree.png' description='An MRF with graph G and its junction tree T.' %}
+{% include marginfigure.html id='jtt' url='assets/img/jt-over-tree.png' description='A junction tree defined over a tree graph. Clusters correspond to edges.' %}
+{% include marginfigure.html id='bjt' url='assets/img/badjunctiontree.png' description='Example of an invalid junction tree that does not satisfy the running intersection property.' %}
 
 Note that we may always find a trivial junction tree with one node containing all the variables in the original graph. However, such trees are useless because they will not result in efficient marginalization algorithms. 
 
@@ -183,7 +183,7 @@ Note that this algorithm makes it obvious why we want small clusters: the runnin
 Why does this method work? First, let us convince ourselves that running variable elimination with a certain ordering is equivalent to performing message passing on the junction tree; then, we will see that the junction tree algorithm is just a way of precomputing these messages and using them to answer queries.
 
 Suppose we are performing variable elimination to compute $$\tp(x')$$ for some variable $$x'$$, where $$\tp = \prod_{c \in C} \psi_c$$. Let $$c^{(i)}$$ be a cluster containing $$x'$$; we will perform VE with the ordering given by the structure of the tree rooted at $$c^{(i)}$$. In the example below, say that we choose to eliminate the $$b$$ variable, and we set $$(a,b,c)$$ as the root cluster.
-{% maincolumn 'assets/img/junctiontree.png' 'An MRF with graph G and its junction tree T.'%}
+{% include maincolumn_img.html url='assets/img/junctiontree.png' description='An MRF with graph G and its junction tree T.' %}
 
 First, we pick a set of variables $$x_{-k}$$ in a leaf $$c^{(j)}$$ of $$T$$ that does not appear in the sepset $$S_{kj}$$ between $$c^{(j)}$$ and its parent $$c^{(k)}$$ (if there is no such variable, we may multiply $$\psi(x_c^{(j)})$$ and $$\psi(x_c^{(k)})$$ into a new factor with a scope not larger than that of the initial factors). In our example, we may pick the variable $$f$$ in the factor $$(b,e,f)$$.
 
@@ -207,7 +207,6 @@ The last topic that we need to address is the question of constructing good junc
 
 ## Loopy belief propagation
 
-
 As we have seen, the junction tree algorithm has a running time that is potentially exponential in the size of the largest cluster (since we need to marginalize all the cluster's variables). For many graphs, it will be difficult to find a good junction tree, applying the algorithm will not be possible. In other cases, we may not need the exact solution that the junction tree algorithm provides; we may be satisfied with a quick approximate solution instead.
 
 Loopy belief propagation (LBP) is another technique for performing inference on complex (non-tree structure) graphs. Unlike the junction tree algorithm, which attempted to efficiently find the exact solution, LBP will form our first example of an approximate inference algorithm.
@@ -224,9 +223,9 @@ We keep performing these updates for a fixed number of steps or until convergenc
 
 ### Properties
 
-This heuristic approach often works surprisingly well in practice.
-{% marginfigure 'mp1' 'assets/img/lbp-performance.png' 'Marginals obtained via LBP compared to true marginals obtained from the JT algorithm on an intensive care monitoring task. Results are close to the diagonal, hence very similar.'%}
-In general, however, it may not converge and its analysis is still an area of active research. We know for example that it provably converges on trees and on graphs with at most one cycle. If the method does converge, its beliefs may not necessarily equal the true marginals, although very often in practice they will be close.
+{% include marginfigure.html id="mp1" url="assets/img/lbp-performance.png" description="Marginals obtained via LBP compared to true marginals obtained from the JT algorithm on an intensive care monitoring task. Results are close to the diagonal, hence very similar." %}
+
+This heuristic approach often works surprisingly well in practice. In general, however, it may not converge and its analysis is still an area of active research. We know for example that it provably converges on trees and on graphs with at most one cycle. If the method does converge, its beliefs may not necessarily equal the true marginals, although very often in practice they will be close.
 
 We will return to this algorithm later in the course and try to explain it as a special case of *variational inference* algorithms.
 

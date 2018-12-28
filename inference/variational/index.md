@@ -36,10 +36,10 @@ KL(q||p) = \sum_x q(x) \log \frac{q(x)}{p(x)}.
 
 In information theory, this function is used to measure differences in information contained within two distributions. The KL divergence has the following properties that make it especially useful in our setting:
 
-- {%m%} KL(q||p) \geq 0 {%em%} for all {%m%}q,p{%em%}.
-- {%m%} KL(q||p) = 0 {%em%} if and only if {%m%} q = p {%em%}
+- $$ KL(q||p) \geq 0 $$ for all $$q,p$$.
+- $$ KL(q||p) = 0 $$ if and only if $$ q = p $$
 
-These can be proven as an exercise. Note however that {%m%}KL(q||p) \neq KL(p||q){%em%}, i.e. the KL divergence is not symmetric. This is why we say that it's a divergence, but not a distance. We will come back to this distinction shortly.
+These can be proven as an exercise. Note however that $$KL(q||p) \neq KL(p||q)$$, i.e. the KL divergence is not symmetric. This is why we say that it's a divergence, but not a distance. We will come back to this distinction shortly.
 
 ## The variational lower bound
 
@@ -49,7 +49,7 @@ p(x_1,..,x_n; \theta) = \frac{\tilde p(x_1,...,x_n ; \theta)}{Z(\theta)} =\frac{
 {% endmath %}
 where the $$\phi_k$$ are the factors and $$Z(\theta)$$ is the normalization constant. This formulation captures virtually all the distributions in which we might want to perform approximate inference, such as marginal distributions of directed models $$p(x|e) = p(x,e)/p(e)$$ with evidence $$e$$.
 
-Given this formulation, optimizing {%m%}KL(q||p){%em%} directly is not possible because of the potentially intractable normalization constant $$Z(\theta)$$. In fact, even evaluating {%m%}KL(q||p){%em%} is not possible, because we need to evaluate $$p$$.
+Given this formulation, optimizing $$KL(q||p)$$ directly is not possible because of the potentially intractable normalization constant $$Z(\theta)$$. In fact, even evaluating $$KL(q||p)$$ is not possible, because we need to evaluate $$p$$.
 
 Instead, we will work with the following objective, which has the same form as the KL divergence, but only involves the unnormalized probability $$\tilde p = \prod_{k} \phi_k(x_k; \theta) $$:
 {% math %}
@@ -70,7 +70,7 @@ Since {%m%} KL(q||p) \geq 0 {%em%}, we get by rearranging terms that
 \log Z(\theta) = KL(q||p) - J(q) \geq -J(q).
 {% endmath %}
 
-Thus, $$-J(q)$$ is a *lower bound* on the partition function $$Z(\theta)$$. In many cases, $$Z(\theta)$$ has an interesting interpretation. For example, we may be trying to compute the marginal probability {%m%}p(x|D) = p(x,D) / p(D){%em%} of variables $$x$$ given observed data $$D$$ that plays the role of evidence. We assume that $$p(x,D)$$ is directed. In this case, minimizing $$J(q)$$ amounts to maximizing a lower bound on the log-likelihood $$\log p(D)$$ of the observed data.
+Thus, $$-J(q)$$ is a *lower bound* on the partition function $$Z(\theta)$$. In many cases, $$Z(\theta)$$ has an interesting interpretation. For example, we may be trying to compute the marginal probability $$p(x|D) = p(x,D) / p(D)$$ of variables $$x$$ given observed data $$D$$ that plays the role of evidence. We assume that $$p(x,D)$$ is directed. In this case, minimizing $$J(q)$$ amounts to maximizing a lower bound on the log-likelihood $$\log p(D)$$ of the observed data.
 
 Because of this property, $$-J(q)$$ is called the variational lower bound or the evidence lower bound (ELBO); it often written in the form
 
@@ -78,15 +78,15 @@ Because of this property, $$-J(q)$$ is called the variational lower bound or the
 \log Z(\theta) \geq \mathbb{E}_{q(x)} \left[ \log \tilde p(x) - \log q(x) \right].
 {% endmath %}
 
-Crucially, the difference between $$\log Z(\theta)$$ and $$-J(q)$$ is precisely {%m%}KL(q||p){%em%}. Thus, by maximizing the evidence-lower bound, we are minimizing {%m%}KL(q||p){%em%} by "squeezing" it between $$-J(q)$$ and $$\log Z(\theta)$$.
+Crucially, the difference between $$\log Z(\theta)$$ and $$-J(q)$$ is precisely $$KL(q||p)$$. Thus, by maximizing the evidence-lower bound, we are minimizing $$KL(q||p)$$ by "squeezing" it between $$-J(q)$$ and $$\log Z(\theta)$$.
 
 ## On the choice of KL divergence
 
-To recap, we have just defined an optimization objective for variational inference (the variational lower bound) and we have shown that maximizing the lower bound leads to minimizing the divergence {%m%}KL(q||p){%em%}.
+To recap, we have just defined an optimization objective for variational inference (the variational lower bound) and we have shown that maximizing the lower bound leads to minimizing the divergence $$KL(q||p)$$.
 
-Recall how we said earlier that {%m%}KL(q||p) \neq KL(p||q){%em%}; both divergences equal zero when $$q = p$$, but assign different penalties when $$q \neq p$$. This raises the question: why did we choose one over the other and how do they differ?
+Recall how we said earlier that $$KL(q||p) \neq KL(p||q)$$; both divergences equal zero when $$q = p$$, but assign different penalties when $$q \neq p$$. This raises the question: why did we choose one over the other and how do they differ?
 
-Perhaps the most important difference is computational: optimizing {%m%}KL(q||p){%em%} involves an expectation with respect to $$q$$, while {%m%}KL(p||q){%em%} requires computing expectations with respect to $$p$$, which is typically intractable even to evaluate.
+Perhaps the most important difference is computational: optimizing $$KL(q||p)$$ involves an expectation with respect to $$q$$, while $$KL(p||q)$$ requires computing expectations with respect to $$p$$, which is typically intractable even to evaluate.
 
 However, choosing this particular divergence affects the returned solution when the approximating family $$\mathcal{Q}$$ does not contain the true $$p$$. Observe that {%m%}KL(q||p){%em%} --- which is called the I-projection or information projection --- is infinite if $$p(x) = 0$$ and $$q(x) > 0$$:
 {% math %}
@@ -94,13 +94,13 @@ KL(q||p) = \sum_x q(x) \log \frac{q(x)}{p(x)}.
 {% endmath %}
 This means that if $$p(x) = 0$$ we must have $$q(x) = 0$$. We say that {%m%}KL(q||p){%em%} is zero-forcing for $$q$$ and it will typically under-estimate the support of $$q$$.
 
-On the other hand, {%m%}KL(p||q){%em%} --- known as the M-projection or the moment projection --- is infinite if $$q(x) = 0$$ and $$p(x) > 0$$. Thus, if $$p(x) > 0$$ we must have $$q(x) > 0$$. We say that {%m%}KL(p||q){%em%} is zero-avoiding for $$q$$ and it will typically over-estimate the support of $$q$$.
+On the other hand, $$KL(p||q)$$ --- known as the M-projection or the moment projection --- is infinite if $$q(x) = 0$$ and $$p(x) > 0$$. Thus, if $$p(x) > 0$$ we must have $$q(x) > 0$$. We say that $$KL(p||q)$$ is zero-avoiding for $$q$$ and it will typically over-estimate the support of $$q$$.
 
 The figure below illustrates this phenomenon graphically.
 
-{% maincolumn 'assets/img/kldiv.png' 'Fitting a unimodal approximating distribution q (red) to a multimodal p (blue). Using KL(p||q) leads to a q that tries to cover both modes (a). However, using KL(q||p) forces q to choose one of the two modes of p (b, c).' %}
+{% include maincolumn_img.html url='assets/img/kldiv.png' description='Fitting a unimodal approximating distribution q (red) to a multimodal p (blue). Using KL(p||q) leads to a q that tries to cover both modes (a). However, using KL(q||p) forces q to choose one of the two modes of p (b, c).' %}
 
-Due to the properties that we just described, we often call {%m%}KL(p||q){%em%} the *inclusive* KL divergence, while {%m%}KL(q||p){%em%} is the *exclusive* KL divergence.
+Due to the properties that we just described, we often call $$KL(p||q)$$ the *inclusive* KL divergence, while $$KL(q||p)$$ is the *exclusive* KL divergence.
 
 ## Mean-field inference
 
@@ -113,7 +113,7 @@ This choice of $$\mathcal{Q}$$ turns out to be easy to optimize over and works s
 \min_{q_1, \cdots, q_n} J(q).
 {% endmath %}
 
-The standard way of performing this optimization problem is via coordinate descent over the $$q_j$$: we iterate over $$j=1,2,...,n$$ and for each $$j$$ we optimize {%m%}KL(q||p){%em%} over $$q_j$$ while keeping the other "coordinates" $$q_{-j} = \prod_{i \neq j} q_i$$ fixed.
+The standard way of performing this optimization problem is via coordinate descent over the $$q_j$$: we iterate over $$j=1,2,...,n$$ and for each $$j$$ we optimize $$KL(q||p)$$ over $$q_j$$ while keeping the other "coordinates" $$q_{-j} = \prod_{i \neq j} q_i$$ fixed.
 
 Interestingly, the optimization problem for one coordinate has a simple closed form solution:
 {% math %}
@@ -133,7 +133,7 @@ Of these, only factors belonging to the Markov blanket of $$x_j$$ are a function
 
 This leaves us with an expectation over a much smaller number of factors; if the Markov blanket of $$x_j$$ is small (as is often the case), we are able to analytically compute $$q(x_j)$$. For example, if the variables are discrete with $$K$$ possible values, and there are $$F$$ factors and $$N$$ variables in the Markov blanket of $$x_j$$, then computing the expectation takes $$O(K F N^K)$$ time: for each value of $$x_j$$ we sum over all $$N^K$$ assignments of the $$N$$ variables, and in each case, we sum over the $$F$$ factors.
 
-The result of this is a procedure that iteratively fits a fully-factored $$q(x) = q_1(x_1) q_2(x_2) \cdots q_n(x_n)$$ that approximates $$p$$ in terms of {%m%}KL(q||p){%em%}. After each step of coordinate descent, we increase the variational lower bound, tightening it around $$\log Z(\theta)$$.
+The result of this is a procedure that iteratively fits a fully-factored $$q(x) = q_1(x_1) q_2(x_2) \cdots q_n(x_n)$$ that approximates $$p$$ in terms of $$KL(q||p)$$. After each step of coordinate descent, we increase the variational lower bound, tightening it around $$\log Z(\theta)$$.
 
 In the end, the factors $$q_j(x_j)$$ will not quite equal the true marginal distributions $$p(x_j)$$, but they will often be good enough for many practical purposes, such as determining $$\max_{x_j} p(x_j)$$.
 

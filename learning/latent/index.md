@@ -22,7 +22,7 @@ The model may be either directed or undirected. There exist both discriminative 
 
 ### Example: Gaussian mixture models
 
-Gaussian mixture models (GMMs) are a latent variable model that is also one of the most widely used models in machine learning. {% marginfigure 'gmm1' 'assets/img/gmm1.png' 'Example of a dataset that is best fit with a mixture of two Gaussians. Mixture models allow us to model clusters in the dataset.' %}
+Gaussian mixture models (GMMs) are a latent variable model that is also one of the most widely used models in machine learning. {% include marginfigure.html id="gmm1" url="assets/img/gmm1.png" description="Example of a dataset that is best fit with a mixture of two Gaussians. Mixture models allow us to model clusters in the dataset." %}
 
 In a GMM, each data point is a tuple $$(x_i, z_i)$$ with $$x_i \in \mathbb{R}^d$$ and $$z_i \in {1,2,...,K}$$ ($$z_i$$ is discrete). The joint $$p$$ is a directed model
 {%math%}
@@ -40,7 +40,7 @@ p(x) = \sum_{k=1}^K p(x|z=k)p(z=k) = \sum_{k=1}^K \pi_k \mathcal{N}(x; \mu_k, \S
 {%endmath%}
 To generate a new data point, we sample a cluster $$k$$ and then sample its Gaussian $$\mathcal{N}(x; \mu_k, \Sigma_k)$$.
 
-{% maincolumn 'assets/img/gmm2.png' 'Example of a Gaussian mixture model, consisting of three components with different class proportions (a). The true class of each point is unobserved, so the distribution over $x$ looks like in (b); it is both multi-modal and non-Gaussian. Visualizing it in 3D shows the effects of class proportions on the magnitudes of the modes.' %}
+{% include maincolumn_img.html url='assets/img/gmm2.png' description='Example of a Gaussian mixture model, consisting of three components with different class proportions (a). The true class of each point is unobserved, so the distribution over $x$ looks like in (b); it is both multi-modal and non-Gaussian. Visualizing it in 3D shows the effects of class proportions on the magnitudes of the modes.' %}
 
 ### Why are latent variable models useful?
 
@@ -61,7 +61,7 @@ How do we train an LVM? Our goal is still to fit the marginal distribution $$p(x
 
 This optimization objective is considerably more difficult than regular log-likelihood, even for directed graphical models. For one, we can see that the summation inside the log makes it impossible to decompose $$p(x)$$ into a sum of log-factors. Hence, even if the model is directed, we can no longer derive a simple closed form expression for the parameters.
 
-{% marginfigure 'gmm1' 'assets/img/mixture.png' 'Exponential family distributions (gray lines) have concave log-likelihoods. However, a weighted mixture of such distributions is no longer concave (black line).' %}
+{% include marginfigure.html id="gmm1" url="assets/img/mixture.png" description="Exponential family distributions (gray lines) have concave log-likelihoods. However, a weighted mixture of such distributions is no longer concave (black line)." %}
 Looking closer at the distribution of a data point $$x$$, we also see that it is actually a mixture 
 {%math%}
 p(x) = \sum_z p(x|z) p(z)

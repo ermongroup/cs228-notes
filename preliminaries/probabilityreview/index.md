@@ -128,7 +128,7 @@ Both CDFs and PDFs (when they exist!) can be used for calculating the probabilit
 
 ## 2.4 Expectation
 
-Suppose that $$X$$ is a discrete random variable with **PMF** $$p_X(x)$$ and $$g : \mathbb{R} \rightarrow \mathbb{R}$$ is an arbitrary function. In this case, $$g(X)$$ can be considered a random variable, and we define the expectation or expected value of $$g(X)$$ as:
+Suppose that $$X$$ is a discrete random variable with **PMF** $$p_X(x)$$ and $$g : \Re \rightarrow \Re$$ is an arbitrary function. In this case, $$g(X)$$ can be considered a random variable, and we define the **expectation** or **expected value** of $$g(X)$$ as
 
 \begin{equation}
 E[g(X)] = \sum_{x \in Val(X)} g(x)p_X(x).
@@ -179,7 +179,7 @@ constant with respect to the outer expectation.
 
 - $$Var[X] = E[X^2] - E[X]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}$$
 
-**Example** : Suppose that $$g(x) = \mathbf{1}\{x \in A\}$$ for some subset $$A \subseteq \Omega$$. What is $$E[g(X)]$$?
+**Example** : Suppose that $$g(x) = \mathbf{1}\{x \in A\}$$ for some subset $$A \subseteq \Omega$$. What is $$\E[g(X)]$$?
 
 ### **Discrete case**:
 
@@ -212,7 +212,7 @@ coin with heads probability $$p$$.
 p(x) = \binom{n}{x} \cdot p^x (1-p)^{n-x}
 \end{equation}
 
-• **$$X$$ ∼ Geometric($$p$$)** (where $$p > 0$$): the number of flips of a coin with heads probability $$p$$
+- **$$X \sim \text{Geometric}(p)$$** (where $$p > 0$$): the number of flips of a coin with heads probability $$p$$
 until the first heads.
 \begin{equation} p(x) = p(1 − p)^{x-1}
 \end{equation}
@@ -247,12 +247,7 @@ f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
 \end{equation}
 
 # 3. Two random variables
-Thus far, we have considered single random variables. In many situations, however,
-there may be more than one quantity that we are interested in knowing during a random
-experiment. For instance, in an experiment where we flip a coin ten times, we
-may care about both $$X(\omega) = $$ the number of heads that come up as well as $$Y(\omega) =
-$$ the length of the longest run of consecutive heads. In this section, we consider the setting of two
-random variables.
+Thus far, we have considered single random variables. In many situations, however, there may be more than one quantity that we are interested in knowing during a random experiment. For instance, in an experiment where we flip a coin ten times, we may care about both $$X(\omega) = $$ the number of heads that come up as well as $$Y(\omega) = $$ the length of the longest run of consecutive heads. In this section, we consider the setting of two random variables.
 
 ## 3.1 Joint and marginal distributions
 
@@ -298,7 +293,7 @@ summing out the other variable is often known as “marginalization”.
 
 ## 3.3 Joint and marginal probability density functions
 
-Let $$X$$ and $$Y$$ be two continuous random variables with joint distribution function $$F_{XY}$$ . In the case that $$F_{XY}(x, y)$$ is everywhere differentiable in both $$x$$ and $$y$$, then we can define the joint probability density function,
+Let $$X$$ and $$Y$$ be two continuous random variables with joint distribution function $$F_{XY}$$. In the case that $$F_{XY}(x, y)$$ is everywhere differentiable in both $$x$$ and $$y$$, then we can define the joint probability density function,
 
 \begin{equation}
 f_{XY}(x, y) = \frac{∂^2F_{XY}(x, y)}{∂x∂y}
@@ -402,7 +397,7 @@ Cov[X, Y] & = E[(X − E[X])(Y − E[Y])] \\
 \end{aligned}
 {% endmath %}
 
-Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$E[X]$$ and $$E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
+Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$\E[X]$$ and $$\E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
 
 ### **Properties**:
 - (Linearity of expectation) $$\E[f(X, Y) + g(X, Y)] = \E[f(X, Y)] + \E[g(X, Y)]$$.

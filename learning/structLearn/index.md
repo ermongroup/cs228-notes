@@ -8,7 +8,7 @@ The task of structure learning for Bayesian networks refers to learn the structu
 
 ### Score-based approach
 
-The score-based approach first defines a criterion to evaluate how well the Bayesian network fits the data, then searches over the space of DAGs for a structure with maximal score. In this way, the score-based approach is essentially a search problem and consists of two parts: the definition of score metric and the search algorithm. 
+The score-based approach first defines a criterion to evaluate how well the Bayesian network fits the data, then searches over the space of DAGs for a structure with maximal score. In this way, the score-based approach is essentially a search problem and consists of two parts: the definition of score metric and the search algorithm.
 
 ### Score metrics
 
@@ -52,17 +52,17 @@ The algorithm has three steps:
  MI(X,U) =\sum_{x,u} \hat p(x,u)\log\left[\frac{\hat{p} (x,u)}{\hat p(x) \hat p(u)}\right]
  {% endmath %}
  
- {% maincolumn 'assets/img/mi-graph.png' %}
+ {% include maincolumn_img.html url='assets/img/mi-graph.png' %}
  
  Remember that from our empirical distribution $$\hat p(x,u) = \frac{Count(x,u)}{\# \text{ data points}}$$.
 
 2) Find the **maximum** weight spanning tree: the maximal-weight tree that connects all vertices in a graph. This can be found using Kruskal or Prim Algorithms.
 
- {% maincolumn 'assets/img/max-spanning-tree.png' %}
+ {% include maincolumn_img.html url='assets/img/max-spanning-tree.png' %}
  
 3) Pick any node, and assign directions rading outward from node (arrows go away from it).
 
- {% maincolumn 'assets/img/chow-liu-tree.png' %}
+ {% include maincolumn_img.html url='assets/img/chow-liu-tree.png' %}
  
 The Chow-Liu Algorithm has a complexity of order $$n^2$$, as it takes $$O(n^2)$$ to compute mutual information for all pairs, and $$O(n^2)$$ to compute the maximum spanning tree. 
 

@@ -6,7 +6,7 @@ In practice, the probabilistic models that we use are often quite complex, and s
 
 There exist two main families of approximate algorithms: *variational* methods{% sidenote 1 'Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments.'%}, which formulate inference as an optimization problem, as well as *sampling* methods, which produce answers by repeatedly generating random numbers from a distribution of interest.
 
-Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can compute various interesting quantities, such as expectations $$\Exp[f(X)]$$ of random variables distributed according to a given probabilistic model. Sampling methods have historically been the main way of performing approximate inference, although over the past 15 years variational methods have emerged as viable (and often superior) alternatives.
+Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can compute various interesting quantities, such as expectations $$\E[f(X)]$$ of random variables distributed according to a given probabilistic model. Sampling methods have historically been the main way of performing approximate inference, although over the past 15 years variational methods have emerged as viable (and often superior) alternatives.
 
 ## Sampling from a probability distribution
 
@@ -16,11 +16,11 @@ Sampling, in general, is not an easy problem. Our computers can only generate sa
 All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.
 
 In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$k$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$[0,1]$$ and return the value of the region in which our sample falls.
-{% maincolumn 'assets/img/multinomial-sampling.png' 'Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1].'%}
+{% include maincolumn_img.html url='assets/img/multinomial-sampling.png' description='Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1].' %}
 
 ### Sampling from directed graphical models
 
-{% marginfigure 'nb1' 'assets/img/grade-model.png' 'Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables.'%}
+{% include marginfigure.html id="nb1" url="assets/img/grade-model.png" description="Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables." %}
 
 Our technique for sampling from multinomials naturally extends to Bayesian networks with multinomial variables, via a method called *ancestral* (or *forward*) sampling. Given a probability $$p(x_1,...,x_n)$$ specified by a Bayes net, we sample variables in topological order. In other words, we start by sampling the variables with no parents; then we sample from the next generation by conditioning these variables' CPDs to values sampled at the first step. We proceed like this until the $$n$$ variables have been sampled.
 
@@ -44,14 +44,14 @@ This technique approximates a target expectation with
 {% endmath %}
 where $$x^1,...,x^T$$ are samples drawn according to $$p$$.
 
-It is easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\Exp_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \Exp_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(f(x))/T$$, which can be made arbitrarily small with $$T$$.
+It is easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\E_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \E_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{var}_P(f(x))/T$$, which can be made arbitrarily small with $$T$$.
 
 ### Rejection sampling
 
-{% marginfigure 'nb1' 'assets/img/rejection-sampling.png' 'Graphical illustration of rejection sampling. We may compute the area of circle by drawing uniform samples from the square; the fraction of points that fall in the circle represents its area. This method breaks down if the size of the circle is small relative to the size of the square.'%}
+{% include marginfigure.html id="nb1" url="assets/img/rejection-sampling.png" description="Graphical illustration of rejection sampling. We may compute the area of circle by drawing uniform samples from the square; the fraction of points that fall in the circle represents its area. This method breaks down if the size of the circle is small relative to the size of the square." %}
 A special case of Monte Carlo integration is rejection sampling. We may use it to compute the area of a region $$R$$ by sampling in a larger region with a known area and recording the fraction of samples that falls within $$R$$.
 
-For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x')$$: we may write this probability as $$\Exp_{x\sim p}[\Ind(x=x')]$$ and then take the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
+For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x')$$: we may write this probability as $$\E_{x\sim p}[\Ind(x=x')]$$ and then take the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
 
 ### Importance sampling
 
@@ -62,10 +62,10 @@ A better way of computing such integrals is via an approach called *importance s
 More formally, suppose we are interested in computing $$\Exp_{x \sim p}[f(x)]$$. We may rewrite this integral as
 {% math %}
 \begin{align*}
-\Exp_{x \sim p}[f(x)] 
+\E_{x \sim p}[f(x)] 
 & = \sum_{x} f(x) p(x) \\
 & = \sum_{x} f(x) \frac{p(x)}{q(x)} q(x) \\
-& = \Exp_{x \sim q}[f(x)w(x)] \\
+& = \E_{x \sim q}[f(x)w(x)] \\
 & \approx \frac{1}{T} \sum_{t=1}^T f(x^t) w(x^t) \\
 \end{align*}
 {% endmath %}
@@ -81,9 +81,9 @@ In the context of our previous example for computing $$p(x=x') = \Exp_{z\sim p}[
 {% math %}
 \begin{align*}
 p(x=x')
-& = \Exp_{z\sim p}[p(x'|z)] \\
-& = \Exp_{z\sim q}[p(x'|z)\frac{p(z)}{q(z)}] \\
-& = \Exp_{z\sim q}[\frac{p(x',z)}{q(z)}] \\
+& = \E_{z\sim p}[p(x'|z)] \\
+& = \E_{z\sim q}[p(x'|z)\frac{p(z)}{q(z)}] \\
+& = \E_{z\sim q}[\frac{p(x',z)}{q(z)}] \\
 & \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)} \\
 \end{align*}
 {% endmath %}
@@ -128,7 +128,7 @@ A key concept in MCMC is that of a *Markov chain*. A (discrete-time) Markov chai
 
 The probability $$P(S_i \mid S_{i-1})$$ is the same at every step $$i$$; this means that the transition probabilities at any time in the entire process depend only on the given state and not on the history of how we got there. This is called the *Markov* assumption.
 
-{% marginfigure 'mc' 'assets/img/markovchain.png' 'A Markov chain over three states. The weighted directed edges indicate probabilities of transitioning to a different state.'%}
+{% include marginfigure.html id="mc" url="assets/img/markovchain.png" description="A Markov chain over three states. The weighted directed edges indicate probabilities of transitioning to a different state." %}
 It is very convenient to represent the transition probability as a $$d \times d$$ matrix
 {% math %}
 T_{ij} = P(S_\text{new} = i \mid S_\text{prev} = j).
@@ -158,7 +158,7 @@ In order to construct such a chain, we first need to understand when stationary 
 - *Aperiodicity*: It is possible to return to any state at any time, i.e. there exists an $$n$$ such that for all $$i$$ and all $$n' \geq n$$, $$P(s_{n'}=i \mid s_0 = i) > 0$$.
 
 The first condition is meant to prevent *absorbing states*, i.e. states from which we can never leave. In the example below, if we start in states $$1,2$$, we will never reach state 4. Conversely, if we start in state 4, then we will never reach states 1,2. If we start the chain in the middle (in state 3), then clearly it cannot have a single limiting distribution.
-{% maincolumn 'assets/img/reducible-chain.png' 'A reducible Markov Chain over four states.'%}
+{% include maincolumn_img.html url='assets/img/reducible-chain.png' description='A reducible Markov Chain over four states.' %}
 
 The second condition is necessary to rule out transition operators such as
 {% math %}

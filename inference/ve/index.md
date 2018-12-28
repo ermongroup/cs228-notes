@@ -75,7 +75,7 @@ Next, the marginalization operation "locally" eliminates a set of variables from
 {% math %}
 \tau(x) = \sum_{y} \phi(x, y),
 {% endmath %}
-where the sum is over all joint assignments to the set of variables $$Y$$.{% marginfigure 'marg' 'assets/img/marginalization.png' 'Here, we are marginalizing out variable $$B$$ from factor $$\phi(A,B,C).$$'%}
+where the sum is over all joint assignments to the set of variables $$Y$$.{% include marginfigure.html id="marg" url="assets/img/marginalization.png" description="Here, we are marginalizing out variable $$B$$ from factor $$\phi(A,B,C).$$" %}
 
 We use $$\tau$$ to refer to the marginalized factor. It is important to understand that this factor does not necessarily correspond to a probability distribution, even if $$\phi$$ was a CPD.
 
@@ -105,7 +105,7 @@ A former CS228 student has created an [interactive web simulation](http://pgmlea
 
 Let's try to understand what these steps correspond to in our chain example. In that case, the chosen ordering was $$x_1, x_2, ..., x_{n-1}$$. Starting with $$x_1$$, we collected all the factors involving $$x_1$$, which were $$p(x_1)$$ and $$p(x_2 \mid x_1)$$. We then used them to construct a new factor $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$. This can be seen as the results of steps 2 and 3 of the VE algorithm: first we form a large factor $$\sigma(x_2, x_1) = p(x_2 \mid x_1) p(x_1)$$; then we eliminate $$x_1$$ from that factor to produce $$\tau$$. Then, we repeat the same procedure for $$x_2$$, except that the factors are now $$p(x_3 \mid x_2), \tau(x_2)$$.
 
-For a slightly more complex example, recall the graphical model of a student's grade that we introduced earlier.{% marginfigure 'nb1' 'assets/img/grade-model.png' "Bayes net model of a student's grade $$g$$ on an exam; in addition to $$g$$, we also model other aspects of the problem, such as the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$, and the quality $$l$$ of a reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values."%}
+For a slightly more complex example, recall the graphical model of a student's grade that we introduced earlier.{% include marginfigure.html id="nb1" url="assets/img/grade-model.png" description="Bayes net model of a student's grade $$g$$ on an exam; in addition to $$g$$, we also model other aspects of the problem, such as the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$, and the quality $$l$$ of a reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values." %}
 The probability specified by the model is of the form
 {% math %}
 p(l, g, i, d, s) = p(l \mid g) p(s \mid i) p(i) p(g \mid i, d) p(d).
