@@ -11,9 +11,9 @@ In order to define a probability on a set we need a few basic elements,
 
 **Set of events (or event space) $$F$$**: A set whose elements $$A  \in  F$$ (called events) are subsets of $$\Omega$$ (i.e., $$A \subseteq \Omega$$ is a collection of possible outcomes of an experiment)
 
-**Probability measure**: A function $$P : F \rightarrow \mathbb{R}$$ that satisfies the following **properties** 
-* $$P(A) \geq 0$$, for all $$A \in F$$ 
-* If $$A_1$$, $$A_2$$, . . . are disjoint events $$(i.e., A_i \cap A_j = \emptyset  \text{ whenever }  i \neq j)$$, then $$P(\bigcup_i A_i) = \sum_i P(A_i)$$  
+**Probability measure**: A function $$P : F \rightarrow \Re$$ that satisfies the following **properties**
+* $$P(A) \geq 0$$, for all $$A \in F$$
+* If $$A_1$$, $$A_2$$, . . . are disjoint events $$(i.e., A_i \cap A_j = \emptyset  \text{ whenever }  i \neq j)$$, then $$P(\bigcup_i A_i) = \sum_i P(A_i)$$
 * $$P(\Omega) = 1$$.
 
 These three **properties** are called the **Axioms of Probability**.
@@ -21,10 +21,10 @@ These three **properties** are called the **Axioms of Probability**.
 **Example**: Consider the event of tossing a six-sided die. The sample space is $$\Omega = \{1, 2, 3, 4, 5, 6\}$$. We can define different event spaces on this sample space. For example, the simplest event space is the trivial event space $$F = \{\emptyset, \Omega\}$$. Another event space is the set of all subsets of $$\Omega$$. For the first event space, the unique probability measure satisfying the requirements above is given by $$P(\emptyset) = 0$$, $$P(\Omega) = 1$$. For the second event space, one valid probability measure is to assign the probability of each set in the event space to be $$\frac{i}{6}$$ where $$i$$ is the number of elements of that set; for example, $$P(\{1, 2, 3, 4\}) = \frac{4}{6}$$ and $$P(\{1, 2, 3\}) = \frac{3}{6}$$.
 
 ### **Properties**:
-- If $$A \subseteq B \Rightarrow P(A) \leq  P(B).$$
+- If $$A \subseteq B \Rightarrow P(A) \leq  P(B)$$.
 - $$P(A \cap B) \leq min(P(A), P(B))$$.
-- **Union Bound** $$P(A \cup B) \leq  P(A) + P(B).$$
-- $$P(\Omega - A) = 1 − P(A).$$
+- **Union Bound** $$P(A \cup B) \leq  P(A) + P(B)$$.
+- $$P(\Omega - A) = 1 − P(A)$$.
 - **Law of Total Probability** If $$A_1, . . . , A_k$$ are a set of disjoint events such that $$\bigcup^k_{i=1} A_i = \Omega$$ then $$\sum^k_{i=1} P(A_i) = 1.$$
 
 
@@ -35,7 +35,7 @@ Let $$B$$ be an event with non-zero probability. The conditional probability of 
 P(A \mid B) = \frac {P(A \cap B)}{P(B)}.
 \end{equation}
 In other words, $$P(A \mid B)$$ is the probability measure of the event $$A$$ after observing the occurrence of
-event $$B$$. 
+event $$B$$.
 
 ## 1.2 Chain Rule
 
@@ -67,33 +67,17 @@ In general, the chain rule is derived by applying the definition of conditional 
 
 ## 1.3 Independence
 
-Two events are called independent if and only if $$P(A \cap B) = P(A)P(B)$$ (or equivalently,
-$$P(A \mid B) = P(A)$$). Therefore, independence is equivalent to saying that observing B does not have
-any effect on the probability of A.
+Two events are called independent if and only if $$P(A \cap B) = P(A)P(B)$$ (or equivalently, $$P(A \mid B) = P(A)$$). Therefore, independence is equivalent to saying that observing B does not have any effect on the probability of A.
 
 # 2. Random variables
 
-Consider an experiment in which we flip 10 coins, and we want to know the number of coins that
-come up heads. Here, the elements of the sample space $$\Omega$$ are 10-length sequences of heads and
-tails. For example, we might have $$\omega_0 = \langle H, H, T, H, T, H, H, T, T, T \rangle \in \Omega$$. However, in practice, we usually do not care about the probability of obtaining any particular sequence of heads and tails. Instead we usually care about real-valued functions of outcomes, such as the number of heads that
-appear among our 10 tosses, or the length of the longest run of tails. These functions, under some
-technical conditions, are known as **random variables**.
+Consider an experiment in which we flip 10 coins, and we want to know the number of coins that come up heads. Here, the elements of the sample space $$\Omega$$ are 10-length sequences of heads and tails. For example, we might have $$\omega_0 = \langle H, H, T, H, T, H, H, T, T, T \rangle \in \Omega$$. However, in practice, we usually do not care about the probability of obtaining any particular sequence of heads and tails. Instead we usually care about real-valued functions of outcomes, such as the number of heads that appear among our 10 tosses, or the length of the longest run of tails. These functions, under some technical conditions, are known as **random variables**.
 
-More formally, a random variable $$X$$ is a function $$X : \Omega \rightarrow \mathbb{R}$$. Typically, we will denote random
-variables using upper case letters $$X(\omega)$$ or more simply $$X$$ (where the dependence on the random
-outcome $$\omega$$ is implied). We will denote the value that a random variable may take on using lower
-case letters $$x$$. Thus, $$X = x$$ means that we are assigning the value $$x \in \mathbb{R}$$ to the random variable $$X$$.
+More formally, a random variable $$X$$ is a function $$X : \Omega \rightarrow \Re$$. Typically, we will denote random variables using upper case letters $$X(\omega)$$ or more simply $$X$$ (where the dependence on the random outcome $$\omega$$ is implied). We will denote the value that a random variable may take on using lower case letters $$x$$. Thus, $$X = x$$ means that we are assigning the value $$x \in \Re$$ to the random variable $$X$$.
 
-**Example**: In our experiment above, suppose that $$X(\omega)$$ is the number of heads which occur in the
-sequence of tosses $$ω$$. Given that only 10 coins are tossed, $$X(\omega)$$ can take only a finite number of
-values, so it is known as a discrete random variable. Here, the probability of the set associated
-with a random variable $$X$$ taking on some specific value $$k$$ is
-    $$P(X = k) := P(\{\omega : X(\omega) = k\})$$.
+**Example**: In our experiment above, suppose that $$X(\omega)$$ is the number of heads which occur in the sequence of tosses $$ω$$. Given that only 10 coins are tossed, $$X(\omega)$$ can take only a finite number of values, so it is known as a discrete random variable. Here, the probability of the set associated with a random variable $$X$$ taking on some specific value $$k$$ is $$P(X = k) := P(\{\omega : X(\omega) = k\})$$.
 
-**Example**: Suppose that $$X(\omega)$$ is a random variable indicating the amount of time it takes for a
-radioactive particle to decay. In this case, $$X(\omega)$$ takes on a infinite number of possible values, so it is
-called a continuous random variable. We denote the probability that $$X$$ takes on a value between
-two real constants $$a$$ and $$b$$ (where $$a < b$$) as $$P(a \leq X \leq b) := P(\{\omega : a \leq X(\omega) \leq b\})$$.
+**Example**: Suppose that $$X(\omega)$$ is a random variable indicating the amount of time it takes for a radioactive particle to decay. In this case, $$X(\omega)$$ takes on a infinite number of possible values, so it is called a continuous random variable. We denote the probability that $$X$$ takes on a value between two real constants $$a$$ and $$b$$ (where $$a < b$$) as $$P(a \leq X \leq b) := P(\{\omega : a \leq X(\omega) \leq b\})$$.
 
 ## 2.1 Cumulative distribution functions
 
@@ -106,17 +90,13 @@ By using this function one can calculate the probability of any event.
 ### **Properties**:
 <!--Figure 1: A cumulative distribution function (CDF).-->
 - $$0 \leq  F_X(x) \leq  1$$.
-- $$lim_{x \rightarrow -\infty} F_X(x) = 0$$.
-- $$lim_{x \rightarrow +\infty} F_X(x) = 1$$.
+- $$\lim_{x \rightarrow -\infty} F_X(x) = 0$$.
+- $$\lim_{x \rightarrow +\infty} F_X(x) = 1$$.
 - $$x \leq y ⇒ F_X(x) \leq F_X(y)$$.
 
 
 ## 2.2 Probability mass functions
-When a random variable $$X$$ takes on a finite set of possible values (i.e., $$X$$ is a discrete random
-variable), a simpler way to represent the probability measure associated with a random variable is
-to directly specify the probability of each value that the random variable can assume. In particular,
-a probability mass function (PMF) is a function $$p_X : \Omega \rightarrow \mathbb{R}$$ such that 
-$$p_X(x) = P(X = x)$$.
+When a random variable $$X$$ takes on a finite set of possible values (i.e., $$X$$ is a discrete random variable), a simpler way to represent the probability measure associated with a random variable is to directly specify the probability of each value that the random variable can assume. In particular, a probability mass function (PMF) is a function $$p_X : \Omega \rightarrow \Re$$ such that $$p_X(x) = P(X = x)$$.
 
 In the case of discrete random variable, we use the notation $$Val(X)$$ for the set of possible values that the random variable $$X$$ may assume. For example, if $$X(\omega)$$ is a random variable indicating the number of heads out of ten tosses of coin, then $$Val(X) = \{0, 1, 2, . . . , 10\}$$.
 
@@ -134,11 +114,11 @@ f_X(x)  = \frac{dF_X(x)}{dx}.
 
 Note here, that the PDF for a continuous random variable may not always exist (i.e., if $$F_X(x)$$ is not differentiable everywhere).
 
-According to the **properties** of differentiation, for very small $$\delta x$$, 
+According to the **properties** of differentiation, for very small $$\delta x$$,
 
-$$P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x$$.
+$$ P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x. $$
 
-Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point $$x$$ is not the probability of that event, i.e., $$f_X(x) \neq P(X = x)$$. For example, $$f_X(x)$$ can take on values larger than one (but the integral of $$f_X(x)$$ over any subset of $$\mathbb{R}$$ will be at most one).
+Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point $$x$$ is not the probability of that event, i.e., $$f_X(x) \neq P(X = x)$$. For example, $$f_X(x)$$ can take on values larger than one (but the integral of $$f_X(x)$$ over any subset of $$\Re$$ will be at most one).
 
 ### **Properties**:
 - $$f_X(x) \geq 0$$.
@@ -160,18 +140,18 @@ If $$X$$ is a continuous random variable with PDF $$f_X(x)$$, then the expected 
 E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx
 \end{equation}.
 
-Intuitively, the expectation of $$g(X)$$ can be thought of as a “weighted average” of the values that $$g(x)$$ can taken on for different values of $$x$$, where the weights are given by $$p_X(x)$$ or $$f_X(x)$$. As a special case of the above, note that the expectation, $$E[X]$$ of a random variable itself is found by letting $$g(x) = x$$; this is also known as the mean of the random variable $$X$$.
+Intuitively, the expectation of $$g(X)$$ can be thought of as a “weighted average” of the values that $$g(x)$$ can taken on for different values of $$x$$, where the weights are given by $$p_X(x)$$ or $$f_X(x)$$. As a special case of the above, note that the expectation, $$\E[X]$$ of a random variable itself is found by letting $$g(x) = x$$; this is also known as the mean of the random variable $$X$$.
 
 ### **Properties**:
-- $$E[a] = a$$ for any constant $$a \in \mathbb{R}$$.
-- $$E[af(X)] = aE[f(X)]$$ for any constant $$a \in \mathbb{R}$$.
-- (Linearity of Expectation) $$E[f(X) + g(X)] = E[f(X)] + E[g(X)]$$.
-- For a discrete random variable $$X$$, $$E[\mathbf{1}\{X = k\}] = P(X = k)$$.
+- $$\E[a] = a$$ for any constant $$a \in \Re$$.
+- $$\E[af(X)] = a\E[f(X)]$$ for any constant $$a \in \Re$$.
+- (Linearity of Expectation) $$\E[f(X) + g(X)] = \E[f(X)] + \E[g(X)]$$.
+- For a discrete random variable $$X$$, $$\E[\mathbf{1}\{X = k\}] = P(X = k)$$.
 
 
 ## 2.5 Variance
 
-The variance of a random variable $$X$$ is a measure of how concentrated the distribution of a random variable $$X$$ is around its mean. Formally, the variance of a random variable $$X$$ is defined as $$Var[X] = E[(X − E[X])^2]$$.
+The variance of a random variable $$X$$ is a measure of how concentrated the distribution of a random variable $$X$$ is around its mean. Formally, the variance of a random variable $$X$$ is defined as $$Var[X] = \E[(X − \E[X])^2]$$.
 
 Using the **properties** in the previous section, we can derive an alternate expression for the variance:
 
@@ -184,12 +164,12 @@ Using the **properties** in the previous section, we can derive an alternate exp
 \end{aligned}
 {% endmath %}
 
-where the second equality follows from linearity of expectations and the fact that $$E[X]$$ is actually a
+where the second equality follows from linearity of expectations and the fact that $$\E[X]$$ is actually a
 constant with respect to the outer expectation.
 
 ### **Properties**:
-- $$Var[a] = 0$$ for any constant $$a \in \mathbb{R}$$.
-- $$Var[af(X)] = a^2 Var[f(X)]$$ for any constant $$a \in \mathbb{R}$$.
+- $$Var[a] = 0$$ for any constant $$a \in \Re$$.
+- $$Var[af(X)] = a^2 Var[f(X)]$$ for any constant $$a \in \Re$$.
 
 **Example** Calculate the mean and the variance of the uniform random variable $$X$$ with PDF $$f_X(x) = 1, ∀x  \in  [0, 1], 0$$ elsewhere.
 
@@ -294,9 +274,9 @@ Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution f
 
 ### **Properties**:
 - $$0 \leq F_{XY} (x, y) \leq 1$$.
-- $$lim_{x,y\rightarrow \infty} F_{XY} (x, y) = 1$$.
-- $$lim_{x,y\rightarrow -\infty} F_{XY} (x, y) = 0$$.
-- $$F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)$$.
+- $$\lim_{x,y\rightarrow \infty} F_{XY} (x, y) = 1$$.
+- $$\lim_{x,y\rightarrow -\infty} F_{XY} (x, y) = 0$$.
+- $$F_X(x) = \lim_{y \rightarrow \infty} F_{XY} (x, y)$$.
 
 ## 3.2 Joint and marginal probability mass functions
 
@@ -318,7 +298,7 @@ summing out the other variable is often known as “marginalization”.
 
 ## 3.3 Joint and marginal probability density functions
 
-Let $$X$$ and $$Y$$ be two continuous random variables with joint distribution function $$F_{XY}$$ . In the case that $$F_{XY}(x, y)$$ is everywhere differentiable in both $$x$$ and $$y$$, then we can define the joint probability density function, 
+Let $$X$$ and $$Y$$ be two continuous random variables with joint distribution function $$F_{XY}$$ . In the case that $$F_{XY}(x, y)$$ is everywhere differentiable in both $$x$$ and $$y$$, then we can define the joint probability density function,
 
 \begin{equation}
 f_{XY}(x, y) = \frac{∂^2F_{XY}(x, y)}{∂x∂y}
@@ -384,8 +364,8 @@ f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid
 Two random variables $$X$$ and $$Y$$ are independent if $$F_{XY} (x, y) = F_X(x)F_Y(y)$$ for all values of $$x$$ and $$y$$. Equivalently,
 - For discrete random variables, $$p_{XY} (x, y) = p_X(x)p_Y(y)$$ for all $$x \in Val(X)$$, $$y \in Val(Y)$$.
 - For discrete random variables, $$p_{Y\mid X}(y \mid x) = p_Y(y)$$ whenever $$p_X(x) \neq 0$$ for all $$y \in Val(Y)$$.
-- For continuous random variables, $$f_{XY} (x, y) = f_X(x)f_Y(y)$$ for all $$x, y \in \mathbb{R}$$.
-- For continuous random variables, $$f_{Y\mid X}(y \mid x) = f_Y(y)$$ whenever $$f_X(x) \neq 0$$ for all $$y \in \mathbb{R}$$.
+- For continuous random variables, $$f_{XY} (x, y) = f_X(x)f_Y(y)$$ for all $$x, y \in \Re$$.
+- For continuous random variables, $$f_{Y\mid X}(y \mid x) = f_Y(y)$$ whenever $$f_X(x) \neq 0$$ for all $$y \in \Re$$.
 
 Informally, two random variables $$X$$ and $$Y$$ are independent if “knowing” the value of one variable will never have any effect on the conditional probability distribution of the other variable, that is, you know all the information about the pair $$(X, Y)$$ by just knowing $$f(x)$$ and $$f(y)$$. The following lemma formalizes this observation:
 
@@ -425,10 +405,10 @@ Cov[X, Y] & = E[(X − E[X])(Y − E[Y])] \\
 Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$E[X]$$ and $$E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
 
 ### **Properties**:
-- (Linearity of expectation) $$E[f(X, Y) + g(X, Y)] = E[f(X, Y)] + E[g(X, Y)]$$.
+- (Linearity of expectation) $$\E[f(X, Y) + g(X, Y)] = \E[f(X, Y)] + \E[g(X, Y)]$$.
 - $$Var[X + Y] = Var[X] + Var[Y] + 2Cov[X, Y]$$.
 - If $$X$$ and $$Y$$ are independent, then $$Cov[X, Y] = 0$$.
-- If $$X$$ and $$Y$$ are independent, then $$E[f(X)g(Y)] = E[f(X)]E[g(Y)]$$.
+- If $$X$$ and $$Y$$ are independent, then $$\E[f(X)g(Y)] = \E[f(X)]\E[g(Y)]$$.
 
 
 <br/>
