@@ -288,8 +288,8 @@ ul li { margin-bottom: 0.5em; } // vertical padding on list items screws up vert
 div.table-wrapper { overflow-x: auto; } // changed all overflow values to 'auto' so scroll bars appear only as needed
 
 @media screen and (max-width: 760px) {
-    /*article > p, article > footer, article > div.MathJax_Display { width: 90%; }*/
-    article > p, article > footer, div.mathblock { width: 90%; }
+    // article > p, article > footer, article > div.MathJax_Display { width: 90%; }
+    article > p, article > footer, article > div.mathblock { width: 90%; }
     pre code { width: 87.5%; }
     ul, ol { width: 85%; }
     figure { max-width: 90%; }
