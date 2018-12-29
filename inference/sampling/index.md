@@ -32,15 +32,13 @@ A former CS228 student has created an [interactive web simulation](http://pgmlea
 
 Sampling from a distribution lets us perform many useful tasks, including marginal and MAP inference, as well as computing integrals of the form
 {% math %}
-\Exp_{x \sim p}[f(x)] = \sum_{x} f(x) p(x).
+\E_{x \sim p}[f(x)] = \sum_x f(x) p(x).
 {% endmath %}
 If $$f(x)$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working on the atomic bomb as part of the secret Manhattan project.'%}.
 
-
-Monte Carlo integration is an important instantiation of the general Monte Carlo principle.
-This technique approximates a target expectation with
+Monte Carlo integration is an important instantiation of the general Monte Carlo principle. This technique approximates a target expectation with
 {% math %}
-\Exp_{x \sim p}[f(x)] \approx \frac{1}{T} \sum_{t=1}^T f(x^t),
+\E_{x \sim p}[f(x)] \approx \frac{1}{T} \sum_{t=1}^T f(x^t),
 {% endmath %}
 where $$x^1,...,x^T$$ are samples drawn according to $$p$$.
 
@@ -59,10 +57,10 @@ Unfortunately, this procedure is very wasteful. If $$p(x=x')$$ equals, say, 1%, 
 
 A better way of computing such integrals is via an approach called *importance sampling*. The main idea is to sample from a distribution $$q$$ (hopefully roughly proportional to $$f \cdot p$$), and then *reweight* the samples in a principled way, so that their sum still approximates the desired integral.
 
-More formally, suppose we are interested in computing $$\Exp_{x \sim p}[f(x)]$$. We may rewrite this integral as
+More formally, suppose we are interested in computing $$\E_{x \sim p}[f(x)]$$. We may rewrite this integral as
 {% math %}
 \begin{align*}
-\E_{x \sim p}[f(x)] 
+\E_{x \sim p}[f(x)]
 & = \sum_{x} f(x) p(x) \\
 & = \sum_{x} f(x) \frac{p(x)}{q(x)} q(x) \\
 & = \E_{x \sim q}[f(x)w(x)] \\
@@ -73,11 +71,11 @@ where $$w(x) = \frac{p(x)}{q(x)}$$. In other words, we may instead take samples 
 
 Now the variance of this new estimator equals 
 {% math %}
-\text{var}_{x \sim q}(f(x)w(x)) = \Exp_{x \sim q} [f^2(x) w^2(x)] - \Exp_{x \sim q} [f(x) w(x)]^2 \geq 0
+\text{var}_{x \sim q}(f(x)w(x)) = \E_{x \sim q} [f^2(x) w^2(x)] - \E_{x \sim q} [f(x) w(x)]^2 \geq 0
 {% endmath %}
-Note that we can set the variance to zero by choosing {%m%}q(x) = \frac{|f(x)|p(x)}{\int |f(x)|p(x) dx}{%em%}; this means that if we can sample from this $$q$$ (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a $$q$$ would be NP-hard in general, but this at least gives us an indication for what to strive for.
+Note that we can set the variance to zero by choosing $$q(x) = \frac{|f(x)|p(x)}{\int |f(x)|p(x) dx}$$; this means that if we can sample from this $$q$$ (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a $$q$$ would be NP-hard in general, but this at least gives us an indication for what to strive for.
 
-In the context of our previous example for computing $$p(x=x') = \Exp_{z\sim p}[p(x'|z)]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
+In the context of our previous example for computing $$p(x=x') = \E_{z\sim p}[p(x'|z)]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
 {% math %}
 \begin{align*}
 p(x=x')
@@ -116,11 +114,9 @@ P(x=x'|e=e')
 
 
 
-
 ## Markov chain Monte Carlo
 
-Let us now turn our attention from computing expectations to performing marginal and MAP inference using sampling.
-We will solve these problems using a very powerful technique called Markov chain Monte Carlo{% sidenote 1 'Markov chain Monte Carlo is another algorithm that was developed during the Manhattan project and eventually republished in the scientific literature some decades later. It is so important, that is was recently named as one of the [10 most important algorithms](https://www.siam.org/pdf/news/637.pdf) of the XXth century.'%} (MCMC).
+Let us now turn our attention from computing expectations to performing marginal and MAP inference using sampling. We will solve these problems using a very powerful technique called Markov chain Monte Carlo{% sidenote 1 'Markov chain Monte Carlo is another algorithm that was developed during the Manhattan project and eventually republished in the scientific literature some decades later. It is so important, that is was recently named as one of the [10 most important algorithms](https://www.siam.org/pdf/news/637.pdf) of the XXth century.'%} (MCMC).
 
 ### Markov Chain
 
@@ -201,7 +197,7 @@ At each step of the Markov chain, we choose a new point $$x'$$ according to $$Q$
 
 Notice that the acceptance probability encourages us to move towards more likely points in the distribution (imagine for example that $$Q$$ is uniform); when $$Q$$ suggests that we move into a low-probability region, we follow that move only a certain fraction of the time.
 
-In practice, the distribution $$Q$$ is taken to be something simple, like a Gaussian centered at $$x$$ if we are dealing with continuous variables. 
+In practice, the distribution $$Q$$ is taken to be something simple, like a Gaussian centered at $$x$$ if we are dealing with continuous variables.
 
 Given any $$Q$$ the MH algorithm will ensure that $$P$$ will be a stationary distribution of the resulting Markov Chain. More precisely, $$P$$ will satisfy the detailed balance condition with respect to the MH Markov chain.
 
@@ -221,19 +217,19 @@ A widely-used special case of the Metropolis-Hastings methods is Gibbs sampling.
 
 Repeat until convergence for $$t = 1, 2,\dots$$:
 
-- Set $$x \leftarrow x^{t-1}$$. 
+- Set $$x \leftarrow x^{t-1}$$.
 - For each variable $$x_i$$ in the order we fixed:
 	1. Sample $$x'_i \sim p(x_i \mid x_{-i})$$
 	2. Update $$x \leftarrow (x_1, ..., x'_i, ..., x_n).$$
 - Set $$x^t \leftarrow x$$
 
-We use $$x_{-i}$$ to denote all variables in $$x$$ except $$x_i$$. It is often very easy to performing each sampling step, since we only need to condition $$x_i$$ on its Markov blanket, which is typically small. Note that when we update $$x_i$$, we *immediately* use its new value for sampling other variables $$x_j$$. 
+We use $$x_{-i}$$ to denote all variables in $$x$$ except $$x_i$$. It is often very easy to performing each sampling step, since we only need to condition $$x_i$$ on its Markov blanket, which is typically small. Note that when we update $$x_i$$, we *immediately* use its new value for sampling other variables $$x_j$$.
 
 Gibbs sampling can be seen as a special case of MH with proposal
 $$ Q(x_i', x_{-i} \mid x_i, x_{-i}) = P(x_i' \mid x_{-i}). $$
 It is easy check that the acceptance probability simplifies to one.
 
-Assuming the right transition operator, both Gibbs sampling and MH will eventually produce samples from their stationary distribution, which by construction is $$P$$. 
+Assuming the right transition operator, both Gibbs sampling and MH will eventually produce samples from their stationary distribution, which by construction is $$P$$.
 
 There exist simple ways of ensuring that this will be the case
 
@@ -257,7 +253,7 @@ then for small $$\e$$ it will take a very long time to reach the stationary dist
 
 This problem will also occur with complicated distributions that have two distinct and narrow modes; with high probability, the algorithm will sample from a given mode for a very long time. These examples are indications that sampling is a hard problem in general, and MCMC does not give us a free lunch. Nonetheless, for many real-world distributions, sampling will produce very useful solutions.
 
-Another, perhaps more important problem, is that we may not know when to end the burn-in period, even if it is theoretically not too long. There exist many heuristics to determine whether a Markov chain has *mixed*; however, typically these heuristics involve plotting certain quantities and estimating them by eye; even the quantitative measures are not significantly more reliable than this approach. 
+Another, perhaps more important problem, is that we may not know when to end the burn-in period, even if it is theoretically not too long. There exist many heuristics to determine whether a Markov chain has *mixed*; however, typically these heuristics involve plotting certain quantities and estimating them by eye; even the quantitative measures are not significantly more reliable than this approach.
 
 In summary, even though MCMC is able to sample from the right distribution (which in turn can be used to solve any inference problem), doing so may sometimes require a very long time, and there is no easy way to judge the amount of computation that we need to spend to find a good solution.
 
