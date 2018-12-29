@@ -31,9 +31,9 @@ These three **properties** are called the **Axioms of Probability**.
 ## 1.1 Conditional probability
 
 Let $$B$$ be an event with non-zero probability. The conditional probability of any event $$A$$ given $$B$$ is defined as
-\begin{equation}
-P(A \mid B) = \frac {P(A \cap B)}{P(B)}.
-\end{equation}
+
+{% math %} P(A \mid B) = \frac {P(A \cap B)}{P(B)}. {% endmath %}
+
 In other words, $$P(A \mid B)$$ is the probability measure of the event $$A$$ after observing the occurrence of
 event $$B$$.
 
@@ -42,27 +42,25 @@ event $$B$$.
 Let $$S_1, \cdots, S_k$$ be events, $$P(S_i) >0$$. Then the chain rule states that:
 
 {% math %}
-\begin{aligned}
+\begin{align*}
   & P(S_1 \cap S_2 \cap \cdots \cap S_k) \\
 = & P(S_1) P(S_2 | S_1) P(S_3 | S_2 \cap S_1 ) \cdots  P(S_k | S_1 \cap S_2 \cap \cdots S_{k-1})
-\end{aligned}
+\end{align*}
 {% endmath %}
 
 Note that for $$k=2$$ events, this is just the definition of conditional probability:
 
-\begin{equation}
-P(S_1 \cap S_2) = P(S_1) P(S_2 | S_1)
-\end{equation}
+{% math %} P(S_1 \cap S_2) = P(S_1) P(S_2 | S_1) {% endmath %}
 
 In general, the chain rule is derived by applying the definition of conditional independence multiple times, as in the following example:
 
 {% math %}
-\begin{aligned}
+\begin{align*}
   & P(S_1 \cap S_2 \cap S_3 \cap S_4) \\
 = & P(S_1 \cap S_2 \cap S_3) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
 = & P(S_1 \cap S_2) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3) \\
 = & P(S_1) P(S_2 \mid S_1) P(S_3 \mid S_1 \cap S_2) P(S_4 \mid S_1 \cap S_2 \cap S_3)
-\end{aligned}
+\end{align*}
 {% endmath %}
 
 ## 1.3 Independence
@@ -81,10 +79,10 @@ More formally, a random variable $$X$$ is a function $$X : \Omega \rightarrow \R
 
 ## 2.1 Cumulative distribution functions
 
-In order to specify the probability measures used when dealing with random variables, it is often convenient to specify alternative functions (CDFs, PDFs, and PMFs) from which the probability measure governing an experiment immediately follows. In this section and the next two sections, we describe each of these types of functions in turn. A cumulative distribution function (CDF) is a function $$F_X : \mathbb{R} \rightarrow [0, 1]$$ which specifies a probability measure as, 
-\begin{equation}
-F_X(x) = P(X \leq x).
-\end{equation}
+In order to specify the probability measures used when dealing with random variables, it is often convenient to specify alternative functions (CDFs, PDFs, and PMFs) from which the probability measure governing an experiment immediately follows. In this section and the next two sections, we describe each of these types of functions in turn. A cumulative distribution function (CDF) is a function $$F_X : \Re \rightarrow [0, 1]$$ which specifies a probability measure as,
+
+{% math %} F_X(x) = P(X \leq x). {% endmath %}
+
 By using this function one can calculate the probability of any event.
 
 ### **Properties**:
@@ -108,15 +106,13 @@ In the case of discrete random variable, we use the notation $$Val(X)$$ for the 
 ## 2.3 Probability density functions
 For some continuous random variables, the cumulative distribution function $$F_X(x)$$ is differentiable everywhere. In these cases, we define the Probability Density Function or PDF as the derivative of the CDF, i.e.,
 
-\begin{equation}
-f_X(x)  = \frac{dF_X(x)}{dx}.
-\end{equation}
+{% math %} f_X(x) = \frac{dF_X(x)}{dx}. {% endmath %}
 
 Note here, that the PDF for a continuous random variable may not always exist (i.e., if $$F_X(x)$$ is not differentiable everywhere).
 
 According to the **properties** of differentiation, for very small $$\delta x$$,
 
-$$ P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x. $$
+{% math %} P(x \leq X \leq x + \delta x) ≈ f_X(x)\delta x. {% endmath %}
 
 Both CDFs and PDFs (when they exist!) can be used for calculating the probabilities of different events. But it should be emphasized that the value of PDF at any given point $$x$$ is not the probability of that event, i.e., $$f_X(x) \neq P(X = x)$$. For example, $$f_X(x)$$ can take on values larger than one (but the integral of $$f_X(x)$$ over any subset of $$\Re$$ will be at most one).
 
@@ -130,15 +126,12 @@ Both CDFs and PDFs (when they exist!) can be used for calculating the probabilit
 
 Suppose that $$X$$ is a discrete random variable with **PMF** $$p_X(x)$$ and $$g : \Re \rightarrow \Re$$ is an arbitrary function. In this case, $$g(X)$$ can be considered a random variable, and we define the **expectation** or **expected value** of $$g(X)$$ as
 
-\begin{equation}
-E[g(X)] = \sum_{x \in Val(X)} g(x)p_X(x).
-\end{equation}
+{% math %} \E[g(X)] = \sum_{x \in Val(X)} g(x)p_X(x). {% endmath %}
 
-If $$X$$ is a continuous random variable with PDF $$f_X(x)$$, then the expected value of g(X) is defined as,
+If $$X$$ is a continuous random variable with PDF $$f_X(x)$$, then the expected value of g(X) is defined as
 
-\begin{equation}
-E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx
-\end{equation}.
+{% math %} \E[g(X)] = \int^{\infty}_{-\infty} g(x)f_X(x)dx. {% endmath %}
+
 
 Intuitively, the expectation of $$g(X)$$ can be thought of as a “weighted average” of the values that $$g(x)$$ can taken on for different values of $$x$$, where the weights are given by $$p_X(x)$$ or $$f_X(x)$$. As a special case of the above, note that the expectation, $$\E[X]$$ of a random variable itself is found by letting $$g(x) = x$$; this is also known as the mean of the random variable $$X$$.
 
@@ -156,12 +149,12 @@ The variance of a random variable $$X$$ is a measure of how concentrated the dis
 Using the **properties** in the previous section, we can derive an alternate expression for the variance:
 
 {% math %}
-\begin{aligned}
-  & E[(X − E[X])^2] \\
-= & E[X^2 − 2E[X]X + E[X]^2] \\
-= & E[X^2] − 2E[X]E[X] + E[X]^2 \\
-= & E[X^2] − E[X]^2,
-\end{aligned}
+\begin{align*}
+  & \E[(X − \E[X])^2] \\
+= & \E[X^2 − 2\E[X]X + \E[X]^2] \\
+= & \E[X^2] − 2\E[X]\E[X] + \E[X]^2 \\
+= & \E[X^2] − \E[X]^2,
+\end{align*}
 {% endmath %}
 
 where the second equality follows from linearity of expectations and the fact that $$\E[X]$$ is actually a
@@ -171,100 +164,99 @@ constant with respect to the outer expectation.
 - $$Var[a] = 0$$ for any constant $$a \in \Re$$.
 - $$Var[af(X)] = a^2 Var[f(X)]$$ for any constant $$a \in \Re$$.
 
-**Example** Calculate the mean and the variance of the uniform random variable $$X$$ with PDF $$f_X(x) = 1, ∀x  \in  [0, 1], 0$$ elsewhere.
+**Example** Calculate the mean and the variance of the uniform random variable $$X$$ with PDF $$f_X(x) = 1, \forall x \in  [0, 1], 0$$ elsewhere.
 
-- $$E[X] = \int^{\infty}_{-\infty} x f_X(x) dx = \int^1_0 x dx = \frac{1}{2}$$
-
-- $$E[X^2] = \int^{\infty}_{-\infty} x^2 f_X(x)dx = \int^1_0 x^2 dx = \frac{1}{3}$$
-
-- $$Var[X] = E[X^2] - E[X]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}$$
+{% math %}
+\begin{align*}
+\E[X] &= \int^{\infty}_{-\infty} x f_X(x) dx = \int^1_0 x dx = \frac{1}{2} \\
+\E[X^2] &= \int^{\infty}_{-\infty} x^2 f_X(x)dx = \int^1_0 x^2 dx = \frac{1}{3} \\
+Var[X] &= \E[X^2] - \E[X]^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}
+\end{align*}
+{% endmath %}
 
 **Example** : Suppose that $$g(x) = \mathbf{1}\{x \in A\}$$ for some subset $$A \subseteq \Omega$$. What is $$\E[g(X)]$$?
 
 ### **Discrete case**:
 
 {% math %}
-E[g(X)] = \sum_{x \in Val(X)} \mathbf{1} \{x \in A \} P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
+\E[g(X)] = \sum_{x \in Val(X)} \mathbf{1} \{x \in A \} P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
 {% endmath %}
 
 ### **Continuous case**:
 
 {% math %}
-E[g(X)] = \int_{-\infty}^{\infty} \mathbf{1} \{x \in A \} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
+\E[g(X)] = \int_{-\infty}^\infty \mathbf{1} \{x \in A \} f_X(x) dx = \int_{x\in A} f_X(x) dx = P(X \in A)
 {% endmath %}
-
 
 
 ## 2.6 Some common random variables
 
 ### Discrete random variables
-• **$$X$$ ∼ Bernoulli($$p$$)** (where $$0 \leq p \leq 1$$): one if a coin with heads probability $$p$$ comes up heads, zero otherwise. 
+- **$$X \sim \text{Bernoulli}(p)$$** (where $$0 \leq p \leq 1$$): one if a coin with heads probability $$p$$ comes up heads, zero otherwise.
+
 {% math %}
 p(x)=\begin{cases}
-p, & \text{if }x = 1. \\
-1-p, & \text{if }x = 0.
+    p, & \text{if }x = 1. \\
+    1-p, & \text{if }x = 0.
 \end{cases}
 {% endmath %}
 
-• **$$X$$ ∼ Binomial($$n$$, $$p$$)** (where $$0 \leq  p \leq  1$$): the number of heads in $$n$$ independent flips of a
-coin with heads probability $$p$$.
-\begin{equation}
-p(x) = \binom{n}{x} \cdot p^x (1-p)^{n-x}
-\end{equation}
+- **$$X \sim \text{Binomial}(n, p)$$** (where $$0 \leq  p \leq  1$$): the number of heads in $$n$$ independent flips of a coin with heads probability $$p$$.
 
-- **$$X \sim \text{Geometric}(p)$$** (where $$p > 0$$): the number of flips of a coin with heads probability $$p$$
-until the first heads.
-\begin{equation} p(x) = p(1 − p)^{x-1}
-\end{equation}
+{% math %} p(x) = \binom{n}{x} \cdot p^x (1-p)^{n-x} {% endmath %}
 
-• **$$X$$ ∼ Poisson($$\lambda$$)** (where $$\lambda$$ > 0): a probability distribution over the nonnegative integers
-used for modeling the frequency of rare events.
-\begin{equation} 
-p(x) = e^{-\lambda} \frac{\lambda^x}{x!}
-\end{equation}
+- **$$X \sim \text{Geometric}(p)$$** (where $$p > 0$$): the number of flips of a coin with heads probability $$p$$ until the first heads.
+
+{% math %} p(x) = p(1 − p)^{x-1} {% endmath %}
+
+- **$$X \sim \text{Poisson}(\lambda)$$** (where $$\lambda$$ > 0): a probability distribution over the nonnegative integers used for modeling the frequency of rare events.
+
+{% math %} p(x) = e^{-\lambda} \frac{\lambda^x}{x!} {% endmath %}
 
 ### Continuous random variables
 
-• **$$X$$ ∼ Uniform($$a$$, $$b$$)** (where $$a < b$$): equal probability density to every value between $$a$$ and $$b$$ on the real line. 
+- **$$X \sim \text{Uniform}(a, b)$$** (where $$a < b$$): equal probability density to every value between $$a$$ and $$b$$ on the real line.
+
 {% math %}
-f(x)=\begin{cases}    
-\frac{1}{b-a}, & \text{if }a \leq b.\\
-0, & \text{otherwise}.
+f(x)=\begin{cases}
+    \frac{1}{b-a}, & \text{if }a \leq b \\
+    0, & \text{otherwise}
 \end{cases}
 {% endmath %}
 
-• **$$X$$ ∼ Exponential($$\lambda$$)** (where $$\lambda$$ > 0): decaying probability density over the nonnegative reals.
+- **$$X \sim Exponential(\lambda)$$** (where $$\lambda$$ > 0): decaying probability density over the nonnegative reals.
+
 {% math %}
-  f(x)=\begin{cases}
-    \lambda e^{-\lambda x}, & \text{if }x \geq 0.\\
-    0, & \text{otherwise}.
-  \end{cases}
+f(x)=\begin{cases}
+    \lambda e^{-\lambda x}, & \text{if }x \geq 0 \\
+    0, & \text{otherwise}
+\end{cases}
 {% endmath %}
 
-• **$$X$$ ∼ Normal($$\mu$$, $$\sigma^2$$)**: also known as the Gaussian distribution
-\begin{equation}
-f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
-\end{equation}
+- **$$X \sim Normal(\mu, \sigma^2)$$**: also known as the Gaussian distribution
+
+{% math %} f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}} {% endmath %}
 
 # 3. Two random variables
 Thus far, we have considered single random variables. In many situations, however, there may be more than one quantity that we are interested in knowing during a random experiment. For instance, in an experiment where we flip a coin ten times, we may care about both $$X(\omega) = $$ the number of heads that come up as well as $$Y(\omega) = $$ the length of the longest run of consecutive heads. In this section, we consider the setting of two random variables.
 
 ## 3.1 Joint and marginal distributions
 
-Suppose that we have two random variables $$X$$ and $$Y$$ . One way to work with these two random variables is to consider each of them separately. If we do that we will only need $$F_X(x)$$ and $$F_Y (y)$$. But if we want to know about the values that $$X$$ and $$Y$$ assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of $$X$$ and $$Y$$, defined by 
-\begin{equation}
-F_{XY} (x, y) = P(X \leq  x, Y \leq  y). 
-\end{equation}
+Suppose that we have two random variables $$X$$ and $$Y$$ . One way to work with these two random variables is to consider each of them separately. If we do that we will only need $$F_X(x)$$ and $$F_Y (y)$$. But if we want to know about the values that $$X$$ and $$Y$$ assume simultaneously during outcomes of a random experiment, we require a more complicated structure known as the joint cumulative distribution function of $$X$$ and $$Y$$, defined by
+
+{% math %} F_{XY} (x, y) = P(X \leq  x, Y \leq  y). {% endmath %}
 
 It can be shown that by knowing the joint cumulative distribution function, the probability of any event involving $$X$$ and $$Y$$ can be calculated.
 
 The joint CDF $$F_{XY} (x, y)$$ and the joint distribution functions $$F_X(x)$$ and $$F_Y (y)$$ of each variable separately are related by
-\begin{equation}
-F_X(x) = lim_{y \rightarrow \infty} F_{XY} (x, y)
-\end{equation}
-\begin{equation}
-F_Y(y) = lim_{x \rightarrow \infty} F_{XY} (x, y)
-\end{equation}
+
+{% math %}
+\begin{align*}
+F_X(x) &= \lim_{y \rightarrow \infty} F_{XY} (x, y) \\
+F_Y(y) &= \lim_{x \rightarrow \infty} F_{XY} (x, y)
+\end{align*}
+{% endmath %}
+
 Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution functions** of $$F_{XY} (x, y)$$.
 
 ### **Properties**:
@@ -276,56 +268,48 @@ Here, we call $$F_X(x)$$ and $$F_Y(y)$$ the **marginal cumulative distribution f
 ## 3.2 Joint and marginal probability mass functions
 
 If $$X$$ and $$Y$$ are discrete random variables, then the joint probability mass function $$p_{XY} : Val(X) \times Val(Y) \rightarrow [0, 1]$$ is defined by
-\begin{equation}
-p_{XY}(x, y) = P(X = x, Y = y).
-\end{equation}
-Here, $$0 \leq P_{XY}(x, y) \leq 1$$ for all $$x, y,$$ and 
-$$\sum_{x \in Val(X)} \sum_{y \in Val(Y)} P_{XY}(x, y) = 1$$.
 
-How does the joint PMF over two variables relate to the probability mass function for each variable
-separately? It turns out that
-\begin{equation}
-p_X(x) = \sum_y p_{XY} (x, y).
-\end{equation}
-and similarly for $$p_Y (y)$$. In this case, we refer to $$p_X(x)$$ as the **marginal probability mass function**
-of $$X$$. In statistics, the process of forming the marginal distribution with respect to one variable by
-summing out the other variable is often known as “marginalization”.
+{% math %} p_{XY}(x, y) = P(X = x, Y = y). {% endmath %}
+
+Here, $$0 \leq P_{XY}(x, y) \leq 1$$ for all $$x, y,$$ and $$\sum_{x \in Val(X)} \sum_{y \in Val(Y)} P_{XY}(x, y) = 1$$.
+
+How does the joint PMF over two variables relate to the probability mass function for each variable separately? It turns out that
+
+{% math %} p_X(x) = \sum_y p_{XY} (x, y). {% endmath %}
+
+and similarly for $$p_Y(y)$$. In this case, we refer to $$p_X(x)$$ as the **marginal probability mass function** of $$X$$. In statistics, the process of forming the marginal distribution with respect to one variable by summing out the other variable is often known as "marginalization."
 
 ## 3.3 Joint and marginal probability density functions
 
 Let $$X$$ and $$Y$$ be two continuous random variables with joint distribution function $$F_{XY}$$. In the case that $$F_{XY}(x, y)$$ is everywhere differentiable in both $$x$$ and $$y$$, then we can define the joint probability density function,
 
-\begin{equation}
-f_{XY}(x, y) = \frac{∂^2F_{XY}(x, y)}{∂x∂y}
-\end{equation}
+{% math %} f_{XY}(x, y) = \frac{\partial^2F_{XY}(x, y)}{\partial x \partial y} {% endmath %}
 
 Like in the single-dimensional case, $$f_{XY} (x, y) \neq P(X = x, Y = y)$$, but rather
-\begin{equation}
-\int \int_{(x,y) \in A} f_{XY} (x, y)dx dy = P((X, Y ) \in A).
-\end{equation}
-Note that the values of the probability density function $$f_{XY}(x, y)$$ are always nonnegative, but they
-may be greater than 1. Nonetheless, it must be the case that $$\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1$$.
+
+{% math %} \int \int_{(x,y) \in A} f_{XY} (x, y)dx dy = P((X, Y ) \in A). {% endmath %}
+
+Note that the values of the probability density function $$f_{XY}(x, y)$$ are always nonnegative, but they may be greater than 1. Nonetheless, it must be the case that $$\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1$$.
 
 Analagous to the discrete case, we define
-{% math %}
-f_X(x) = \int^{\infty}_{-\infty} f_{XY} (x, y)dy
-{% endmath %}
+
+{% math %} f_X(x) = \int^{\infty}_{-\infty} f_{XY} (x, y)dy {% endmath %}
+
 as the **marginal probability density function** (or **marginal density**) of $$X$$, and similarly for $$f_Y (y)$$.
 
 
 ## 3.4 Conditional distributions
 
-Conditional distributions seek to answer the question, what is the probability distribution over $$Y$$, when we know that $$X$$ must take on a certain value $$x$$? In the discrete case, the conditional probability mass function of $$X$$ given $$Y$$ is simply 
-\begin{equation}
-p_{Y \mid X} (y \mid x) = \frac{p_{XY}(x, y)}{p_X(x)},
-\end{equation}
+Conditional distributions seek to answer the question, what is the probability distribution over $$Y$$, when we know that $$X$$ must take on a certain value $$x$$? In the discrete case, the conditional probability mass function of $$X$$ given $$Y$$ is simply
+
+{% math %} p_{Y \mid X} (y \mid x) = \frac{p_{XY}(x, y)}{p_X(x)}, {% endmath %}
+
 assuming that $$p_X(x) \neq 0$$.
 
-In the continuous case, the situation is technically a little more complicated because the probability that a continuous random variable $$X$$ takes on a specific value $$x$$ is equal to zero. Ignoring this
-technical point, we simply define, by analogy to the discrete case, the *conditional probability density* of $$Y$$ given $$X = x$$ to be
-\begin{equation}
-f_{Y \mid X}(y \mid x) = \frac{f_{XY} (x, y)}{f_X(x)}
-\end{equation}
+In the continuous case, the situation is technically a little more complicated because the probability that a continuous random variable $$X$$ takes on a specific value $$x$$ is equal to zero. Ignoring this technical point, we simply define, by analogy to the discrete case, the *conditional probability density* of $$Y$$ given $$X = x$$ to be
+
+{% math %} f_{Y \mid X}(y \mid x) = \frac{f_{XY} (x, y)}{f_X(x)} {% endmath %}
+
 provided $$f_X(x) \neq 0$$.
 
 ## 3.5 Chain rule
@@ -333,25 +317,26 @@ provided $$f_X(x) \neq 0$$.
 The chain rule we derived earlier for events can be applied to random variables as follows:
 
 {% math %}
-\begin{aligned}
+\begin{align*}
   & p_{X_1, \cdots X_n} (x_1, \cdots, x_n) \\
 = & p_{X_1} (x_1) p_{X_2 \mid X_1} (x_2 \mid x_1) \cdots p_{X_n \mid X_1, \cdots, X_{n-1}} (x_n \mid x_1, \cdots, x_{n-1})
-\end{aligned}
+\end{align*}
 {% endmath %}
 
 ## 3.6 Bayes’s rule
 
-A useful formula that often arises when trying to derive expression for the conditional probability of
-one variable given another, is **Bayes’s rule**.
+A useful formula that often arises when trying to derive expressions for conditional probability is **Bayes’s rule**.
 
-In the case of discrete random variables $$X$$ and $$Y$$ ,
+In the case of discrete random variables $$X$$ and $$Y$$,
+
 {% math %}
-P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y' \in Val(Y)} P_{X \mid Y} (x \mid y') P_Y(y')}
+P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y' \in Val(Y)} P_{X \mid Y} (x \mid y') P_Y(y')}.
 {% endmath %}
 
 If the random variables $$X$$ and $$Y$$ are continuous,
+
 {% math %}
-f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}_{- \infty} f_{X\mid Y} (x \mid y') f_Y (y') dy'}
+f_{Y \mid X}(y\mid x) = \frac{f_{XY}(x, y)}{f_X(x)} = \frac{f_{X \mid Y} (x \mid y) f_Y(y)}{\int^{\infty}_{- \infty} f_{X\mid Y} (x \mid y') f_Y (y') dy'}.
 {% endmath %}
 
 
@@ -364,37 +349,39 @@ Two random variables $$X$$ and $$Y$$ are independent if $$F_{XY} (x, y) = F_X(x)
 
 Informally, two random variables $$X$$ and $$Y$$ are independent if “knowing” the value of one variable will never have any effect on the conditional probability distribution of the other variable, that is, you know all the information about the pair $$(X, Y)$$ by just knowing $$f(x)$$ and $$f(y)$$. The following lemma formalizes this observation:
 
-**Lemma 3.1.** If $$X$$ and $$Y$$ are independent then for any subsets $$A, B \subseteq \mathbb{R}$$, we have,
-\begin{equation}
-P(X \in A, Y \in B) = P(X \in A)P(Y \in B)
-\end{equation}
+**Lemma 3.1.** If $$X$$ and $$Y$$ are independent then for any subsets $$A, B \subseteq \Re$$, we have,
+
+{% math %} P(X \in A, Y \in B) = P(X \in A)P(Y \in B). {% endmath %}
+
 By using the above lemma one can prove that if $$X$$ is independent of $$Y$$ then any function of $$X$$ is independent of any function of $$Y$$.
 
 ## 3.8 Expectation and covariance
 
-Suppose that we have two discrete random variables $$X, Y$$ and $$g : \mathbb{R}^2 \rightarrow \mathbb{R}$$ is a function of these two random variables. Then the expected value of $$g$$ is defined in the following way, 
-\begin{equation}
-E[g(X,Y)] = \sum_{x \in Val(X)} \sum_{y \in Val(Y)} g(x, y)p_{XY}(x, y).
-\end{equation}
+Suppose that we have two discrete random variables $$X, Y$$ and $$g : \Re^2 \rightarrow \Re$$ is a function of these two random variables. Then the expected value of $$g$$ is defined in the following way,
+
+{% math %}
+\E[g(X,Y)] = \sum_{x \in Val(X)} \sum_{y \in Val(Y)} g(x, y)p_{XY}(x, y).
+{% endmath %}
 
 For continuous random variables $$X, Y$$, the analogous expression is
+
 {% math %}
-E[g(X, Y)] = \int^{\infty}_{-\infty} \int^{\infty}_{-\infty} g(x, y)f_{XY}(x, y)dxdy.
+\E[g(X, Y)] = \int^{\infty}_{-\infty} \int^{\infty}_{-\infty} g(x, y)f_{XY}(x, y)dxdy.
 {% endmath %}
 
 We can use the concept of expectation to study the relationship of two random variables with each other. In particular, the covariance of two random variables $$X$$ and $$Y$$ is defined as
-{% math %}
-Cov[X, Y] = E[(X − E[X])(Y − E[Y])]
-{% endmath %}
+
+{% math %} Cov[X, Y] = \E[(X − \E[X])(Y − \E[Y])] {% endmath %}
 
 Using an argument similar to that for variance, we can rewrite this as,
+
 {% math %}
-\begin{aligned}
-Cov[X, Y] & = E[(X − E[X])(Y − E[Y])] \\
-& = E[XY − XE[Y] − Y E[X] + E[X]E[Y]] \\
-& = E[XY] − E[X]E[Y] − E[Y]E[X] + E[X]E[Y] \\
-& = E[XY] − E[X]E[Y].
-\end{aligned}
+\begin{align*}
+Cov[X, Y] & = \E[(X − \E[X])(Y − \E[Y])] \\
+& = \E[XY − X\E[Y] − Y \E[X] + \E[X]\E[Y]] \\
+& = \E[XY] − \E[X]\E[Y] − \E[Y]\E[X] + \E[X]\E[Y] \\
+& = \E[XY] − \E[X]\E[Y].
+\end{align*}
 {% endmath %}
 
 Here, the key step in showing the equality of the two forms of covariance is in the third equality, where we use the fact that $$\E[X]$$ and $$\E[Y]$$ are actually constants which can be pulled out of the expectation. When $$Cov[X, Y] = 0$$, we say that $$X$$ and $$Y$$ are uncorrelated.
