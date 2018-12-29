@@ -15,9 +15,10 @@ nav_exclude: true
 @import "../_sass/settings";
 @import "../_sass/syntax-highlighting";
 
-// Global Resets
-//
-* { margin: 0; padding: 0; }
+// global resets
+* { margin: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
 
 /* clearfix hack after Cederholm (group class name) */
 .group:after {
@@ -25,8 +26,6 @@ nav_exclude: true
   display: table;
   clear: both;
 }
-
-html, body { height: 100%; }
 
 
 // variable font size
@@ -45,7 +44,7 @@ html {
   font-size: 1.5rem;
 }
 
-body { width: 87.5%;
+body { width: 100%;  // was 87.5%, but changed to 100% because now border-box
        margin-left: auto;
        margin-right: auto;
        padding-left: 12.5%;
@@ -195,7 +194,6 @@ li .sidenote, li .marginnote{ margin-right: -80%; }
 p, footer, div.table-wrapper, div.mathblock { width: 55%; }
 blockquote .sidenote, blockquote .marginnote { margin-right: -79% } // -82%
 
-div.table-wrapper { overflow-x: auto; } //changed all overflow values to 'auto' so scroll bars appear only as needed
 // remove div.fullwidth, table.fullwidth
 
 .sans { font-family: $sans-font;
@@ -299,6 +297,9 @@ ul, ol { width: 45%;
 }
 
 ul li { margin-bottom: 0.5em; } // vertical padding on list items screws up vertical rhythym
+
+div.table-wrapper { overflow-x: auto; } // changed all overflow values to 'auto' so scroll bars appear only as needed
+
 @media (max-width: 760px) { label.margin-toggle:not(.sidenote-number) { display: inline; color: $contrast-color; }
                             .sidenote, .marginnote { display: none; }
                             .margin-toggle:checked + .sidenote,
