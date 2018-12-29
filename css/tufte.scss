@@ -199,16 +199,6 @@ blockquote .sidenote, blockquote .marginnote { margin-right: -79% } // -82%
 .sans { font-family: $sans-font;
         letter-spacing: .03em; }
 
-@media screen and (max-width: 760px) { p, footer,div.mathblock { width: 90%; }
-                                       pre code { width: 87.5%; }
-                                       ul { width: 85%; }
-                                       figure { max-width: 90%; }
-                                       figcaption, figure.fullwidth figcaption { margin-right: 0%;
-                                                                                 max-width: none; }
-                                       blockquote p, blockquote footer {  width: 80%;
-                                                                          padding-left: 5%;
-                                                                          padding-right: 5%;
-                                                                        }}
 // Markdown code blocks (```, ~~~, or indented blocks) are always <pre><code></code></pre>
 // Markdown code spans (`, ``) are always <p><code></code></p>
 pre, pre code, p code { font-family: $code-font;
@@ -299,6 +289,19 @@ ul, ol { width: 45%;
 ul li { margin-bottom: 0.5em; } // vertical padding on list items screws up vertical rhythym
 
 div.table-wrapper { overflow-x: auto; } // changed all overflow values to 'auto' so scroll bars appear only as needed
+
+@media screen and (max-width: 760px) {
+    /*article > p, article > footer, article > div.MathJax_Display { width: 90%; }*/
+    article > p, article > footer, div.mathblock { width: 90%; }
+    pre code { width: 87.5%; }
+    ul { width: 85%; }
+    figure { max-width: 90%; }
+    figcaption, figure.fullwidth figcaption { margin-right: 0%;
+                                              max-width: none; }
+    blockquote p, blockquote footer { width: 80%;
+                                      padding-left: 5%;
+                                      padding-right: 5%; }
+}
 
 @media (max-width: 760px) { label.margin-toggle:not(.sidenote-number) { display: inline; color: $contrast-color; }
                             .sidenote, .marginnote { display: none; }
