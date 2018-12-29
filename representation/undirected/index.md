@@ -69,7 +69,7 @@ They also possess several important drawbacks:
 - It is much easier to generate data from a Bayesian network, which is important in some applications.
 
 It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique factor (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called *moralization*.
-{% include maincolumn_img.html url='assets/img/moralization.png' description='A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.' %}
+{% include maincolumn_img.html src='assets/img/moralization.png' caption='A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.' %}
 
 Thus, MRFs have more power than Bayesian networks, but are more difficult to deal with computationally. A general rule of thumb is to use Bayesian networks whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).
 
@@ -82,13 +82,13 @@ What independencies can be then described by an undirected MRF? The answer here 
 
 In particular, if a set of observed variables forms a cut-set between two halves of the graph, then variables in one half are independent from ones in the other.
 
-{% include maincolumn_img.html url='assets/img/cutset.png' description='' %}
+{% include maincolumn_img.html src='assets/img/cutset.png' description='' %}
 
 Formally, we define the *Markov blanket* $$U$$ of a variable $$X$$ as the minimal set of nodes such that $$X$$ is independent from the rest of the graph if $$U$$ is observed, i.e. $$X \perp (\mathcal{X} - \{X\} - U) \mid U$$. This notion holds for both directed and undirected models, but in the undirected case the Markov blanket turns out to simply equal a node's neighborhood.
 
 In the directed case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$G$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
 
-{% include maincolumn_img.html url='assets/img/mrf-bn-comparison.png' description='Examples of probability distributions that have a perfect directed graphical representation but no undirected representation, and vice-versa.' %}
+{% include maincolumn_img.html src='assets/img/mrf-bn-comparison.png' caption='Examples of probability distributions that have a perfect directed graphical representation but no undirected representation, and vice-versa.' %}
 
 
 ## Conditional Random Fields
@@ -99,7 +99,7 @@ An important special case of Markov Random Fields arises when they are applied t
 
 As a motivating example, consider the problem of recognizing a word from a sequence of character images $$x_i \in [0, 1]^{d\times d}$$ given to us in the form of pixel matrices. The output of our predictor will be a sequence of alphabet letters $$y_i \in \{'a','b',...,'z'\}$$.
 
-{% include maincolumn_img.html url='assets/img/ocr.png' description='Chain-structured conditional random field for optical character recognition.' %}
+{% include maincolumn_img.html src='assets/img/ocr.png' caption='Chain-structured conditional random field for optical character recognition.' %}
 
 We could in principle train a classifier to separately predict each $$y_i$$ from its $$x_i$$. However, since the letters together form a word, the predictions across different $$i$$ ought to inform each other. In the above example, the second letter by itself could be either a 'U' or a 'V'; however, since we can tell with high confidence that its neighbors are 'Q' and 'E', we can infer that 'U' is the most likely true label. CRFs are a tool that will enable us to perform this prediction jointly.
 
@@ -148,7 +148,7 @@ This observation may be interpreted in a slightly more general form. If we were 
 
 It is often useful to view MRFs in a way where factors and variables are explicit and separate in the representation. A factor graph is one such way to do this. A factor graph is a bipartite graph where one group is the variables in the distribution being modeled, and the other group is the factors defined on these variables. Edges go between factors and variables that those factors depend on.
 
-{% include maincolumn_img.html url='assets/img/factor-graph.png' description='Example of a factor graph with three variables and four factors.' %}
+{% include maincolumn_img.html src='assets/img/factor-graph.png' caption='Example of a factor graph with three variables and four factors.' %}
 
 This view allows us to more readily see the factor dependencies between variables, and later we'll see it allows us to compute some probability distributions more easily.
 

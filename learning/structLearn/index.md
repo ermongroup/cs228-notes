@@ -52,17 +52,17 @@ The algorithm has three steps:
  MI(X,U) =\sum_{x,u} \hat p(x,u)\log\left[\frac{\hat{p} (x,u)}{\hat p(x) \hat p(u)}\right]
  {% endmath %}
  
- {% include maincolumn_img.html url='assets/img/mi-graph.png' %}
+ {% include maincolumn_img.html src='assets/img/mi-graph.png' %}
  
  Remember that from our empirical distribution $$\hat p(x,u) = \frac{Count(x,u)}{\# \text{ data points}}$$.
 
 2) Find the **maximum** weight spanning tree: the maximal-weight tree that connects all vertices in a graph. This can be found using Kruskal or Prim Algorithms.
 
- {% include maincolumn_img.html url='assets/img/max-spanning-tree.png' %}
+ {% include maincolumn_img.html src='assets/img/max-spanning-tree.png' %}
  
 3) Pick any node, and assign directions rading outward from node (arrows go away from it).
 
- {% include maincolumn_img.html url='assets/img/chow-liu-tree.png' %}
+ {% include maincolumn_img.html src='assets/img/chow-liu-tree.png' %}
  
 The Chow-Liu Algorithm has a complexity of order $$n^2$$, as it takes $$O(n^2)$$ to compute mutual information for all pairs, and $$O(n^2)$$ to compute the maximum spanning tree. 
 

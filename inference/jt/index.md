@@ -16,7 +16,7 @@ We will introduce two variants of this algorithm: belief propagation, and then t
 
 ### Variable elimination as message passing
 
-First, consider what happens if we run the VE algorithm on a tree in order to compute a marginal $$p(x_i)$$. We can easily find an optimal ordering for this problem by rooting the tree at $$x_i$$ and iterating through the nodes in post-order{% sidenote 1 'A postorder traversal of a rooted tree is one that starts from the leaves and goes up the tree such that a node is always visited after all of its children. The root is visited last.'%}.
+First, consider what happens if we run the VE algorithm on a tree in order to compute a marginal $$p(x_i)$$. We can easily find an optimal ordering for this problem by rooting the tree at $$x_i$$ and iterating through the nodes in post-order{% include sidenote.html id="note-postorder" note="A postorder traversal of a rooted tree is one that starts from the leaves and goes up the tree such that a node is always visited after all of its children. The root is visited last." %}.
 
 This ordering is optimal because the largest clique that formed during VE will be of size 2. At each step, we will eliminate $$x_j$$; this will involve computing the factor $$\tau_k(x_k) = \sum_{x_j} \phi(x_k, x_j) \tau_j(x_j)$$, where $$x_k$$ is the parent of $$x_j$$ in the tree. At a later step, $$x_k$$ will be eliminated, and $$\tau_k(x_k)$$ will be passed up the tree to the parent $$x_l$$ of $$x_k$$ in order to be multiplied by the factor $$\phi(x_l, x_k)$$ before being marginalized out. We can visualize this transfer of information using arrows on a tree.
 {% include marginfigure.html id="mp1" url="assets/img/mp1.png" description="Message passing order when using VE to compute $$p(x_3)$$ on a small tree." %}
@@ -25,7 +25,7 @@ In a sense, when $$x_k$$ is marginalized out, it receives all the signal from va
 
 At the end of the VE run, $$x_i$$ receives messages from all of its immediate children, marginalizes them out, and we obtain the final marginal.
 
-Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all messages from its children. The key insight here is that the messages $$x_k$$ will receive from $$x_j$$ will be the same as when $$x_i$$ was the root{% sidenote 1 'Another reason why this is true is because there is only a single path connecting two nodes in the tree.'%}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
+Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all messages from its children. The key insight here is that the messages $$x_k$$ will receive from $$x_j$$ will be the same as when $$x_i$$ was the root{% include sidenote.html id="note-ve" note="Another reason why this is true is because there is only a single path connecting two nodes in the tree." %}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
 
 ### A message-passing algorithm
 
@@ -55,7 +55,7 @@ The sum-product message passing variant of belief propgation can also be applied
 
 On factor graphs, we have two types of messages: variable-to-factor messages $$\nu$$ and factor-to-variable messages $$\mu$$.
 
-{% include maincolumn_img.html url='assets/img/factor-graph-messages.png' %}
+{% include maincolumn_img.html src='assets/img/factor-graph-messages.png' %}
 
 Both messages require taking a product, but only the factor-to-variable messages $$\mu$$ require a sum.
 
@@ -114,7 +114,7 @@ p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c),
 {% endmath %}
 
 Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, ..., x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(j)}$$ and $$x_c^{(k)}$$. We refer to this assumption as the *running intersection* property (RIP).
-{% include maincolumn_img.html url='assets/img/junctionpath.png' description='A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques' %}
+{% include maincolumn_img.html src='assets/img/junctionpath.png' caption='A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques' %}
 
 Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to "push in" certain variables deeper into the product of cluster potentials:
 
@@ -141,7 +141,7 @@ A junction tree $$T=(C, E_T)$$ over $$G = (\Xc, E_G)$$ is a tree whose nodes $$c
 
 Here is an example of an MRF with graph $$G$$ and junction tree $$T$$. MRF potentials are denoted using different colors; circles indicates nodes of the junction trees; rectangular nodes represent *sepsets* (short for "separation sets"), which are sets of variables shared by neighboring clusters.
 
-{% include maincolumn_img.html url='assets/img/junctiontree.png' description='An MRF with graph G and its junction tree T.' %}
+{% include maincolumn_img.html src='assets/img/junctiontree.png' caption='An MRF with graph G and its junction tree T.' %}
 {% include marginfigure.html id='jtt' url='assets/img/jt-over-tree.png' description='A junction tree defined over a tree graph. Clusters correspond to edges.' %}
 {% include marginfigure.html id='bjt' url='assets/img/badjunctiontree.png' description='Example of an invalid junction tree that does not satisfy the running intersection property.' %}
 
@@ -165,14 +165,14 @@ Then, at each step of the algorithm, we choose a pair of adjacent clusters $$c^{
 m_{i\to j}(S_{ij}) = \sum_{x_c \backslash S_{ij}} \psi_c(x_c) \prod_{\ell \in N(i) \backslash j} m_{\ell \to i}(S_{\ell i}).
 {% endmath %}
 
-We choose $$c^{(i)}, c^{(j)}$$ only if $$c^{(i)}$$ has received messages from all of its neighbors except $$c^{(j)}$$. Just as in belief propagation, this procedure will terminate in exactly {%m%}2|E_T|{%em%} steps. After it terminates, we will define the belief of each cluster based on all the messages that it receives
+We choose $$c^{(i)}, c^{(j)}$$ only if $$c^{(i)}$$ has received messages from all of its neighbors except $$c^{(j)}$$. Just as in belief propagation, this procedure will terminate in exactly $$2 \lvert E_T \rvert$$ steps. After it terminates, we will define the belief of each cluster based on all the messages that it receives
 {% math %}
 \beta_c(x_c) = \psi_c(x_c) \prod_{\ell \in N(i)} m_{\ell \to i}(S_{\ell i}).
 {% endmath %}
 
-These updates are often referred to as *Shafer-Shenoy*. After all the messages have been passed, beliefs will be proportional to the marginal probabilities over their scopes, i.e. $$\beta_c(x_c) \propto p(x_c)$$. We may answer queries of the form $$\tp(x)$$ for $$x \in x_c$$ by marginalizing out the variable in its belief{% sidenote 1 'Readers familiar with combinatorial optimization will recognize this as a special case of dynamic programming on a tree decomposition of a graph with bounded treewidth.'%}
+These updates are often referred to as *Shafer-Shenoy*. After all the messages have been passed, beliefs will be proportional to the marginal probabilities over their scopes, i.e. $$\beta_c(x_c) \propto p(x_c)$$. We may answer queries of the form $$\tp(x)$$ for $$x \in x_c$$ by marginalizing out the variable in its belief{% include sidenote.html id="note-dp" note="Readers familiar with combinatorial optimization will recognize this as a special case of dynamic programming on a tree decomposition of a graph with bounded treewidth." %}
 {% math %}
-\tp(x) \propto \sum_{x_c \backslash x} \beta_c(x_c) .
+\tp(x) \propto \sum_{x_c \backslash x} \beta_c(x_c).
 {% endmath %}
 To get the actual (normalized) probability, we divide by the partition function $$Z$$ which is computed by summing all the beliefs in a cluster, $$Z = \sum_{x_c} \beta_c(x_c)$$.
 
@@ -183,7 +183,7 @@ Note that this algorithm makes it obvious why we want small clusters: the runnin
 Why does this method work? First, let us convince ourselves that running variable elimination with a certain ordering is equivalent to performing message passing on the junction tree; then, we will see that the junction tree algorithm is just a way of precomputing these messages and using them to answer queries.
 
 Suppose we are performing variable elimination to compute $$\tp(x')$$ for some variable $$x'$$, where $$\tp = \prod_{c \in C} \psi_c$$. Let $$c^{(i)}$$ be a cluster containing $$x'$$; we will perform VE with the ordering given by the structure of the tree rooted at $$c^{(i)}$$. In the example below, say that we choose to eliminate the $$b$$ variable, and we set $$(a,b,c)$$ as the root cluster.
-{% include maincolumn_img.html url='assets/img/junctiontree.png' description='An MRF with graph G and its junction tree T.' %}
+{% include maincolumn_img.html src='assets/img/junctiontree.png' caption='An MRF with graph G and its junction tree T.' %}
 
 First, we pick a set of variables $$x_{-k}$$ in a leaf $$c^{(j)}$$ of $$T$$ that does not appear in the sepset $$S_{kj}$$ between $$c^{(j)}$$ and its parent $$c^{(k)}$$ (if there is no such variable, we may multiply $$\psi(x_c^{(j)})$$ and $$\psi(x_c^{(k)})$$ into a new factor with a scope not larger than that of the initial factors). In our example, we may pick the variable $$f$$ in the factor $$(b,e,f)$$.
 
@@ -213,8 +213,7 @@ Loopy belief propagation (LBP) is another technique for performing inference on 
 
 ### Definition for pairwise models
 
-Suppose that we are given an MRF with pairwise potentials{% sidenote 1 'Arbitrary potentials can be handled using an algorithm called LBP on *factor graphs*. We will include this material at some point in the future'%}.
-The main idea of LBP is to disregard loops in the graph and perform message passing anyway. In other words, given an ordering on the edges, at each time $$t$$ we iterate over a pair of adjacent variables $$x_i, x_j$$ in that order and simply perform the update
+Suppose that we are given an MRF with pairwise potentials{% include sidenote.html id="note-factorgraphs" note="Arbitrary potentials can be handled using an algorithm called LBP on *factor graphs*. We will include this material at some point in the future." %}. The main idea of LBP is to disregard loops in the graph and perform message passing anyway. In other words, given an ordering on the edges, at each time $$t$$ we iterate over a pair of adjacent variables $$x_i, x_j$$ in that order and simply perform the update
 {% math %}
 m^{t+1}_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \setminus j} m^{t}_{\ell \to i}(x_i).
 {% endmath %}

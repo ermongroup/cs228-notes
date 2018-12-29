@@ -78,7 +78,7 @@ Knowing the probability distribution can also help us model natural langauge utt
 <a id="text-generation"></a>
 ### Generation
 
-Let's say that we have constructed a distribution of word sequences from Wikipedia articles.  We can then sample from this distribution to generate new Wikipedia-like articles like the one below{% sidenote 1 'From [The Unreasonable Effectiveness of Recurrent Neural Networks](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)'%}.
+Let's say that we have constructed a distribution of word sequences from Wikipedia articles. We can then sample from this distribution to generate new Wikipedia-like articles like the one below{% include sidenote.html id="note_wikipedia" note="From [The Unreasonable Effectiveness of Recurrent Neural Networks](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)" %}.
 
 > Naturalism and decision for the majority of Arab countries' capitalide was grounded
 by the Irish language by [[John Clair]], [[An Imperial Japanese Revolt]], associated 

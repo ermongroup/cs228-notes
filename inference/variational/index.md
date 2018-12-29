@@ -65,7 +65,7 @@ J(q)
 & = KL(q||p) - \log Z(\theta)
 \end{align*}
 {% endmath %}
-Since {%m%} KL(q||p) \geq 0 {%em%}, we get by rearranging terms that 
+Since $$ KL(q||p) \geq 0 $$, we get by rearranging terms that 
 {% math %}
 \log Z(\theta) = KL(q||p) - J(q) \geq -J(q).
 {% endmath %}
@@ -75,7 +75,7 @@ Thus, $$-J(q)$$ is a *lower bound* on the partition function $$Z(\theta)$$. In m
 Because of this property, $$-J(q)$$ is called the variational lower bound or the evidence lower bound (ELBO); it often written in the form
 
 {% math %}
-\log Z(\theta) \geq \mathbb{E}_{q(x)} \left[ \log \tilde p(x) - \log q(x) \right].
+\log Z(\theta) \geq \E_{q(x)} \left[ \log \tilde p(x) - \log q(x) \right].
 {% endmath %}
 
 Crucially, the difference between $$\log Z(\theta)$$ and $$-J(q)$$ is precisely $$KL(q||p)$$. Thus, by maximizing the evidence-lower bound, we are minimizing $$KL(q||p)$$ by "squeezing" it between $$-J(q)$$ and $$\log Z(\theta)$$.
@@ -88,17 +88,17 @@ Recall how we said earlier that $$KL(q||p) \neq KL(p||q)$$; both divergences equ
 
 Perhaps the most important difference is computational: optimizing $$KL(q||p)$$ involves an expectation with respect to $$q$$, while $$KL(p||q)$$ requires computing expectations with respect to $$p$$, which is typically intractable even to evaluate.
 
-However, choosing this particular divergence affects the returned solution when the approximating family $$\mathcal{Q}$$ does not contain the true $$p$$. Observe that {%m%}KL(q||p){%em%} --- which is called the I-projection or information projection --- is infinite if $$p(x) = 0$$ and $$q(x) > 0$$:
+However, choosing this particular divergence affects the returned solution when the approximating family $$\mathcal{Q}$$ does not contain the true $$p$$. Observe that $$KL(q||p)$$ --- which is called the I-projection or information projection --- is infinite if $$p(x) = 0$$ and $$q(x) > 0$$:
 {% math %}
 KL(q||p) = \sum_x q(x) \log \frac{q(x)}{p(x)}.
 {% endmath %}
-This means that if $$p(x) = 0$$ we must have $$q(x) = 0$$. We say that {%m%}KL(q||p){%em%} is zero-forcing for $$q$$ and it will typically under-estimate the support of $$q$$.
+This means that if $$p(x) = 0$$ we must have $$q(x) = 0$$. We say that $$KL(q||p)$$ is zero-forcing for $$q$$ and it will typically under-estimate the support of $$q$$.
 
 On the other hand, $$KL(p||q)$$ --- known as the M-projection or the moment projection --- is infinite if $$q(x) = 0$$ and $$p(x) > 0$$. Thus, if $$p(x) > 0$$ we must have $$q(x) > 0$$. We say that $$KL(p||q)$$ is zero-avoiding for $$q$$ and it will typically over-estimate the support of $$q$$.
 
 The figure below illustrates this phenomenon graphically.
 
-{% include maincolumn_img.html url='assets/img/kldiv.png' description='Fitting a unimodal approximating distribution q (red) to a multimodal p (blue). Using KL(p||q) leads to a q that tries to cover both modes (a). However, using KL(q||p) forces q to choose one of the two modes of p (b, c).' %}
+{% include maincolumn_img.html src='assets/img/kldiv.png' caption='Fitting a unimodal approximating distribution q (red) to a multimodal p (blue). Using KL(p||q) leads to a q that tries to cover both modes (a). However, using KL(q||p) forces q to choose one of the two modes of p (b, c).' %}
 
 Due to the properties that we just described, we often call $$KL(p||q)$$ the *inclusive* KL divergence, while $$KL(q||p)$$ is the *exclusive* KL divergence.
 
@@ -118,7 +118,7 @@ The standard way of performing this optimization problem is via coordinate desce
 Interestingly, the optimization problem for one coordinate has a simple closed form solution:
 {% math %}
 \begin{align*}
-\log q_j(x_j) \gets \mathbb{E}_{q_{-j}} \left[ \log \tilde p (x) \right] + \textrm{const.}
+\log q_j(x_j) \gets \E_{q_{-j}} \left[ \log \tilde p (x) \right] + \textrm{const.}
 \end{align*}
 {% endmath %}
 
@@ -159,11 +159,11 @@ Given this notation, we can write our objective as
 {% math %}
 \begin{align*}
 -J(x) 
-& = \mathbb{E}_{q(x)} \left[ \theta^T \psi(x) - \log q(x) \right] \\
+& = \E_{q(x)} \left[ \theta^T \psi(x) - \log q(x) \right] \\
 & = \theta^T \mu - H(\mu),
 \end{align*}
 {% endmath %}
-where $$H(\mu) = \mathbb{E}_{q(x)} \log q(x)$$ denotes the entropy of $$q(x)$$ and $$\mu = \mathbb{E}_{q(x)} \psi(x)$$ is called the vector of moments. The key observation here is that instead of optimizing over $$q$$, we can equivalently optimize over the set of *valid moments* $$\mu$$.
+where $$H(\mu) = \E_{q(x)} \log q(x)$$ denotes the entropy of $$q(x)$$ and $$\mu = \E_{q(x)} \psi(x)$$ is called the vector of moments. The key observation here is that instead of optimizing over $$q$$, we can equivalently optimize over the set of *valid moments* $$\mu$$.
 
 But which moments are valid? These are the ones that correspond to some probability distribution, i.e. they are in the set
 {% math %}

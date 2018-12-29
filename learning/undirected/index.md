@@ -3,8 +3,7 @@ layout: post
 title: Learning in undirected models
 ---
 
-Let us now look at parameter learning in undirected graphical models.
-Unfortunately, as in the case of inference, the higher expressivity of undirected models also makes them significantly more difficult to deal with. Fortunately, maximum likelihood learning in these models can be reduced to repeatedly performing inference, which will allow us to apply all the approximate inference techniques that we have seen earlier.
+Let us now look at parameter learning in undirected graphical models. Unfortunately, as in the case of inference, the higher expressivity of undirected models also makes them significantly more difficult to deal with. Fortunately, maximum likelihood learning in these models can be reduced to repeatedly performing inference, which will allow us to apply all the approximate inference techniques that we have seen earlier.
 
 ## Learning Markov random fields
 
@@ -37,8 +36,7 @@ Bayesian networks are constructed such that $$Z(\theta) = 1$$ for all $$\theta$$
 
 More generally, distributions of this form are members of the *exponential family* of distributions, about which you can learn more in CS229. Many other distributions are in the exponential family, including the Bernoulli, Multinomial, Normal, Poisson, and many other distributions. 
 
-Exponential families are widely used in machine learning{% sidenote 1 'We refer the reader to the CS229 course notes for a more thorough presentation of this topic.'%}. 
-Suppose that you have an exponential family distribution of the form{% sidenote 1 'Actually, exponential families have a slightly more general form, but this one will be enough for our purposes'%}
+Exponential families are widely used in machine learning{% include sidenote.html id="note-expfam1" note="We refer the reader to the CS229 course notes for a more thorough presentation of this topic." %}. Suppose that you have an exponential family distribution of the form{% include sidenote.html id="note-expfam2" note="Actually, exponential families have a slightly more general form, but this one will be enough for our purposes" %}
 {% math %}
 p(x; \theta) = \frac{\exp(\theta^T f(x))}{Z(\theta)}.
 {% endmath %}
@@ -46,7 +44,7 @@ Here are few facts about these distributions that you should know about.
 
 - Exponential families are log-concave in their *natural parameters* $$\theta$$. The partition function $$Z(\theta)$$ is also log-convex in $$\theta$$.
 - The vector $$f(x)$$ is called the vector of *sufficient statistics*; these fully describe the distribution $$p$$; e.g. if $$p$$ is Gaussian, $$f(x)$$ contains (simple reparametrizations of) the mean and the variance of $$p$$.
-- Exponential families make the fewest unnecessary assumptions about the data distribution. More formally, the distribution maximizing the entropy $$H(p)$$ under the constraint $$\mathbb{E}_p[\phi(x)] = \alpha$$ (i.e. the sufficient statistics equal some value $$\alpha$$) is in the exponential family.
+- Exponential families make the fewest unnecessary assumptions about the data distribution. More formally, the distribution maximizing the entropy $$H(p)$$ under the constraint $$\E_p[\phi(x)] = \alpha$$ (i.e. the sufficient statistics equal some value $$\alpha$$) is in the exponential family.
 
 Exponential families are also very convenient to work with computationally. 
 Their sufficient statistics can summarize arbitrary amounts of i.i.d. variables from the same distribution, and they admit so-called conjugate priors which makes them easily applicable in variational inference.
@@ -89,7 +87,7 @@ Interestingly, however, maximum-likelihood learning reduces to inference in the 
 This observation lets us apply to learning many of the approximate inference methods that we have seen in previous chapters, such as:
 
 - Gibbs sampling from the distribution at each step of gradient descent; we then approximate the gradient using Monte-Carlo.
-- Persistent contrastive divergence{%sidenote 1 '[Persistent contrastive divergence](http://www.cs.utoronto.ca/~tijmen/pcd/pcd.pdf) (PCD) is one of the most popular methods for training [Restricted Boltzmann Machines](https://en.wikipedia.org/wiki/Restricted_Boltzmann_machine) (RBMs), a very important deep learning model that is also an undirected graphical model. Have a look at this great practical [tutorial](http://deeplearning.net/tutorial/rbm.html) on RBMs.'%}, a variant of Gibbs sampling which re-uses the same Markov Chain between iterations. After a step of gradient descent, our model has changed very little: hence we can essentially keep taking samples from the same Gibbs sampler, instead of starting a new one from scratch.
+- Persistent contrastive divergence{%include sidenote.html id="note-pcd" note="[Persistent contrastive divergence](http://www.cs.utoronto.ca/~tijmen/pcd/pcd.pdf) (PCD) is one of the most popular methods for training [Restricted Boltzmann Machines](https://en.wikipedia.org/wiki/Restricted_Boltzmann_machine) (RBMs), a very important deep learning model that is also an undirected graphical model. Have a look at this great practical [tutorial](http://deeplearning.net/tutorial/rbm.html) on RBMs." %}, a variant of Gibbs sampling which re-uses the same Markov Chain between iterations. After a step of gradient descent, our model has changed very little: hence we can essentially keep taking samples from the same Gibbs sampler, instead of starting a new one from scratch.
 
 ### Pseudo-likelihood
 

@@ -93,11 +93,11 @@ section { padding-top: 1rem;
           padding-bottom: 1rem; }
 
 p, ol, ul { font-size: 1.4rem;
-            line-height: 2rem; }
+            line-height: 2rem;
+            margin-top: 1.4rem;
+            margin-bottom: 1.4rem; }
 
-p { margin-top: 1.4rem;
-    margin-bottom: 1.4rem;
-    padding-right: 0;
+p { padding-right: 0;
     vertical-align: baseline; }
 
 // remove div.epigraph styling
@@ -114,6 +114,7 @@ blockquote footer { width: 50%; // 55%
                     font-size: 1.1rem;
                     text-align: right; }
 
+article > p, article > footer, article > div.mathblock, article > table { width: 55%; }
 
 // remove li:not(:first-child) styling
 
@@ -191,7 +192,6 @@ li .sidenote, li .marginnote{ margin-right: -80%; }
                    color: $contrast-color;
                    top: 0rem; } // removed superscripting for numerical reference in sidenote
 
-p, footer, div.table-wrapper, div.mathblock { width: 55%; }
 blockquote .sidenote, blockquote .marginnote { margin-right: -79% } // -82%
 
 // remove div.fullwidth, table.fullwidth
@@ -281,10 +281,7 @@ caption, .booktabs caption { font-size: 90%;
 
 /* Basic Layout stuff --*/
 
-ul, ol { width: 45%;
-         margin-top: 1.4rem;
-         margin-bottom: 1.4rem;
-}
+ul, ol { width: 50%; }
 
 ul li { margin-bottom: 0.5em; } // vertical padding on list items screws up vertical rhythym
 
@@ -294,7 +291,7 @@ div.table-wrapper { overflow-x: auto; } // changed all overflow values to 'auto'
     /*article > p, article > footer, article > div.MathJax_Display { width: 90%; }*/
     article > p, article > footer, div.mathblock { width: 90%; }
     pre code { width: 87.5%; }
-    ul { width: 85%; }
+    ul, ol { width: 85%; }
     figure { max-width: 90%; }
     figcaption, figure.fullwidth figcaption { margin-right: 0%;
                                               max-width: none; }

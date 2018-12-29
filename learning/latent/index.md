@@ -5,8 +5,7 @@ title: Learning in latent variable models
 
 Up to now, we have assumed that when learning a directed or an undirected model, we are given examples of every single variable that we are trying to model.
 
-However, that may not always be the case. Consider for example a probabilistic language model of news articles{% sidenote 1 'A language model $$p$$ assigns probabilities to sequences of words $$x_1,...,x_n$$. We can, among other things, sample from $$p$$ to generate various kinds of sentences.'%}. Each article $$x$$ typically focuses on a specific topic $$t$$, e.g. finance, sports, politics. 
-Using this prior knowledge, we may build a more accurate model $$p(x|t)p(t)$$, in which we have introduced an additional, unobserved variable $$t$$. This model can be more accurate, because we can now learn a separate $$p(x|t)$$ for each topic, rather than trying to model everything with one $$p(x)$$.
+However, that may not always be the case. Consider for example a probabilistic language model of news articles{% include sidenote.html id="note-model" note="A language model $$p$$ assigns probabilities to sequences of words $$x_1,...,x_n$$. We can, among other things, sample from $$p$$ to generate various kinds of sentences." %}. Each article $$x$$ typically focuses on a specific topic $$t$$, e.g. finance, sports, politics. Using this prior knowledge, we may build a more accurate model $$p(x|t)p(t)$$, in which we have introduced an additional, unobserved variable $$t$$. This model can be more accurate, because we can now learn a separate $$p(x|t)$$ for each topic, rather than trying to model everything with one $$p(x)$$.
 
 However, since $$t$$ is unobserved, we cannot directly use the learning methods that we have so far. In fact, the unobserved variables make learning much more difficult; in this chapter, we will look at how to use and how to learn models that involve latent variables.
 
@@ -40,7 +39,7 @@ p(x) = \sum_{k=1}^K p(x|z=k)p(z=k) = \sum_{k=1}^K \pi_k \mathcal{N}(x; \mu_k, \S
 {%endmath%}
 To generate a new data point, we sample a cluster $$k$$ and then sample its Gaussian $$\mathcal{N}(x; \mu_k, \Sigma_k)$$.
 
-{% include maincolumn_img.html url='assets/img/gmm2.png' description='Example of a Gaussian mixture model, consisting of three components with different class proportions (a). The true class of each point is unobserved, so the distribution over $x$ looks like in (b); it is both multi-modal and non-Gaussian. Visualizing it in 3D shows the effects of class proportions on the magnitudes of the modes.' %}
+{% include maincolumn_img.html src='assets/img/gmm2.png' caption='Example of a Gaussian mixture model, consisting of three components with different class proportions (a). The true class of each point is unobserved, so the distribution over $x$ looks like in (b); it is both multi-modal and non-Gaussian. Visualizing it in 3D shows the effects of class proportions on the magnitudes of the modes.' %}
 
 ### Why are latent variable models useful?
 
@@ -73,7 +72,7 @@ This non-convexity requires the development of specialized learning algorithms.
 
 ## Learning latent variable models
 
-Since the objective is non-convex, we will resort to approximate learning algorithms. These methods are widely used in practice and are quite effective{%sidenote 1 'Note however, that (quite surprisingly), many latent variable models (like GMMs) admit algorithms that can compute the global optimum of the maximum likelihood objective, even though it is not convex. Such methods are covered at the end of CS229T.'%}.
+Since the objective is non-convex, we will resort to approximate learning algorithms. These methods are widely used in practice and are quite effective{% include sidenote.html id="note-cs229t" note="Note however, that (quite surprisingly), many latent variable models (like GMMs) admit algorithms that can compute the global optimum of the maximum likelihood objective, even though it is not convex. Such methods are covered at the end of CS229T." %}.
 
 ### The Expectation-Maximization algorithm
 
@@ -120,7 +119,7 @@ At the M-step, we optimize the expected log-likelihood of our model.
 {%math%}
 \begin{align*}
 \theta_{t+1} 
-& = \arg \max_{\theta} \sum_{x \in D} \mathbb{E}_{z \sim p(z|x; \theta_{t})} \log p(x,z; \theta) \\
+& = \arg \max_{\theta} \sum_{x \in D} \E_{z \sim p(z|x; \theta_{t})} \log p(x,z; \theta) \\
 & = \arg \max_{\theta} \sum_{k=1}^K \sum_{x \in D} p(z_k|x; \theta_{t}) \log p(x|z_k; \theta) + \sum_{k=1}^K \sum_{x \in D} p(z_k|x; \theta_{t}) \log p(z_k; \theta)
 \end{align*}
 {%endmath%}

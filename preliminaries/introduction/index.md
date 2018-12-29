@@ -9,7 +9,7 @@ For one, it is a fascinating scientific field with a beautiful theory that bridg
 
 At the same time, probabilistic modeling is widely used throughout machine learning and in many real-world applications. These techniques can be used to solve problems in fields as diverse as medicine, language processing, vision, and many others.
 
-This combination of elegant theory and powerful applications makes graphical models one of the most fascinating topics in modern artificial intelligence and computer science{% sidenote 1 'The 2011 Turing award (considered to be the "Nobel prize of computer science") was recently awarded to [Judea Pearl](http://amturing.acm.org/award_winners/pearl_2658896.cfm) for founding the field of probabilistic graphical modeling.'%}.
+This combination of elegant theory and powerful applications makes graphical models one of the most fascinating topics in modern artificial intelligence and computer science{% include sidenote.html id='note_turing' note='The 2011 Turing award (considered to be the "Nobel prize of computer science") was recently awarded to [Judea Pearl](http://amturing.acm.org/award_winners/pearl_2658896.cfm) for founding the field of probabilistic graphical modeling.' %}.
 
 ## Probabilistic modeling
 
@@ -22,7 +22,7 @@ y = \beta^T x,
 
 where $$y$$ is an outcome variable that we want to predict, and $$x$$ are known (given) variables that affect the outcome. For example, $$y$$ may be the price of a house, and $$x$$ are a series of factors that affect this price, e.g. the location, the number of bedrooms, the age of the house, etc. We assume that $$y$$ is a linear function of this input (parameterized by $$\beta$$).
 
-Often, the real world that we are trying to model is very complicated; in particular, it often involves a significant amount of *uncertainty* (e.g., the price of a house has a certain chance of going up if a new subway station opens within a certain distance). It is therefore very natural to deal with this uncertainty by modeling the world in the form of a probability distribution{% sidenote 2 'For a more philosophical discussion of why one should use probability theory as opposed to something else, see the [Dutch book argument](http://plato.stanford.edu/entries/dutch-book/) for probabilism.'%}
+Often, the real world that we are trying to model is very complicated; in particular, it often involves a significant amount of *uncertainty* (e.g., the price of a house has a certain chance of going up if a new subway station opens within a certain distance). It is therefore very natural to deal with this uncertainty by modeling the world in the form of a probability distribution{% include sidenote.html id="note_dutch" note="For a more philosophical discussion of why one should use probability theory as opposed to something else, see the [Dutch book argument](http://plato.stanford.edu/entries/dutch-book/) for probabilism." %}
 
 {% math %}
 p(x,y). 
@@ -73,7 +73,7 @@ The take-away point we want to get across is that there is an intimate connectio
 
 ## A bird's eye overview of the course
 
-Our discussion of graphical models will be divided into three major parts: representation (how to specify a model), inference (how to ask the model questions), and learning (how to fit a model to real-world data). These three themes will also be closely linked: to derive efficient inference and learning algorithms, the model will need to be adequately represented; furthermore, learning models will require inference as a subroutine. Thus, it will be best to always keep the three tasks in mind, rather than focusing on them in isolation{% sidenote 1 'For a more detailed overview, see this [writeup](https://docs.google.com/file/d/0B_hicYJxvbiOc1ViZTRxbnhSU1cza1VhOFlhRlRuQQ/edit) by Neal Parikh; this part of the notes is based on it.'%}.
+Our discussion of graphical models will be divided into three major parts: representation (how to specify a model), inference (how to ask the model questions), and learning (how to fit a model to real-world data). These three themes will also be closely linked: to derive efficient inference and learning algorithms, the model will need to be adequately represented; furthermore, learning models will require inference as a subroutine. Thus, it will be best to always keep the three tasks in mind, rather than focusing on them in isolation{% include sidenote.html id="note_parikh" note="For a more detailed overview, see this [writeup](https://docs.google.com/file/d/0B_hicYJxvbiOc1ViZTRxbnhSU1cza1VhOFlhRlRuQQ/edit) by Neal Parikh; this part of the notes is based on it." %}.
 
 ### Representation
 

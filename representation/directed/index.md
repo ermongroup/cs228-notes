@@ -95,7 +95,7 @@ A former CS228 student has created an [interactive web simulation](http://pgmlea
 The notion of $$d$$-separation is useful, because it lets us describe a large fraction of the dependencies that hold in our model.
 Let $$I(G) = \{(X \perp Y \mid Z) : \text{$$X,Y$$ are $$d$$-sep given $$Z$$}\}$$ be a set of variables that are $$d$$-separated in $$G$$.
 
-**Fact**{% sidenote 1 'We will not formally prove this, but the intuition is that if $$X,Y$$ and $$Y,Z$$ are mutually dependent, so are $$X,Z$$. Thus we can look at adjacent nodes and propagate dependencies according to the local dependency structures outlined above.'%}:
+**Fact**{% include sidenote.html id="note_imap" note="We will not formally prove this, but the intuition is that if $$X,Y$$ and $$Y,Z$$ are mutually dependent, so are $$X,Z$$. Thus we can look at adjacent nodes and propagate dependencies according to the local dependency structures outlined above." %}:
 If $$p$$ factorizes over $$G$$, then $$I(G) \subseteq I(p)$$. In this case, we say that $$G$$ is an $$I$$-map (independence map) for $$p$$
 
 In other words, all the independencies encoded in $$G$$ are sound: variables that are $$d$$-separated in $$G$$ are truly independent in $$p$$. However, the converse is not true: a distribution may factorize over $$G$$, yet have independencies that are not captured in $$G$$.
@@ -115,7 +115,7 @@ However, what we are truly interested in is to determine whether the probability
 A related question is whether perfect maps are unique when they exist. Again, this is not the case, as $$X \rightarrow Y$$ and $$X \leftarrow Y$$ encode the same independencies, yet form different graphs. More generally, we say that two Bayes nets $$G_1, G_2$$ are I-equivalent if they encode the same dependencies $$I(G_1) = I(G_2)$$.
 
 When are two Bayesian nets I-equivalent? To answer this, let's return to a simple example with three variables. We say that each of the graphs below have the same *skeleton*, meaning that if we drop the directionality of the arrows, we obtain the same undirected graph in each case.
-{% include maincolumn_img.html url='assets/img/3node-bayesnets.png' description='Bayesian networks over three variables' %}
+{% include maincolumn_img.html src='assets/img/3node-bayesnets.png' caption='Bayesian networks over three variables' %}
 The cascade-type structures (a,b) are clearly symmetric and the directionality of arrows does not matter. In fact, (a,b,c) encode exactly the same dependencies. We can change the directions of the arrows as long as we don't turn them into a V-structure (d). When we do have a V-structure, however, we cannot change any arrows: structure (d) is the only one that describes the dependency $$X \not\perp Y \mid Z$$. These examples provide intuitions of the following general results on I-equivalence.
 
 **Fact:**

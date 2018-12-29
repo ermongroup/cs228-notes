@@ -24,7 +24,7 @@ Consider first the problem of marginal inference. Suppose for simplicity that we
 {% math %}
 p(x_1,...,x_n) = p(x_1) \prod_{i=2}^n p(x_i \mid x_{i-1}).
 {% endmath %}
-We are interested in computing the marginal probability $$p(x_n)$$. We will assume for the rest of the chapter that the $$x_i$$ are discrete variables taking $$d$$ possible values each{% sidenote 1 'The principles behind variable elimination also extend to many continuous distributions (e.g. Gaussians), but we will not discuss these extensions here.'%}.
+We are interested in computing the marginal probability $$p(x_n)$$. We will assume for the rest of the chapter that the $$x_i$$ are discrete variables taking $$d$$ possible values each{% include sidenote.html id="note-continuous" note="The principles behind variable elimination also extend to many continuous distributions (e.g. Gaussians), but we will not discuss these extensions here." %}.
 
 The naive way of performing this is to sum the probability over all the $$d^{n-1}$$ assignments to $$x_1,...,x_{n-1}$$:
 {% math %}
@@ -44,7 +44,7 @@ We perform this summation by first summing the inner terms, starting from $$x_1$
 p(x_n) = \sum_{x_{n-1}} p(x_n \mid x_{n-1}) \sum_{x_{n-2}} p(x_{n-1} \mid x_{n-2}) \cdots \sum_{x_2} p(x_3 \mid x_2) \tau(x_2).
 {% endmath %}
 
-Note that this has the same form as the initial expression, except that we are summing over one fewer variable{% sidenote 1 'This technique is a special case of *dynamic programming*, a general algorithm design approach in which we break apart a larger problem into a sequence of smaller ones.'%}. We may therefore compute another factor $$\tau(x_3) = \sum_{x_2} p(x_3 \mid x_2) \tau(x_2)$$, and repeat the process until we are only left with $$x_n$$. Since each step takes $$O(d^2)$$ time, and we perform $$O(n)$$ steps, inference now takes $$O(n d^2)$$ time, which is much better than our naive $$O(d^n)$$ solution.
+Note that this has the same form as the initial expression, except that we are summing over one fewer variable{% include sidenote.html id="note-dp" note="This technique is a special case of *dynamic programming*, a general algorithm design approach in which we break apart a larger problem into a sequence of smaller ones." %}. We may therefore compute another factor $$\tau(x_3) = \sum_{x_2} p(x_3 \mid x_2) \tau(x_2)$$, and repeat the process until we are only left with $$x_n$$. Since each step takes $$O(d^2)$$ time, and we perform $$O(n)$$ steps, inference now takes $$O(n d^2)$$ time, which is much better than our naive $$O(d^n)$$ solution.
 
 Also, at each time, we are *eliminating* a variable, which gives the algorithm its name.
 

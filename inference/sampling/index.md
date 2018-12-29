@@ -4,19 +4,18 @@ title: Sampling methods
 ---
 In practice, the probabilistic models that we use are often quite complex, and simple algorithms like variable elimination may be too slow for them. In fact, many interesting classes of models may not admit exact polynomial-time solutions at all, and for this reason, much research effort in machine learning is spent on developing algorithms that yield *approximate* solutions to the inference problem. This section begins our study of such algorithms.
 
-There exist two main families of approximate algorithms: *variational* methods{% sidenote 1 'Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments.'%}, which formulate inference as an optimization problem, as well as *sampling* methods, which produce answers by repeatedly generating random numbers from a distribution of interest.
+There exist two main families of approximate algorithms: *variational* methods{% include sidenote.html id="note-variational" note="Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments." %}, which formulate inference as an optimization problem, as well as *sampling* methods, which produce answers by repeatedly generating random numbers from a distribution of interest.
 
 Sampling methods can be used to perform both marginal and MAP inference queries; in addition, they can compute various interesting quantities, such as expectations $$\E[f(X)]$$ of random variables distributed according to a given probabilistic model. Sampling methods have historically been the main way of performing approximate inference, although over the past 15 years variational methods have emerged as viable (and often superior) alternatives.
 
 ## Sampling from a probability distribution
 
-As a warm-up, let's think for a minute how we might sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1,...,\theta_k$$.
+As a warm-up, let's think for a minute how we might sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1,\ldots,\theta_k$$.
 
-Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% sidenote 1 'Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable from a truly random one. We call such sequences *pseudorandom*.'%}, such as the uniform distribution over $$[0,1]$$.
-All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.
+Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% include sidenote.html id="note-pseudorandom" note="Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable from a truly random one. We call such sequences *pseudorandom*." %}, such as the uniform distribution over $$[0,1]$$. All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.
 
 In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$k$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$[0,1]$$ and return the value of the region in which our sample falls.
-{% include maincolumn_img.html url='assets/img/multinomial-sampling.png' description='Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1].' %}
+{% include maincolumn_img.html src="assets/img/multinomial-sampling.png" caption="Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1]." %}
 
 ### Sampling from directed graphical models
 
@@ -34,7 +33,7 @@ Sampling from a distribution lets us perform many useful tasks, including margin
 {% math %}
 \E_{x \sim p}[f(x)] = \sum_x f(x) p(x).
 {% endmath %}
-If $$f(x)$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% sidenote 1 'The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working on the atomic bomb as part of the secret Manhattan project.'%}.
+If $$f(x)$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% include sidenote.html id="note-mc" note="The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working on the atomic bomb as part of the secret Manhattan project." %}.
 
 Monte Carlo integration is an important instantiation of the general Monte Carlo principle. This technique approximates a target expectation with
 {% math %}
@@ -69,9 +68,9 @@ More formally, suppose we are interested in computing $$\E_{x \sim p}[f(x)]$$. W
 {% endmath %}
 where $$w(x) = \frac{p(x)}{q(x)}$$. In other words, we may instead take samples from $$q$$ and reweigh them with $$w(x)$$; the expected value of this Monte Carlo approximation will be the original integral.
 
-Now the variance of this new estimator equals 
+Now the variance of this new estimator equals
 {% math %}
-\text{var}_{x \sim q}(f(x)w(x)) = \E_{x \sim q} [f^2(x) w^2(x)] - \E_{x \sim q} [f(x) w(x)]^2 \geq 0
+\text{Var}_{x \sim q}(f(x)w(x)) = \E_{x \sim q} [f^2(x) w^2(x)] - \E_{x \sim q} [f(x) w(x)]^2 \geq 0
 {% endmath %}
 Note that we can set the variance to zero by choosing $$q(x) = \frac{|f(x)|p(x)}{\int |f(x)|p(x) dx}$$; this means that if we can sample from this $$q$$ (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a $$q$$ would be NP-hard in general, but this at least gives us an indication for what to strive for.
 
@@ -113,10 +112,9 @@ P(x=x'|e=e')
 {% endmath %}
 
 
-
 ## Markov chain Monte Carlo
 
-Let us now turn our attention from computing expectations to performing marginal and MAP inference using sampling. We will solve these problems using a very powerful technique called Markov chain Monte Carlo{% sidenote 1 'Markov chain Monte Carlo is another algorithm that was developed during the Manhattan project and eventually republished in the scientific literature some decades later. It is so important, that is was recently named as one of the [10 most important algorithms](https://www.siam.org/pdf/news/637.pdf) of the XXth century.'%} (MCMC).
+Let us now turn our attention from computing expectations to performing marginal and MAP inference using sampling. We will solve these problems using a very powerful technique called Markov chain Monte Carlo{% include sidenote.html id="note-mcmc" note="Markov chain Monte Carlo is another algorithm that was developed during the Manhattan project and eventually republished in the scientific literature some decades later. It is so important, that is was recently named as one of the [10 most important algorithms](https://www.siam.org/pdf/news/637.pdf) of the XXth century." %} (MCMC).
 
 ### Markov Chain
 
@@ -138,7 +136,7 @@ where $$T^t$$ denotes matrix exponentiation (we apply the matrix operator $$t$$ 
 
 The limit $$\pi = \lim_{t \to \infty} p_t$$ (when it exists) is called a *stationary distribution* of the Markov chain. We will construct below Markov chain with a stationary distribution $$\pi$$ that exists and is the same for all $$p_0$$; we will refer to such $$\pi$$ as *the* stationary distribution* of the chain.
 
-A sufficent condition for a stationary distribution is called *detailed balance*:
+A sufficient condition for a stationary distribution is called *detailed balance*:
 {% math %}
 \pi(x') T(x \mid x') = \pi(x) T(x' \mid x) \;\text{for all $x$}
 {% endmath %}
@@ -154,7 +152,7 @@ In order to construct such a chain, we first need to understand when stationary 
 - *Aperiodicity*: It is possible to return to any state at any time, i.e. there exists an $$n$$ such that for all $$i$$ and all $$n' \geq n$$, $$P(s_{n'}=i \mid s_0 = i) > 0$$.
 
 The first condition is meant to prevent *absorbing states*, i.e. states from which we can never leave. In the example below, if we start in states $$1,2$$, we will never reach state 4. Conversely, if we start in state 4, then we will never reach states 1,2. If we start the chain in the middle (in state 3), then clearly it cannot have a single limiting distribution.
-{% include maincolumn_img.html url='assets/img/reducible-chain.png' description='A reducible Markov Chain over four states.' %}
+{% include maincolumn_img.html src='assets/img/reducible-chain.png' caption='A reducible Markov Chain over four states.' %}
 
 The second condition is necessary to rule out transition operators such as
 {% math %}
@@ -240,7 +238,7 @@ In practice, it is not difficult to ensure these requirements are met.
 
 ### Running time of MCMC
 
-A key parameter to this algorithm in the number of burn-in steps $$B$$. Intuitively, this corresponds to the number of steps needed to converge to our limit (stationary) distribution. This is called the *mixing time* of the Markov chain{% sidenote 1 'There is a technical definition of this quantity, which we will not cover here.'%}. Unfortunately, this time may vary dramatically, and may sometimes take essentially forever. For example, if the transition matrix is
+A key parameter to this algorithm in the number of burn-in steps $$B$$. Intuitively, this corresponds to the number of steps needed to converge to our limit (stationary) distribution. This is called the *mixing time* of the Markov chain{% include sidenote.html id="note-mixing" note="There is a technical definition of this quantity, which we will not cover here." %}. Unfortunately, this time may vary dramatically, and may sometimes take essentially forever. For example, if the transition matrix is
 {% math %}
 T = \left[
 \begin{matrix}
