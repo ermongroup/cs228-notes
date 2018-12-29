@@ -85,53 +85,7 @@ p.subtitle { font-style: italic;
              display: block;
              line-height: 1; }
 
-p, ol, ul { font-size: 1.4rem; }
-
-
-p { line-height: 2rem;
-    margin-top: 1.4rem;
-    margin-bottom: 1.4rem;
-    padding-right: 0;
-    vertical-align: baseline; }
-
-blockquote p {  font-size: 1.1rem;
-                line-height: 1.78181818;
-                margin-top: 1.78181818rem;
-                margin-bottom: 1.78181818rem;
-                width: 45%;
-                padding-left: 2.5%;
-                padding-right: 2.5%; }
-
-// remove div.epigraph styling
-
-blockquote { font-size: 1.4rem; }
-
-blockquote p { width: 50%; }
-
-blockquote footer { width: 50%; // 55%
-                    font-size: 1.1rem;
-                    text-align: right; }
-
-
-pre, pre code, p code, p pre code { font-family: $code-font;  // removed .code 'class' since code is an actual html tag
-        font-size: 1.2rem;                   // also added p code, p pre code and pre selector to account for Markdown parsing
-        line-height: 1.71428571;        // of triple backticks plus rationalized line-heights and margins
-        margin-top: 1.71428571rem; }
-
-
-h1 code, h2 code, h3 code { font-size: 0.80em; } //left in for no real reason
-
-
-
-/* Basic Layout stuff --*/
-
-// article { position: relative;
-//           padding: 1
-//
-//           rem 0rem 2.5rem 0rem; } // reduced top and bottom padding by 50%
-//
-// section { padding-top: 1rem;
-//           padding-bottom: 1rem; }
+// remove .numeral and .danger styling
 
 article { position: relative;
           padding: 5rem 0rem; }
@@ -139,18 +93,30 @@ article { position: relative;
 section { padding-top: 1rem;
           padding-bottom: 1rem; }
 
-p, ol, ul { font-size: 1.4rem; }
+p, ol, ul { font-size: 1.4rem;
+            line-height: 2rem; }
 
-ul { width: 45%;
-     -webkit-padding-start: 5%;
-     -webkit-padding-end: 5%;
-     list-style-type: none; }
+p { margin-top: 1.4rem;
+    margin-bottom: 1.4rem;
+    padding-right: 0;
+    vertical-align: baseline; }
 
-ol { -webkit-padding-start: 5%;
-     -webkit-padding-end: 5%;
-     list-style-type: decimal; }
+// remove div.epigraph styling
 
-ul li { padding: 0.5em 0; } //vertical padding on list items screws up vertical rhythym
+blockquote { font-size: 1.4rem; }
+
+// changed
+blockquote p { font-size: 1.1rem;
+               line-height: 1.75rem;
+               width: 50%;
+               margin-left: 2.5%; }
+
+blockquote footer { width: 50%; // 55%
+                    font-size: 1.1rem;
+                    text-align: right; }
+
+
+// remove li:not(:first-child) styling
 
 figure, figure img.maincolumn { max-width: 55%;
          -webkit-margin-start: 0;
@@ -207,9 +173,8 @@ img { max-width: 100%; }
                          vertical-align: baseline;
                          position: relative; }
 
-li .sidenote, li .marginnote{ margin-right: -80%; } //added to allow for the fact that lists are indented and marginnotes and sidenotes push to right
-
-blockquote .sidenote, blockquote .marginnote { margin-right: -79% }
+// added to allow for the fact that lists are indented and marginnotes and sidenotes push to right
+li .sidenote, li .marginnote{ margin-right: -80%; }
 
 .sidenote-number { counter-increment: sidenote-counter; }
 
@@ -228,8 +193,11 @@ blockquote .sidenote, blockquote .marginnote { margin-right: -79% }
                    top: 0rem; } // removed superscripting for numerical reference in sidenote
 
 p, footer, div.table-wrapper, div.mathblock { width: 55%; }
+blockquote .sidenote, blockquote .marginnote { margin-right: -79% } // -82%
 
 div.table-wrapper { overflow-x: auto; } //changed all overflow values to 'auto' so scroll bars appear only as needed
+// remove div.fullwidth, table.fullwidth
+
 .sans { font-family: $sans-font;
         letter-spacing: .03em; }
 
@@ -321,6 +289,16 @@ caption, .booktabs caption { font-size: 90%;
                  font-size: 1.0rem;
                  line-height: 1.96; }
 /* End of Table Styling section */
+
+
+/* Basic Layout stuff --*/
+
+ul, ol { width: 45%;
+         margin-top: 1.4rem;
+         margin-bottom: 1.4rem;
+}
+
+ul li { margin-bottom: 0.5em; } // vertical padding on list items screws up vertical rhythym
 @media (max-width: 760px) { label.margin-toggle:not(.sidenote-number) { display: inline; color: $contrast-color; }
                             .sidenote, .marginnote { display: none; }
                             .margin-toggle:checked + .sidenote,
