@@ -174,4 +174,4 @@ Probabilistic graphical models can assist doctors in diagnosing diseases and pre
 You can read more about the development of their model <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2232064/">here.</a>
 <br/>
 
-|[Index](../../) | [Previous](../probabilityreview/) |  [Next](../../representation/directed/)|
+|[Index](../../) | [Previous](../probabilityreview/) | [Next](../../representation/directed/)|

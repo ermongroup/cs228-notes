@@ -26,4 +26,3 @@ title: Further Readings
 <br/>
 
 | [Index](../../) | [Previous](../vae/) |
-

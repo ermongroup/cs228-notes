@@ -43,9 +43,9 @@ This course starts by introducing probabilistic graphical models from the very b
 
 3. [Learning in latent variable models](learning/latent/): Latent variable models. Gaussian mixture models. Expectation maximization.
 
-4. [Bayesian learning](learning/bayesianlearning/): Bayesian paradigm. Conjugate priors. Examples (*under construction*).
+4. [Bayesian learning](learning/bayesian/): Bayesian paradigm. Conjugate priors. Examples (*under construction*).
 
-5. [Structure learning](learning/structLearn/): Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning (*under construction*).
+5. [Structure learning](learning/structure/): Chow-Liu algorithm. Akaike information criterion. Bayesian information criterion. Bayesian structure learning (*under construction*).
 
 ## Bringing it all together
 

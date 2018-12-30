@@ -4,9 +4,9 @@ title: MAP inference
 ---
 This section will explore in more detail the problem of MAP inference in graphical models.
 Recall that MAP inference in a graphical model $$p$$ corresponds to the following optimization problem:
-{% math %}
-\max_x \log p(x) = \max_x \sum_c \theta_c(\bfx_c) - \log Z
-{% endmath %}
+
+$$ \max_x \log p(x) = \max_x \sum_c \theta_c(\bfx_c) - \log Z $$
+
 where $$\theta_c(\bfx_c) = \log\phi_c(\bfx_c)$$.
 
 In the previous section, we briefly showed how to solve this problem within the same message passing framework as marginal inference. We will now look at more efficient specialized methods.
@@ -14,9 +14,8 @@ In the previous section, we briefly showed how to solve this problem within the 
 ## The challenges of MAP inference
 
 In a way, MAP inference is easier than marginal inference. One reason for this is that the intractable partition constant $$\log Z$$ does not depend on $$x$$ and can be ignored:
-{% math %}
-\arg \max_x \sum_c \theta_c(\bfx_c).
-{% endmath %}
+
+$$ \arg\max_x \sum_c \theta_c(\bfx_c). $$
 
 Marginal inference can also be seen as computing and summing all assignments to the model, one of which is the MAP assignment. If we replace summation with maximization, we can also find the assignment with the highest probability; however, there exist more efficient methods than this sort of enumeration-based approach.
 
@@ -26,16 +25,15 @@ Nonetheless, we will see that the MAP problem is easier than general inference, 
 
 ### Examples
 
-Many interesting examples of MAP inference are instances of *structured prediction*, which involves doing inference in a conditional random field (CRF) model $$p(y|x)$$:
-{% math %}
-\arg \max_y \log p(y|x) =  \arg \max_y \sum_c \theta_c(\bfy_c, \bfx_c).
-{% endmath %}
+Many interesting examples of MAP inference are instances of *structured prediction*, which involves doing inference in a conditional random field (CRF) model $$p(y \mid x)$$:
+
+$$ \arg\max_y \log p(y|x) = \arg\max_y \sum_c \theta_c(\bfy_c, \bfx_c). $$
 
 {% include marginfigure.html id="ocr" url="assets/img/ocr.png" description="Chain-structured conditional random field for optical character recognition." %}
 We discussed structured prediction in detail when we covered CRFs. Recall that our main example was handwriting recognition, in which we are given images $$x_i \in [0, 1]^{d\times d}$$ of characters in the form of pixel matrices; MAP inference in this setting amounts to jointly recognizing the most likely word $$(y_i)_{i=1}^n$$ encoded by the images.
 
 Another example of MAP inference is image segmentation; here, we are interested in locating an entity in an image and label all its pixels. Our input $$\bfx \in [0, 1]^{d\times d}$$ is a matrix of image pixels, and our task is to predict the label $$y \in \{0, 1\}^{d\times d}$$, indicating whether each pixel encodes the object we want to recover. Intuitively, neighboring pixels should have similar values in $$\bfy$$, i.e. pixels associated with the horse should form one continuous blob (rather than white noise).
-{% include marginfigure.html id="ocr" url="assets/img/imagesegmentation.png" description="An illustration of the image segmentation problem." %}
+{% include marginfigure.html id="segmentation" url="assets/img/imagesegmentation.png" description="An illustration of the image segmentation problem." %}
 
 This prior knowledge can be naturally modeled in the language of graphical models via a [Potts model](https://en.wikipedia.org/wiki/Potts_model). As in our first example, we can introduce potentials $$\phi(y_i,x)$$ that encode the likelihood that any given pixel is from our subject. We then augment them with pairwise potentials $$\phi(y_i, y_j )$$ for neighboring $$y_i, y_j$$, which will encourage adjacent $$y$$'s to have the same value with higher probability.
 
@@ -44,13 +42,15 @@ This prior knowledge can be naturally modeled in the language of graphical model
 We will start our discussion with an efficient exact MAP inference algorithm for certain Potts models. Unlike previously-seen methods (e.g. the junction tree algorithm), this algorithm will be tractable even when the model has large treewidth.
 
 Suppose we are given a binary pairwise MRF in which edge energies (i.e. log-edge factors) have the form
-{% math %}
+
+$$
 E_{uv}(x_u, x_v) =
 \begin{cases}
-0 & \; \text{if} \; x_u = x_v \\
-\lambda_{uv} & \; \text{if} \; x_u \neq x_v,
+0 & \text{if } x_u = x_v \\
+\lambda_{uv} & \text{if } x_u \neq x_v
 \end{cases}
-{% endmath %}
+$$
+
 where $$\lambda_{uv} \geq 0$$ is a cost that penalizes edge mismatches. Assume also that nodes have unary potentials; we can always normalize the nodes' energies so that $$E_u(1) = 0$$ or $$E_u(0) = 0$$ and $$E_u \geq 0$$.
 
 {% include marginfigure.html id="mincut" url="assets/img/mincut.png" description="Formulating the segmentation task in a 2x2 MRF as a graph cut problem. Dashed edges are part of the min-cut. (Source: Machine Learning: A Probabilistic Perspective)." %}
@@ -73,12 +73,14 @@ Although graphcut-based methods recover the exact MAP assignment, they are only 
 ### Linear programming
 
 Our first approximate inference strategy consists in reducing MAP inference to integer linear programming. Linear programming (LP) --- also known as linear optimization --- refers to a class of problems of the form
-{% math %}
+
+$$
 \begin{align*}
 \min \;& \bf{c} \cdot \bfx \\
 \textrm{s.t. } & A \bfx \leq \bf{b}
 \end{align*}
-{% endmath %}
+$$
+
 where $$\bfx \in \Re^n$$, and $$\bf{c}, \bf{b} \in \Re^n$$, $$A\in \Re^{n\times n}$$ are problem parameters.
 
 Problems of this form are found in almost every field of science and engineering. They have been extensively studied since the 30's, which has led to both an extensive theory{% include sidenote.html id="note-karmarkar" note="A major breakthrough of applied mathematics in the 80's was the development polynomial-time [algorithms](https://en.wikipedia.org/wiki/Karmarkar%27s_algorithm) for linear programming." %}, as well as practical [tools](https://en.wikipedia.org/wiki/CPLEX) that can solve very large LP instances (100,000 variables or more) in a reasonable time.
@@ -95,27 +97,30 @@ For simplicity, let's look at MAP in pairwise MRFs. We can reduce the MAP object
 - A variable $$\mu_{ij}(x_i,x_j)$$ for each edge $$(i,j) \in E$$ and pair of states $$x_i,x_j$$.
 
 We can rewrite the MAP objective in terms of these variables as
-{% math %}
+
+$$
 \max_\mu \sum_{i \in V} \sum_{x_i} \theta_i (x_i) \mu_i(x_i) + \sum_{i,j \in E} \sum_{x_i, x_j} \theta_{ij} (x_i, x_j) \mu_{ij}(x_i, x_j).
-{% endmath %}
+$$
 
 We would like to optimize over these $$\mu$$'s; for that we also need to introduce constraints. First, we need to force each cluster to choose a local assignment:
-{% math %}
+
+$$
 \begin{align*}
 \mu_i(x_i) & \in \{0,1\} \; \forall \, i, x_i \\
 \sum_{x_i} \mu_i(x_i) & = 1\; \forall \, i \\
 \mu_{ij}(x_i,x_j) & \in \{0,1\} \; \forall \, i,j \in E, x_i, x_j \\
 \sum_{x_i, x_j} \mu_{ij}(x_i, x_j) & = 1 \; \forall \, i,j \in E.
 \end{align*}
-{% endmath %}
+$$
 
 These assignments must also be consistent:
-{% math %}
+
+$$
 \begin{align*}
 \sum_{x_i} \mu_{ij}(x_i, x_j) & = \mu_j(x_j) \; \forall \, i,j \in E, x_j \\
 \sum_{x_j} \mu_{ij}(x_i, x_j) & = \mu_i(x_i) \; \forall \, i,j \in E, x_i
 \end{align*}
-{% endmath %}
+$$
 
 Together, these constraints along with the MAP objective yield an integer linear program, whose solution equals the MAP assignment. This ILP is still NP-hard, but we have an easy way to transform this into an (easy to solve) LP via relaxation. This is the essence of the linear programming approach to MAP inference.
 
@@ -124,56 +129,63 @@ In general, this method will only give approximate solutions. An important speci
 ## Dual decomposition
 
 Let us now look at another way to transform the MAP objective into a more amenable optimization problem. Suppose that we are dealing with an MRF of the form
-{% math %}
-\max_x \sum_{i \in V} \theta_i (x_i) + \sum_{f \in F} \theta_{f} (x_f),
-{% endmath %}
+
+$$ \max_x \sum_{i \in V} \theta_i (x_i) + \sum_{f \in F} \theta_f (x_f), $$
+
 where $$F$$ denote arbitrary factors (e.g. the edge potentials in a pairwise MRF){% include sidenote.html id="note-sontag" note="These short notes are roughly based on the tutorial by [Sontag et al.](http://cs.nyu.edu/~dsontag/papers/SonGloJaa_optbook.pdf), to which we refer the reader for a full discussion." %}. Let us use $$p^*$$ to denote the optimal value of this objective and let $$x^*$$ denote the optimal assignment.
 
 The above objective is difficult to optimize because the potentials are coupled. Consider for a moment an alternative objective where we optimize the potentials separately:
-{% math %}
-\sum_{i \in V} \max_{x_i}  \theta_i (x_i) + \sum_{f \in F} \max_{x^f} \theta_{f} (x^f) .
-{% endmath %}
+
+$$
+\sum_{i \in V} \max_{x_i} \theta_i (x_i) + \sum_{f \in F} \max_{x^f} \theta_f (x^f) .
+$$
 
 This would be easy to optimize, but would only give us an upper bound on the value of the true MAP assignment. To make our relaxation tight, we would need to introduce constraints that encourage consistency between the potentials:
-{% math %}
-x^f_i - x_i = 0 \; \forall f, \forall i \in f.
-{% endmath %}
+
+$$ x^f_i - x_i = 0 \; \forall f, \forall i \in f. $$
+
 The dual decomposition approach consists in softening these constraints in order to achieve a middle ground between the two optimization objective defined above.
 
 We will achieve this by first forming the *Lagrangian* for the constrained problem, which is
-{% math %}
-L(\delta, \bfx^f, \bfx) = \sum_{i \in V}  \theta_i (x_i) + \sum_{f \in F} \theta_{f} (x^f) + \sum_{f \in F} \sum_{i \in f} \sum_{x'_i} \delta_{fi}(x_i')\left( \Ind_{x'_i = x_i} - \Ind_{x'_i = x^f_i} \right).
-{% endmath %}
+
+$$
+L(\delta, \bfx^f, \bfx) = \sum_{i \in V}  \theta_i (x_i) + \sum_{f \in F} \theta_f (x^f) + \sum_{f \in F} \sum_{i \in f} \sum_{x'_i} \delta_{fi}(x_i')\left( \Ind_{x'_i = x_i} - \Ind_{x'_i = x^f_i} \right).
+$$
 
 The $$\delta$$ variables are called Lagrange *multipliers*; each of them is associated with a constraint{% include sidenote.html id="note-cvxopt" note="There is a very deep and powerful theory of constrained optimization centered around Lagrangians. We refer the reader to a course on [convex optimization](http://stanford.edu/class/ee364a/) for a thorough discussion." %}. Observe that $$x, x^f = x^*$$ is a valid assignment to the Lagrangian; its value equals $$p^*$$ for any $$\delta$$, since the Lagrange multipliers are simply multiplied by zero. This shows that the Lagrangian is an upper bound on $$p^*$$:
-{% math %}
+
+$$
 L(\delta) := \max_{\bfx^f, \bfx} L(\delta, \bfx^f, \bfx) \geq p^* \; \forall \delta.
-{% endmath %}
+$$
 
 In order to get the tightest such bound, we may optimize $$L(\delta)$$ over $$\delta$$. It turns out that by the theory of Lagarange duality, at the optimal $$\delta^*$$, this bound will be exactly tight, i.e.
-{% math %}
-L(\delta^*) =  p^*.
-{% endmath %}
+
+$$ L(\delta^*) =  p^*. $$
 
 It is actually not hard to prove this in our particular setting. To see that, note that we can reparametrize the Lagrangian as:
-{% math %}
+
+$$
 \begin{align*}
-L(\delta) 
+L(\delta)
 & = \sum_{i \in V} \max_{x_i} \left( \theta_i (x_i) + \sum_{f:i \in f} \delta_{fi}(x_i) \right) + \sum_{f \in F} \max_{x^f} \left( \theta_f (x^f) + \sum_{i \in f} \delta_{fi}(x_i) \right) \\
 & := \sum_{i \in V} \max_{x_i} \bar \theta_{i}^\delta (x_i) + \sum_{f \in F} \max_{x^f} \bar \theta_{f}^\delta (x^f).
 \end{align*}
-{% endmath %}
+$$
 
 Suppose we can find dual variables $$\bar \delta$$ such that the local maximizers of $$\bar \theta_{i}^{\bar \delta} (x_i)$$ and $$\bar \theta_{f}^{\bar \delta} (x^f)$$ agree; in other words, we can find a $$\bar x$$ such that $$\bar x_i \in \arg\max_{x_i} \bar \theta_{i}^{\bar \delta} (x_i)$$ and $$\bar x^f \in \arg\max_{x^f} \bar \theta_{f}^{\bar \delta} (x^f)$$. Then we have that
-{% math %}
-L(\bar \delta) =  \sum_{i \in V} \bar \theta_{i}^{\bar\delta} (\bar x_i) + \sum_{f \in F} \bar \theta_{f}^{\bar\delta} (\bar x^f) =  \sum_{i \in V} \theta_{i} (\bar x_i) + \sum_{f \in F} \theta_{f} (\bar x^f).
-{% endmath %}
+
+$$
+L(\bar \delta) =  \sum_{i \in V} \bar \theta_{i}^{\bar\delta} (\bar x_i) + \sum_{f \in F} \bar \theta_{f}^{\bar\delta} (\bar x^f) =  \sum_{i \in V} \theta_i (\bar x_i) + \sum_{f \in F} \theta_f (\bar x^f).
+$$
+
 The first equality follows by definition of $$L(\delta)$$, while the second follows holds because terms involving Lagrange multipliers cancel out when $$x$$ and $$x^f$$ agree.
 
 On the other hand, we have by the definition of $$p^*$$ that
-{% math %}
-\sum_{i \in V} \theta_{i} (\bar x_i) + \sum_{f \in F} \theta_{f} (\bar x^f) \leq p^* \leq L(\bar\delta)
-{% endmath %}
+
+$$
+\sum_{i \in V} \theta_i (\bar x_i) + \sum_{f \in F} \theta_f (\bar x^f) \leq p^* \leq L(\bar\delta)
+$$
+
 which implies that $$L(\bar\delta) = p^*$$.
 
 This argument has shown two things:
@@ -217,4 +229,4 @@ The idea of simulated annealing is to run a sampling algorithm starting with a h
 
 <br/>
 
-|[Index](../../) | [Previous](../jt) |  [Next](../sampling)|
+|[Index](../../) | [Previous](../jt) | [Next](../sampling)|
