@@ -71,7 +71,7 @@ Our discussion of graphical models will be divided into three major parts: repre
 
 How do we express a probability distribution that models some real-world phenomenon? This is not a trivial problem: we have seen that a naive model for classifying spam messages with $$n$$ possible words requires us in general to specify $$O(2^n)$$ parameters. We will address this difficulty via general techniques for constructing tractable models. These recipes will make heavy use of graph theory; probabilities will be described by graphs whose properties (e.g. connectivity, tree-width) will reveal probabilistic and algorithmic features of the model (e.g., independence, learning complexity).
 
-### Inference 
+### Inference
 
 Given a probabilistic model, how do we obtain answers to relevant questions about the world? Such questions often reduce to querying the marginal or conditional probabilities of certain events of interest. More concretely, we will be typically interested in asking the system two types of questions:
 

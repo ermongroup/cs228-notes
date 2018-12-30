@@ -143,9 +143,9 @@ Here is an example of an MRF with graph $$G$$ and junction tree $$T$$. MRF poten
 {% include marginfigure.html id='jtt' url='assets/img/jt-over-tree.png' description='A junction tree defined over a tree graph. Clusters correspond to edges.' %}
 {% include marginfigure.html id='bjt' url='assets/img/badjunctiontree.png' description='Example of an invalid junction tree that does not satisfy the running intersection property.' %}
 
-Note that we may always find a trivial junction tree with one node containing all the variables in the original graph. However, such trees are useless because they will not result in efficient marginalization algorithms. 
+Note that we may always find a trivial junction tree with one node containing all the variables in the original graph. However, such trees are useless because they will not result in efficient marginalization algorithms.
 
-Optimal trees are one that make the clusters as small and modular as possible; unfortunately, it is again NP-hard to find the optimal tree. We will see below some practical ways in which we can find good junction trees. 
+Optimal trees are one that make the clusters as small and modular as possible; unfortunately, it is again NP-hard to find the optimal tree. We will see below some practical ways in which we can find good junction trees.
 
 A special case when we *can* find the optimal junction tree is when $$G$$ itself is a tree. In that case, we may define a cluster for each edge in the tree. It is not hard to check that the result satisfies the above definition.
 
@@ -188,7 +188,7 @@ Suppose we are performing variable elimination to compute $$\tp(x')$$ for some v
 
 First, we pick a set of variables $$x_{-k}$$ in a leaf $$c^{(j)}$$ of $$T$$ that does not appear in the sepset $$S_{kj}$$ between $$c^{(j)}$$ and its parent $$c^{(k)}$$ (if there is no such variable, we may multiply $$\psi(x_c^{(j)})$$ and $$\psi(x_c^{(k)})$$ into a new factor with a scope not larger than that of the initial factors). In our example, we may pick the variable $$f$$ in the factor $$(b,e,f)$$.
 
-Then we marginalize out $$x_{-k}$$ to obtain a factor $$m_{j \to k}(S_{ij})$$. We multiply $$m_{j \to k}(S_{ij})$$ with $$\psi(x_c^{(k)})$$ to obtain a new factor $$\tau(x_c^{(k)})$$. Doing so, we have effectively eliminated the factor $$\psi(x_c^{(j)})$$ and the unique variables it contained. In the running example, we may sum out $$f$$ and the resulting factor over $$(b, e)$$ may be folded into $$(b,c,e)$$. 
+Then we marginalize out $$x_{-k}$$ to obtain a factor $$m_{j \to k}(S_{ij})$$. We multiply $$m_{j \to k}(S_{ij})$$ with $$\psi(x_c^{(k)})$$ to obtain a new factor $$\tau(x_c^{(k)})$$. Doing so, we have effectively eliminated the factor $$\psi(x_c^{(j)})$$ and the unique variables it contained. In the running example, we may sum out $$f$$ and the resulting factor over $$(b, e)$$ may be folded into $$(b,c,e)$$.
 
 Note that the messages computed in this case are exactly the same as those of JT. In particular, when $$c^{(k)}$$ is ready to send its message, it will have been multiplied by $$m_{\ell \to k}(S_{ij})$$ from all neighbors except its parent, which is exactly how JT sends its message.
 

@@ -23,7 +23,7 @@ Probabilistic graphical models have numerous and diverse real-world applications
     - [Economics](#economics)
   + **Health Care and Medicine**
     - [Diagnosis](#diagnosis)
-    
+
 ## Probabilistic Models of Images
 
 Consider a distribution $$p(\mathbf{x})$$ over images, where $$\mathbf{x}$$ is an image represented as a vector of pixels, that assigns high probability to images that look realistic and low probability to everything else. Given such a model, we can solve a wide array of interesting tasks.
@@ -33,27 +33,27 @@ Consider a distribution $$p(\mathbf{x})$$ over images, where $$\mathbf{x}$$ is a
 
 [Radford et al.](https://arxiv.org/abs/1710.10196) trained a probabilistic model $$ p(\mathbf{x}) $$ that assigns high probability to images that look like bedrooms.  To do so, they trained their model on a dataset of bedroom images, a sample of which is shown below:
 
-**Training Data**<br /> 
-![bedroom1](bedroominpainting1.png)<br /> 
+**Training Data**<br />
+![bedroom1](bedroominpainting1.png)<br />
 
-Now that we have this probablistic model of bedrooms, we can now _**generate**_ new realistic bedroom images by sampling from this distribution.  Specifically, new sampled images $$\hat{\mathbf{x}} \sim p(\mathbf{x})$$ are created directly from our model $$p(\mathbf{x})$$, which can now generate data similar to the bedroom images that we trained it with.  
+Now that we have this probablistic model of bedrooms, we can now _**generate**_ new realistic bedroom images by sampling from this distribution.  Specifically, new sampled images $$\hat{\mathbf{x}} \sim p(\mathbf{x})$$ are created directly from our model $$p(\mathbf{x})$$, which can now generate data similar to the bedroom images that we trained it with.
 
 Moreover, one of the reasons why generative models are powerful lie in the fact that they have many fewer parameters than the amount of data that they are trained with --- as a result, the models have to efficiently distill the essence of the training data to be able to generate new samples.  We see that our particular probablistic model of bedrooms has done a good job of capturing the data's essence, and can therefore produce highly realistic images, some examples of which are shown below:
 
-**Generated Data**<br /> 
+**Generated Data**<br />
 ![bedroom2](bedroominpainting2.png)
 
-Similiarly, we can learn a model for faces.  
+Similiarly, we can learn a model for faces.
 
 ![faces1](progressiveGAN.png)
 
-As with the bedroom images, these faces are completely synthetic --- these images are not of an actual person.  
+As with the bedroom images, these faces are completely synthetic --- these images are not of an actual person.
 
 The same approach can be used for other objects.
 
-![faces1](pnpgan.png) 
+![faces1](pnpgan.png)
 
-Note that the images are not perfect and may need to be refined; however, sampling generates images that are very similiar to what one might expect. 
+Note that the images are not perfect and may need to be refined; however, sampling generates images that are very similiar to what one might expect.
 
 <a id="image-inpainting"></a>
 ### In-Painting
@@ -81,21 +81,21 @@ Knowing the probability distribution can also help us model natural langauge utt
 Let's say that we have constructed a distribution of word sequences from Wikipedia articles. We can then sample from this distribution to generate new Wikipedia-like articles like the one below{% include sidenote.html id="note_wikipedia" note="From [The Unreasonable Effectiveness of Recurrent Neural Networks](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)" %}.
 
 > Naturalism and decision for the majority of Arab countries' capitalide was grounded
-by the Irish language by [[John Clair]], [[An Imperial Japanese Revolt]], associated 
-with Guangzham's sovereignty. His generals were the powerful ruler of the Portugal 
-in the [[Protestant Immineners]], which could be said to be directly in Cantonese 
-Communication, which followed a ceremony and set inspired prison, training. The 
-emperor travelled back to [[Antioch, Perth, October 25|21]] to note, the Kingdom 
-of Costa Rica, unsuccessful fashioned the [[Thrales]], [[Cynth's Dajoard]], known 
-in western [[Scotland]], near Italy to the conquest of India with the conflict. 
-Copyright was the succession of independence in the slop of Syrian influence that 
-was a famous German movement based on a more popular servicious, non-doctrinal 
-and sexual power post. Many governments recognize the military housing of the 
-[[Civil Liberalization and Infantry Resolution 265 National Party in Hungary]], 
+by the Irish language by [[John Clair]], [[An Imperial Japanese Revolt]], associated
+with Guangzham's sovereignty. His generals were the powerful ruler of the Portugal
+in the [[Protestant Immineners]], which could be said to be directly in Cantonese
+Communication, which followed a ceremony and set inspired prison, training. The
+emperor travelled back to [[Antioch, Perth, October 25|21]] to note, the Kingdom
+of Costa Rica, unsuccessful fashioned the [[Thrales]], [[Cynth's Dajoard]], known
+in western [[Scotland]], near Italy to the conquest of India with the conflict.
+Copyright was the succession of independence in the slop of Syrian influence that
+was a famous German movement based on a more popular servicious, non-doctrinal
+and sexual power post. Many governments recognize the military housing of the
+[[Civil Liberalization and Infantry Resolution 265 National Party in Hungary]],
 that is sympathetic to be to the [[Punjab Resolution]]
 (PJS)[http://www.humah.yahoo.com/guardian.
-cfm/7754800786d17551963s89.htm Official economics Adjoint for the Nazism, Montgomery 
-was swear to advance to the resources for those Socialism's rule, 
+cfm/7754800786d17551963s89.htm Official economics Adjoint for the Nazism, Montgomery
+was swear to advance to the resources for those Socialism's rule,
 was starting to signing a major tripad of aid exile.]]
 
 <a id="text-translation"></a>
@@ -105,7 +105,7 @@ Suppose that we have gathered a training set of paragraphs that were transcribed
 
 ![Neural Machine Translation](nmt-model-fast.gif)
 
-## Audio Models 
+## Audio Models
 
 We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sound like human speech.
 

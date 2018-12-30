@@ -60,7 +60,7 @@ This function is not only tractable, it also has the following important propert
 
 $$
 \begin{align*}
-J(q) 
+J(q)
 &= \sum_x q(x) \log \frac{q(x)} \tp(x) \\
 &= \sum_x q(x) \log \frac{q(x)}{p(x)} - \log Z(\theta) \\
 &= KL(q\|p) - \log Z(\theta)
@@ -127,7 +127,7 @@ Notice also that on right-hand side, we are taking an expectation of a sum of fa
 
 $$ \log \tp(x) = \sum_k \log \phi(x_k) $$
 
-Of these, only factors belonging to the Markov blanket of $$x_j$$ are a function of $$x_j$$ (simply by the definition of the Markov blanket); the rest are constant with respect to $$x_j$$ and can be pushed into the constant term. 
+Of these, only factors belonging to the Markov blanket of $$x_j$$ are a function of $$x_j$$ (simply by the definition of the Markov blanket); the rest are constant with respect to $$x_j$$ and can be pushed into the constant term.
 
 This leaves us with an expectation over a much smaller number of factors; if the Markov blanket of $$x_j$$ is small (as is often the case), we are able to analytically compute $$q(x_j)$$. For example, if the variables are discrete with $$K$$ possible values, and there are $$F$$ factors and $$N$$ variables in the Markov blanket of $$x_j$$, then computing the expectation takes $$O(K F N^K)$$ time: for each value of $$x_j$$ we sum over all $$N^K$$ assignments of the $$N$$ variables, and in each case, we sum over the $$F$$ factors.
 
@@ -143,11 +143,11 @@ A natural question to ask, given what we've seen, is how exactly do the mean-fie
 
 To answer this question, we will take a step back, and define a more general framework for thinking about variational inference. We will then see how mean field and, interestingly, loopy belief propagation (LBP) both fall into this framework and how exactly their approximations differ. As a result, we will also see how LBP is also a form of variational inference, something we have alluded to earlier.
 
-First, recall that we have assumed that the distribution $$p$$ is of the form 
+First, recall that we have assumed that the distribution $$p$$ is of the form
 $$
 p(x_1,\ldots,x_n; \theta) = \frac{\tp(x_1,\ldots,x_n ; \theta)}{Z(\theta)} =\frac{1}{Z(\theta)} \prod_{k} \phi_k(x_k; \theta).
 $$
-When the variables are discrete, we can further rewrite this as 
+When the variables are discrete, we can further rewrite this as
 $$
 p(x_1,\ldots,x_n; \theta) = \frac{\exp(\sum_k \theta^T \psi(x))}{Z(\theta)},
 $$
@@ -156,7 +156,7 @@ where $$\theta_{k, x_k} = \phi_k(x_k)$$ is now a vector of factor values (one fo
 Given this notation, we can write our objective as
 $$
 \begin{align*}
--J(x) 
+-J(x)
 & = \E_{q(x)} \left[ \theta^T \psi(x) - \log q(x) \right] \\
 & = \theta^T \mu - H(\mu),
 \end{align*}
@@ -175,7 +175,7 @@ $$
 
 However, this by itself is not very useful. Although \mathbb{M} is convex, it is hard to describe in general (it is formed by the intersection of an exponential number of hyper-planes). Furthermore, $$H(\mu)$$ may be difficult to compute in general.
 
-We will make this problem feasible by replacing 
+We will make this problem feasible by replacing
 
 -->
 
