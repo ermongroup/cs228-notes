@@ -42,7 +42,7 @@ Notice there is no penalty term appending to the BD score due to that it will pe
 
 ### Chow-Liu Algorithm
 
-The Chow-Liu Algorithm is a specific type of score based approach. The Chow-Liu algorithm finds the maximum-likelihood tree structure where each node has at nmost one parent. Note that here our score is simply the maximum lieklihood, we do not need to penalize the complexity since we are already limiting complexity by restricting ourselves to tree structures.
+The Chow-Liu Algorithm is a specific type of score based approach. The Chow-Liu algorithm finds the maximum-likelihood tree structure where each node has at most one parent. Note that here our score is simply the maximum likelihood, we do not need to penalize the complexity since we are already limiting complexity by restricting ourselves to tree structures.
 
 The algorithm has three steps:
 
@@ -108,9 +108,9 @@ The constraint-based case employs the independence test to identify a set of edg
 
 In this section, we will briefly introduce two recent algorithms for graph search: order-search (OS) approach and integer linear programming (ILP) approach.
 
-The OS approach, as the name refers, conducts a search over the topological orders and the search over graph space at the same time. The K3 algorithm assumes a topological order in advance and do the search only over the graphs that obey the topological order. When the order specified is a poor one, it may end with a bad graph structure (with a low graph score). The OS algorithm resolves this problem by doing search over orders at the same time. It shifts two adjacent variable in an order at each step and employs the K3 algorithm as a sub-routine. 
+The OS approach, as its name suggests, conducts a search over the topological orders and the graph space at the same time. The K3 algorithm assumes a topological order in advance and do the search only over the graphs that obey the topological order. When the order specified is a poor one, it may end with a bad graph structure (with a low graph score). The OS algorithm resolves this problem by performing a search over orders at the same time. It swaps the order of two adjacent variables at each step and employs the K3 algorithm as a sub-routine. 
 
-The ILP approach encodes the graph structure, scoring and the acyclic constraints into a linear programming problem. Thus it can utilize the state-of-art integer programming solver. But this approach requires a bound on the maximum number of node parents in the graph (say to be 4 or 5). Otherwise, the number of constraints in the ILP will explode and the computation will be intractable.
+The ILP approach encodes the graph structure, scoring and the acyclic constraints into a linear programming problem. Thus it can utilize a state-of-art integer programming solver. That said, this approach requires a bound on the maximum number of parents any node in the graph can have (say to be 4 or 5). Otherwise, the number of constraints in the ILP will explode and the computation will become intractable.
 
 
 <br/>
