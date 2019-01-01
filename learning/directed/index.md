@@ -31,27 +31,30 @@ What is "best" in this case? It depends on what we want to do:
 ## Maximum likelihood
 
 Let's assume that we want to learn the full distribution so that later we can answer any probabilistic inference query. In this setting we can view the learning problem as *density estimation*. We want to construct a $$p$$ as "close" as possible to $$p^*$$. How do we evaluate "closeness"? We will again use the KL divergence, which we have seen when we covered variational inference:
-{% math %}
-KL(p^*||p) = \sum_x p^*(x) \log \frac{p^*(x)}{p(x)} = -H(p^*) - \mathbb{E}_{x \sim p^*} [ \log p(x) ].
-{% endmath %}
+
+$$
+KL(p^*\|p) = \sum_x p^*(x) \log \frac{p^*(x)}{p(x)} = -H(p^*) - \E_{x \sim p^*} [ \log p(x) ].
+$$
 
 The first term does not depend on p; hence minimizing KL divergence is equivalent to maximizing the expected log-likelihood
-{% math %}
-\mathbb{E}_{x \sim p^*} [ \log p(x) ].
-{% endmath %}
-This objective asks that $$p$$ assign high probability to instances sampled from $$p^*$$, so as to reflect the true distribution.
-Although we can now compare models, since we are not computing $$H(p^*)$$, we don’t know how close we are to the optimum.
 
-However, there is still a problem: in general we do not know $$p^*$$. We will thus approximate the expected log-likelihood $$\mathbb{E}_{x \sim p^*} [ \log p(x) ]$$ with the empirical log-likelihood (a Monte-Carlo estimate):
-{% math %}
-\mathbb{E}_{x \sim p^*} [ \log p(x) ] \approx \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
-{% endmath %}
+$$ \E_{x \sim p^*} [ \log p(x) ]. $$
+
+This objective asks that $$p$$ assign high probability to instances sampled from $$p^*$$, so as to reflect the true distribution. Although we can now compare models, since we are not computing $$H(p^*)$$, we don’t know how close we are to the optimum.
+
+However, there is still a problem: in general we do not know $$p^*$$. We will thus approximate the expected log-likelihood $$\E_{x \sim p^*} [ \log p(x) ]$$ with the empirical log-likelihood (a Monte-Carlo estimate):
+
+$$
+\E_{x \sim p^*} [ \log p(x) ] \approx \frac{1}{|D|} \sum_{x \in D}  \log p(x),
+$$
+
 where $$D$$ is a dataset drawn i.i.d. from $$p^*$$.
 
 Maximum likelihood learning is then defined as
-{% math %}
-\max_{p \in M} \frac{1}{|D|} \sum_{x \in D}  \log p(x), 
-{% endmath %}
+
+$$
+\max_{p \in M} \frac{1}{|D|} \sum_{x \in D} \log p(x),
+$$
 
 ### An example
 
@@ -61,46 +64,44 @@ How should we choose $$p$$ from $$M$$ if 60 out
 of 100 tosses are heads? Let's assume that $$p(x=h)=\theta$$ and $$p(x=t)=1−\theta$$. If our observed data is $$D = \{h,h,t,h,t\}$$, our likelihood becomes $$\prod_i p(x_i ) = \theta \cdot \theta \cdot (1 − \theta) \cdot \theta \cdot (1 − \theta)$$; maximizing this yields $$\theta = 60\%$$.
 
 More generally, our log-likelihood function is simply
-{% math %}
+
+$$
 L(\theta) = \text{# heads} \cdot \log(\theta) + \text{# tails} \cdot \log(1 − \theta),
-{% endmath %}
+$$
+
 for which the optimal solution is
-{% math %}
-\theta^* = \frac{\text{# heads}}{\text{# heads} + \text{# tails}}. 
-{% endmath %}
+
+$$ \theta^* = \frac{\text{# heads}}{\text{# heads} + \text{# tails}}. $$
 
 ## Likelihood, Loss and Risk
 
-We may now generalize this by introducing the concept of a *loss function*. A loss function $$L(x,p)$$ measures the loss that a model distribution $$p$$ makes on a
-particular instance $$x$$.
-Assuming instances are sampled from some distribution $$p^*$$, our goal is to
+We may now generalize this by introducing the concept of a *loss function*. A loss function $$L(x,p)$$ measures the loss that a model distribution $$p$$ makes on a particular instance $$x$$. Assuming instances are sampled from some distribution $$p^*$$, our goal is to
 find the model that minimizes the expected loss or risk,
-{% math %}
-\mathbb{E}_{x \sim p^*} [ L(x,p) ] \approx \frac{1}{|D|} \sum_{x \in D}  L(x,p), 
-{% endmath %}
+
+$$
+\E_{x \sim p^*} [ L(x,p) ] \approx \frac{1}{|D|} \sum_{x \in D} L(x,p),
+$$
+
 Notice that the loss function which corresponds to maximum likelihood estimation is the log loss $$-\log p(x)$$.
 
-Another example of a loss is the conditional log-likelihood. Suppose we want to predict a set of variables $$y$$ given $$x$$, e.g., for segmentation or stereo vision. We concentrate on predicting $$p(y|x)$$, and use a conditional loss function $$L(x,y,p) = −\log p(y \mid  x).$$
-Since the loss function only depends on $$p(y \mid  x)$$, it suffices to estimate the conditional distribution, not the joint. This is the objective function we use to train conditional random fields (CRFs).
+Another example of a loss is the conditional log-likelihood. Suppose we want to predict a set of variables $$y$$ given $$x$$, e.g., for segmentation or stereo vision. We concentrate on predicting $$p(y \mid x)$$, and use a conditional loss function $$L(x,y,p) = −\log p(y \mid x)$$. Since the loss function only depends on $$p(y \mid x)$$, it suffices to estimate the conditional distribution, not the joint. This is the objective function we use to train conditional random fields (CRFs).
 
 Suppose next that our ultimate goal is structured prediction, i.e. given
-$$x$$ we predict $$y$$ via $$\arg\max_y p(y \mid  x)$$. What loss function should we use to measure error in this setting?
+$$x$$ we predict $$y$$ via $$\arg\max_y p(y \mid x)$$. What loss function should we use to measure error in this setting?
 
 One reasonable choice would be the classification error:
-{% math %}
-\mathbb{E}_{(x,y)\sim p^*} [\mathbb{I}\{ \exists y' \neq y : p(y'\mid x) \geq p(y\mid x) \}],
-{% endmath %}
-which is the probability over all $$(x, y)$$ pairs sampled from $$p^*$$ that we predict
-the wrong assignment.
-A somewhat better choice might be the hamming loss, which counts the number of variables in which the MAP assignment differs from the ground truth label.
-There also exists a fascinating line of work on generalizations of the hinge loss to CRFs, which leads to a class of models called *structured support vector machines*.
+
+$$
+\E_{(x,y)\sim p^*} [\mathbb{I}\{ \exists y' \neq y : p(y'\mid x) \geq p(y\mid x) \}],
+$$
+
+which is the probability over all $$(x, y)$$ pairs sampled from $$p^*$$ that we predict the wrong assignment. A somewhat better choice might be the hamming loss, which counts the number of variables in which the MAP assignment differs from the ground truth label. There also exists a fascinating line of work on generalizations of the hinge loss to CRFs, which leads to a class of models called *structured support vector machines*.
 
 The moral of the story here is that it often makes sense to choose a loss that is appropriate to the task at hand, e.g. prediction rather than full density estimation.
 
 ## Empirical Risk and Overfitting
 
-Empirical risk minimization can easily overfit the data.
-The data we have is a sample, and usually there is vast amount of samples that we have never seen. Our model should generalize well to these "never-seen" samples.
+Empirical risk minimization can easily overfit the data. The data we have is a sample, and usually there is vast amount of samples that we have never seen. Our model should generalize well to these "never-seen" samples.
 
 ### The bias/variance tradeoff
 
@@ -119,40 +120,41 @@ We may impose hard constraints, e.g. by selecting a less expressive hypothesis c
 ### Generalization error
 
 At training, we minimize empirical loss
-{% math %}
-\frac{1}{|D|} \sum_{x \in D}  \log p(x). 
-{% endmath %}
-However, we are actually interested in minimizing 
-{% math %}
-\mathbb{E}_{x \sim p^*} [ \log p(x) ].
-{% endmath %}
 
-We cannot guarantee with certainty the quality of our learned model.
-This is because the data $$D$$ is sampled stochastically from $$p^*$$, and we might get an unlucky sample. The goal of learning theory is to prove that the model is approximately correct: for most $$D$$, the learning procedure returns a model whose error is low. There exist a vast literature that quantifies the probability of observing a given error between the empirical and the expected loss given a particular type of model and a particular dataset size.
+$$ \frac{1}{|D|} \sum_{x \in D} \log p(x). $$
+
+However, we are actually interested in minimizing
+
+$$ \E_{x \sim p^*} [ \log p(x) ]. $$
+
+We cannot guarantee with certainty the quality of our learned model. This is because the data $$D$$ is sampled stochastically from $$p^*$$, and we might get an unlucky sample. The goal of learning theory is to prove that the model is approximately correct: for most $$D$$, the learning procedure returns a model whose error is low. There exist a vast literature that quantifies the probability of observing a given error between the empirical and the expected loss given a particular type of model and a particular dataset size.
 
 ## Maximum likelihood learning in Bayesian networks
 
 Let us now apply this long discussion to a particular problem of interest: parameter learning in Bayesian networks.
 
-Suppose that we are given a Bayesian network $$p(x) = \prod^n_{i=1} \theta_{x_i \mid pa(x_i)}$$ and i.i.d. samples $$D=\{x^{(1)},x^{(2)},...,x^{(m)}\}$$. What is the maximum likelihood estimate of the parameters (the CPDs)?
+Suppose that we are given a Bayesian network $$p(x) = \prod^n_{i=1} \theta_{x_i \mid pa(x_i)}$$ and i.i.d. samples $$D=\{x^{(1)},x^{(2)},\ldots,x^{(m)}\}$$. What is the maximum likelihood estimate of the parameters (the CPDs)?
 
 We may write the likelihood as
-{% math %}
+
+$$
 L(\theta, D) = \prod_{i=1}^n \prod_{j=1}^m \theta_{x_i^{(j)} \mid pa(x_i^{(j)})}
-{% endmath %}
+$$
+
 Taking logs and combining like terms, this becomes
-{% math %}
+
+$$
 \log L(\theta, D) = \sum_{i=1}^n \#(x_i, pa(x_i)) \cdot \log(\theta_{x_i \mid pa(x_i)}).
-{% endmath %}
+$$
+
 Thus, maximization of the (log) likelihood function decomposes into separate maximizations for the local conditional distributions!
 This is essentially the same as the head/tails example we saw earlier (except with more categories). It's a simple calculus exercise to formally show that
-{% math %}
-\theta^*_{x_i \mid pa(x_i)} = \frac{\#(x_i, pa(x_i))}{\#(pa(x_i))}. 
-{% endmath %}
+
+$$ \theta^*_{x_i \mid pa(x_i)} = \frac{\#(x_i, pa(x_i))}{\#(pa(x_i))}. $$
 
 We thus conclude that in Bayesian networks with discrete variables, the maximum-likelihood estimate has a closed-form solution. Even when the variables are not discrete, the task is equally simple: the log-factors are linearly separable, hence the log-likelihood reduces to estimating each of them separately. The simplicity of learning is one of the most convenient features of Bayesian networks.
 
 
 <br/>
 
-|[Index](../../) | [Previous](../../inference/variational) |  [Next](../undirected)|
+|[Index](../../) | [Previous](../../inference/variational) | [Next](../undirected)|

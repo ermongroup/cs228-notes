@@ -1,0 +1,14 @@
+<label for="{{ include.id }}" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="{{ include.id }}" class="margin-toggle">
+<span class="marginnote">
+    {%- assign prefix2 = include.url | slice: 0, 2 -%}
+    {%- assign prefix7 = include.url | slice: 0, 7 -%}
+    {%- assign prefix8 = include.url | slice: 0, 8 -%}
+    {%- if prefix2 == '//' or prefix7 == 'http://' or prefix8 == 'https://' -%}
+    <img class="fullwidth" src="{{ include.url }}" alt="{{ include.description }}" />
+    {%- else -%}
+    <img class="fullwidth" src="{{ site.baseurl }}/{{ include.url }}" alt="{{ include.description }}" />
+    {%- endif -%}
+    <br>
+    {{ include.description }}
+</span>

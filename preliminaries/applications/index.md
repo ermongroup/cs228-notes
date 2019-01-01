@@ -3,62 +3,62 @@ layout: post
 title: Real-World Applications
 ---
 
-Probabilistic graphical models have numerous and diverse real-world applications.  We provide an overview of the following applications of probablistic graphical models, which are just a few examples of their many practical uses.
+Probabilistic graphical models have numerous and diverse real-world applications. We provide an overview of the following applications of probabilistic graphical models, which are just a few examples of their many practical uses.
 
-  + **Images**
-    - [Generation](#image-generation)
-    - [In-Painting](#image-inpainting)
-    - [Denoising](#image-denoising)
-  + **Language**
-    - [Generation](#text-generation)
-    - [Translation](#text-translation)
-  + **Audio**
-    - [Super-Resolution](#audio-superresolution)
-    - [Speech Synthesis](#speech-synthesis)
-    - [Speech Recognition](#speech-recognition)
-  + **Science**
-    - [Error-Correcting Codes](#error-correcting-codes)
-    - [Computational Biology](#comp-bio)
-    - [Ecology](#ecology)
-    - [Economics](#economics)
-  + **Health Care and Medicine**
-    - [Diagnosis](#diagnosis)
-    
++ **Images**
+  - [Generation](#image-generation)
+  - [In-Painting](#image-inpainting)
+  - [Denoising](#image-denoising)
++ **Language**
+  - [Generation](#text-generation)
+  - [Translation](#text-translation)
++ **Audio**
+  - [Super-Resolution](#audio-superresolution)
+  - [Speech Synthesis](#speech-synthesis)
+  - [Speech Recognition](#speech-recognition)
++ **Science**
+  - [Error-Correcting Codes](#error-correcting-codes)
+  - [Computational Biology](#comp-bio)
+  - [Ecology](#ecology)
+  - [Economics](#economics)
++ **Health Care and Medicine**
+  - [Diagnosis](#diagnosis)
+
 ## Probabilistic Models of Images
 
-Consider a distribution $$p(\mathbf{x})$$ over images, where $$\mathbf{x}$$ is an image represented as a vector of pixels, that assigns high probability to images that look realistic and low probability to everything else. Given such a model, we can solve a wide array of interesting tasks.
+Consider a distribution $$p(\bfx)$$ over images, where $$\bfx$$ is an image represented as a vector of pixels, that assigns high probability to images that look realistic and low probability to everything else. Given such a model, we can solve a wide array of interesting tasks.
 
 <a id="image-generation"></a>
 ### Image Generation
 
-[Radford et al.](https://arxiv.org/abs/1710.10196) trained a probabilistic model $$ p(\mathbf{x}) $$ that assigns high probability to images that look like bedrooms.  To do so, they trained their model on a dataset of bedroom images, a sample of which is shown below:
+[Radford et al.](https://arxiv.org/abs/1710.10196) trained a probabilistic model $$ p(\bfx) $$ that assigns high probability to images that look like bedrooms. To do so, they trained their model on a dataset of bedroom images, a sample of which is shown below:
 
-**Training Data**<br /> 
-![bedroom1](bedroominpainting1.png)<br /> 
+**Training Data**<br />
+![bedroom1](bedroominpainting1.png)
 
-Now that we have this probablistic model of bedrooms, we can now _**generate**_ new realistic bedroom images by sampling from this distribution.  Specifically, new sampled images $$\hat{\mathbf{x}} \sim p(\mathbf{x})$$ are created directly from our model $$p(\mathbf{x})$$, which can now generate data similar to the bedroom images that we trained it with.  
+Now that we have this probabilistic model of bedrooms, we can now _**generate**_ new realistic bedroom images by sampling from this distribution. Specifically, new sampled images $$\hat{\bfx} \sim p(\bfx)$$ are created directly from our model $$p(\bfx)$$, which can now generate data similar to the bedroom images that we trained it with.
 
-Moreover, one of the reasons why generative models are powerful lie in the fact that they have many fewer parameters than the amount of data that they are trained with --- as a result, the models have to efficiently distill the essence of the training data to be able to generate new samples.  We see that our particular probablistic model of bedrooms has done a good job of capturing the data's essence, and can therefore produce highly realistic images, some examples of which are shown below:
+Moreover, one of the reasons why generative models are powerful lie in the fact that they have many fewer parameters than the amount of data that they are trained with --- as a result, the models have to efficiently distill the essence of the training data to be able to generate new samples. We see that our particular probabilistic model of bedrooms has done a good job of capturing the data's essence, and can therefore produce highly realistic images, some examples of which are shown below:
 
-**Generated Data**<br /> 
+**Generated Data**<br />
 ![bedroom2](bedroominpainting2.png)
 
-Similiarly, we can learn a model for faces.  
+Similarly, we can learn a model for faces.
 
 ![faces1](progressiveGAN.png)
 
-As with the bedroom images, these faces are completely synthetic --- these images are not of an actual person.  
+As with the bedroom images, these faces are completely synthetic --- these images are not of an actual person.
 
 The same approach can be used for other objects.
 
-![faces1](pnpgan.png) 
+![faces1](pnpgan.png)
 
-Note that the images are not perfect and may need to be refined; however, sampling generates images that are very similiar to what one might expect. 
+Note that the images are not perfect and may need to be refined; however, sampling generates images that are very similar to what one might expect.
 
 <a id="image-inpainting"></a>
 ### In-Painting
 
-Using the same $$p(\mathbf{x})$$ for faces as before, we can also "fill in" the rest of an image. For example, given $$p(\mathbf{x})$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$p(\textsf{image} \mid \textsf{patch})$$ and generate different possible ways of completing the image:
+Using the same $$p(\bfx)$$ for faces as before, we can also "fill in" the rest of an image. For example, given $$p(\bfx)$$ and a patch of an existing image (e.g., a piece of a photograph), we can sample from $$p(\textsf{image} \mid \textsf{patch})$$ and generate different possible ways of completing the image:
 
 ![inpainting2](inpainting3.png)
 
@@ -67,35 +67,35 @@ Note the importance of a probabilistic model that captures uncertainty: there co
 <a id="image-denoising"></a>
 ### Image Denoising
 
-Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like.  Specifically, we want to generate a graphical model that does a good job at modeling the posterior distribution $$p(\textsf{original image} \mid \textsf{noisy image}).$$  Then, by observing the noisy image, we can sample or use exact inference to predict the original image.
+Similarly, given an image corrupted by noise (e.g., an old photograph), we can attempt to restore it based on our probabilistic model of what images look like. Specifically, we want to generate a graphical model that does a good job at modeling the posterior distribution $$p(\textsf{original image} \mid \textsf{noisy image}).$$ Then, by observing the noisy image, we can sample or use exact inference to predict the original image.
 
 ![Image Denoising](imageDenoising4.png)
 
 ## Language Models
 
-Knowing the probability distribution can also help us model natural langauge utterances. In this case, we want to construct a probability distribution $$p(x)$$ over sequences of words or characters $$x$$ that assigns high probability to proper (English) sentences.  This distribution can be learned from a variety of sources, such as Wikipedia articles.
+Knowing the probability distribution can also help us model natural language utterances. In this case, we want to construct a probability distribution $$p(x)$$ over sequences of words or characters $$x$$ that assigns high probability to proper (English) sentences. This distribution can be learned from a variety of sources, such as Wikipedia articles.
 
 <a id="text-generation"></a>
 ### Generation
 
-Let's say that we have constructed a distribution of word sequences from Wikipedia articles.  We can then sample from this distribution to generate new Wikipedia-like articles like the one below{% sidenote 1 'From [The Unreasonable Effectiveness of Recurrent Neural Networks](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)'%}.
+Let's say that we have constructed a distribution of word sequences from Wikipedia articles. We can then sample from this distribution to generate new Wikipedia-like articles like the one below{% include sidenote.html id="note_wikipedia" note="From [The Unreasonable Effectiveness of Recurrent Neural Networks](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)" %}.
 
 > Naturalism and decision for the majority of Arab countries' capitalide was grounded
-by the Irish language by [[John Clair]], [[An Imperial Japanese Revolt]], associated 
-with Guangzham's sovereignty. His generals were the powerful ruler of the Portugal 
-in the [[Protestant Immineners]], which could be said to be directly in Cantonese 
-Communication, which followed a ceremony and set inspired prison, training. The 
-emperor travelled back to [[Antioch, Perth, October 25|21]] to note, the Kingdom 
-of Costa Rica, unsuccessful fashioned the [[Thrales]], [[Cynth's Dajoard]], known 
-in western [[Scotland]], near Italy to the conquest of India with the conflict. 
-Copyright was the succession of independence in the slop of Syrian influence that 
-was a famous German movement based on a more popular servicious, non-doctrinal 
-and sexual power post. Many governments recognize the military housing of the 
-[[Civil Liberalization and Infantry Resolution 265 National Party in Hungary]], 
+by the Irish language by [[John Clair]], [[An Imperial Japanese Revolt]], associated
+with Guangzham's sovereignty. His generals were the powerful ruler of the Portugal
+in the [[Protestant Immineners]], which could be said to be directly in Cantonese
+Communication, which followed a ceremony and set inspired prison, training. The
+emperor travelled back to [[Antioch, Perth, October 25|21]] to note, the Kingdom
+of Costa Rica, unsuccessful fashioned the [[Thrales]], [[Cynth's Dajoard]], known
+in western [[Scotland]], near Italy to the conquest of India with the conflict.
+Copyright was the succession of independence in the slop of Syrian influence that
+was a famous German movement based on a more popular servicious, non-doctrinal
+and sexual power post. Many governments recognize the military housing of the
+[[Civil Liberalization and Infantry Resolution 265 National Party in Hungary]],
 that is sympathetic to be to the [[Punjab Resolution]]
 (PJS)[http://www.humah.yahoo.com/guardian.
-cfm/7754800786d17551963s89.htm Official economics Adjoint for the Nazism, Montgomery 
-was swear to advance to the resources for those Socialism's rule, 
+cfm/7754800786d17551963s89.htm Official economics Adjoint for the Nazism, Montgomery
+was swear to advance to the resources for those Socialism's rule,
 was starting to signing a major tripad of aid exile.]]
 
 <a id="text-translation"></a>
@@ -105,14 +105,14 @@ Suppose that we have gathered a training set of paragraphs that were transcribed
 
 ![Neural Machine Translation](nmt-model-fast.gif)
 
-## Audio Models 
+## Audio Models
 
-We can also use probabilitic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sound like human speech.
+We can also use probabilistic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sound like human speech.
 
 <a id="audio-superresolution"></a>
 ### Upsampling or Super-Resolution
 
-Given a low resolution version of an audio signal, we can attempt to increase its resolution.  We can formulate this problem as follows: given our speech probability distribution $$p(x)$$ that "knows" what typical human speech sounds like and some observed values of an audio signal, we aim to calculate signal values at intermediate time points.
+Given a low resolution version of an audio signal, we can attempt to increase its resolution. We can formulate this problem as follows: given our speech probability distribution $$p(x)$$ that "knows" what typical human speech sounds like and some observed values of an audio signal, we aim to calculate signal values at intermediate time points.
 
 In the diagram below, given observed audio signals (blue) and some underlying model of the audio, we aim to reconstruct a higher-fidelity version of the original signal (dotted line) by predicting intermediate signals (white).
 
@@ -159,7 +159,6 @@ Graphical models are used to study phenomena that evolve over space and time, ca
 Graphical models can be used to model spatial distributions of quantities of interests (e.g., assets or expenditures based measures of wealth).
 ![birds](uganda.png.jpg)
 
-
 The last two applications are what are known as spatio-temporal models. They depend on data that is collected across time as well as space.
 
 ## Applications in Health Care and Medicine
@@ -171,7 +170,8 @@ Probabilistic graphical models can assist doctors in diagnosing diseases and pre
 
 ![diagnosis](diagnostic_bayes_net.PNG)
 
-You can read more about the development of their model <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2232064/">here.</a>
+You can read more about the development of their model [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2232064/).
+
 <br/>
 
-|[Index](../../) | [Previous](../probabilityreview/) |  [Next](../../representation/directed/)|
+|[Index](../../) | [Previous](../probabilityreview/) | [Next](../../representation/directed/)|

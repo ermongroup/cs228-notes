@@ -2,29 +2,26 @@
 
 These notes form a concise introductory course on probabilistic graphical models. They are based on Stanford [CS228](http://cs.stanford.edu/~ermon/cs228/index.html), taught by [Stefano Ermon](http://cs.stanford.edu/~ermon/), and have been written by [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov), with the [help](https://github.com/ermongroup/cs228-notes/commits/master) of many students and course staff.
 
-This course starts by introducing graphical models from the very basics and concludes by explaining from first principles the [variational auto-encoder](https://ermongroup.github.io/cs228-notes/).
+This course starts by introducing graphical models from the very basics and concludes by explaining from first principles the [variational auto-encoder](https://ermongroup.github.io/cs228-notes/extras/vae).
 
-The compiled version is available [here](http://ermongroup.github.io/cs228-notes/).
+The compiled version is available [here](https://ermongroup.github.io/cs228-notes/).
 
 ## Contributing
 
-This material is under construction! Although we have written up most of it, you will probably find several typos. If you do, please let us know, or submit a pull request with your fixes via Github.
+This material is under construction! Although we have written up most of it, you will probably find several typos. If you do, please let us know, or submit a pull request with your fixes via GitHub.
 
-The notes are written in Markdown and are compiled into HTML using Jekyll. Please add your changes directly to the Markdown source code. In order to install jekyll, you can follow the instructions posted on their website (https://jekyllrb.com/docs/installation/). 
+The notes are written in Markdown and are compiled into HTML using Jekyll. Please add your changes directly to the Markdown source code. This repo is configured without any extra Jekyll plugins so it can be compiled directly by GitHub Pages. Thus, any changes to the Markdown files will be automatically reflected in the live website.
 
-Note that jekyll is only supported on GNU/Linux, Unix, or macOS. Thus, if you run Windows 10 on your local machine, you will have to install Bash on Ubuntu on Windows. Windows gives instructions on how to do that <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">here</a> and Jekyll's <a href="https://jekyllrb.com/docs/windows/">website</a> offers helpful instructions on how to proceed through the rest of the process.
+To make any changes to this repo, first fork this repo. (Otherwise, if you cloned the `ermongroup/cs228-notes` repo directly onto your local machine instead of forking it first, then you may see an error like `remote: Permission to ermongroup/cs228-notes.git denied to userjanedoe`.) Make the changes you want and push them to your own forked copy of this repo. Finally, go back to the GitHub website to create a pull request to bring your changes into the `ermongroup/cs228-notes` repo.
 
-To compile Markdown to HTML (i.e. after you have made changes to markdown and want them to be accessible to students viewing the docs), 
-run the following commands from the root of your cloned version of the https://github.com/ermongroup/cs228-notes repo:
-1) rm -r docs/
-2) jekyll serve  # This should create a folder called _site. Note: This creates a running server; press Ctrl-C to stop the server before proceeding
-3) mv _site docs  # Change the name of the _site folder to "docs". This won't work if the server is still running.
-4) git add file_names
-5) git commit -am "your commit message describing what you did"
-6) git push origin master
+If you want to test your changes locally before pushing your changes to the `master` branch, you can run Jekyll locally on your own machine. In order to install Jekyll, you can follow the instructions posted on their website (https://jekyllrb.com/docs/installation/). Then, do the following from the root of your cloned version of this repo:
+1) Make whatever changes you want to the Markdown `.md` files.
+2) `rm -r _site/`  # remove the existing compiled site
+3) `jekyll serve`  # this creates a running server
+4) Open your web browser to where the server is running and check the changes you made.
 
-Note that if you cloned the ermongroup/cs228-notes repo directly onto your local machine (instead of forking it) then you may see an error like "remote: Permission to ermongroup/cs228-notes.git denied to userjanedoe". If that is the case, then you need to fork their repo first. Then, if your github profile were userjanedoe, you would need to first push your local updates to your forked repo like so:
+### Notes about writing math equations
 
-git push https://github.com/userjanedoe/cs228-notes.git master
+- Start and end math equations with `$$` **for both inline and display equations**! To make a display equation, put one newline before the starting `$$` a newline after the ending `$$`.
 
-And then you could go and submit the pull request through the GitHub website.
+- Avoid vertical bars `|` in any inline math equations (ie. within a paragraph of text). Otherwise, the GitHub Markdown compiler interprets it as a table cell element (see GitHub Markdown spec [here](https://github.github.com/gfm/)). Instead, use one of `\mid`, `\vert`, `\lvert`, or `\rvert` instead. For double bar lines, write `\|` instead of `||`.

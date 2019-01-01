@@ -1,0 +1,11 @@
+<figure class="maincolumn">
+    <figcaption class="marginnote">{{ include.caption }}</figcaption>
+    {%- assign prefix2 = include.url | slice: 0, 2 -%}
+    {%- assign prefix7 = include.url | slice: 0, 7 -%}
+    {%- assign prefix8 = include.url | slice: 0, 8 -%}
+    {%- if prefix2 == '//' or prefix7 == 'http://' or prefix8 == 'https://' -%}
+    <img src="{{ include.src }}" alt="{{ include.caption }}" />
+    {%- else -%}
+    <img src="{{ site.baseurl }}/{{ include.src }}" alt="{{ include.caption }}" />
+    {%- endif -%}
+</figure>

@@ -4,11 +4,9 @@
 nav_exclude: true
 ---
 /*****************************************************************************/
-/*
 /* Tufte Jekyll blog theme
-/* Based on Tufte CSS by Dave Liepmann ( https://github.com/edwardtufte/tufte-css )
-/*
-/* The README.md will show you how to set up your site along with other goodies
+/* - source: https://github.com/clayh53/tufte-jekyll
+/* - based on Tufte CSS by Dave Liepmann ( https://github.com/edwardtufte/tufte-css )
 /*****************************************************************************/
 
 // Imports to create final
@@ -17,9 +15,20 @@ nav_exclude: true
 @import "../_sass/settings";
 @import "../_sass/syntax-highlighting";
 
-// Global Resets
-//
-* { margin: 0; padding: 0; }
+/* Changes from original tufte.css
+
+- use border-box instead of content-box for box-sizing
+- change font size as browser width expands or contracts
+- add MathJax styling
+- removes underline from <a> links and sets their color to $constrast-color, except for links that are inside <p>
+- uses marginnote for maincolumn figure caption
+
+*/
+
+// global resets
+*,*:before,*:after { margin: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
 
 /* clearfix hack after Cederholm (group class name) */
 .group:after {
@@ -28,118 +37,41 @@ nav_exclude: true
   clear: both;
 }
 
-html, body { height: 100%; }
+// MathJax styling
+.mathblock, .MJXc-display {
+  font-size: 1.5rem !important;
+  clear: left;
+}
 
-// First significant deviation from CSS on tufte.css site - variable font size as browser width expands or contracts
-// html { font-size: 15px; }
-
-html{
-    text-align: baseline;
-    font-size: 11px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-  }
-
+// variable font size
+html { font-size: 11px;
+       -webkit-font-smoothing: antialiased;
+       -moz-osx-font-smoothing: grayscale; }
 @media screen and (min-width: 800px){ html{ font-size: 12px;} }
-
 @media screen and (min-width: 900px){ html{ font-size: 13px;} }
-
 @media screen and (min-width: 1000px){ html{ font-size: 14px;} }
-
 @media screen and (min-width: 1100px){ html{ font-size: 15px; } }
 
-// @media screen and (min-width: 1200px){ html{ font-size: 16px; } }
-//
-// @media screen and (min-width: 1300px){ html{ font-size: 17px; } }
-
-// sets link style according to values in _settings.scss
-.mathblock{
-  font-size: 1.5rem;
-}
-a {
-  color: $contrast-color;
-  text-decoration: none;
-}
-
-// p > a { @if $link-style == underline
-//     {
-//       color: $text-color;
-//       text-decoration: none;
-//       border-bottom: 1px solid #777;
-//       padding-bottom: 1px;
-//     }
-//     @else
-//     {
-//       color: $contrast-color;
-//       text-decoration: none;
-//     }
-//   }
-
-/* Links: replicate underline that clears descenders */
-p > a:link, p > a:visited { color: inherit; }
-
-p > a:link { text-decoration: none;
-         background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#333, #333);
-         background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(#333, #333);
-         -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-         -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-         background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-         background-repeat: no-repeat, no-repeat, repeat-x;
-         text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
-         background-position: 0% 93%, 100% 93%, 0% 93%; }
-
-@media screen and (-webkit-min-device-pixel-ratio: 0) { p > a:link { background-position-y: 87%, 87%, 87%; } }
-
-p > a:link::selection { text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
-                    background: #b4d5fe; }
-
-p > a:link::-moz-selection { text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
-                         background: #b4d5fe; }
-
-body { width: 87.5%;
-       margin-left: auto;
-       margin-right: auto;
+body { width: 100%;
        padding-left: 12.5%;
-       font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+       max-width: calc(12.5% + 1400px); // max-width of content box = 1400px
+       margin: 0 auto;
+       font-family: $body-font;
        background-color: $bg-color;
        color: $text-color;
-       max-width: 1400px;
        counter-reset: sidenote-counter; }
 
-// --------- Typography stuff -----------//
-// added rational line height and margins ala http://webtypography.net/intro/
-
+// changed
 h1 { font-weight: 400;
      margin-top: 1.568rem;
      margin-bottom: 1.568rem;
      font-size: 2.5rem;
      line-height: 0.784; }
 
-// h2 { font-style: italic;
-//      font-weight: 400;
-//      margin-top: 1.866666666666667rem;
-//      margin-bottom: 0;
-//      font-size: 2.1rem;
-//      line-height: 0.933333333333333; }
-//
-// h3 { font-style: italic;
-//      font-weight: 400;
-//      font-size: 1.8rem;
-//      margin-top: 2.1777777777777778rem;
-//      margin-bottom: 0;
-//      line-height: 1.08888888888889; }
-
-// h1 { font-weight: 400;
-//      margin-top: 4rem;
-//      margin-bottom: 1.5rem;
-//      font-size: 3.2rem;
-//      line-height: 1; }
-
 h2 { font-style: italic;
      font-weight: 400;
-     margin-top: 4rem;
-     margin-bottom: 1rem;
+     margin-top: 4rem; /* 2.1rem */
+     margin-bottom: 1.4rem;
      font-size: 2.2rem;
      line-height: 1; }
 
@@ -147,17 +79,8 @@ h3 { font-style: italic;
      font-weight: 400;
      font-size: 1.7rem;
      margin-top: 2rem;
-     margin-bottom: 0;
+     margin-bottom: 1.4rem;
      line-height: 1; }
-
-// ET says a need for more than 3 levels of headings is the sign of a diseased mind
-
-// p .subtitle { font-style: italic;
-//              margin-top: 2.1777777777777778rem;
-//              margin-bottom: 2.1777777777777778rem;
-//              font-size: 1.8rem;
-//              display: block;
-//              line-height: 1.08888888888889; }
 
 p.subtitle { font-style: italic;
              margin-top: 1rem;
@@ -166,243 +89,228 @@ p.subtitle { font-style: italic;
              display: block;
              line-height: 1; }
 
-p, ol, ul { font-size: 1.4rem; }
+article { width: 55%;
+          position: relative; // create positioning anchor
+          padding: 5rem 0; }
 
-// p, li { line-height: 2rem;
-//         margin-top: 1.4rem;
-//         padding-right: 2rem; //removed because,  why?
-//         vertical-align: baseline; }
+/* --- Main Body Text --- */
 
-p { line-height: 2rem;
-    margin-top: 1.4rem;
-    margin-bottom: 1.4rem;
-    padding-right: 0;
+p, ol, ul { font-size: 1.4rem;
+            line-height: 2rem;
+            margin: 1.4rem 0; }
+
+p { padding-right: 0;
     vertical-align: baseline; }
 
-blockquote p {  font-size: 1.1rem;
-                line-height: 1.78181818;
-                margin-top: 1.78181818rem;
-                margin-bottom: 1.78181818rem;
-                width: 45%;
-                padding-left: 2.5%;
-                padding-right: 2.5%; }
+li { margin-bottom: 0.5em; }
 
-// blockquote footer { width: 45%;
-//                     text-align: right; }
+blockquote p, pre { padding-right: 0 10%; }
 
-blockquote { font-size: 1.4rem; }
+blockquote * { font-size: 1.1rem; }
+blockquote p { line-height: 1.75rem; }
+blockquote footer { text-align: right; }
 
-blockquote p { width: 50%; }
+/* --- End Main Body Text --- */
 
-blockquote footer { width: 50%;
-                    font-size: 1.1rem;
-                    text-align: right; }
+/* --- Figures and Margins --- */
 
+// the caption of a figure.maincolumn is never hidden
+figure.maincolumn { margin-bottom: 3em; }
+figure.maincolumn > figcaption { display: block !important; }
+
+figure.fullwidth figcaption { float: left; margin-right: 0%; margin-left: 36%; }
+
+img { max-width: 100%; }
+
+.sidenote, .marginnote {
+    // goal: width = 50% of <p> (= 27.5% of 87.5% <body>)
+    // - vw for constant width regardless of container
+    // - 336.875px = 24.0625% of 1400px (max-width of <body>)
+    width: 24.0625vw;
+    max-width: 336.875px;
+
+    // goal: 5.5vw of spacing between main column and sidebar
+    // - assuming container has width of <article>, then
+    //   10% (spacing) + 50% (width) = 60%
+    margin-right: -60%;
+
+    float: right;
+    clear: right;
+    font-size: 1rem;
+
+    margin-top: 0;
+    margin-bottom: 1.4rem;
+    line-height: 1.4;
+    vertical-align: baseline;
+    position: relative;
+}
+
+.sidenote-number { counter-increment: sidenote-counter; }
+.sidenote-number:after, .sidenote:before { font-family: et-book-roman-old-style;
+                                           color: $contrast-color; // added
+                                           position: relative;
+                                           vertical-align: baseline; }
+.sidenote-number:after { content: counter(sidenote-counter);
+                         font-size: 1rem;
+                         top: -0.5rem; // use top instead of vertical-align to avoid affecting line-height
+                         left: 0.1rem; }
+.sidenote:before { content: counter(sidenote-counter) ".\000a0"; } // unicode for a non-breaking space
+
+// account for indentation of list items and blockquotes
+blockquote .sidenote, blockquote .marginnote { margin-right: -82.35%; } // =70%/85%
+li .sidenote, li .marginnote { margin-right: -63.29%; } // not quite right yet
+
+// margin toggle
+input.margin-toggle { display: none; }
+label.margin-toggle:not(.sidenote-number) { display: none; } // hide margin toggle if screen is wide enough
+
+/* --- End of Figures and Margins --- */
+
+/* --- Links --- */
+
+// new link behavior
+a { color: $contrast-color;
+    text-decoration: none; }
+
+/* Links: replicate underline that clears descenders */
+p > a:link, p > a:visited { color: inherit; }
+
+p > a:link { background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#333, #333);
+             background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(#333, #333);
+             -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+             -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+             background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+             background-repeat: no-repeat, no-repeat, repeat-x;
+             text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
+             background-position: 0% 93%, 100% 93%, 0% 93%; }
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) { p > a:link { background-position-y: 87%, 87%, 87%; } }
+
+p > a:link::selection { text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
+                        background: #b4d5fe; }
+
+p > a:link::-moz-selection { text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
+                             background: #b4d5fe; }
+
+/* --- End of Links --- */
+
+/* --- Code --- */
+
+// Markdown code blocks (```, ~~~, or indented blocks) are always <pre><code></code></pre>
+// Markdown code spans (`, ``) are always <p><code></code></p>
+
+pre, code { font-family: $code-font;
+            font-size: 1rem;
+            line-height: 1.42;
+            margin-top: 1.42rem; }
+pre { overflow-x: auto; }
+
+/* --- End of Code --- */
+
+/* --- Miscellaneous --- */
 
 .sans { font-family: $sans-font;
         letter-spacing: .03em; }
 
-pre, pre code, p code, p pre code { font-family: $code-font;  // removed .code 'class' since code is an actual html tag
-        font-size: 1.2rem;                   // also added p code, p pre code and pre selector to account for Markdown parsing
-        line-height: 1.71428571;        // of triple backticks plus rationalized line-heights and margins
-        margin-top: 1.71428571rem; }
+.fullwidth { max-width: 90%; }
 
+.full-width { .sidenote, .sidenote-number, .marginnote { display: none; } }
 
-h1 code, h2 code, h3 code { font-size: 0.80em; } //left in for no real reason
+span.newthought { font-variant: small-caps;
+                  font-size: 1.2em;
+                  letter-spacing: 0.05rem; } // added
 
-/*-- Table styling section - For Tufte-Jekyll, booktabs style is default for Markdown tables  --*/
+/* --- End of Miscellaneous --- */
 
-table, table.booktabs { width: auto;  //making booktabs style tables the unstyled default in case someone uses Markdown styling
-                 margin: 0 auto;
-                 border-spacing: 0px;
-                 border-top: 2px solid $border-color;
-                 border-bottom: 2px solid $border-color; }
+/* --- Tables --- */
+// Use booktabs style as default for all tables, including Markdown tables
+table, table.booktabs { width: auto;
+                        margin: 0 auto;
+                        border-spacing: 0px;
+                        border-top: 2px solid $border-color;
+                        border-bottom: 2px solid $border-color; }
 
-.booktabs th, th { border-bottom: 1px solid $border-color;
-               padding: 0.65ex 0.5em 0.4ex 0.5em;
-               font-weight: normal;
-               text-align: center; }
+th, .booktabs th { border-bottom: 1px solid $border-color;
+                   padding: 0.65ex 0.5em 0.4ex 0.5em;
+                   font-weight: normal;
+                   text-align: center; }
 
-th, td{ font-size: 1.2rem;
-        line-height: 1.71428571;  }
+th, td { font-size: 1.2rem;
+         line-height: 1.71428571; }
 
-.booktabs th.cmid, th { border-bottom: 1px solid lighten($border-color, 25%); }
+th, .booktabs th.cmid { border-bottom: 1px solid lighten($border-color, 25%); }
 
 .booktabs th.nocmid { border-bottom: none; }
 
-.booktabs tbody tr:first-child td,  tr:first-child td { padding-top: 0.65ex; } /* add space between thead row and tbody */
+tr:first-child td, .booktabs tbody tr:first-child td { padding-top: 0.65ex; } // add space between thead row and tbody
 
-.booktabs td, td {  padding-left: 0.5em;
-                    padding-right: 0.5em;
-                    text-align: left; }
+td, .booktabs td { padding-left: 0.5em;
+                   padding-right: 0.5em;
+                   text-align: left; }
 
-.booktabs caption, caption { font-size: 90%;
-                    text-align: left;
-                    width: auto;
-                    margin-left: auto;
-                    margin-right: auto;
-                    margin-top: 1ex;
-                    caption-side: top; }
+caption, .booktabs caption { font-size: 90%;
+                             text-align: left;
+                             width: auto;
+                             margin-left: auto;
+                             margin-right: auto;
+                             margin-top: 1ex;
+                             caption-side: top; }
 
 .booktabs tbody tr td.l { text-align: left !important; }
 .booktabs tbody tr td.c { text-align: center !important; }
 .booktabs tbody tr td.r { text-align: right !important; }
 
-.table-caption { float:right;
-                 clear:right;
+.table-caption { float: right;
+                 clear: right;
                  margin-right: -60%;
                  width: 50%;
                  margin-top: 0;
                  margin-bottom: 0;
                  font-size: 1.0rem;
                  line-height: 1.96; }
-/* -- End of Table Styling section --*/
 
+/* --- End of Tables --- */
 
-/* Basic Layout stuff --*/
+/* --- Small Screens --- */
 
-// article { position: relative;
-//           padding: 1
-//
-//           rem 0rem 2.5rem 0rem; } // reduced top and bottom padding by 50%
-//
-// section { padding-top: 1rem;
-//           padding-bottom: 1rem; }
+@media screen and (max-width: 760px) {
+    article { width: 90%; }
+    figure { max-width: 90%; }
+    figcaption, figure.fullwidth figcaption { margin-right: 0%;
+                                              max-width: none; }
+    blockquote p, blockquote footer { padding-right: 10%; }
+}
 
-article { position: relative;
-          padding: 5rem 0rem; }
+@media (max-width: 760px) {
+    label.margin-toggle:not(.sidenote-number) { display: inline; color: $contrast-color; }
+    blockquote .sidenote, blockquote .marginnote,
+    li .sidenote, li .marginnote,
+    .sidenote, .marginnote {
+        // treat as-if inline
+        width: 100%;
+        max-width: 100%;
 
-section { padding-top: 1rem;
-          padding-bottom: 1rem; }
-
-p, ol, ul { font-size: 1.4rem; }
-
-ul { width: 45%;
-     -webkit-padding-start: 5%;
-     -webkit-padding-end: 5%;
-     list-style-type: none; }
-
-ol { -webkit-padding-start: 5%;
-     -webkit-padding-end: 5%;
-     list-style-type: decimal; }
-
-ul li { padding: 0.5em 0; } //vertical padding on list items screws up vertical rhythym
-
-figure, figure img.maincolumn { max-width: 55%;
-         -webkit-margin-start: 0;
-         -webkit-margin-end: 0;
-         margin-bottom: 3em; }
-
-figcaption { float: right;
-             clear: right;
-             margin-right: -48%;
-             margin-top: 0;
-             margin-bottom: 0;
-             font-size: 1.0rem;
-             line-height: 1.6;
-             vertical-align: baseline;
-             position: relative;
-             max-width: 40%; }
-
-figure.fullwidth figcaption { float: left; margin-right: 0%; margin-left: 36%; }
-
-img { max-width: 100%; }
-
-.sidenote, .marginnote { float: right;
-                         clear: right;
-                         margin-right: -60%;
-                         width: 50%;
-                         margin-top: 0;
-                         margin-bottom: 1.96rem;
-                         font-size: 1.0rem;
-                         line-height: 1.96; //changed to bring line heights into rational pattern
-                         vertical-align: baseline;
-                         position: relative; }
-
-li .sidenote, li .marginnote{ margin-right: -80%; } //added to allow for the fact that lists are indented and marginnotes and sidenotes push to right
-
-blockquote .sidenote, blockquote .marginnote { margin-right: -79% }
-
-.sidenote-number { counter-increment: sidenote-counter; }
-
-.sidenote-number:after, .sidenote:before { content: counter(sidenote-counter) " ";
-                                           font-family: et-book-roman-old-style;
-                                           color: $contrast-color; //added color
-                                           position: relative;
-                                           vertical-align: baseline; }
-
-.sidenote-number:after { content: counter(sidenote-counter);
-                         font-size: 1rem;
-                         top: -0.5rem;
-                         left: 0.1rem; }
-
-.sidenote:before { content: counter(sidenote-counter) ".\000a0"; // this is unicode for a non-breaking space
-                   color: $contrast-color;
-                   top: 0rem; } //removed superscripting for numerical reference in sidenote
-
-p, footer, div.table-wrapper, div.mathblock { width: 55%; }
-
-div.table-wrapper { overflow-x: auto; } //changed all overflow values to 'auto' so scroll bars appear only as needed
-
-@media screen and (max-width: 760px) { p, footer,div.mathblock { width: 90%; }
-                                       pre code { width: 87.5%; }
-                                       ul { width: 85%; }
-                                       figure { max-width: 90%; }
-                                       figcaption, figure.fullwidth figcaption { margin-right: 0%;
-                                                                                 max-width: none; }
-                                       blockquote p, blockquote footer {  width: 80%;
-                                                                          padding-left: 5%;
-                                                                          padding-right: 5%;
-                                                                        }}
-
-.marginnote code, .sidenote code { font-size: 1rem; } //more .code class removal
-
-pre, pre code, p pre code { width: 52.5%;
-           padding-left: 2.5%;
-           overflow-x: auto; }
-
-.fullwidth, li.listing div{ max-width: 90%; }
-
-.full-width { .sidenote, .sidenote-number, .marginnote { display: none; } }
-
-span.newthought { font-variant: small-caps;
-                  font-size: 1.2em;
-                  letter-spacing: 0.05rem; }
-
-input.margin-toggle { display: none; }
-
-label.sidenote-number { display: inline; }
-
-label.margin-toggle:not(.sidenote-number) { display: none; }
-
-@media (max-width: 760px) { label.margin-toggle:not(.sidenote-number) { display: inline; color: $contrast-color; }
-                            .sidenote, .marginnote { display: none; }
-                            .margin-toggle:checked + .sidenote,
-                            .margin-toggle:checked + .marginnote { display: block;
-                                                                   float: left;
-                                                                   left: 1rem;
-                                                                   clear: both;
-                                                                   width: 95%;
-                                                                   margin: 1rem 2.5%;
-                                                                   vertical-align: baseline;
-                                                                   position: relative; }
-                            label { cursor: pointer; }
-                            pre, pre code, p code, p pre code { width: 90%;
-                                       padding: 0; }
-                            .table-caption { display: block;
-                                             float: right;
-                                             clear: both;
-                                             width: 98%;
-                                             margin-top: 1rem;
-                                             margin-bottom: 0.5rem;
-                                             margin-left: 1%;
-                                             margin-right: 1%;
-                                             vertical-align: baseline;
-                                             position: relative; }
-                            div.table-wrapper, table, table.booktabs { width: 85%; }
-                            div.table-wrapper { border-right: 1px solid #efefef; }
-                            img { max-width: 100%; } }
-/*--- End of Basic Layout stuff from tufte.css ---*/
+        display: none;
+        float: left;
+        padding: 0 5%;
+        margin: 1rem 0;
+        vertical-align: baseline; }
+    .margin-toggle:checked + .sidenote,
+    .margin-toggle:checked + .marginnote { display: block; }
+    label { cursor: pointer; }
+    .table-caption { display: block;
+                     float: right;
+                     clear: both;
+                     width: 98%;
+                     margin-top: 1rem;
+                     margin-bottom: 0.5rem;
+                     margin-left: 1%;
+                     margin-right: 1%;
+                     vertical-align: baseline;
+                     position: relative; }
+    div.table-wrapper, table, table.booktabs { width: 85%; }
+}
+/* --- End of Small Screens --- */
 
 /* -- Jekyll specific styling --*/
 //helper classes
@@ -419,28 +327,21 @@ header > nav.group, body footer {
 nav.group a.active:before{ content:"\0003c\000a0";} // escaped unicode for the carats and then a space on active menu links
 nav.group a.active:after{ content:"\000a0\0003e" ;}
 
-header > nav  a{
+header > nav a {
   font-size: 1.2rem;
   font-family: $sans-font;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: $contrast-color;
   padding-top: 1.5rem;
-  text-decoration: none;
   display: inline-block;
   float: left;
   margin-top: 0;
   margin-bottom: 0;
   padding-right: 2rem;
-  //margin-left: 1rem;
   vertical-align: baseline;
 }
-header > nav a img{
-  height: 5rem;
-  position: relative;
-  max-width: 100%;
-  top:-1.5rem;
-}
+
 ul.footer-links, .credits{
   list-style: none;
   text-align: center;
@@ -467,7 +368,7 @@ ul.footer-links li{
 
 //Full width page styling stuff
 
-body.full-width, .content-listing, ul.content-listing li.listing{ width: 90%;
+body.full-width { width: 90%;
        margin-left: auto;
        margin-right: auto;
        padding: 0% 5%;
@@ -477,38 +378,6 @@ body.full-width, .content-listing, ul.content-listing li.listing{ width: 90%;
   width: 90%;
 }
 
-
-h1.content-listing-header{
-  font-style: normal;
-  text-transform: uppercase;
-  letter-spacing: 0.2rem;
-  font-size: 1.8rem;
-}
-
-li.listing hr{
-  width:100%;
-}
-.listing, .listing h3
-{
-  display: inline-block;
-  margin:0;
-}
-li.listing {
-  margin:0;
-  & p{
-    width: 100%
-  }
-}
-
-
-li.listing:last-of-type{
-  border-bottom: none;
-  margin-bottom: 1.4rem;
-}
-li.listing h3.new {
-  text-transform: uppercase;
-  font-style: normal;
-}
 hr.slender {
     border: 0;
     height: 1px;
@@ -524,11 +393,9 @@ hr.slender {
 
 // Printing ands screen media queries
 
-// Does not display a print-footer for screen display
-@media screen{
-  .print-footer{
-    display: none;
-  }
+// do not display a print-footer for screen display
+@media screen {
+  .print-footer{ display: none; }
 }
 
 //printing stuff
@@ -546,10 +413,8 @@ hr.slender {
         orphans:4; widows:2;
     }
 
-    body {
-        font-size:  12pt;
+    body { font-size:  12pt; }
 
-    }
     html body span.print-footer{
       font-family: $sans-font;
       font-size: 9pt;
@@ -585,81 +450,3 @@ hr.slender {
       display:none;
     }
 }
-
-
-/* --- Icomoon icon fonts CSS --*/
-@font-face {
-  font-family: 'icomoon';
-  src:url('../fonts/icomoon.eot?rgwlb8');
-  src:url('../fonts/icomoon.eot?#iefixrgwlb8') format('embedded-opentype'),
-    url('../fonts/icomoon.woff?rgwlb8') format('woff'),
-    url('../fonts/icomoon.ttf?rgwlb8') format('truetype'),
-    url('../fonts/icomoon.svg?rgwlb8#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-[class^="icon-"], [class*=" icon-"] {
-  font-family: 'icomoon';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  color: $contrast-color;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-pencil:before {
-  content: "\e600";
-}
-.icon-film:before {
-  content: "\e60f";
-}
-.icon-calendar:before {
-  content: "\e601";
-}
-.icon-link:before {
-  content: "\e602";
-}
-.icon-info:before {
-  content: "\e603";
-}
-.icon-cancel-circle:before {
-  content: "\e604";
-}
-.icon-checkmark-circle:before {
-  content: "\e605";
-}
-.icon-spam:before {
-  content: "\e606";
-}
-.icon-mail:before {
-  content: "\e607";
-}
-.icon-googleplus:before {
-  content: "\e608";
-}
-.icon-facebook:before {
-  content: "\e609";
-}
-.icon-twitter:before {
-  content: "\e60a";
-}
-.icon-feed:before {
-  content: "\e60b";
-}
-.icon-flickr:before {
-  content: "\e60c";
-}
-.icon-github:before {
-  content: "\e60d";
-}
-.icon-box-add:before {
-  content: "\e60e";
-}
-/*-- End of Icomoon icon font section --*/
