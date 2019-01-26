@@ -20,7 +20,7 @@ with observed $$x \in \mathcal{X}$$, where $$\mathcal{X}$$ can be continuous, di
 {% include marginfigure.html id="faces" url="assets/img/faces.png" description="Variational autoencoder $$p(x|z)p(z)$$ applied to a face images (modeled by $$x$$). The learned latent space $$z$$ can be used to interpolate between facial expressions." %}
 To make things concrete, you may think of $$x$$ as being an image (e.g. a human face), and $$z$$ as latent factors (not seen during training) that explain features of the face. For example, one coordinate of $$z$$ can encode whether the face is happy or sad, another one whether the face is male or female, etc.
 
-We may also be interested in models with many layers, e.g. $$p(x \mid z_1)p(z_2 \mid z_3)\cdots p(z_{m-1}\mid z_m)p(z_m)$$. These are often called *deep generative models* and can learn hierarchies of latent representations.
+We may also be interested in models with many layers, e.g. $$p(x \mid z_1)p(z_1 \mid z_2)p(z_2 \mid z_3)\cdots p(z_{m-1}\mid z_m)p(z_m)$$. These are often called *deep generative models* and can learn hierarchies of latent representations.
 In this chapter, we will assume for simplicity that there is only one latent layer.
 
 ### Learning deep generative models
@@ -52,7 +52,7 @@ Another approach would be to use [sampling-based methods](../../inference/sampli
 
 ## Auto-encoding variational Bayes
 
-We will now going to learn about Auto-encoding variational Bayes (AEVB), an algorithm that can efficiently solve our three inference and learning tasks; the variational auto-encoder will be one instantiation of this algorithm.
+We are now going to learn about Auto-encoding variational Bayes (AEVB), an algorithm that can efficiently solve our three inference and learning tasks; the variational auto-encoder will be one instantiation of this algorithm.
 
 AEVB is based on ideas from [variational inference](../../inference/variational/). Recall that in variational inference, we are interested in maximizing the [evidence lower bound](../../inference/variational/) (ELBO)
 
@@ -100,7 +100,7 @@ $$
 \nabla_{\phi} \E_{q_\phi(z)} \left[ \log p_\theta(x,z) - \log q_\phi(z) \right] = \E_{q_\phi(z)} \left[ \left(\log p_\theta(x,z) - \log q_\phi(z) \right) \nabla_{\phi} \log q_\phi(z) \right]
 $$
 
-This follows from some basic algebra and calculus and takes about half a page to derive. We leave it as an exercise to the reader, but for those interested, the full derivation may found in Appendix B of this [paper](https://www.cs.toronto.edu/~amnih/papers/nvil.pdf).
+This follows from some basic algebra and calculus and takes about half a page to derive. We leave it as an exercise to the reader, but for those interested, the full derivation may be found in Appendix B of this [paper](https://www.cs.toronto.edu/~amnih/papers/nvil.pdf).
 
 The above identity places the gradient inside the expectation, which we may now evaluate using Monte Carlo. We refer to this as the *score function* estimator of the gradient.
 
@@ -200,7 +200,7 @@ We may interpret the variational autoencoder as a directed latent-variable proba
 ### Experimental results
 
 {% include marginfigure.html id="mnist" url="assets/img/mnist.png" description="Interpolating over MNIST digits by interpolating over latent variables" %}
-The VAE can be applied to images $$x$$ in order to learn interesting latent representations. The VAE paper contains a few examples on the Frey face dataset on the MNIST digits. On the face dataset, we can interpolate between facial expressions by interpolating between latent variables (e.g. we can generate smooth transitions between "angry" and "surprised"). On the MNIST dataset, we can similarly interpolate between numbers.
+The VAE can be applied to images $$x$$ in order to learn interesting latent representations. The VAE paper contains a few examples on the Frey face dataset and on the MNIST digits. On the face dataset, we can interpolate between facial expressions by interpolating between latent variables (e.g. we can generate smooth transitions between "angry" and "surprised"). On the MNIST dataset, we can similarly interpolate between numbers.
 
 The authors also compare their methods against three alternative approaches: the wake-sleep algorithm, Monte-Carlo EM, and hybrid Monte-Carlo. The latter two methods are sampling-based approaches; they are quite accurate, but don't scale well to large datasets. Wake-sleep is a variational inference algorithm that scales much better; however it does not use the exact gradient of the ELBO (it uses an approximation), and hence it is not as accurate as AEVB. The paper illustrates this by plotting learning curves.
 
