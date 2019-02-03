@@ -47,7 +47,7 @@ Again, observe that this message is precisely the factor $$\tau$$ that $$x_i$$ w
 
 Because of this observation, after we have computed all messages, we may answer any marginal query over $$x_i$$ in constant time using the equation
 
-$$ p(x_i) = \prod_{\ell \in N(i)} m_{\ell \to i}(x_i). $$
+$$ p(x_i) = \phi(x_i) \prod_{\ell \in N(i)} m_{\ell \to i}(x_i). $$
 
 ### Sum-product message passing for factor trees
 
