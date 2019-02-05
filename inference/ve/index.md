@@ -59,7 +59,7 @@ Having established some intuitions, with a special case, we will now introduce t
 
 We will assume that we are given a graphical model as a product of factors
 
-$$ p(x_1,..,x_n) = \prod_{c \in C} \phi_c(x_c). $$
+$$ p(x_1, \dotsc, x_n) = \prod_{c \in C} \phi_c(x_c). $$
 
 Recall that we can view a factor as a multi-dimensional table assigning a value to each assignment of a set of variables $$x_c$$. In the context of a Bayesian network, the factors correspond to conditional probability distributions; however, this definition also makes our algorithm equally applicable to Markov Random Fields. In this latter case, the factors encode an unnormalized distribution; to compute marginals, we first calculate the partition function (also using variable elimination), then we compute marginals using the unnormalized distribution, and finally we divide the result by the partition constant to construct a valid marginal probability.
 
