@@ -62,7 +62,7 @@ Both messages require taking a product, but only the factor-to-variable messages
 $$
 \nu_{var(i)\to fac(s)}(x_i) = \prod_{t\in\mathcal N(i)\setminus s}\mu_{fac(t)\to var(i)}(x_i) \\
 
-\mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{\mathcal N(s)\setminus i}}f_s(x_{\mathcal N(s)})\prod_{j\in\mathcal N(i)\setminus i}\nu_{var(j)\to fac(s)}(x_j)
+\mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{\mathcal N(s)\setminus i}}f_s(x_{\mathcal N(s)})\prod_{j\in\mathcal N(s)\setminus i}\nu_{var(j)\to fac(s)}(x_j)
 $$
 
 So now the algorithm proceeds in the same way as above: as long as there is a factor or variable ready to transmit to a variable or factor, respectively, send the appropriate factor-to-variable or variable-to-factor message as defined above.
