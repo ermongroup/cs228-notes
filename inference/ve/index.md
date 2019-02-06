@@ -41,7 +41,7 @@ p(x_n)
 \end{align*}
 $$
 
-We perform this summation by first summing the inner terms, starting from $$x_1$$, and ending with $$x_{n-1}$$. More concretely, we start by computing an intermediary *factor* $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$ by summing out $$x_1$$. This takes $$O(d^2)$$ time because we must sum over $$x_1$$ for each assignment to $$x_2$$. The resulting factor $$\tau(x_2)$$ can be thought of as a table of values (though not necessarily probabilities), with one entry for each assignment to $$x_2$$ (just as factor $$p(x_1)$$ can be represented as a table. We may then rewrite the marginal probability using $$\tau$$ as
+We sum the inner terms first, starting from $$x_1$$ and ending with $$x_{n-1}$$. Concretely, we start by computing an intermediary *factor* $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$ by summing out $$x_1$$. This takes $$O(d^2)$$ time because we must sum over $$x_1$$ for each assignment to $$x_2$$. The resulting factor $$\tau(x_2)$$ can be thought of as a table of $$d$$ values (though not necessarily probabilities), with one entry for each assignment to $$x_2$$ (just as factor $$p(x_1)$$ can be represented as a table). We may then rewrite the marginal probability using $$\tau$$ as
 
 $$
 p(x_n) = \sum_{x_{n-1}} p(x_n \mid x_{n-1}) \sum_{x_{n-2}} p(x_{n-1} \mid x_{n-2}) \cdots \sum_{x_2} p(x_3 \mid x_2) \tau(x_2).
@@ -53,13 +53,13 @@ Also, at each time, we are *eliminating* a variable, which gives the algorithm i
 
 ## Eliminating Variables
 
-Having established some intuitions, with a special case, we will now introduce the variable elimination algorithm in its most general form.
+Having established some intuitions, with a special case, we now introduce the variable elimination algorithm in its general form.
 
 ### Factors
 
 We will assume that we are given a graphical model as a product of factors
 
-$$ p(x_1,..,x_n) = \prod_{c \in C} \phi_c(x_c). $$
+$$ p(x_1, \dotsc, x_n) = \prod_{c \in C} \phi_c(x_c). $$
 
 Recall that we can view a factor as a multi-dimensional table assigning a value to each assignment of a set of variables $$x_c$$. In the context of a Bayesian network, the factors correspond to conditional probability distributions; however, this definition also makes our algorithm equally applicable to Markov Random Fields. In this latter case, the factors encode an unnormalized distribution; to compute marginals, we first calculate the partition function (also using variable elimination), then we compute marginals using the unnormalized distribution, and finally we divide the result by the partition constant to construct a valid marginal probability.
 
@@ -136,9 +136,9 @@ To compute $$P(Y, E = e)$$, we simply take every factor $$\phi(X', Y', E')$$ whi
 
 It is very important to understand that the running time of Variable Elimination depends heavily on the structure of the graph.
 
-In the previous example, suppose we eliminated $$g$$ first. Then, we would have had to transform the factors $$p(g \mid i, d), \phi(l \mid g)$$ into a big factor $$\tau(d, i, l)$$ over 3 variables, which would require $$O(d^4)$$ time to compute. If we had a factor $$S \rightarrow G$$, then we would have had to eliminate $$p(g \mid s)$$ as well, producing a single giant factor $$\tau(d, i, l, s)$$ in $$O(d^5)$$ time. Then, eliminating any variable from this factor would require almost as much work as if we had started with the original distribution, since all the variable have become coupled.
+In the previous example, suppose we eliminated $$g$$ first. Then, we would have had to transform the factors $$p(g \mid i, d), \phi(l \mid g)$$ into a big factor $$\tau(d, i, l)$$ over 3 variables, which would require $$O(d^4)$$ time to compute. If we had a factor $$S \rightarrow G$$, then we would have had to eliminate $$p(g \mid s)$$ as well, producing a single giant factor $$\tau(d, i, l, s)$$ in $$O(d^5)$$ time. Then, eliminating any variable from this factor would require almost as much work as if we had started with the original distribution, since all the variables have become coupled.
 
-Clearly some ordering are much more efficient than others. In fact, the running time of Variable Elimination will equal $$O(m d^M)$$, where $$M$$ is the maximum size of any factor during the elimination process and $$m$$ is the number of variables.
+Clearly some orderings are more efficient than others. In fact, the running time of Variable Elimination is $$O(m d^M)$$, where $$M$$ is the maximum size of any factor during the elimination process and $$m$$ is the number of variables.
 
 ### Choosing variable elimination orderings
 
@@ -148,7 +148,7 @@ Unfortunately, choosing the optimal VE ordering is an NP-hard problem. However, 
 - *Min-weight*: Choose variables to minimize the product of the cardinalities of its dependent variables.
 - *Min-fill*: Choose vertices to minimize the size of the factor that will be added to the graph.
 
-In practice, these methods often result in reasonably good performance in many interesting settings.
+These methods often result in reasonably good performance in many interesting settings.
 
 
 <br/>

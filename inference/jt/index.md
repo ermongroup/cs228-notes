@@ -47,7 +47,7 @@ Again, observe that this message is precisely the factor $$\tau$$ that $$x_i$$ w
 
 Because of this observation, after we have computed all messages, we may answer any marginal query over $$x_i$$ in constant time using the equation
 
-$$ p(x_i) = \phi(x_i) \prod_{\ell \in N(i)} m_{\ell \to i}(x_i). $$
+$$ p(x_i) \propto \phi(x_i) \prod_{\ell \in N(i)} m_{\ell \to i}(x_i). $$
 
 ### Sum-product message passing for factor trees
 
@@ -62,7 +62,7 @@ Both messages require taking a product, but only the factor-to-variable messages
 $$
 \nu_{var(i)\to fac(s)}(x_i) = \prod_{t\in\mathcal N(i)\setminus s}\mu_{fac(t)\to var(i)}(x_i) \\
 
-\mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{\mathcal N(s)\setminus i}}f_s(x_{\mathcal N(s)})\prod_{j\in\mathcal N(i)\setminus i}\nu_{var(j)\to fac(s)}(x_j)
+\mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{\mathcal N(s)\setminus i}}f_s(x_{\mathcal N(s)})\prod_{j\in\mathcal N(s)\setminus i}\nu_{var(j)\to fac(s)}(x_j)
 $$
 
 So now the algorithm proceeds in the same way as above: as long as there is a factor or variable ready to transmit to a variable or factor, respectively, send the appropriate factor-to-variable or variable-to-factor message as defined above.
@@ -71,7 +71,7 @@ So now the algorithm proceeds in the same way as above: as long as there is a fa
 
 So far, we have said very little about the second type of inference we are interested in performing, which are MAP queries
 
-$$ \max_{x_1, \dots, x_n} p(x_1,...,x_n). $$
+$$ \max_{x_1, \dotsc, x_n} p(x_1, \dotsc, x_n). $$
 
 The framework we have introduced for marginal queries now lets us easily perform MAP queries as well. The key observation to make, is that we can decompose the problem of MAP inference in exactly the same way as we decomposed the marginal inference problem by replacing sums with maxes.
 
@@ -80,18 +80,18 @@ For example, we may compute the partition function of a chain MRF as follows:
 $$
 \begin{align*}
 Z
-& = \sum_{x_1} \cdots \sum_{x_n} \phi(x_1) \prod_{i=2}^n \phi(x_i , x_{i-1}) \\
-& = \sum_{x_n} \sum_{x_{n-1}} \phi(x_n , x_{n-1}) \sum_{x_{n-2}} \phi(x_{n-1} , x_{n-2}) \cdots \sum_{x_1} \phi(x_2 , x_1) \phi(x_1) .
+&= \sum_{x_1} \cdots \sum_{x_n} \phi(x_1) \prod_{i=2}^n \phi(x_i, x_{i-1}) \\
+&= \sum_{x_n} \sum_{x_{n-1}} \phi(x_n, x_{n-1}) \sum_{x_{n-2}} \phi(x_{n-1}, x_{n-2}) \cdots \sum_{x_1} \phi(x_2 , x_1) \phi(x_1) .
 \end{align*}
 $$
 
-To compute the mode $$\tp^*$$ of $$\tp(x_1,...,x_n)$$, we simply replace sums with maxes, i.e.
+To compute the mode $$\tp^*$$ of $$\tp(x_1, \dotsc, x_n)$$, we simply replace sums with maxes, i.e.
 
 $$
 \begin{align*}
 \tp^*
-& = \max_{x_1} \cdots \max_{x_n} \phi(x_1) \prod_{i=2}^n \phi(x_i , x_{i-1}) \\
-& = \max_{x_n} \max_{x_{n-1}} \phi(x_n , x_{n-1}) \max_{x_{n-2}} \phi(x_{n-1} , x_{n-2}) \cdots \max_{x_1} \phi(x_2 , x_1) \phi(x_1) .
+&= \max_{x_1} \cdots \max_{x_n} \phi(x_1) \prod_{i=2}^n \phi(x_i, x_{i-1}) \\
+&= \max_{x_n} \max_{x_{n-1}} \phi(x_n, x_{n-1}) \max_{x_{n-2}} \phi(x_{n-1}, x_{n-2}) \cdots \max_{x_1} \phi(x_2 , x_1) \phi(x_1) .
 \end{align*}
 $$
 
@@ -111,10 +111,10 @@ Before we define the full algorithm, let us first start with an example, like we
 
 Suppose that we are performing marginal inference and that we are given an MRF of the form
 
-$$ p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c), $$
+$$ p(x_1, \dotsc, x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c), $$
 
-Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, ..., x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(j)}$$ and $$x_c^{(k)}$$. We refer to this assumption as the *running intersection* property (RIP).
-{% include maincolumn_img.html src='assets/img/junctionpath.png' caption='A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques' %}
+Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, \dotsc, x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(j)}$$ and $$x_c^{(k)}$$. We refer to this assumption as the *running intersection* property (RIP).
+{% include maincolumn_img.html src='assets/img/junctionpath.png' caption='A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques.' %}
 
 Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to "push in" certain variables deeper into the product of cluster potentials:
 
@@ -155,7 +155,7 @@ Let us now define the junction tree algorithm, and then explain why it works. At
 
 More precisely, let us define the potential $$\psi_c(x_c)$$ of each cluster $$c$$ as the product of all the factors $$\phi$$ in $$G$$ that have been assigned to $$c$$. By the family preservation property, this is well-defined, and we may assume that our distribution is in the form
 
-$$ p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \psi_c(x_c). $$
+$$ p(x_1, \dotsc, x_n) = \frac{1}{Z} \prod_{c \in C} \psi_c(x_c). $$
 
 Then, at each step of the algorithm, we choose a pair of adjacent clusters $$c^{(i)}, c^{(j)}$$ in $$T$$ and compute a message whose scope is the sepset $$S_{ij}$$ between the two clusters:
 
