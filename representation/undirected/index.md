@@ -43,11 +43,11 @@ Note that unlike in the directed case, we are not saying anything about how one 
 
 A Markov Random Field (MRF) is a probability distribution $$p$$ over variables $$x_1,...,x_n$$ defined by an *undirected* graph $$G$$ in which nodes correspond to variables $$x_i$$. The probability $$p$$ has the form
 
-$$ p(x_1,..,x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c), $$
+$$ p(x_1, \dotsc, x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c), $$
 
 where $$C$$ denotes the set of *cliques* (i.e. fully connected subgraphs) of $$G$$. The value
 
-$$ Z = \sum_{x_1,..,x_n} \prod_{c \in C} \phi_c(x_c) $$
+$$ Z = \sum_{x_1, \dotsc, x_n} \prod_{c \in C} \phi_c(x_c) $$
 
 is a normalizing constant that ensures that the distribution sums to one.
 

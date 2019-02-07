@@ -10,18 +10,18 @@ Let us now look at parameter learning in undirected graphical models. Unfortunat
 Let us start with a Markov random field (MRF) of the form
 
 $$
-p(x_1,..,x_n) = \frac{1}{Z(\varphi)} \prod_{c \in C} \phi_c(x_c; \varphi),
+p(x_1, \dotsc, x_n) = \frac{1}{Z(\varphi)} \prod_{c \in C} \phi_c(x_c; \varphi),
 $$
 
 where
 
-$$ Z(\varphi) = \sum_{x_1,..,x_n}\prod_{c \in C} \phi_c(x_c; \varphi) $$
+$$ Z(\varphi) = \sum_{x_1, \dotsc, x_n}\prod_{c \in C} \phi_c(x_c; \varphi) $$
 
 is the normalizing constant. We can reparametrize $$p$$ as follows:
 
 $$
 \begin{align*}
-p(x_1,..,x_n)
+p(x_1, \dotsc, x_n)
 & = \frac{1}{Z(\varphi)} \exp\left( \sum_{c \in C} \log\phi_c(x_c; \varphi) \right) \\
 & = \frac{1}{Z(\varphi)} \exp\left( \sum_{c \in C} \sum_{x'_c} 1\{x'_c = x_c\} \log\phi_c(x'_c; \varphi) \right) \\
 & = \frac{\exp(\theta^T f(x))}{Z(\theta)},
@@ -157,7 +157,7 @@ $$
 where
 
 $$
-Z(x, \varphi) = \sum_{y_1,..,y_n}\prod_{c \in C} \phi_c(y_c, x; \varphi)
+Z(x, \varphi) = \sum_{y_1, \dotsc, y_n}\prod_{c \in C} \phi_c(y_c, x; \varphi)
 $$
 
 is the partition function. The feature functions now depend on $$x$$ in addition to $$y$$. The $$x$$ variables are fixed and the distribution is only over $$y$$; the partition function is thus a function of both $$x$$ and $$\varphi$$.
