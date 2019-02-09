@@ -25,11 +25,11 @@ In a sense, when $$x_k$$ is marginalized out, it receives all the signal from va
 
 At the end of the VE run, $$x_i$$ receives messages from all of its immediate children, marginalizes them out, and we obtain the final marginal.
 
-Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all messages from its children. The key insight here is that the messages $$x_k$$ will receive from $$x_j$$ will be the same as when $$x_i$$ was the root{% include sidenote.html id="note-ve" note="Another reason why this is true is because there is only a single path connecting two nodes in the tree." %}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
+Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all messages from its children. The key insight: the messages $$x_k$$ received from $$x_j$$ now will be the same as those received when $$x_i$$ was the root{% include sidenote.html id="note-ve" note="Another reason why this is true is because there is only a single path connecting two nodes in the tree." %}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
 
 ### A message-passing algorithm
 
-A key question here is how exactly do we compute all the messages we need. Notice for example, that the messages to $$x_k$$ from the side of $$x_i$$ will need to be recomputed.
+The key question here: how exactly do we compute all the messages we need? Notice for example, that the messages to $$x_k$$ from the side of $$x_i$$ will need to be recomputed.
 
 The answer is very simple: a node $$x_i$$ sends a message to a neighbor $$x_j$$ whenever it has received messages from all nodes besides $$x_j$$. It's a fun exercise to the reader to show that there will always be a node with a message to send, unless all the messages have been sent out. This will happen after precisely $$2 \vert E \vert$$ steps, since each edge can receive messages only twice: once from $$x_i \to x_j$$, and once more in the opposite direction.
 
