@@ -138,7 +138,7 @@ It is very important to understand that the running time of Variable Elimination
 
 In the previous example, suppose we eliminated $$g$$ first. Then, we would have had to transform the factors $$p(g \mid i, d), \phi(l \mid g)$$ into a big factor $$\tau(d, i, l)$$ over 3 variables, which would require $$O(d^4)$$ time to compute. If we had a factor $$S \rightarrow G$$, then we would have had to eliminate $$p(g \mid s)$$ as well, producing a single giant factor $$\tau(d, i, l, s)$$ in $$O(d^5)$$ time. Then, eliminating any variable from this factor would require almost as much work as if we had started with the original distribution, since all the variables have become coupled.
 
-Clearly some ordering are more efficient than others. In fact, the running time of Variable Elimination is $$O(m d^{M+1})$$, where $$M$$ is the maximium size of any factor $$\tau$$ formed during the elimination process and $$m$$ is the number of variables.
+Clearly some orderings are more efficient than others. In fact, the running time of Variable Elimination is $$O(m d^{M+1})$$, where $$M$$ is the maximum size of any factor $$\tau$$ formed during the elimination process and $$m$$ is the number of variables.
 
 ### Choosing variable elimination orderings
 
