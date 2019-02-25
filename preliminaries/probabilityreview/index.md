@@ -51,7 +51,7 @@ Note that for $$k=2$$ events, this is just the definition of conditional probabi
 
 $$ P(S_1 \cap S_2) = P(S_1) P(S_2 | S_1) $$
 
-In general, the chain rule is derived by applying the definition of conditional independence multiple times, as in the following example:
+In general, the chain rule is derived by applying the definition of conditional probability multiple times, as in the following example:
 
 $$
 \begin{align*}
