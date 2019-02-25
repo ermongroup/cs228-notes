@@ -246,7 +246,7 @@ $$ F_{XY} (x, y) = P(X \leq  x, Y \leq  y). $$
 
 It can be shown that by knowing the joint cumulative distribution function, the probability of any event involving $$X$$ and $$Y$$ can be calculated.
 
-The joint CDF $$F_{XY} (x, y)$$ and the joint distribution functions $$F_X(x)$$ and $$F_Y (y)$$ of each variable separately are related by
+The joint CDF $$F_{XY} (x, y)$$ and the cumulative distribution functions $$F_X(x)$$ and $$F_Y (y)$$ of each variable separately are related by
 
 $$
 \begin{align*}
@@ -298,7 +298,7 @@ as the **marginal probability density function** (or **marginal density**) of $$
 
 ## 3.4 Conditional distributions
 
-Conditional distributions seek to answer the question, what is the probability distribution over $$Y$$, when we know that $$X$$ must take on a certain value $$x$$? In the discrete case, the conditional probability mass function of $$X$$ given $$Y$$ is simply
+Conditional distributions seek to answer the question, what is the probability distribution over $$Y$$, when we know that $$X$$ must take on a certain value $$x$$? In the discrete case, the conditional probability mass function of $$Y$$ given $$X$$ is simply
 
 $$ p_{Y \mid X} (y \mid x) = \frac{p_{XY}(x, y)}{p_X(x)}, $$
 
