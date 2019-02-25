@@ -2,6 +2,8 @@
 layout: post
 title: Sampling methods
 ---
+$$\newcommand{iid}{\overset{\text{i.i.d.}}{\sim}}$$
+
 In practice, the probabilistic models that we use are often quite complex, and simple algorithms like variable elimination may be too slow for them. In fact, many interesting classes of models may not admit exact polynomial-time solutions at all, and for this reason, much research effort in machine learning is spent on developing algorithms that yield *approximate* solutions to the inference problem. This section begins our study of such algorithms.
 
 There exist two main families of approximate algorithms: *variational* methods{% include sidenote.html id="note-variational" note="Variational inference methods take their name from the *calculus of variations*, which deals with optimizing functions that take other functions as arguments." %}, which formulate inference as an optimization problem, as well as *sampling* methods, which produce answers by repeatedly generating random numbers from a distribution of interest.
@@ -10,7 +12,7 @@ Sampling methods can be used to perform both marginal and MAP inference queries;
 
 ## Sampling from a probability distribution
 
-As a warm-up, let's think for a minute how we might sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1,\ldots,\theta_k$$.
+As a warm-up, let's think for a minute how we might sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1, \dotsc, \theta_k$$.
 
 Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% include sidenote.html id="note-pseudorandom" note="Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable from a truly random one. We call such sequences *pseudorandom*." %}, such as the uniform distribution over $$[0,1]$$. All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.
 
@@ -21,9 +23,9 @@ In our case, we may reduce sampling from a multinomial variable to sampling a si
 
 {% include marginfigure.html id="grade" url="assets/img/grade-model.png" description="Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables." %}
 
-Our technique for sampling from multinomials naturally extends to Bayesian networks with multinomial variables, via a method called *ancestral* (or *forward*) sampling. Given a probability $$p(x_1,...,x_n)$$ specified by a Bayes net, we sample variables in topological order. In other words, we start by sampling the variables with no parents; then we sample from the next generation by conditioning these variables' CPDs to values sampled at the first step. We proceed like this until the $$n$$ variables have been sampled.
+Our technique for sampling from multinomials naturally extends to Bayesian networks with multinomial variables, via a method called *ancestral* (or *forward*) sampling. Given a probability $$p(x_1, \dotsc, x_n)$$ specified by a Bayes net, we sample variables in topological order. We start by sampling the variables with no parents; then we sample from the next generation by conditioning these variables' CPDs to values sampled at the first step. We proceed like this until all $$n$$ variables have been sampled. Importantly, in a Bayesian network over $$n$$ variables, forward sampling allows us to sample from the joint distribution $$\bfx \sim p(\bfx)$$ in linear $$O(n)$$ time by taking exactly 1 multinomial sample from each CPD.
 
-In our earlier model of a student's grade, we would first sample an exam difficulty $$d'$$ and an intelligence level $$i'$$. Then, once we have samples, $$d', i'$$ we generate a student grade $$g'$$ from $$p(g \mid d', i')$$. At each step, we simply perform standard multinomial sampling.
+In our earlier model of a student's grade, we would first sample an exam difficulty $$d'$$ and an intelligence level $$i'$$. Then, once we have samples $$d'$$ and $$i'$$, we generate a student grade $$g'$$ from $$p(g \mid d', i')$$. At each step, we simply perform standard multinomial sampling.
 
 A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/samplingApp) for visualizing Bayesian network forward sampling methods. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
 
@@ -33,82 +35,120 @@ Sampling from a distribution lets us perform many useful tasks, including margin
 
 $$ \E_{x \sim p}[f(x)] = \sum_x f(x) p(x). $$
 
-If $$f(x)$$ does not have a special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% include sidenote.html id="note-mc" note="The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working on the atomic bomb as part of the secret Manhattan project." %}.
+If $$f(x)$$ does not have special structure that matches the Bayes net structure of $$p$$, this integral will be impossible to perform analytically; instead, we will approximate it using a large number of samples from $$p$$. Algorithms that construct solutions based on a large number of samples from a given distribution are referred to as Monte Carlo (MC) methods{% include sidenote.html id="note-mc" note="The name Monte Carlo refers to a famous casino in the city of Monaco. The term was originally coined as a codeword by physicists working on the atomic bomb as part of the secret Manhattan project." %}.
 
 Monte Carlo integration is an important instantiation of the general Monte Carlo principle. This technique approximates a target expectation with
 
-$$ \E_{x \sim p}[f(x)] \approx \frac{1}{T} \sum_{t=1}^T f(x^t), $$
+$$ \E_{x \sim p}[f(x)] \approx I_T = \frac{1}{T} \sum_{t=1}^T f(x^t), $$
 
-where $$x^1,\ldots,x^T$$ are samples drawn according to $$p$$.
+where $$x^1, \dotsc, x^T$$ are samples drawn according to $$p$$. It can be shown that
 
-It is easy to show that the expected value of $$I_T$$, the MC estimate, equals the true integral. We say that $$I_T$$ is an unbiased estimator for $$\E_{x \sim p}[f(x)]$$. Moreover as $$I_T \to \E_{x \sim p}[f(x)]$$ as $$T \to \infty$$. Finally, we can show that the variance of $$I_T$$ equals $$\text{Var}_P(f(x))/T$$, which can be made arbitrarily small with $$T$$.
+$$
+\begin{align*}
+\E_{x^1, \dotsc, x^T \iid p} [I_T] &= \E_{x \sim p}[f(x)] \\
+\text{Var}_{x^1, \dotsc, x^T \iid p} [I_T] &= \frac{1}{T} \text{Var}_{x \sim p} [f(x)]
+\end{align*}
+$$
+
+The first equation says that the MC estimate $$I_T$$ is an unbiased estimator for $$\E_{x \sim p}[f(x)]$$. The two equations together show that $$I_T \to \E_{x \sim p}[f(x)]$$ as $$T \to \infty$$; in particular, the variance of $$I_T$$ can be made arbitrarily small with enough samples.
 
 ### Rejection sampling
 
 {% include marginfigure.html id="rejection" url="assets/img/rejection-sampling.png" description="Graphical illustration of rejection sampling. We may compute the area of circle by drawing uniform samples from the square; the fraction of points that fall in the circle represents its area. This method breaks down if the size of the circle is small relative to the size of the square." %}
 A special case of Monte Carlo integration is rejection sampling. We may use it to compute the area of a region $$R$$ by sampling in a larger region with a known area and recording the fraction of samples that falls within $$R$$.
 
-For example, we may use rejection sampling to compute marginal probabilities of the form $$p(x=x')$$: we may write this probability as $$\E_{x\sim p}[\Ind(x=x')]$$ and then take the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
+For example, suppose we have a Bayesian network over the set of variables $$X = Z \cup E$$. We may use rejection sampling to compute marginal probabilities $$p(E=e)$$. We can rewrite the probability as
+
+$$ p(E=e) = \sum_z p(Z=z, E=e) = \sum_x p(x) \Ind(E=e) = \E_{x \sim p}[\Ind(E=e)] $$
+
+and then take the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
 
 ### Importance sampling
 
-Unfortunately, this procedure is very wasteful. If $$p(x=x')$$ equals, say, 1%, then we will discard 99% of all samples.
+Unfortunately, rejection sampling can be very wasteful. If $$p(E=e)$$ equals, say, 1%, then we will discard 99% of all samples.
 
-A better way of computing such integrals is via an approach called *importance sampling*. The main idea is to sample from a distribution $$q$$ (hopefully roughly proportional to $$f \cdot p$$), and then *reweight* the samples in a principled way, so that their sum still approximates the desired integral.
+A better way of computing such integrals is via an approach called *importance sampling*. The main idea is to sample from a distribution $$q$$ (hopefully roughly proportional to $$f \cdot p$$), and then *reweigh* the samples in a principled way, so that their sum still approximates the desired integral.
 
 More formally, suppose we are interested in computing $$\E_{x \sim p}[f(x)]$$. We may rewrite this integral as
 
 $$
 \begin{align*}
 \E_{x \sim p}[f(x)]
-& = \sum_{x} f(x) p(x) \\
-& = \sum_{x} f(x) \frac{p(x)}{q(x)} q(x) \\
-& = \E_{x \sim q}[f(x)w(x)] \\
-& \approx \frac{1}{T} \sum_{t=1}^T f(x^t) w(x^t)
+&= \sum_x f(x) p(x) \\
+&= \sum_x f(x) \frac{p(x)}{q(x)} q(x) \\
+&= \E_{x \sim q}[ f(x)w(x) ] \\
+&\approx \frac{1}{T} \sum_{t=1}^T f(x^t) w(x^t)
 \end{align*}
 $$
 
-where $$w(x) = \frac{p(x)}{q(x)}$$. In other words, we may instead take samples from $$q$$ and reweigh them with $$w(x)$$; the expected value of this Monte Carlo approximation will be the original integral.
+where $$w(x) = \frac{p(x)}{q(x)}$$ and the samples $$x^t$$ are drawn from $$q$$. In other words, we may instead take samples from $$q$$ and reweigh them with $$w(x)$$; the expected value of this Monte Carlo approximation will be the original integral.
 
-Now the variance of this new estimator equals
+The variance of this new estimator is
 
 $$
-\text{Var}_{x \sim q}(f(x)w(x)) = \E_{x \sim q} [f^2(x) w^2(x)] - \E_{x \sim q} [f(x) w(x)]^2 \geq 0
+\text{Var}_{x \sim q}[ f(x)w(x) ] = \E_{x \sim q} [f^2(x) w^2(x)] - \E_{x \sim q} [f(x) w(x)]^2 \geq 0 .
 $$
 
 Note that we can set the variance to zero by choosing $$q(x) = \frac{\lvert f(x) \rvert p(x)}{\int \lvert f(x) \rvert p(x) dx}$$; this means that if we can sample from this $$q$$ (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a $$q$$ would be NP-hard in general, but this at least gives us an indication for what to strive for.
 
-In the context of our previous example for computing $$p(x=x') = \E_{z\sim p}[p(x' \mid z)]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
+In the context of our previous example for computing $$p(E=e) = \E_{z \sim p}[p(e \mid z)]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
 
 $$
 \begin{align*}
-p(x=x')
-& = \E_{z\sim p}[p(x'|z)] \\
-& = \E_{z\sim q}\left[ p(x'|z)\frac{p(z)}{q(z)} \right] \\
-& = \E_{z\sim q}\left[\frac{p(x',z)}{q(z)} \right] \\
-& \approx \frac{1}{T} \sum_{t=1}^T \frac{p(z^t, x')}{q(z^t)}
+p(E=e)
+&= \E_{z\sim p}[p(e \mid z)] \\
+&= \E_{z\sim q}\left[ p(e \mid z)\frac{p(z)}{q(z)} \right] \\
+&= \E_{z\sim q}\left[\frac{p(e,z)}{q(z)} \right] \\
+&= \E_{z\sim q} [w_e(z)] \\
+&\approx \frac{1}{T} \sum_{t=1}^T w_e(z^t)
 \end{align*}
 $$
 
-Unlike rejection sampling, this will use all the examples; if $$p(z \mid x')$$ is not too far from uniform, this will converge to the true probability after only a very small number of samples.
+where $$w_e(z) = p(e, z)/q(z)$$. Unlike rejection sampling, this will use all the examples; if $$p(z \mid e)$$ is not too far from uniform, this will converge to the true probability after only a very small number of samples.
 
 ### Normalized importance sampling
 
-Unfortunately, unnormalized importance sampling is not suitable for estimating conditional probabilities.
+Unfortunately, unnormalized importance sampling is not suitable for estimating conditional probabilities of the form
 
-$$ P(x=x'|e=e') = \frac{P(x=x', e=e')}{P(e=e')} $$
+$$ P(X_i=x_i \mid E=e) = \frac{P(X_i=x_i, E=e)}{P(E=e)}. $$
 
-Because we would estimate the numerator using one approximation and the denominator using another approximation, the errors in the approximations may compound. For example, if the numerator is an under-estimate and the denominator is an over-estimate, the final probability could be a severe under-estimate.
-
-To avoid this issue, we first generate samples to approximate the denominator $$P(e=e')$$. The numerator can then be estimated by counting the weighted number of samples with values $$x=x'$$. Since the numerator and denominator are both approximated using the same samples, the potential issue of errors compounding is avoided.
-
-The final form of normalized importance sampling is thus
+Note that using unnormalized importance sampling, we could estimate the numerator as
 
 $$
-P(x=x'|e=e')
-= \frac{P(x=x', e=e')}{P(e=e')}
-\approx \frac{\frac{1}{T}\sum_{t=1}^T \delta_{x'}(z^t)w(z^t)}{\frac{1}{T}\sum_{t=1}^T w(z^t)}
+\begin{align*}
+P(X_i=x_i, E=e)
+&= \sum_z \delta(z) p(e, z) \\
+&= \sum_z \delta(z) w_e(z) q(z) \\
+&= \E_{z \sim q}[ \delta(z) w_e(z) ] \\
+&\approx \frac{1}{T} \sum_{t=1}^T \delta(z^t) w_e(z^t).
+\end{align*}
 $$
+
+where $$\delta(z) = \begin{cases}1 & \text{if $z$ is consistent with $X_i = x_i$} \\ 0 & \text{otherwise}\end{cases}$$. The denominator is the same as the result we derived earlier:
+
+$$ P(E=e) \approx \frac{1}{T} \sum_{t=1}^T w_e(z^t). $$
+
+If we estimate the numerator $$P(X_i=x_i, E=e)$$ and the denominator $$P(E=e)$$ with different and independent samples of $$z^t \sim q$$, then the errors in the two approximations may compound. For example, if the numerator is an under-estimate and the denominator is an over-estimate, the final probability could be a severe under-estimate.
+
+However, if we use the same set of $$T$$ samples $$z^1, \dotsc, z^T \sim q$$ for both the numerator and denominator, we avoid this issue of compounding errors. Thus, the final form of normalized importance sampling is
+
+$$
+\hat{P}(X_i=x_i \mid E=e)
+= \frac{\frac{1}{T} \sum_{t=1}^T \delta(z^t) w_e(z^t)}
+       {\frac{1}{T} \sum_{t=1}^T w_e(z^t)}
+$$
+
+Unfortunately, there is one drawback to the normalized importance sampling estimator, which is that it is *biased*. If $$T = 1$$, then we have
+
+$$
+    \E_{z \sim q} [\hat{P}(X_i=x_i \mid E=e)]
+    = \E_{z \sim q} [\delta(z)]
+    \neq P(X_i=x_i, E=e)
+$$
+
+Fortunately, because the numerator and denominator are both unbiased, the normalized importance sampling estimator remains *asymptotically unbiased*, meaning that
+
+$$ \lim_{T \to \infty} \hat{P}(X_i=x_i \mid E=e) = P(X_i=x_i, E=e). $$
 
 
 ## Markov chain Monte Carlo

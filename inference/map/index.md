@@ -178,7 +178,7 @@ $$
 L(\bar \delta) =  \sum_{i \in V} \bar \theta_{i}^{\bar\delta} (\bar x_i) + \sum_{f \in F} \bar \theta_{f}^{\bar\delta} (\bar x^f) =  \sum_{i \in V} \theta_i (\bar x_i) + \sum_{f \in F} \theta_f (\bar x^f).
 $$
 
-The first equality follows by definition of $$L(\delta)$$, while the second follows holds because terms involving Lagrange multipliers cancel out when $$x$$ and $$x^f$$ agree.
+The first equality follows by definition of $$L(\delta)$$, while the second follows because terms involving Lagrange multipliers cancel out when $$x$$ and $$x^f$$ agree.
 
 On the other hand, we have by the definition of $$p^*$$ that
 
