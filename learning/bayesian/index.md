@@ -109,7 +109,7 @@ $$
 where the updated count $$\alpha'$$ is given by
 
 $$
-\alpha'_k = \underbrace{\sum_{j=1}^N 1\{ X_j = k \}}_\text{observed data count} + \underbrace{\alpha_k}_\text{prior virtual count}
+\alpha'_k = \underbrace{\sum_{j=1}^N 1\{ X_j = k \}}_\text{observed data count} + \underbrace{\alpha_k-1}_\text{prior virtual count}
 $$
 
 <br/>
