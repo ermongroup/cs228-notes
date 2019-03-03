@@ -2,11 +2,11 @@
 layout: post
 title: Markov random fields
 ---
-Bayesian networks are a class of models that can compactly represent many interesting probability distributions. However, we have seen in the previous chapter that some distributions cannot be perfectly represented by a Bayesian network.
+Bayesian networks are a class of models that can compactly represent many interesting probability distributions. However, we have seen in the previous chapter that some distributions may have independence assumptions that cannot be perfectly represented by the structure of a Bayesian network.
 
 In such cases, unless we want to introduce false independencies among the variables of our model, we must fall back to a less compact representation (which can be viewed as a graph with additional, unnecessary edges). This leads to extra, unnecessary parameters in the model, and makes it more difficult to learn these parameters and to make predictions.
 
-There exists, however, another technique for compactly representing and visualizing a probability distribution that is based on the language of *undirected* graphs. This class of models (known as Markov Random Fields or MRFs) can compactly represent distributions that directed models cannot represent. We will explore the advantages and drawbacks of these methods in this chapter.
+There exists, however, another technique for compactly representing and visualizing a probability distribution that is based on the language of *undirected* graphs. This class of models (known as Markov Random Fields or MRFs) can compactly represent independence assumptions that directed models cannot represent. We will explore the advantages and drawbacks of these methods in this chapter.
 
 ## Markov Random Fields
 
