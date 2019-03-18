@@ -19,7 +19,7 @@ Sampling, in general, is not an easy problem. Our computers can only generate sa
 In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$k$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$[0,1]$$ and return the value of the region in which our sample falls.
 {% include maincolumn_img.html src="assets/img/multinomial-sampling.png" caption="Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1]." %}
 
-### Sampling from directed graphical models
+### Forward Sampling
 
 {% include marginfigure.html id="grade" url="assets/img/grade-model.png" description="Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables." %}
 
@@ -28,6 +28,8 @@ Our technique for sampling from multinomials naturally extends to Bayesian netwo
 In our earlier model of a student's grade, we would first sample an exam difficulty $$d'$$ and an intelligence level $$i'$$. Then, once we have samples $$d'$$ and $$i'$$, we generate a student grade $$g'$$ from $$p(g \mid d', i')$$. At each step, we simply perform standard multinomial sampling.
 
 A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/samplingApp) for visualizing Bayesian network forward sampling methods. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
+
+Forward sampling can be performed on undirected models as well, if the marginals can be efficiently computed through a calibrated clique tree. Once the marginal for a single variable $$x_1 ∼ p(X_1 \mid E=e)$$ has been sampled from the root node, the newly sampled message can be incorporated as evidence. An updated message can then be computed from the sampled node to its neighbors as the conditional marginal, and can be sampled $$x_2 ∼ p(X_2=x_2 \mid X_1=x_1,E=e)$$ from the distribution. Applying the chain rule, the remaining variables can then be sample sampled as $$x_3 ∼ p(X_3=x_3 \mid X_1=x_1,X_2=x_2,E=e)$$ and so on, passing an updated message down the tree after each sampling step.
 
 ## Monte Carlo estimation
 
