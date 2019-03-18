@@ -170,7 +170,7 @@ $$
 These updates are often referred to as *Shafer-Shenoy*. After all the messages have been passed, beliefs will be proportional to the marginal probabilities over their scopes, i.e. $$\beta_c(x_c) \propto p(x_c)$$. We may answer queries of the form $$\tp(x)$$ for $$x \in x_c$$ by marginalizing out the variable in its belief{% include sidenote.html id="note-dp" note="Readers familiar with combinatorial optimization will recognize this as a special case of dynamic programming on a tree decomposition of a graph with bounded treewidth." %}
 
 $$
-\tp(x) \propto \sum_{x_c \backslash x} \beta_c(x_c).
+\tp(x) = \sum_{x_c \backslash x} \beta_c(x_c).
 $$
 
 To get the actual (normalized) probability, we divide by the partition function $$Z$$ which is computed by summing all the beliefs in a cluster, $$Z = \sum_{x_c} \beta_c(x_c)$$.
