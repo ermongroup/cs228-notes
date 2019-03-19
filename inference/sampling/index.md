@@ -173,9 +173,9 @@ If the initial state $$S_0$$ is drawn from a vector probabilities $$p_0$$, we ma
 
 $$ p_t = T^t p_0, $$
 
-where $$T^t$$ denotes matrix exponentiation (we apply the matrix operator $$t$$ times).
+where $$T^t$$ denotes matrix exponentiation (apply the matrix operator $$t$$ times).
 
-The limit $$\pi = \lim_{t \to \infty} p_t$$ (when it exists) is called a *stationary distribution* of the Markov chain. We will construct below Markov chain with a stationary distribution $$\pi$$ that exists and is the same for all $$p_0$$; we will refer to such $$\pi$$ as *the* stationary distribution* of the chain.
+The limit $$\pi = \lim_{t \to \infty} p_t$$ (when it exists) is called a *stationary distribution* of the Markov chain. We will construct below Markov chain with a stationary distribution $$\pi$$ that exists and is the same for all $$p_0$$; we will refer to such $$\pi$$ as *the* stationary distribution of the chain.
 
 A sufficient condition for a stationary distribution is called *detailed balance*:
 
