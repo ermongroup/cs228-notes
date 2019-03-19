@@ -4,7 +4,7 @@ title: Junction Tree Algorithm
 ---
 We have seen how the variable elimination (VE) algorithm can answer marginal queries of the form $$P(Y \mid E = e)$$ for both directed and undirected networks.
 
-However, this algorithm still has an important shortcoming: if we want to ask the model for another query, e.g. $$P(Y_2 \mid E_2 = e_2)$$, we need to restart the algorithm from scratch. This is very wasteful and computationally burdensome.
+However, this algorithm has an important shortcoming: if we want to ask the model for another query, e.g. $$P(Y_2 \mid E_2 = e_2)$$, we need to restart the algorithm from scratch. This is very wasteful and computationally burdensome.
 
 Fortunately, it turns out that this problem is also easily avoidable. When computing marginals, VE produces many intermediate factors $$\tau$$ as a side-product of the main computation; these factors turn out to be the same as the ones that we need to answer other marginal queries. By caching them after a first run of VE, we can easily answer new marginal queries at essentially no additional cost.
 
@@ -18,30 +18,35 @@ We will introduce two variants of this algorithm: belief propagation (BP), and t
 
 First, consider what happens if we run the VE algorithm on a tree in order to compute a marginal $$p(x_i)$$. We can easily find an optimal ordering for this problem by rooting the tree at $$x_i$$ and iterating through the nodes in post-order{% include sidenote.html id="note-postorder" note="A postorder traversal of a rooted tree is one that starts from the leaves and goes up the tree such that a node is always visited after all of its children. The root is visited last." %}.
 
-This ordering is optimal because the largest clique that formed during VE will be of size 2. At each step, we will eliminate $$x_j$$; this will involve computing the factor $$\tau_k(x_k) = \sum_{x_j} \phi(x_k, x_j) \tau_j(x_j)$$, where $$x_k$$ is the parent of $$x_j$$ in the tree. At a later step, $$x_k$$ will be eliminated, and $$\tau_k(x_k)$$ will be passed up the tree to the parent $$x_l$$ of $$x_k$$ in order to be multiplied by the factor $$\phi(x_l, x_k)$$ before being marginalized out. The factor $$\tau(x_j)$$ can be thought of as a message that $$x_j$$ sends to $$x_k$$ that summarizes all of the information from the subtree rooted at $$x_j$$. We can visualize this transfer of information using arrows on a tree.
+This ordering is optimal because the largest clique formed during VE will have size 2. At each step, we will eliminate $$x_j$$; this will involve computing the factor $$\tau_{jk}(x_k) = \sum_{x_j} \phi(x_k, x_j) \tau_j(x_j)$$, where $$x_k$$ is the parent of $$x_j$$ in the tree. At a later step, $$x_k$$ will be eliminated, and $$\tau_{jk}(x_k)$$ will be passed up the tree to the parent $$x_l$$ of $$x_k$$ in order to be multiplied by the factor $$\phi(x_l, x_k)$$ before being marginalized out. The factor $$\tau_j(x_j)$$ can be thought of as a message that $$x_j$$ sends to $$x_k$$ that summarizes all of the information from the subtree rooted at $$x_j$$. We can visualize this transfer of information using arrows on a tree.
 {% include marginfigure.html id="mp1" url="assets/img/mp1.png" description="Message passing order when using VE to compute $$p(x_3)$$ on a small tree." %}
 
-At the end of the VE run, $$x_i$$ receives messages from all of its immediate children, marginalizes them out, and we obtain the final marginal.
+At the end of VE, $$x_i$$ receives messages from all of its immediate children, marginalizes them out, and we obtain the final marginal.
 
-Now suppose that after computing $$p(x_i)$$, we wanted to compute $$p(x_k)$$ as well. We would again run VE elimination with $$x_k$$ as the root. We would again wait until $$x_k$$ receives all messages from its children. The key insight: the messages $$x_k$$ received from $$x_j$$ now will be the same as those received when $$x_i$$ was the root{% include sidenote.html id="note-ve" note="Another reason why this is true is because there is only a single path connecting two nodes in the tree." %}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
+Now suppose that after computing $$p(x_i)$$, we want to compute $$p(x_k)$$ as well. We would again run VE with $$x_k$$ as the root, waiting until $$x_k$$ receives all messages from its children. The key insight: the messages $$x_k$$ received from $$x_j$$ now will be the same as those received when $$x_i$$ was the root{% include sidenote.html id="note-ve" note="Another reason why this is true is because there is only a single path connecting two nodes in the tree." %}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
 
 ### A message-passing algorithm
 
 The key question here: how exactly do we compute all the messages we need? Notice for example, that the messages to $$x_k$$ from the side of $$x_i$$ will need to be recomputed.
 
-The answer is very simple: a node $$x_i$$ sends a message to a neighbor $$x_j$$ whenever it has received messages from all nodes besides $$x_j$$. It's a fun exercise to the reader to show that there will always be a node with a message to send, unless all the messages have been sent out. This will happen after precisely $$2 \vert E \vert$$ steps, since each edge can receive messages only twice: once from $$x_i \to x_j$$, and once more in the opposite direction.
+The answer is very simple: a node $$x_i$$ sends a message to a neighbor $$x_j$$ whenever it has received messages from all nodes besides $$x_j$$. It's a fun exercise to the reader to show that in a tree, there will always be a node with a message to send, unless all the messages have been sent out. This will happen after precisely $$2 \vert E \vert$$ steps, since each edge can receive messages only twice: once from $$x_i \to x_j$$, and once more in the opposite direction.
 
 Finally, this algorithm will be correct because our messages are defined as the intermediate factors in the VE algorithm.
 
+We are now ready to formally define the belief propagation algorithm. This algorithm has two variants, each used for a different task:
+
+- *sum-product message passing*: used for marginal inference, i.e. computing $$p(x_i)$$
+- *max-product message passing*: used for MAP (maximum a posteriori) inference, i.e. computing $$\max_{x_1, \dotsc, x_n} p(x_1, \dotsc, x_n)$$
+
 ### Sum-product message passing
 
-We are now ready to formally define the belief propagation algorithm. This algorithm will have two variants, the first of which is called sum-product message passing. This algorithm is defined as follows: while there is a node $$x_i$$ ready to transmit to $$x_j$$, send the message
+The sum-product message passing algorithm is defined as follows: while there is a node $$x_i$$ ready to transmit to $$x_j$$, send the message
 
 $$
 m_{i\to j}(x_j) = \sum_{x_i} \phi(x_i) \phi(x_i,x_j) \prod_{\ell \in N(i) \setminus j} m_{\ell \to i}(x_i).
 $$
 
-Again, observe that this message is precisely the factor $$\tau$$ that $$x_i$$ would transmit to $$x_j$$ during a round of variable elimination with the goal of computing $$p(x_j)$$.
+The notation $$N(i) \setminus j$$ refers to the set of nodes that are neighbors of $$i$$, excluding $$j$$. Again, observe that this message is precisely the factor $$\tau$$ that $$x_i$$ would transmit to $$x_j$$ during a round of variable elimination with the goal of computing $$p(x_j)$$.
 
 Because of this observation, after we have computed all messages, we may answer any marginal query over $$x_i$$ in constant time using the equation
 
@@ -49,29 +54,27 @@ $$ p(x_i) \propto \phi(x_i) \prod_{\ell \in N(i)} m_{\ell \to i}(x_i). $$
 
 ### Sum-product message passing for factor trees
 
-The sum-product message passing variant of belief propagation can also be applied to factor trees, with a slight modification. Recall that a factor graph is a bipartite graph with edges going between variables and factors, with an edge signifying a factor depends on a variable. We can perform VE on factor graphs through a modified version of the above algorithm.
+Sum-product message passing can also be applied to factor trees with a slight modification. Recall that a factor graph is a bipartite graph with edges going between variables and factors, with an edge signifying a factor depends on a variable.
 
-On factor graphs, we have two types of messages: variable-to-factor messages $$\nu$$ and factor-to-variable messages $$\mu$$.
-
-{% include maincolumn_img.html src='assets/img/factor-graph-messages.png' %}
-
-Both messages require taking a product, but only the factor-to-variable messages $$\mu$$ require a sum.
+On factor graphs, we have two types of messages: variable-to-factor messages $$\nu$$ and factor-to-variable messages $$\mu$$. Both messages require taking a product, but only the factor-to-variable messages $$\mu$$ require a sum.
 
 $$
-\nu_{var(i)\to fac(s)}(x_i) = \prod_{t\in\mathcal N(i)\setminus s}\mu_{fac(t)\to var(i)}(x_i) \\
-
+\nu_{var(i)\to fac(s)}(x_i) = \prod_{t\in\mathcal N(i)\setminus s}\mu_{fac(t)\to var(i)}(x_i)
+\\
 \mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{\mathcal N(s)\setminus i}}f_s(x_{\mathcal N(s)})\prod_{j\in\mathcal N(s)\setminus i}\nu_{var(j)\to fac(s)}(x_j)
 $$
 
-So now the algorithm proceeds in the same way as above: as long as there is a factor or variable ready to transmit to a variable or factor, respectively, send the appropriate factor-to-variable or variable-to-factor message as defined above.
+{% include maincolumn_img.html src='assets/img/factor-graph-messages.png' %}
+
+The algorithm proceeds in the same way as with undirected graphs: as long as there is a factor (or variable) ready to transmit to a variable (or factor), send the appropriate factor-to-variable (or variable-to-factor) message as defined above.
 
 ### Max-product message passing
 
-So far, we have said very little about the second type of inference we are interested in performing, which are MAP queries
+The second variant of the belief propagation algorithm, called max-product message passing, is used to perform MAP inference
 
 $$ \max_{x_1, \dotsc, x_n} p(x_1, \dotsc, x_n). $$
 
-The framework we have introduced for marginal queries now lets us easily perform MAP queries as well. The key observation to make, is that we can decompose the problem of MAP inference in exactly the same way as we decomposed the marginal inference problem by replacing sums with maxes.
+The framework we have introduced for marginal inference now lets us easily perform MAP inference as well. The key observation is that the sum and max operators both distribute over products. Thus, replacing sums in marginal inference with maxes, we are able to solve the MAP inference problem.
 
 For example, we may compute the partition function of a chain MRF as follows:
 
@@ -83,7 +86,7 @@ Z
 \end{align*}
 $$
 
-To compute the mode $$\tp^*$$ of $$\tp(x_1, \dotsc, x_n)$$, we simply replace sums with maxes, i.e.
+To compute the maximum value $$\tp^*$$ of $$\tp(x_1, \dotsc, x_n)$$, we simply replace sums with maxes, i.e.
 
 $$
 \begin{align*}
@@ -93,25 +96,25 @@ $$
 \end{align*}
 $$
 
-The key property that makes this work is the distributivity of both the sum and the max operator over products. Since both problems are essentially equivalent (after swapping the corresponding operators), we may reuse all of the machinery developed for marginal inference and apply it directly to MAP inference. Note that this also applies to factor trees.
+Since both problems decompose in the same way, we may reuse all of the machinery developed for marginal inference and apply it directly to MAP inference. Note that this also applies to factor trees.
 
-There is a small caveat in that we often want not just the mode of a distribution, but also its most probable assignment. This problem can be easily solved by keeping *back-pointers* during the optimization procedure. For instance, in the above example, we would keep a backpointer to the best assignment to $$x_1$$ given each assignment to $$x_2$$, a pointer to the best assignment to $$x_2$$ given each assignment to $$x_3,$$ and so on.
+There is a small caveat in that we often want not just maximum value of a distribution, i.e. $$\max_x p(x)$$, but also its most probable assignment, i.e. $$\arg\max_x p(x)$$. This problem can be easily solved by keeping *back-pointers* during the optimization procedure. For instance, in the above example, we would keep a backpointer to the best assignment to $$x_1$$ given each assignment to $$x_2$$, a pointer to the best assignment to $$x_2$$ given each assignment to $$x_3,$$ and so on.
 
 ## Junction tree algorithm
 
 So far, our discussion assumed that the graph is a tree. What if that is not the case? Inference in that case will not be tractable; however, we may try to massage the graph to its most tree-like form, and then run message passing on this graph.
 
-At a high-level the junction tree algorithm will try to achieve this by partitioning the graph into clusters of variables; internally, the variables within clusters could be highly coupled; however, interactions *among* clusters will have a tree structure, i.e. a cluster will be only directly influenced by its neighbors in the tree. This will lead to tractable global solutions if some local (cluster-level) problems can be solved exactly.
+At a high-level the junction tree algorithm partitions the graph into clusters of variables; internally, the variables within a cluster could be highly coupled; however, interactions *among* clusters will have a tree structure, i.e. a cluster will be only directly influenced by its neighbors in the tree. This leads to tractable global solutions if the local (cluster-level) problems can be solved exactly.
 
 ### An illustrative example
 
-Before we define the full algorithm, let us first start with an example, like we did for the variable elimination algorithm.
+Before we define the full algorithm, we start with an example, like we did for the variable elimination algorithm.
 
-Suppose that we are performing marginal inference and that we are given an MRF of the form
+Suppose that we are performing marginal inference on an MRF of the form
 
 $$ p(x_1, \dotsc, x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c), $$
 
-Crucially, we will assume that the cliques $$c$$ have a form of path structure, meaning that we can find an ordering $$x_c^{(1)}, \dotsc, x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(j)}$$ and $$x_c^{(k)}$$. We refer to this assumption as the *running intersection* property (RIP).
+Crucially, we assume that the cliques $$c$$ some path structure, meaning that we can find an ordering $$x_c^{(1)}, \dotsc, x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(j)}$$ and $$x_c^{(k)}$$. We refer to this assumption as the *running intersection* property (RIP).
 {% include maincolumn_img.html src='assets/img/junctionpath.png' caption='A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques.' %}
 
 Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to "push in" certain variables deeper into the product of cluster potentials:
@@ -149,7 +152,7 @@ A special case when we *can* find the optimal junction tree is when $$G$$ itself
 
 ### The junction tree algorithm
 
-Let us now define the junction tree algorithm, and then explain why it works. At a high-level, this algorithm implements a form of message passing on the junction tree, which will be equivalent to variable elimination for the same reasons that BP was equivalent to VE.
+We now define the junction tree algorithm and explain why it works. At a high-level, this algorithm implements a form of message passing on the junction tree, which will be equivalent to variable elimination for the same reasons that BP was equivalent to VE.
 
 More precisely, let us define the potential $$\psi_c(x_c)$$ of each cluster $$c$$ as the product of all the factors $$\phi$$ in $$G$$ that have been assigned to $$c$$. By the family preservation property, this is well-defined, and we may assume that our distribution is in the form
 
