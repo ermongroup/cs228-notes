@@ -218,7 +218,7 @@ As we said, the idea of MCMC algorithms is to construct a Markov chain over the 
 At a high level, MCMC algorithms will have the following structure. They take as argument a transition operator $$T$$ specifying a Markov chain whose stationary distribution is $$p$$, and an initial assignment $$x_0$$ to the variables of $$p$$. An MCMC algorithm then perform the following steps.
 
 1. Run the Markov chain from $$x_0$$ for $$B$$ *burn-in* steps.
-2. Run the Markov chain from $$x_0$$ for $$N$$ *sampling* steps and collect all the states that it visits.
+2. Run the Markov chain for $$N$$ *sampling* steps and collect all the states that it visits.
 
 Assuming $$B$$ is sufficiently large, the latter collection of states will form samples from $$p$$. We may then use these samples for Monte Carlo integration (or in importance sampling). We may also use them to produce Monte Carlo estimates of marginal probabilities. Finally, we may take the sample with the highest probability and use it as an estimate of the mode (i.e. perform MAP inference).
 
