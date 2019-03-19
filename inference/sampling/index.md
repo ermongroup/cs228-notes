@@ -146,12 +146,12 @@ Unfortunately, there is one drawback to the normalized importance sampling estim
 $$
     \E_{z \sim q} [\hat{P}(X_i=x_i \mid E=e)]
     = \E_{z \sim q} [\delta(z)]
-    \neq P(X_i=x_i, E=e)
+    \neq P(X_i=x_i \mid E=e)
 $$
 
 Fortunately, because the numerator and denominator are both unbiased, the normalized importance sampling estimator remains *asymptotically unbiased*, meaning that
 
-$$ \lim_{T \to \infty} \hat{P}(X_i=x_i \mid E=e) = P(X_i=x_i, E=e). $$
+$$ \lim_{T \to \infty} \E_{z \sim q} [\hat{P}(X_i=x_i \mid E=e)] = P(X_i=x_i \mid E=e). $$
 
 
 ## Markov chain Monte Carlo
