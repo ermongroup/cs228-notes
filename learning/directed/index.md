@@ -144,7 +144,7 @@ $$
 Taking logs and combining like terms, this becomes
 
 $$
-\log L(\theta, D) = \sum_{i=1}^n \#(x_i, pa(x_i)) \cdot \log(\theta_{x_i \mid pa(x_i)}).
+\log L(\theta, D) = \sum_{i=1}^n \sum_{pa(x_i)} \sum_{x_i} \#(x_i, pa(x_i)) \cdot \log(\theta_{x_i \mid pa(x_i)}).
 $$
 
 Thus, maximization of the (log) likelihood function decomposes into separate maximizations for the local conditional distributions!
