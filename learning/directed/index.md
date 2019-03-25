@@ -45,7 +45,7 @@ This objective asks that $$p$$ assign high probability to instances sampled from
 However, there is still a problem: in general we do not know $$p^*$$. We will thus approximate the expected log-likelihood $$\E_{x \sim p^*} [ \log p(x) ]$$ with the empirical log-likelihood (a Monte-Carlo estimate):
 
 $$
-\E_{x \sim p^*} [ \log p(x) ] \approx \frac{1}{|D|} \sum_{x \in D}  \log p(x),
+\E_{x \sim p^*} [ \log p(x) ] \approx \frac{1}{|D|} \sum_{x \in D} \log p(x),
 $$
 
 where $$D$$ is a dataset drawn i.i.d. from $$p^*$$.
@@ -60,8 +60,7 @@ $$
 
 As a simple example, consider estimating the outcome of a biased coin. Our dataset is a set of tosses and our task is to estimate the probability of heads/tails on the next flip. We assume that the process is controlled by a probability distribution $$p^*(x)$$ where $$x \in \{h,t\}$$. Our class of models $$M$$ is going to be the set of all probability distributions over $$\{h,t\}$$.
 
-How should we choose $$p$$ from $$M$$ if 60 out
-of 100 tosses are heads? Let's assume that $$p(x=h)=\theta$$ and $$p(x=t)=1−\theta$$. If our observed data is $$D = \{h,h,t,h,t\}$$, our likelihood becomes $$\prod_i p(x_i ) = \theta \cdot \theta \cdot (1 − \theta) \cdot \theta \cdot (1 − \theta)$$; maximizing this yields $$\theta = 60\%$$.
+How should we choose $$p$$ from $$M$$ if 60 out of 100 tosses are heads? Let's assume that $$p(x=h)=\theta$$ and $$p(x=t)=1−\theta$$. If our observed data is $$D = \{h,h,t,h,t\}$$, our likelihood becomes $$\prod_i p(x_i ) = \theta \cdot \theta \cdot (1 − \theta) \cdot \theta \cdot (1 − \theta)$$; maximizing this yields $$\theta = 60\%$$.
 
 More generally, our log-likelihood function is simply
 
@@ -86,8 +85,7 @@ Notice that the loss function which corresponds to maximum likelihood estimation
 
 Another example of a loss is the conditional log-likelihood. Suppose we want to predict a set of variables $$y$$ given $$x$$, e.g., for segmentation or stereo vision. We concentrate on predicting $$p(y \mid x)$$, and use a conditional loss function $$L(x,y,p) = −\log p(y \mid x)$$. Since the loss function only depends on $$p(y \mid x)$$, it suffices to estimate the conditional distribution, not the joint. This is the objective function we use to train conditional random fields (CRFs).
 
-Suppose next that our ultimate goal is structured prediction, i.e. given
-$$x$$ we predict $$y$$ via $$\arg\max_y p(y \mid x)$$. What loss function should we use to measure error in this setting?
+Suppose next that our ultimate goal is structured prediction, i.e. given $$x$$ we predict $$y$$ via $$\arg\max_y p(y \mid x)$$. What loss function should we use to measure error in this setting?
 
 One reasonable choice would be the classification error:
 
@@ -133,24 +131,21 @@ We cannot guarantee with certainty the quality of our learned model. This is bec
 
 Let us now apply this long discussion to a particular problem of interest: parameter learning in Bayesian networks.
 
-Suppose that we are given a Bayesian network $$p(x) = \prod^n_{i=1} \theta_{x_i \mid pa(x_i)}$$ and i.i.d. samples $$D=\{x^{(1)},x^{(2)},\ldots,x^{(m)}\}$$. What is the maximum likelihood estimate of the parameters (the CPDs)?
-
-We may write the likelihood as
+Suppose that we are given a Bayesian network $$p(x) = \prod^n_{i=1} \theta_{x_i \mid x_{pa(i)}}$$ and i.i.d. samples $$D=\{x^{(1)},x^{(2)},\ldots,x^{(m)}\}$$. What is the maximum likelihood estimate of the parameters (the CPDs)? The likelihood is
 
 $$
-L(\theta, D) = \prod_{i=1}^n \prod_{j=1}^m \theta_{x_i^{(j)} \mid pa(x_i^{(j)})}
+L(\theta, D) = \prod_{i=1}^n \prod_{j=1}^m \theta_{x_i^{(j)} \mid x_{pa(i)}^{(j)}}.
 $$
 
 Taking logs and combining like terms, this becomes
 
 $$
-\log L(\theta, D) = \sum_{i=1}^n \sum_{pa(x_i)} \sum_{x_i} \#(x_i, pa(x_i)) \cdot \log(\theta_{x_i \mid pa(x_i)}).
+\log L(\theta, D) = \sum_{i=1}^n \sum_{x_{pa(i)}} \sum_{x_i} \#(x_i, x_{pa(i)}) \cdot \log \theta_{x_i \mid x_{pa(i)}}.
 $$
 
-Thus, maximization of the (log) likelihood function decomposes into separate maximizations for the local conditional distributions!
-This is essentially the same as the head/tails example we saw earlier (except with more categories). It's a simple calculus exercise to formally show that
+Thus, maximization of the (log) likelihood function decomposes into separate maximizations for the local conditional distributions! This is essentially the same as the head/tails example we saw earlier (except with more categories). It's a simple calculus exercise to formally show that
 
-$$ \theta^*_{x_i \mid pa(x_i)} = \frac{\#(x_i, pa(x_i))}{\#(pa(x_i))}. $$
+$$ \theta^*_{x_i \mid x_{pa(i)}} = \frac{\#(x_i, x_{pa(i)})}{\#(x_{pa(i)})}. $$
 
 We thus conclude that in Bayesian networks with discrete variables, the maximum-likelihood estimate has a closed-form solution. Even when the variables are not discrete, the task is equally simple: the log-factors are linearly separable, hence the log-likelihood reduces to estimating each of them separately. The simplicity of learning is one of the most convenient features of Bayesian networks.
 
