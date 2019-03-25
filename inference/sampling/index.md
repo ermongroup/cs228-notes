@@ -64,13 +64,13 @@ For example, suppose we have a Bayesian network over the set of variables $$X = 
 
 $$ p(E=e) = \sum_z p(Z=z, E=e) = \sum_x p(x) \Ind(E=e) = \E_{x \sim p}[\Ind(E=e)] $$
 
-and then take the Monte Carlo approximation. This will amount to sampling many samples from $$p$$ and keeping ones that are consistent with the value of the marginal.
+and then take the Monte Carlo approximation. In other words, we draw many samples from $$p$$ and report the fraction of samples that are consistent with the value of the marginal.
 
 ### Importance sampling
 
 Unfortunately, rejection sampling can be very wasteful. If $$p(E=e)$$ equals, say, 1%, then we will discard 99% of all samples.
 
-A better way of computing such integrals is via an approach called *importance sampling*. The main idea is to sample from a distribution $$q$$ (hopefully roughly proportional to $$f \cdot p$$), and then *reweigh* the samples in a principled way, so that their sum still approximates the desired integral.
+A better way of computing such integrals uses *importance sampling*. The main idea is to sample from a distribution $$q$$ (hopefully with $$q(x)$$ roughly proportional to $$f(x) \cdot p(x)$$), and then *reweigh* the samples in a principled way, so that their sum still approximates the desired integral.
 
 More formally, suppose we are interested in computing $$\E_{x \sim p}[f(x)]$$. We may rewrite this integral as
 
@@ -92,9 +92,9 @@ $$
 \text{Var}_{x \sim q}[ f(x)w(x) ] = \E_{x \sim q} [f^2(x) w^2(x)] - \E_{x \sim q} [f(x) w(x)]^2 \geq 0 .
 $$
 
-Note that we can set the variance to zero by choosing $$q(x) = \frac{\lvert f(x) \rvert p(x)}{\int \lvert f(x) \rvert p(x) dx}$$; this means that if we can sample from this $$q$$ (and evaluate the corresponding weight), all the Monte Carlo samples will be equal and correspond to the true value of our integral. Of course, sampling from such a $$q$$ would be NP-hard in general, but this at least gives us an indication for what to strive for.
+Note that we can set the variance to zero by choosing $$q(x) = \frac{\lvert f(x) \rvert p(x)}{\int \lvert f(x) \rvert p(x) dx}$$. If we can sample from this $$q$$ (and evaluate the corresponding weight), then we only need a single Monte Carlo sample to compute the true value of our integral. Of course, sampling from such a $$q$$ is NP-hard in general (its denominator $$\E_{x \sim p}[\lvert f(x) \vert]$$ is basically the quantity we're trying to estimate in the first place), but this at least gives us an indication for what to strive for.
 
-In the context of our previous example for computing $$p(E=e) = \E_{z \sim p}[p(e \mid z)]$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
+In the context of our previous example for computing $$p(E=e)$$, we may take $$q$$ to be the uniform distribution and apply importance sampling as follows:
 
 $$
 \begin{align*}
