@@ -35,13 +35,19 @@ We discussed structured prediction in detail when we covered CRFs. Recall that o
 Another example of MAP inference is image segmentation; here, we are interested in locating an entity in an image and label all its pixels. Our input $$\bfx \in [0, 1]^{d\times d}$$ is a matrix of image pixels, and our task is to predict the label $$y \in \{0, 1\}^{d\times d}$$, indicating whether each pixel encodes the object we want to recover. Intuitively, neighboring pixels should have similar values in $$\bfy$$, i.e. pixels associated with the horse should form one continuous blob (rather than white noise).
 {% include marginfigure.html id="segmentation" url="assets/img/imagesegmentation.png" description="An illustration of the image segmentation problem." %}
 
-This prior knowledge can be naturally modeled in the language of graphical models via a [Potts model](https://en.wikipedia.org/wiki/Potts_model). As in our first example, we can introduce potentials $$\phi(y_i,x)$$ that encode the likelihood that any given pixel is from our subject. We then augment them with pairwise potentials $$\phi(y_i, y_j )$$ for neighboring $$y_i, y_j$$, which will encourage adjacent $$y$$'s to have the same value with higher probability.
+This prior knowledge can be naturally modeled in the language of graphical models via a [Potts model](https://en.wikipedia.org/wiki/Potts_model). As in our first example, we can introduce potentials $$\phi(y_i,x)$$ that encode the likelihood that any given pixel is from our subject. We then augment them with pairwise potentials $$\phi(y_i, y_j)$$ for neighboring $$y_i, y_j$$, which will encourage adjacent $$y$$'s to have the same value with higher probability.
 
-## Graphcuts
+## Graph cuts
 
-We will start our discussion with an efficient exact MAP inference algorithm for certain Potts models. Unlike previously-seen methods (e.g. the junction tree algorithm), this algorithm will be tractable even when the model has large treewidth.
+We start our discussion with an efficient exact MAP inference algorithm called *graph cuts* for certain Potts models over binary-valued variables $$(X_i \in \{0, 1\})$$. Unlike previously-seen methods (e.g. the junction tree algorithm), this algorithm is tractable even when the model has large treewidth.
 
-Suppose we are given a binary pairwise MRF in which edge energies (i.e. log-edge factors) have the form
+A *graph cut* of an undirected graph $$G = (V, \mathcal{E})$$ is a partition of $$V$$ into 2 disjoint sets $$V_s$$ and $$V_t$$. When each edge $$(v_1, v_2) \in \mathcal{E}$$ is associated with a nonnegative cost $$cost(v_1, v_2)$$, the cost of a graph cut is the sum of the costs of the edges that cross between the two partitions:
+
+$$ cost(V_s, V_t) = \sum_{v_1 \in V_s,\ v_2 \in V_t} cost(v_1, v_2). $$
+
+The *min-cut* problem is to find the partition $$V_s, V_t$$ that minimizes the cost of the graph cut. The fastest algorithms for computing min-cuts in a graph take $$O(\lvert \mathcal{E} \rvert \lvert V \rvert \log \lvert V \rvert)$$ or $$O(\lvert V \rvert^3)$$ time, and we refer readers to algorithms textbooks for details on their implementation.
+
+Now, we show a reduction of MAP inference on a particular class of MRFs to the min-cut problem. Suppose we are given a MRF over binary variables with pairwise factors in which edge energies (i.e. negative log-edge factors) have the form
 
 $$
 E_{uv}(x_u, x_v) =
@@ -51,7 +57,33 @@ E_{uv}(x_u, x_v) =
 \end{cases}
 $$
 
-where $$\lambda_{uv} \geq 0$$ is a cost that penalizes edge mismatches. Assume also that nodes have unary potentials; we can always normalize the nodes' energies so that $$E_u(1) = 0$$ or $$E_u(0) = 0$$ and $$E_u \geq 0$$.
+where $$\lambda_{uv} \geq 0$$ is a cost that penalizes edge mismatches. Assume also that each node $$u$$ has a unary potential described by an energy function $$E_u(x_u)$$. Thus, the full distribution is
+
+$$
+p(\bfx) = \frac{1}{Z} \exp\left[ -\sum_u E_u(x_u) - \sum_{u,v \in \mathcal{E}} E_{uv}(x_u, x_v) \right]
+$$
+
+so MAP inference is equivalent to minimizing the energy
+
+$$
+\max_\bfx p(\bfx) = \min_\bfx \left[ \sum_u E_u(x_u) + \sum_{u,v \in \mathcal{E}} E_{uv}(x_u, x_v) \right].
+$$
+
+For each node $$u$$, we can normalize its energies such that $$E_u \geq 0$$, and either $$E_u(0) = 0$$ or $$E_u(1) = 0$$. Specifically, we replace $$E_u$$ with $$E_u' = E_u - \min E_u$$, which is equivalent to multiplying the unnormalized probability distribution by a nonnegative constant $$e^{\min E_u}$$. This does not change the probability distribution. For example, we would replace
+
+$$\begin{array}{cc}
+ x_u & E_u(x_u) \\
+ \hline
+ 0 & 4 \\
+ 1 & -5
+\end{array}
+\quad\to\quad
+\begin{array}{cc}
+ x_u & E_u'(x_u) \\
+ \hline
+ 0 & 9 \\
+ 1 & 0
+\end{array}$$
 
 {% include marginfigure.html id="mincut" url="assets/img/mincut.png" description="Formulating the segmentation task in a 2x2 MRF as a graph cut problem. Dashed edges are part of the min-cut. (Source: Machine Learning: A Probabilistic Perspective)." %}
 The motivation for this model comes from image segmentation. We are looking for an assignment that minimizes the energy, which (among other things) tries to reduce discordance between adjacent variables.
@@ -62,28 +94,28 @@ the node $$s$$ is connected to nodes $$u$$ with $$E_u(0) = 0$$ by an edge with w
 the node $$t$$ is connected to nodes $$v$$ with $$E_v(1) = 0$$ by an edge with weight $$E_v(0)$$.
 Finally, all the edges of the original graph get $$E_{uv}$$ as their weight.
 
-It is not hard to see that by construction, the cost of a min-cut in this graph will equal the minimum energy in the model. In particular, all nodes on the $$s$$ side of the cut receive an assignment of $$0$$, and all the ones that are on the $$t$$ side receive an assignment of one. The edges between the nodes that disagree are precisely the ones that are in the min-cut.
+By construction, the cost of a minimal cut in this graph equals the minimum energy in the model. In particular, all nodes on the $$s$$ side of the cut receive an assignment of 0, and all nodes on the $$t$$ side receive an assignment of 1. The edges between the nodes that disagree are precisely the ones in the minimal cut.
 
-The fastest algorithms for computing min-cuts in a graph $$G=(V,E)$$ take $$O(EV\log V)$$ or $$O(V^3)$$ time. Similar techniques can also be applied in slightly more general types of models with a certain type of edge potentials that are called *submodular*. We refer the reader to a textbook (e.g. Koller and Friedman) for more details.
+Similar techniques can be applied in slightly more general types of models with a certain type of edge potentials that are called *submodular*. We refer the reader to the Koller and Friedman textbook for more details.
 
 ## Linear programming-based approaches
 
-Although graphcut-based methods recover the exact MAP assignment, they are only applicable in certain restricted classes of MRFs. The algorithms we will see next solve the MAP problem approximately, but apply to much larger classes of graphical models.
+Although graphcut-based methods recover the exact MAP assignment, they are only applicable in certain restricted classes of MRFs. The algorithms we see next solve the MAP problem approximately, but apply to much larger classes of graphical models.
 
 ### Linear programming
 
-Our first approximate inference strategy consists in reducing MAP inference to integer linear programming. Linear programming (LP) --- also known as linear optimization --- refers to a class of problems of the form
+Our first approximate inference strategy consists of reducing MAP inference to integer linear programming. Linear programming (LP) --- also known as linear optimization --- refers to a class of problems of the form
 
 $$
-\begin{align*}
-\min \;& \bf{c} \cdot \bfx \\
-\textrm{s.t. } & A \bfx \leq \bf{b}
-\end{align*}
+\begin{array}{ll}
+\text{minimize (over $\bfx$)} & \bf{c} \cdot \bfx \\
+\text{subject to} & A \bfx \preceq \bf{b}
+\end{array}
 $$
 
-where $$\bfx \in \Re^n$$, and $$\bf{c}, \bf{b} \in \Re^n$$, $$A\in \Re^{n\times n}$$ are problem parameters.
+where $$\bfx \in \Re^n$$ is the optimization variable, and $$\bf{c}, \bf{b} \in \Re^n$$ and $$A\in \Re^{n\times n}$$ are problem parameters.
 
-Problems of this form are found in almost every field of science and engineering. They have been extensively studied since the 30's, which has led to both an extensive theory{% include sidenote.html id="note-karmarkar" note="A major breakthrough of applied mathematics in the 80's was the development polynomial-time [algorithms](https://en.wikipedia.org/wiki/Karmarkar%27s_algorithm) for linear programming." %}, as well as practical [tools](https://en.wikipedia.org/wiki/CPLEX) that can solve very large LP instances (100,000 variables or more) in a reasonable time.
+Problems of this form are found in almost every field of science and engineering. They have been extensively studied since the 1930s, which has led to extensive theory{% include sidenote.html id="note-karmarkar" note="A major breakthrough of applied mathematics in the 1980s was the development polynomial-time [algorithms](https://en.wikipedia.org/wiki/Karmarkar%27s_algorithm) for linear programming." %} and practical [tools](https://en.wikipedia.org/wiki/CPLEX) that can solve very large LP instances (100,000 variables or more) in a reasonable time.
 
 Integer linear programming (ILP) is an extension of linear programming in which we also require that $$\bfx \in \{0, 1\}^n$$. Unfortunately, this makes optimization considerably more difficult, and ILP is in general NP-hard. Nonetheless, there are many heuristics for solving ILP problems in practice, and commercial solvers can handle instances with thousands of variables or more.
 
@@ -94,7 +126,7 @@ One of the main techniques for solving ILP problems is *rounding*. The idea of r
 For simplicity, let's look at MAP in pairwise MRFs. We can reduce the MAP objective to integer linear programming by introducing two types of indicator variables:
 
 - A variable $$\mu_i(x_i)$$ for each $$i \in V$$ and state $$x_i$$.
-- A variable $$\mu_{ij}(x_i,x_j)$$ for each edge $$(i,j) \in E$$ and pair of states $$x_i,x_j$$.
+- A variable $$\mu_{ij}(x_i,x_j)$$ for each edge $$(i,j) \in \mathcal{E}$$ and pair of states $$x_i,x_j$$.
 
 We can rewrite the MAP objective in terms of these variables as
 
@@ -149,7 +181,7 @@ The dual decomposition approach consists in softening these constraints in order
 We will achieve this by first forming the *Lagrangian* for the constrained problem, which is
 
 $$
-L(\delta, \bfx^f, \bfx) = \sum_{i \in V}  \theta_i (x_i) + \sum_{f \in F} \theta_f (x^f) + \sum_{f \in F} \sum_{i \in f} \sum_{x'_i} \delta_{fi}(x_i')\left( \Ind_{x'_i = x_i} - \Ind_{x'_i = x^f_i} \right).
+L(\delta, \bfx^f, \bfx) = \sum_{i \in V} \theta_i (x_i) + \sum_{f \in F} \theta_f (x^f) + \sum_{f \in F} \sum_{i \in f} \sum_{x'_i} \delta_{fi}(x_i')\left( \Ind_{x'_i = x_i} - \Ind_{x'_i = x^f_i} \right).
 $$
 
 The $$\delta$$ variables are called Lagrange *multipliers*; each of them is associated with a constraint{% include sidenote.html id="note-cvxopt" note="There is a very deep and powerful theory of constrained optimization centered around Lagrangians. We refer the reader to a course on [convex optimization](http://stanford.edu/class/ee364a/) for a thorough discussion." %}. Observe that $$x, x^f = x^*$$ is a valid assignment to the Lagrangian; its value equals $$p^*$$ for any $$\delta$$, since the Lagrange multipliers are simply multiplied by zero. This shows that the Lagrangian is an upper bound on $$p^*$$:
@@ -160,7 +192,7 @@ $$
 
 In order to get the tightest such bound, we may optimize $$L(\delta)$$ over $$\delta$$. It turns out that by the theory of Lagarange duality, at the optimal $$\delta^*$$, this bound will be exactly tight, i.e.
 
-$$ L(\delta^*) =  p^*. $$
+$$ L(\delta^*) = p^*. $$
 
 It is actually not hard to prove this in our particular setting. To see that, note that we can reparametrize the Lagrangian as:
 
@@ -175,7 +207,9 @@ $$
 Suppose we can find dual variables $$\bar \delta$$ such that the local maximizers of $$\bar \theta_{i}^{\bar \delta} (x_i)$$ and $$\bar \theta_{f}^{\bar \delta} (x^f)$$ agree; in other words, we can find a $$\bar x$$ such that $$\bar x_i \in \arg\max_{x_i} \bar \theta_{i}^{\bar \delta} (x_i)$$ and $$\bar x^f \in \arg\max_{x^f} \bar \theta_{f}^{\bar \delta} (x^f)$$. Then we have that
 
 $$
-L(\bar \delta) =  \sum_{i \in V} \bar \theta_{i}^{\bar\delta} (\bar x_i) + \sum_{f \in F} \bar \theta_{f}^{\bar\delta} (\bar x^f) =  \sum_{i \in V} \theta_i (\bar x_i) + \sum_{f \in F} \theta_f (\bar x^f).
+L(\bar \delta)
+= \sum_{i \in V} \bar \theta_{i}^{\bar\delta} (\bar x_i) + \sum_{f \in F} \bar \theta_{f}^{\bar\delta} (\bar x^f)
+= \sum_{i \in V} \theta_i (\bar x_i) + \sum_{f \in F} \theta_f (\bar x^f).
 $$
 
 The first equality follows by definition of $$L(\delta)$$, while the second follows because terms involving Lagrange multipliers cancel out when $$x$$ and $$x^f$$ agree.
