@@ -41,11 +41,11 @@ Note that unlike in the directed case, we are not saying anything about how one 
 
 ### Formal definition
 
-A Markov Random Field (MRF) is a probability distribution $$p$$ over variables $$x_1,...,x_n$$ defined by an *undirected* graph $$G$$ in which nodes correspond to variables $$x_i$$. The probability $$p$$ has the form
+A Markov Random Field (MRF) is a probability distribution $$p$$ over variables $$x_1, \dotsc, x_n$$ defined by an *undirected* graph $$G$$ in which nodes correspond to variables $$x_i$$. The probability $$p$$ has the form
 
 $$ p(x_1, \dotsc, x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c), $$
 
-where $$C$$ denotes the set of *cliques* (i.e. fully connected subgraphs) of $$G$$. The value
+where $$C$$ denotes the set of *cliques* (i.e. fully connected subgraphs) of $$G$$, and each *factor* $$\phi_c$$ is a nonegative function over the variables in a clique. The *partition function*
 
 $$ Z = \sum_{x_1, \dotsc, x_n} \prod_{c \in C} \phi_c(x_c) $$
 
@@ -94,15 +94,15 @@ In the directed case, we found that $$I(G) \subseteq I(p)$$, but there were dist
 
 ## Conditional Random Fields
 
-An important special case of Markov Random Fields arises when they are applied to model a conditional probability distribution $$p(y\mid x)$$. In this case, $$x \in \mathcal{X}$$ and $$y \in \mathcal{Y}$$ are vector-valued variables; we are typically given $$x$$ and want to say something interesting for $$y$$. Typically, distributions of this sort will arise in a supervised learning setting, where $$y$$ will be a vector-valued label that we will be trying to predict. This setting is typically referred to as *structured prediction*.
+An important special case of Markov Random Fields arises when they are applied to model a conditional probability distribution $$p(y\mid x)$$, where $$x \in \mathcal{X}$$ and $$y \in \mathcal{Y}$$ are vector-valued variables. These distributions are common in supervised learning settings in which we are given $$x$$ and want to predict $$y$$. This setting is also known as *structured prediction*.
 
 ### Example
 
-As a motivating example, consider the problem of recognizing a word from a sequence of character images $$x_i \in [0, 1]^{d\times d}$$ given to us in the form of pixel matrices. The output of our predictor will be a sequence of alphabet letters $$y_i \in \{'a','b',...,'z'\}$$.
+As a motivating example, consider the problem of recognizing a word from a sequence of black-and-white character images $$x_i \in [0, 1]^{d\times d}$$ given to us in the form of pixel matrices. The output of our predictor is a sequence of alphabet letters $$y_i \in \{'a','b',\dotsc,'z'\}$$.
 
 {% include maincolumn_img.html src='assets/img/ocr.png' caption='Chain-structured conditional random field for optical character recognition.' %}
 
-We could in principle train a classifier to separately predict each $$y_i$$ from its $$x_i$$. However, since the letters together form a word, the predictions across different $$i$$ ought to inform each other. In the above example, the second letter by itself could be either a 'U' or a 'V'; however, since we can tell with high confidence that its neighbors are 'Q' and 'E', we can infer that 'U' is the most likely true label. CRFs are a tool that will enable us to perform this prediction jointly.
+We could in principle train a classifier to separately predict each $$y_i$$ from its $$x_i$$. However, since the letters together form a word, the predictions across different $$i$$ ought to inform each other. In the above example, the second letter by itself could be either a 'U' or a 'V'; however, since we can tell with high confidence that its neighbors are 'Q' and 'E', we can infer that 'U' is the most likely true label. CRFs enable us to perform this prediction jointly.
 
 ### Formal definition
 
@@ -118,8 +118,7 @@ Note that in this case, the partition constant now depends on $$x$$ (therefore, 
 
 ### Example (continued)
 
-
-More formally, suppose $$p(y\mid x)$$ is a chain CRF with two types of factors: image factors $$\phi(x_i, y_i)$$ for $$i = 1, ..., n$$ — which assign higher values to $$y_i$$ that are consistent with an input $$x_i$$ — as well as pairwise factors $$\phi(y_i, y_{i+1})$$ for $$i = 1, ..., n-1$$. We may also think of the $$\phi(x_i,y_i)$$ as probabilities $$p(y_i\mid x_i)$$ given by, say, standard (unstructured) softmax regression; the $$\phi(y_i, y_{i+1})$$ can be seen as empirical frequencies of letter co-occurrences obtained from a large corpus of English text (e.g. Wikipedia).
+More formally, suppose $$p(y\mid x)$$ is a chain CRF with two types of factors: image factors $$\phi(x_i, y_i)$$ for $$i = 1, \dotsc, n$$ — which assign higher values to $$y_i$$ that are consistent with an input $$x_i$$ — as well as pairwise factors $$\phi(y_i, y_{i+1})$$ for $$i = 1, \dotsc, n-1$$. We may also think of the $$\phi(x_i,y_i)$$ as probabilities $$p(y_i\mid x_i)$$ given by, say, standard (unstructured) softmax regression; the $$\phi(y_i, y_{i+1})$$ can be seen as empirical frequencies of letter co-occurrences obtained from a large corpus of English text (e.g. Wikipedia).
 
 Given a model of this form, we can jointly infer the structured label $$y$$ using MAP inference:
 
@@ -137,7 +136,7 @@ where $$f_c(x_c, y_c)$$ can be an arbitrary set of features describing the compa
 
 In our OCR example, we may introduce features $$f(x_i, y_i)$$ that encode the compatibility of the letter $$y_i$$ with the pixels $$x_i$$. For example, $$f(x_i, y_i)$$ may be the probability of letter $$y_i$$ produced by logistic regression (or a deep neural network) evaluated on pixels $$x_i$$. In addition, we introduce features $$f(y_i, y_{i+1})$$ between adjacent letters. These may be indicators of the form $$f(y_i, y_{i+1}) = \Ind(y_i = \ell_1, y_{i+1} = \ell_2)$$, where $$\ell_1, \ell_2$$ are two letters of the alphabet. The CRF would then learn weights $$w$$ that would assign more weight to more common probability of consecutive letters $$(\ell_1, \ell_2)$$, while at the same time making sure that the predicted $$y_i$$ are consistent with the input $$x_i$$; this process would let us determine $$y_i$$ in cases where $$x_i$$ is ambiguous, like in our above example.
 
-The most important realization that need to be made about CRF features is that they can be arbitrarily complex. In fact, we may define an OCR model with factors $$\phi_i(x,y_i) = \exp(w_i^T f(x, y_i))$$, that depend on the entire input $$x$$. This will not affect computational performance at all, because at inference time, the $$x$$ will be always observed, and our decoding problem will involve maximizing
+The most important realization about CRF features is that they can be arbitrarily complex. In fact, we may define an OCR model with factors $$\phi_i(x,y_i) = \exp(w_i^T f(x, y_i))$$, that depend on the entire input $$x$$. This does not affect computational performance at all, because at inference time, the $$x$$ is always observed, and our decoding problem involves maximizing
 
 $$
 \phi_1(x, y_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi(x, y_i) = \phi_1'(y_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi'(y_i),
@@ -145,7 +144,7 @@ $$
 
 where $$\phi'_i(y_i) = \phi_i(x,y_i)$$. Using global features only changes the values of the factors, but not their scope, which possesses the same type of chain structure. We will see in the next section that this structure is all that is needed to ensure we can solve this optimization problem tractably.
 
-This observation may be interpreted in a slightly more general form. If we were to model $$p(x,y)$$ using an MRF (viewed as a single model over $$x, y$$ with normalizing constant $$Z = \sum_{x,y} \tp(x,y)$$), then we need to fit two distributions to the data: $$p(y\mid x)$$ and $$p(x)$$. However, if all we are interested in is predicting $$y$$ given $$x$$, then modeling $$p(x)$$ is unnecessary. In fact, it may be disadvantageous to do so statistically (e.g. we may not have enough data to fit both $$p(y\mid x)$$ and $$p(x)$$; since the models have shared parameters, fitting one may result in the best parameters for the other) and it may not be a good idea computationally (we need to make simplifying assumptions in the distribution so that $$p(x)$$ can be handled tractably). CRFs forgo of this assumption, and often perform better on prediction tasks.
+This observation may be interpreted in a slightly more general form. If we were to model $$p(x,y)$$ using an MRF (viewed as a single model over $$x, y$$ with normalizing constant $$Z = \sum_{x,y} \tp(x,y)$$), then we need to fit two distributions to the data: $$p(y\mid x)$$ and $$p(x)$$. However, if all we are interested in is predicting $$y$$ given $$x$$, then modeling $$p(x)$$ is unnecessary. In fact, it may be disadvantageous to do so statistically (e.g. we may not have enough data to fit both $$p(y\mid x)$$ and $$p(x)$$; since the models have shared parameters, fitting one may not result in the best parameters for the other) and it may not be a good idea computationally (we need to make simplifying assumptions in the distribution so that $$p(x)$$ can be handled tractably). CRFs forgo this assumption, and often perform better on prediction tasks.
 
 ## Factor Graphs
 
