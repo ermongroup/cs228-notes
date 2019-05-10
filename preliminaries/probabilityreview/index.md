@@ -321,9 +321,9 @@ $$
 \end{align*}
 $$
 
-## 3.6 Bayes’s rule
+## 3.6 Bayes' rule
 
-A useful formula that often arises when trying to derive expressions for conditional probability is **Bayes’s rule**.
+A useful formula that often arises when trying to derive expressions for conditional probability is **Bayes' rule**.
 
 In the case of discrete random variables $$X$$ and $$Y$$,
 
