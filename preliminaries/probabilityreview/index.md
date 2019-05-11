@@ -76,6 +76,16 @@ More formally, a random variable $$X$$ is a function $$X : \Omega \to \Re$$. Typ
 
 **Example**: Suppose that $$X(\omega)$$ is a random variable indicating the amount of time it takes for a radioactive particle to decay. In this case, $$X(\omega)$$ takes on a infinite number of possible values, so it is called a continuous random variable. We denote the probability that $$X$$ takes on a value between two real constants $$a$$ and $$b$$ (where $$a < b$$) as $$P(a \leq X \leq b) := P(\{\omega : a \leq X(\omega) \leq b\})$$.
 
+When describing the event that a random variable takes on a certain value, we often use the **indicator function** $$\mathbf{1}\{A\}$$ which takes value 1 when event $$A$$ happens and 0 otherwise. For example, for a random variable $$X$$,
+
+$$
+    \mathbf{1}\{X > 3\} = \begin{cases}
+    1, & \text{if }X > 3 \\
+    0, & \text{otherwise}
+    \end{cases}
+$$
+
+
 ## 2.1 Cumulative distribution functions
 
 In order to specify the probability measures used when dealing with random variables, it is often convenient to specify alternative functions (CDFs, PDFs, and PMFs) from which the probability measure governing an experiment immediately follows. In this section and the next two sections, we describe each of these types of functions in turn. A **cumulative distribution function** (CDF) is a function $$F_X : \Re \to [0, 1]$$ which specifies a probability measure as
