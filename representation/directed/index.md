@@ -89,7 +89,7 @@ We say that variables $$Q$$ and $$W$$ are $$d$$-separated, when the set of varia
 - $$X \rightarrow Y \leftarrow Z$$, and $$Y$$ or any of its descendants are observed (that is, $$Y \in O$$).
 {% include marginfigure.html id="dp2" url="assets/img/dsep2.png" description="In this example, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$." %}{% include marginfigure.html id="dp1" url="assets/img/dsep1.png" description="However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$. There is an active pass which passed through the V-structure created when $$X_6$$ is observed." %}
 
-For example, in the graph below, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
+For example, in the graph on the right, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$. However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$, because we can find an active path $$(X_2, X_6, X_5, X_3)$$
 
 A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/dSepApp) for testing $$d$$-separation. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
 
