@@ -81,7 +81,7 @@ The latter case requires additional explanation. Suppose that $$C$$ is a Boolean
 
 These structures clearly describe the independencies encoded by a three-variable Bayesian net. We can extend them to general networks by applying them recursively over any larger graph. This leads to a notion called $$d$$-separation (where $$d$$ stands for directed).
 
-We say that $$Q$$ and $$W$$ are $$d$$-separated when variables $$O$$ are observed, if they are not connected by an *active path*. An undirected path in the Bayesian Network structure $$G$$ is called *active* given observed variables $$O$$ if for every consecutive triple of variables $$X,Y,Z$$ on the path, one of the following holds:
+We say that $$Q$$ and $$W$$ are $$d$$-separated when variables $$O$$ are observed, if they are not connected by an *active path*. An *undirected* path{% include sidenote.html id="undirected_path" note="Recall that a Bayesian network is a directed graph. However, to study the dependency relationships between variables in a Bayesian network or to understand the *d-separation* concept, we need to think of the edges between the nodes, in a Bayesian network, as *undirected*, even though they are depicted as directed edges. The direction of these edges only represents the *causal* relationships between the involved nodes (or variables). %} in the Bayesian Network structure $$G$$ is called *active* given observed variables $$O$$ if for every consecutive triple of variables $$X,Y,Z$$ on the path, one of the following holds:
 
 - $$X \leftarrow Y \leftarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
 - $$X \rightarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
