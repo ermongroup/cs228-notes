@@ -83,9 +83,9 @@ These structures clearly describe the independencies encoded by a three-variable
 
 We say that variables $$Q$$ and $$W$$ are $$d$$-separated, when the set of variables $$O$$ are observed{% include sidenote.html id="observed_variables" note="The variables in the set $$O$$ have been observed, that is, they have taken specific values." %}, if they are not connected by an *active path*. An *undirected* path{% include sidenote.html id="undirected_path" note="Recall that a Bayesian network is a directed graph. However, to study the dependency relationships between variables in a Bayesian network or to understand the *d-separation* concept, we need to think of the edges between the nodes, in a Bayesian network, as *undirected*, even though they are depicted as directed edges. The direction of these edges only represents the *causal* relationships between the involved nodes (or variables)." %} in the Bayesian Network structure $$G$$ is called *active*{% include sidenote.html id="active_path" note="Also known as 'unblocked path'. See https://stats.stackexchange.com/q/386866/82135." %}, given the set $$O$$ of observed variables, if for every consecutive triple of variables $$X,Y,Z$$ on such undirected path, one of the following holds:
 
-- $$X \leftarrow Y \leftarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
-- $$X \rightarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
-- $$X \leftarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
+- $$X \leftarrow Y \leftarrow Z$$, and $$Y$$ is unobserved (that is, $$Y \not\in O$$)
+- $$X \rightarrow Y \rightarrow Z$$, and $$Y$$ is unobserved
+- $$X \leftarrow Y \rightarrow Z$$, and $$Y$$ is unobserved
 - $$X \rightarrow Y \leftarrow Z$$, and $$Y$$ or any of its descendants are observed.
 {% include marginfigure.html id="dp2" url="assets/img/dsep2.png" description="In this example, $$X_1$$ and $$X_6$$ are $$d$$-separated given $$X_2, X_3$$." %}{% include marginfigure.html id="dp1" url="assets/img/dsep1.png" description="However, $$X_2, X_3$$ are not $$d$$-separated given $$X_1, X_6$$. There is an active pass which passed through the V-structure created when $$X_6$$ is observed." %}
 
