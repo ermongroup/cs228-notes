@@ -63,8 +63,7 @@ It is not hard to see that a probability represented by a Bayesian network will 
 
 To summarize, Bayesian networks represent probability distributions that can be formed via products of smaller, local conditional probability distributions (one for each variable). By expressing a probability in this form, we are introducing into our model assumptions that certain variables are independent.
 
-This raises the question: which independence assumptions are we exactly making by using a model Bayesian network with a given structure described by $$G$$?
-This question is important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
+This raises the question: which independence assumptions are we exactly making by using a Bayesian network model with a given structure described by $$G$$? This question is important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
 
 Let us use the notation $$I(p)$$ to denote the set of all independencies that hold for a joint distribution $$p$$. For example, if $$p(x,y)=p(x)p(y)$$, then we say that $$x \perp y \in I(p)$$.
 
