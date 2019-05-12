@@ -2,19 +2,19 @@
 layout: post
 title: Variable Elimination
 ---
-Next, we turn our attention to the problem of *inference* in graphical models. Given a probabilistic model (such as a Bayes net or an MRF), we are interested in using it to answer useful questions, e.g., determining the probability that a given email is spam. More formally, we will be focusing on two types of questions:
+Next, we turn our attention to the problem of *inference* in graphical models. Given a probabilistic model (such as a Bayes net or a MRF), we are interested in using it to answer useful questions, e.g., determining the probability that a given email is spam. More formally, we focus on two types of questions:
 
-- *Marginal inference*: what is the probability of a given variable in our model after we sum everything else out (e.g. probability of spam vs non-spam)?
+- *Marginal inference*: what is the probability of a given variable in our model after we sum everything else out (e.g. probability of spam vs. non-spam)?
 
 $$
-p(y=1) = \sum_{x_1} \sum_{x_2} \cdots \sum_{x_n} p(y=1,x_1, x_2, \dotsc, x_n).
+p(y=1) = \sum_{x_1} \sum_{x_2} \cdots \sum_{x_n} p(y=1, x_1, x_2, \dotsc, x_n).
 $$
 
-- *Maximum a posteriori (MAP) inference*: what is the most likely assignment to the variables in the model (possibly conditioned on evidence).
+- *Maximum a posteriori (MAP) inference*: what is the most likely assignment to the variables in the model (possibly conditioned on evidence)?
 
 $$ \max_{x_1, \dotsc, x_n} p(y=1, x_1, \dotsc, x_n) $$
 
-It turns out that inference is a challenging task. For many probabilities of interest, it is NP-hard to answer any of these questions. Crucially, whether inference is tractable depends on the structure of the graph that describes that probability. If a problem is intractable, we are still able to obtain useful answers via approximate inference methods.
+It turns out that inference is a challenging task. For many probabilities of interest, it is NP-hard to answer any of these questions exactly. Crucially, whether inference is tractable depends on the structure of the graph that describes that probability. If a problem is intractable, we are still able to obtain useful answers via approximate inference methods.
 
 This chapter covers the first exact inference algorithm, *variable elimination*. We discuss approximate inference in later chapters.
 
@@ -57,15 +57,15 @@ Having established some intuitions, with a special case, we now introduce the va
 
 ### Factors
 
-We will assume that we are given a graphical model as a product of factors
+We assume that we are given a graphical model as a product of factors
 
 $$ p(x_1, \dotsc, x_n) = \prod_{c \in C} \phi_c(x_c). $$
 
-Recall that we can view a factor as a multi-dimensional table assigning a value to each assignment of a set of variables $$x_c$$. In the context of a Bayesian network, the factors correspond to conditional probability distributions; however, this definition also makes our algorithm equally applicable to Markov Random Fields. In this latter case, the factors encode an unnormalized distribution; to compute marginals, we first calculate the partition function (also using variable elimination), then we compute marginals using the unnormalized distribution, and finally we divide the result by the partition constant to construct a valid marginal probability.
+Recall that we can view a factor as a multi-dimensional table assigning a value to each assignment of a set of variables $$x_c$$. In a Bayesian network, the factors correspond to conditional probability distributions. In a Markov Random Field, the factors encode an unnormalized distribution; to compute marginals, we first calculate the partition function (also using variable elimination), then we compute marginals using the unnormalized distribution, and finally we divide the result by the partition constant to construct a valid marginal probability.
 
 ### Factor Operations
 
-The variable elimination algorithm will repeatedly perform two factor operations: product and marginalization. We have been implicitly performing these operations in our chain example.
+The variable elimination algorithm repeatedly performs two factor operations: product and marginalization. We have been implicitly performing these operations in our chain example.
 
 The factor product operation simply defines the product $$\phi_3 := \phi_1 \times \phi_2$$ of two factors $$\phi_1, \phi_2$$ as
 

@@ -23,14 +23,14 @@ The general idea behind this parametrization is surprisingly simple.
 Recall that by the chain rule, we can write any probability $$p$$ as:
 
 $$
-p(x_1,x_2,...,x_n) = p(x_1) p(x_2\mid x_1) \cdots p(x_n\mid x_{n-1},...,x_2,x_1).
+p(x_1, x_2, \dotsc, x_n) = p(x_1) p(x_2 \mid x_1) \cdots p(x_n \mid x_{n-1}, \dotsc, x_2, x_1).
 $$
 
 A compact Bayesian network is a distribution in which each factor on the right hand side depends only on a small number of *ancestor variables* $$x_{A_i}$$:
 
-$$ p(x_i \mid x_{i-1},...,x_1) = p(x_i \mid x_{A_i}). $$
+$$ p(x_i \mid x_{i-1}, \dotsc, x_1) = p(x_i \mid x_{A_i}). $$
 
-For example, in a model with five variables, we may choose to approximate the factor $$p(x_5\mid x_4, x_3, x_2, x_1)$$ with $$p(x_5 \mid x_4, x_3)$$. In this case, we write $$x_{A_5} = \{x_4, x_3\}$$.
+For example, in a model with five variables, we may choose to approximate the factor $$p(x_5 \mid x_4, x_3, x_2, x_1)$$ with $$p(x_5 \mid x_4, x_3)$$. In this case, we write $$x_{A_5} = \{x_4, x_3\}$$.
 
 When the variables are discrete (which will be often be the case in the problem we will consider), we may think of the factors $$p(x_i\mid x_{A_i})$$ as *probability tables*, in which rows correspond to assignments to $$x_{A_i}$$ and columns correspond to values of $$x_i$$; the entries contain the actual probabilities $$p(x_i\mid x_{A_i})$$. If each variable takes $$d$$ values and has at most $$k$$ ancestors, then the entire table will contain at most $$O(d^{k+1})$$ entries. Since we have one table per variable, the entire probability distribution can be compactly described with only $$O(nd^{k+1})$$ parameters (compared to $$O(d^n)$$ with a naive approach).
 
@@ -40,7 +40,7 @@ Distributions of this form can be naturally expressed as *directed acyclic graph
 
 As an example, consider a model of a student's grade $$g$$ on an exam. This grade depends on the exam's difficulty $$d$$ and the student's intelligence $$i$$; it also affects the quality $$l$$ of the reference letter from the professor who taught the course. The student's intelligence $$i$$ affects his SAT score $$s$$ in addition to $$g$$. Each variable is binary, except for $$g$$, which takes 3 possible values.{% include marginfigure.html id="nb1" url="assets/img/grade-model.png" description="Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph." %} The joint probability distribution over the 5 variables naturally factorizes as follows:
 
-$$ p(l, g, i, d, s) = p(l \mid g) p(g \mid i, d) p(i) p(d) p(s\mid i). $$
+$$ p(l, g, i, d, s) = p(l \mid g) p(g \mid i, d) p(i) p(d) p(s \mid i). $$
 
 The graphical representation of this distribution is a DAG that visually specifies how random variables depend on each other. The graph clearly indicates that the letter depends on the grade, which in turn depends on the student's intelligence and the difficulty of the exam.
 
@@ -63,10 +63,9 @@ It is not hard to see that a probability represented by a Bayesian network will 
 
 To summarize, Bayesian networks represent probability distributions that can be formed via products of smaller, local conditional probability distributions (one for each variable). By expressing a probability in this form, we are introducing into our model assumptions that certain variables are independent.
 
-This raises the question: which independence assumptions are we exactly making by using a model Bayesian network with a given structure described by $$G$$?
-This question is important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
+This raises the question: which independence assumptions are we exactly making by using a model Bayesian network with a given structure described by $$G$$? This question is important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
 
-Let us use the notation $$I(p)$$ to denote the set of all independencies that hold for a joint distribution $$p$$. For example, if $$p(x,y)=p(x)p(y)$$, then we say that $$x \perp y \in I(p)$$.
+Let us use the notation $$I(p)$$ to denote the set of all independencies that hold for a joint distribution $$p$$. For example, if $$p(x,y) = p(x) p(y)$$, then we say that $$x \perp y \in I(p)$$.
 
 ### Independencies described by directed graphs
 
