@@ -23,7 +23,7 @@ The model may be either directed or undirected. There exist both discriminative 
 
 Gaussian mixture models (GMMs) are a latent variable model that is also one of the most widely used models in machine learning. {% include marginfigure.html id="gmm1" url="assets/img/gmm1.png" description="Example of a dataset that is best fit with a mixture of two Gaussians. Mixture models allow us to model clusters in the dataset." %}
 
-In a GMM, each data point is a tuple $$(x_i, z_i)$$ with $$x_i \in \Re^d$$ and $$z_i \in {1,2,...,K}$$ ($$z_i$$ is discrete). The joint $$p$$ is a directed model
+In a GMM, each data point is a tuple $$(x_i, z_i)$$ with $$x_i \in \Re^d$$ and $$z_i \in \{1, 2, \dotsc, K\}$$ ($$z_i$$ is discrete). The joint $$p$$ is a directed model
 
 $$ p(x, z) = p(x|z)p(z), $$
 
@@ -33,7 +33,7 @@ $$ p(x|z=k) = \mathcal{N}(x; \mu_k, \Sigma_k) $$
 
 is a multivariate Gaussian with mean and variance $$\mu_k, \Sigma_k$$.
 
-This model postulates that our observed data is comprised of $$K$$ clusters with proportions specified by $$\pi_1,...,\pi_K$$; the distribution within each cluster is a Gaussian. We can see that $$p(x)$$ is a mixture by explicitly writing out this probability:
+This model postulates that our observed data is comprised of $$K$$ clusters with proportions specified by $$\pi_1, \dotsc, \pi_K$$; the distribution within each cluster is a Gaussian. We can see that $$p(x)$$ is a mixture by explicitly writing out this probability:
 
 $$
 p(x) = \sum_{k=1}^K p(x|z=k)p(z=k) = \sum_{k=1}^K \pi_k \mathcal{N}(x; \mu_k, \Sigma_k).
@@ -100,7 +100,7 @@ Since the summation is now outside the log, we can maximize the expected log-lik
 
 We can formally define the EM algorithm as follows. Let $$D$$ be our dataset.
 
-- Starting at an initial $$\theta_0$$, repeat until convergence for $$t=1,2,...$$:
+- Starting at an initial $$\theta_0$$, repeat until convergence for $$t = 1, 2, \dotsc$$:
 - *E-Step*: For each $$x \in D$$, compute the posterior $$p(z\mid x; \theta_t)$$.
 - *M-Step*: Compute new weights via
 

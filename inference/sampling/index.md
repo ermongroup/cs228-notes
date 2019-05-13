@@ -263,7 +263,7 @@ Repeat until convergence for $$t = 1, 2,\dots$$:
 - Set $$x \leftarrow x^{t-1}$$.
 - For each variable $$x_i$$ in the order we fixed:
 	1. Sample $$x'_i \sim p(x_i \mid x_{-i})$$
-	2. Update $$x \leftarrow (x_1, ..., x'_i, ..., x_n).$$
+	2. Update $$x \leftarrow (x_1, \dotsc, x'_i, \dotsc, x_n).$$
 - Set $$x^t \leftarrow x$$
 
 We use $$x_{-i}$$ to denote all variables in $$x$$ except $$x_i$$. It is often very easy to performing each sampling step, since we only need to condition $$x_i$$ on its Markov blanket, which is typically small. Note that when we update $$x_i$$, we *immediately* use its new value for sampling other variables $$x_j$$.

@@ -42,17 +42,17 @@ In addition, we will also see many examples of how to apply probabilistic techni
 
 To get a first taste of the challenges that lie ahead of us, consider a simple application of probabilistic modeling: spam classification.
 
-Suppose we have a model $$\pt(y,x_1,...,x_n)$$ of word occurrences in spam and non-spam mail. Each binary variable $$x_i$$ encodes whether the $$i$$-th English word is present in the email; the binary variable $$y$$ indicates whether the email is spam. In order to classify a new email, we may look at the probability $$ P(y=1 \mid x_1,...,x_n) $$.
+Suppose we have a model $$\pt(y, x_1, \dotsc, x_n)$$ of word occurrences in spam and non-spam mail. Each binary variable $$x_i$$ encodes whether the $$i$$-th English word is present in the email; the binary variable $$y$$ indicates whether the email is spam. In order to classify a new email, we may look at the probability $$ P(y=1 \mid x_1, \dotsc, x_n) $$.
 
-What is the "size" of the function $$\pt$$ that we just defined? Our model defines a probability in $$[0,1]$$ for each combination of inputs $$y,x_1,...,x_n$$;  specifying all these probabilities will require us to write down a staggering $$2^{n+1}$$ different values, one for each assignment to our $$n+1$$ binary variables. Since $$n$$ is the size of the English vocabulary, this is clearly impractical from both a computational (how do we store this large list?) and from a statistical (how do we efficiently estimate the parameters from limited data?) point of view. More generally, our example illustrates one of the main challenges that this course will deal with: probabilities are inherently exponentially-sized objects; the only way in which we can manipulate them is by making simplifying assumptions about their structure.
+What is the "size" of the function $$\pt$$ that we just defined? Our model defines a probability in $$[0,1]$$ for each combination of inputs $$y, x_1, \dotsc, x_n$$; specifying all these probabilities will require us to write down a staggering $$2^{n+1}$$ different values, one for each assignment to our $$n+1$$ binary variables. Since $$n$$ is the size of the English vocabulary, this is clearly impractical from both a computational (how do we store this large list?) and from a statistical (how do we efficiently estimate the parameters from limited data?) point of view. More generally, our example illustrates one of the main challenges that this course will deal with: probabilities are inherently exponentially-sized objects; the only way in which we can manipulate them is by making simplifying assumptions about their structure.
 
 The main simplifying assumption that we will make in this course is that of *conditional independence* among the variables. For example, suppose that the English words are all conditionally independent given $$Y$$. In other words, the probabilities of seeing two words are independent given that a message is spam. This is clearly an oversimplification, as the probabilities of the words "pills" and "buy" are clearly correlated; however, for most words (e.g. "penguin" and "muffin") the probabilities will indeed be independent, and our assumption will not significantly degrade the accuracy of the model.
 
 We refer to this particular choice of independencies as the *Naive Bayes* assumption. Given this assumption, we can write the model probability as a product of factors
 
-$$ P(y,x_1,...,x_n) = p(y) \prod_{i=1}^n p(x_i|y). $$
+$$ P(y, x_1, \dotsc, x_n) = p(y) \prod_{i=1}^n p(x_i \mid y). $$
 
-Each factor $$p(x_i \mid y)$$ can be completely described by a small number of parameters ($$4$$ parameters with $$2$$ degrees of freedom to be exact). The entire distribution is parametrized by $$O(n)$$ parameters, which we can tractably estimate from data and make predictions.
+Each factor $$p(x_i \mid y)$$ can be completely described by a small number of parameters (4 parameters with 2 degrees of freedom to be exact). The entire distribution is parametrized by $$O(n)$$ parameters, which we can tractably estimate from data and make predictions.
 
 ## Describing probabilities with graphs
 
@@ -77,11 +77,11 @@ Given a probabilistic model, how do we obtain answers to relevant questions abou
 
 - *Marginal inference*: what is the probability of a given variable in our model after we sum everything else out? An example query would be to determine the probability that a random house has more than three bedrooms.
 
-$$ p(x_1) = \sum_{x_2} \sum_{x_3}  \cdots \sum_{x_n} p(x_1, x_2, ..., x_n). $$
+$$ p(x_1) = \sum_{x_2} \sum_{x_3} \cdots \sum_{x_n} p(x_1, x_2, \dotsc, x_n). $$
 
 - *Maximum a posteriori (MAP) inference* asks for the most likely assignment of variables. For example, we may try to determine the most likely spam message, solving the problem
 
-$$ \max_{x_1, \dots, x_n} p(x_1,...,x_n, y=1). $$
+$$ \max_{x_1, \dots, x_n} p(x_1,\dotsc,x_n, y=1). $$
 
 Often our queries will involve evidence (like in the MAP example above), in which case we will fix the assignment of a subset of the variables.
 
