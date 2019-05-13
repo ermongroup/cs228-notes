@@ -127,7 +127,7 @@ Notice also that on right-hand side, we are taking an expectation of a sum of fa
 
 $$ \log \tp(x) = \sum_k \log \phi(x_k) $$
 
-Of these, only factors belonging to the Markov blanket of $$x_j$$ are a function of $$x_j$$ (simply by the definition of the Markov blanket); the rest are constant with respect to $$x_j$$ and can be pushed into the constant term.
+Of these, only factors belonging to the [Markov blanket](https://en.wikipedia.org/wiki/Markov_blanket) of $$x_j$$ are a function of $$x_j$$ (simply by the definition of the Markov blanket); the rest are constant with respect to $$x_j$$ and can be pushed into the constant term.
 
 This leaves us with an expectation over a much smaller number of factors; if the Markov blanket of $$x_j$$ is small (as is often the case), we are able to analytically compute $$q(x_j)$$. For example, if the variables are discrete with $$K$$ possible values, and there are $$F$$ factors and $$N$$ variables in the Markov blanket of $$x_j$$, then computing the expectation takes $$O(K F K^N)$$ time: for each value of $$x_j$$ we sum over all $$K^N$$ assignments of the $$N$$ variables, and in each case, we sum over the $$F$$ factors.
 
