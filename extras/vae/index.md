@@ -15,7 +15,7 @@ Consider a [directed](../../representation/directed) [latent-variable](../../lea
 
 $$ p(x,z) = p(x|z)p(z) $$
 
-with observed $$x \in \mathcal{X}$$, where $$\mathcal{X}$$ can be continuous, discrete, or latent $$z \in \Re^k$$.
+with observed $$x \in \mathcal{X}$$, where $$\mathcal{X}$$ can be continuous or discrete, and latent (or hidden, or unobserved) variable $$z \in \Re^k$$.
 
 {% include marginfigure.html id="faces" url="assets/img/faces.png" description="Variational autoencoder $$p(x|z)p(z)$$ applied to a face images (modeled by $$x$$). The learned latent space $$z$$ can be used to interpolate between facial expressions." %}
 To make things concrete, you may think of $$x$$ as being an image (e.g. a human face), and $$z$$ as latent factors (not seen during training) that explain features of the face. For example, one coordinate of $$z$$ can encode whether the face is happy or sad, another one whether the face is male or female, etc.
