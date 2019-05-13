@@ -104,7 +104,7 @@ This follows from some basic algebra and calculus and takes about half a page to
 
 The above identity places the gradient inside the expectation, which we may now evaluate using Monte Carlo. We refer to this as the *score function* estimator of the gradient.
 
-Unfortunately, the score function estimator has an important shortcoming: it has a high variance. What does this mean? Suppose you are using Monte Carlo to estimate an expectation whose mean is 1. If your samples are $$0.9, 1.1, 0.96, 1.05,..$$ and are close to 1, then after a few samples, you will get a good estimate of the true expectation. If on the other hand you sample zero 99 times out of 100, and you sample 100 once, the expectation is still correct, but you will have to take a very large number of samples to figure out that the true expectation is actually one. We refer to the latter case as being high variance.
+Unfortunately, the score function estimator has an important shortcoming: it has a high variance. What does this mean? Suppose you are using Monte Carlo to estimate an expectation that is equal to 1. If your samples are $$0.9, 1.1, 0.96, 1.05,..$$ and are close to 1, then after a few samples, you will get a good estimate of the true expectation. If on the other hand you sample zero 99 times out of 100, and you sample 100 once, the expectation is still correct, but you will have to take a very large number of samples to figure out that the true expectation is actually one. We refer to the latter case as being high variance.
 
 This is the kind of problem we often run into with the score function estimator. In fact, its variance is so high, that we cannot use it to learn many models.
 
