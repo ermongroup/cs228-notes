@@ -152,7 +152,7 @@ $$ z = g_{\mu, \sigma}(\epsilon) = \mu + \epsilon \cdot \sigma, $$
 
 where $$\epsilon \sim \mathcal{N}(0,1)$$. It is easy to check that the two ways of expressing the random variable $$z$$ lead to the same distribution.
 
-The biggest advantage of this approach is that we many now write the gradient of an expectation with respect to $$q(z)$$ (for any $$f$$) as
+The biggest advantage of this approach is that we may now write the gradient of an expectation with respect to $$q(z)$$ (for any $$f$$) as
 
 $$
 \nabla_\phi \E_{z \sim q(z\mid x)}\left[ f(x,z) \right] = \nabla_\phi \E_{\epsilon \sim p(\epsilon)}\left[ f(x,g(\epsilon, x)) \right] = \E_{\epsilon \sim p(\epsilon)}\left[ \nabla_\phi f(x,g(\epsilon, x)) \right].
