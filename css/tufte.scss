@@ -26,80 +26,103 @@ nav_exclude: true
 */
 
 // global resets
-*,*:before,*:after { margin: 0; box-sizing: border-box; }
+*, *:before, *:after {
+    margin: 0;
+    box-sizing: border-box;
+}
 
 html, body { height: 100%; }
 
 /* clearfix hack after Cederholm (group class name) */
 .group:after {
-  content: "";
-  display: table;
-  clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 
 // MathJax styling
 .mathblock, .MJXc-display {
-  font-size: 1.5rem !important;
-  clear: left;
+    font-size: 1.5rem !important;
+    clear: left;
 }
 
 // variable font size
-html { font-size: 11px;
-       -webkit-font-smoothing: antialiased;
-       -moz-osx-font-smoothing: grayscale; }
-@media screen and (min-width: 800px){ html{ font-size: 12px;} }
-@media screen and (min-width: 900px){ html{ font-size: 13px;} }
-@media screen and (min-width: 1000px){ html{ font-size: 14px;} }
+html {
+    font-size: 11px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+@media screen and (min-width: 800px){ html{ font-size: 12px; } }
+@media screen and (min-width: 900px){ html{ font-size: 13px; } }
+@media screen and (min-width: 1000px){ html{ font-size: 14px; } }
 @media screen and (min-width: 1100px){ html{ font-size: 15px; } }
 
-body { width: 100%;
-       padding-left: 12.5%;
-       max-width: calc(12.5% + 1400px); // max-width of content box = 1400px
-       margin: 0 auto;
-       font-family: $body-font;
-       background-color: $bg-color;
-       color: $text-color;
-       counter-reset: sidenote-counter; }
+body {
+    width: 100%;
+    padding-left: 12.5%;
+    max-width: calc(12.5% + 1400px); // max-width of content box = 1400px
+    margin: 0 auto;
+    font-family: $body-font;
+    background-color: $bg-color;
+    color: $text-color;
+    counter-reset: sidenote-counter;
+}
 
 // changed
-h1 { font-weight: 400;
-     margin-top: 1.568rem;
-     margin-bottom: 1.568rem;
-     font-size: 2.5rem;
-     line-height: 0.784; }
+h1 {
+    font-weight: 400;
+    margin-top: 1.568rem;
+    margin-bottom: 1.568rem;
+    font-size: 2.5rem;
+    line-height: 0.784;
+}
 
-h2 { font-style: italic;
-     font-weight: 400;
-     margin-top: 4rem; /* 2.1rem */
-     margin-bottom: 1.4rem;
-     font-size: 2.2rem;
-     line-height: 1; }
+h2 {
+    font-style: italic;
+    font-weight: 400;
+    margin-top: 4rem; /* 2.1rem */
+    margin-bottom: 1.4rem;
+    font-size: 2.2rem;
+    line-height: 1;
+}
 
-h3 { font-style: italic;
-     font-weight: 400;
-     font-size: 1.7rem;
-     margin-top: 2rem;
-     margin-bottom: 1.4rem;
-     line-height: 1; }
+h3 {
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.7rem;
+    margin-top: 2rem;
+    margin-bottom: 1.4rem;
+    line-height: 1;
+}
 
-p.subtitle { font-style: italic;
-             margin-top: 1rem;
-             margin-bottom: 1rem;
-             font-size: 1.8rem;
-             display: block;
-             line-height: 1; }
+p.subtitle {
+    font-style: italic;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    display: block;
+    line-height: 1;
+}
 
-article { width: 55%;
-          padding: 5rem 0; }
+article {
+    width: 55%;
+    padding: 5rem 0;
+}
 
-/* --- Main Body Text --- */
+/* ==============================
+ *         Main Body Text
+ * ============================== */
 
-p, ol, ul { font-size: 1.4rem;
-            line-height: 2rem;
-            margin: 1.4rem 0; }
+p, ol, ul {
+    font-size: 1.4rem;
+    line-height: 2rem;
+    margin: 1.4rem 0;
+}
 
-p { padding-right: 0;
-    vertical-align: baseline; }
+p {
+    padding-right: 0;
+    vertical-align: baseline;
+}
 
 li { margin-bottom: 0.5em; }
 
@@ -109,15 +132,19 @@ blockquote * { font-size: 1.1rem; }
 blockquote p { line-height: 1.75rem; }
 blockquote footer { text-align: right; }
 
-/* --- End Main Body Text --- */
-
-/* --- Figures and Margins --- */
+/* ==============================
+ *      Figures and Margins
+ * ============================== */
 
 // the caption of a figure.maincolumn is never hidden
 figure.maincolumn { margin-bottom: 3em; }
 figure.maincolumn > figcaption { display: block !important; }
 
-figure.fullwidth figcaption { float: left; margin-right: 0%; margin-left: 36%; }
+figure.fullwidth figcaption {
+    float: left;
+    margin-right: 0%;
+    margin-left: 36%;
+}
 
 img { max-width: 100%; }
 
@@ -145,236 +172,116 @@ img { max-width: 100%; }
 }
 
 .sidenote-number { counter-increment: sidenote-counter; }
-.sidenote-number:after, .sidenote:before { font-family: et-book-roman-old-style;
-                                           color: $contrast-color; // added
-                                           position: relative;
-                                           vertical-align: baseline; }
-.sidenote-number:after { content: counter(sidenote-counter);
-                         font-size: 1rem;
-                         top: -0.5rem; // use top instead of vertical-align to avoid affecting line-height
-                         left: 0.1rem; }
-.sidenote:before { content: counter(sidenote-counter) ".\000a0"; } // unicode for a non-breaking space
+.sidenote-number:after, .sidenote:before {
+    font-family: et-book-roman-old-style;
+    color: $contrast-color; // added
+    position: relative;
+    vertical-align: baseline;
+}
+.sidenote-number:after {
+    content: counter(sidenote-counter);
+    font-size: 1rem;
+    top: -0.5rem; // use top instead of vertical-align to avoid affecting line-height
+    left: 0.1rem;
+}
+.sidenote:before {
+    // unicode for a non-breaking space
+    content: counter(sidenote-counter) ".\000a0";
+}
 
 // account for indentation of list items and blockquotes
-blockquote .sidenote, blockquote .marginnote { margin-right: -82.35%; } // =70%/85%
-li .sidenote, li .marginnote { margin-right: -63.29%; } // not quite right yet
+blockquote .sidenote, blockquote .marginnote {
+    margin-right: -82.35%;  // =70%/85%
+}
+li .sidenote, li .marginnote {
+    margin-right: -63.29%;  // not quite right yet
+}
 
 // margin toggle
-input.margin-toggle { display: none; }
-label.margin-toggle:not(.sidenote-number) { display: none; } // hide margin toggle if screen is wide enough
+// - hide if screen is wide enough
+input.margin-toggle,
+label.margin-toggle:not(.sidenote-number) {
+    display: none;
+}
 
-/* --- End of Figures and Margins --- */
-
-/* --- Links --- */
+/* ==============================
+ *             Links
+ * ============================== */
 
 // new link behavior
-a { color: $contrast-color;
-    text-decoration: none; }
+a {
+    color: $contrast-color;
+    text-decoration: none;
+}
 
 /* Links: replicate underline that clears descenders */
 p > a:link, p > a:visited { color: inherit; }
 
-p > a:link { background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor);
-             background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
-             -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-             -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-             background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-             background-repeat: no-repeat, no-repeat, repeat-x;
-             text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
-             background-position: 0% 93%, 100% 93%, 0% 93%; }
+p > a:link {
+    background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor);
+    background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
+    -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-repeat: no-repeat, no-repeat, repeat-x;
+    text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
+    background-position: 0% 93%, 100% 93%, 0% 93%;
+}
 
-@media screen and (-webkit-min-device-pixel-ratio: 0) { p > a:link { background-position-y: 87%, 87%, 87%; } }
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    p > a:link {
+        background-position-y: 87%, 87%, 87%;
+    }
+}
 
 p > a:link::selection,
-p > a:link::-moz-selection { text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
-                             background: #b4d5fe; }
+p > a:link::-moz-selection {
+    text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
+    background: #b4d5fe;
+}
 
-/* --- End of Links --- */
-
-/* --- Code --- */
+/* ==============================
+ *              Code
+ * ============================== */
 
 // Markdown code blocks (```, ~~~, or indented blocks) are always <pre><code></code></pre>
 // Markdown code spans (`, ``) are always <p><code></code></p>
 
-pre, code { font-family: $code-font;
-            font-size: 1rem;
-            line-height: 1.42;
-            margin-top: 1.42rem;
-            -webkit-text-size-adjust: 100%; /* Prevent adjustments of font size after orientation changes in iOS. See https://github.com/edwardtufte/tufte-css/issues/81#issuecomment-261953409 */ }
+pre, code {
+    font-family: $code-font;
+    font-size: 1rem;
+    line-height: 1.42;
+    margin-top: 1.42rem;
+    -webkit-text-size-adjust: 100%; /* Prevent adjustments of font size after orientation changes in iOS. See https://github.com/edwardtufte/tufte-css/issues/81#issuecomment-261953409 */ }
 pre { overflow-x: auto; }
 
-/* --- End of Code --- */
+/* ==============================
+ *         Miscellaneous
+ * ============================== */
 
-/* --- Miscellaneous --- */
-
-.sans { font-family: $sans-font;
-        letter-spacing: .03em; }
+.sans {
+    font-family: $sans-font;
+    letter-spacing: .03em;
+}
 
 .fullwidth { max-width: 90%; }
 
-.full-width { .sidenote, .sidenote-number, .marginnote { display: none; } }
-
-span.newthought { font-variant: small-caps;
-                  font-size: 1.2em;
-                  letter-spacing: 0.05rem; } // added
-
-/* --- End of Miscellaneous --- */
-
-/* --- Tables --- */
-// Use booktabs style as default for all tables, including Markdown tables
-table, table.booktabs { width: auto;
-                        margin: 0 auto;
-                        border-spacing: 0px;
-                        border-top: 2px solid $border-color;
-                        border-bottom: 2px solid $border-color; }
-
-th, .booktabs th { border-bottom: 1px solid $border-color;
-                   padding: 0.65ex 0.5em 0.4ex 0.5em;
-                   font-weight: normal;
-                   text-align: center; }
-
-th, td { font-size: 1.2rem;
-         line-height: 1.71428571; }
-
-th, .booktabs th.cmid { border-bottom: 1px solid lighten($border-color, 25%); }
-
-.booktabs th.nocmid { border-bottom: none; }
-
-tr:first-child td, .booktabs tbody tr:first-child td { padding-top: 0.65ex; } // add space between thead row and tbody
-
-td, .booktabs td { padding-left: 0.5em;
-                   padding-right: 0.5em;
-                   text-align: left; }
-
-caption, .booktabs caption { font-size: 90%;
-                             text-align: left;
-                             width: auto;
-                             margin-left: auto;
-                             margin-right: auto;
-                             margin-top: 1ex;
-                             caption-side: top; }
-
-.booktabs tbody tr td.l { text-align: left !important; }
-.booktabs tbody tr td.c { text-align: center !important; }
-.booktabs tbody tr td.r { text-align: right !important; }
-
-.table-caption { float: right;
-                 clear: right;
-                 margin-right: -60%;
-                 width: 50%;
-                 margin-top: 0;
-                 margin-bottom: 0;
-                 font-size: 1.0rem;
-                 line-height: 1.96; }
-
-/* --- End of Tables --- */
-
-/* --- Small Screens --- */
-
-@media (max-width: 760px) {
-    article { width: 90%; }
-    figure { max-width: 90%; }
-    figcaption, figure.fullwidth figcaption { margin-right: 0%;
-                                              max-width: none; }
-    blockquote p, blockquote footer { padding-right: 10%; }
-}
-
-@media (max-width: 760px) {
-    label.margin-toggle:not(.sidenote-number) { display: inline; color: $contrast-color; }
-    blockquote .sidenote, blockquote .marginnote,
-    li .sidenote, li .marginnote,
-    .sidenote, .marginnote {
-        // treat as-if inline
-        width: 100%;
-        max-width: 100%;
-
+.full-width {
+    .sidenote, .sidenote-number, .marginnote {
         display: none;
-        float: left;
-        padding: 0 5%;
-        margin: 1rem 0;
-        vertical-align: baseline; }
-    .margin-toggle:checked + .sidenote,
-    .margin-toggle:checked + .marginnote { display: block; }
-    label { cursor: pointer; }
-    .table-caption { display: block;
-                     float: right;
-                     clear: both;
-                     width: 98%;
-                     margin-top: 1rem;
-                     margin-bottom: 0.5rem;
-                     margin-left: 1%;
-                     margin-right: 1%;
-                     vertical-align: baseline;
-                     position: relative; }
-    div.table-wrapper, table, table.booktabs { width: 85%; }
-}
-/* --- End of Small Screens --- */
-
-/* -- Jekyll specific styling --*/
-//helper classes
-
-.contrast { color: $contrast-color;}
-.smaller { font-size: 80%;}
-//Nav and Footer styling area
-
-header > nav.group, body footer {
-  width: 95%;
-  padding-top: 2rem;
-}
-
-nav.group a.active:before{ content:"\0003c\000a0";} // escaped unicode for the carats and then a space on active menu links
-nav.group a.active:after{ content:"\000a0\0003e" ;}
-
-header > nav a {
-  font-size: 1.2rem;
-  font-family: $sans-font;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: $contrast-color;
-  padding-top: 1.5rem;
-  display: inline-block;
-  float: left;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-right: 2rem;
-  vertical-align: baseline;
-}
-
-ul.footer-links, .credits{
-  list-style: none;
-  text-align: center;
-  margin: 0 auto;
-}
-ul.footer-links li{
-  display: inline;
-  padding: 0.5rem 0.25rem;
-}
-.credits{
-  padding: 1rem 0rem;
-}
-
-//change font color for credit links in footer
-
-.credits{
-  font-family: $sans-font;
-    & a{
-      color: $contrast-color;
     }
 }
 
-// End of Nav and Footer styling area
+span.newthought {
+    font-variant: small-caps;
+    font-size: 1.2em;
+    letter-spacing: 0.05rem;
+} // added
 
-//Full width page styling stuff
+// helper classes
+.contrast { color: $contrast-color; }
 
-body.full-width { width: 90%;
-       margin-left: auto;
-       margin-right: auto;
-       padding: 0% 5%;
-
-}
-.full-width article p{
-  width: 90%;
-}
+.smaller { font-size: 80%; }
 
 hr.slender {
     border: 0;
@@ -386,35 +293,242 @@ hr.slender {
     background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
     background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
 }
-// End of front listing page stuff
 
+/* ==============================
+ *            Tables
+ * ============================== */
 
-// Printing ands screen media queries
+// Use booktabs style as default for all tables, including Markdown tables
+table, table.booktabs {
+    width: auto;
+    margin: 0 auto;
+    border-spacing: 0px;
+    border-top: 2px solid $border-color;
+    border-bottom: 2px solid $border-color;
+}
+
+th, .booktabs th {
+    border-bottom: 1px solid $border-color;
+    padding: 0.65ex 0.5em 0.4ex 0.5em;
+    font-weight: normal;
+    text-align: center;
+}
+
+th, td {
+    font-size: 1.2rem;
+    line-height: 1.71428571;
+}
+
+th, .booktabs th.cmid {
+    border-bottom: 1px solid lighten($border-color, 25%);
+}
+
+.booktabs th.nocmid {
+    border-bottom: none;
+}
+
+// add space between thead row and tbody
+tr:first-child td, .booktabs tbody tr:first-child td {
+    padding-top: 0.65ex;
+}
+
+td, .booktabs td {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    text-align: left;
+}
+
+caption, .booktabs caption {
+    font-size: 90%;
+    text-align: left;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1ex;
+    caption-side: top;
+}
+
+.booktabs tbody tr td.l { text-align: left !important; }
+.booktabs tbody tr td.c { text-align: center !important; }
+.booktabs tbody tr td.r { text-align: right !important; }
+
+.table-caption {
+    float: right;
+    clear: right;
+    margin-right: -60%;
+    width: 50%;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.0rem;
+    line-height: 1.96;
+}
+
+/* ==============================
+ *         Small Screens
+ * ============================== */
+
+@media (max-width: 760px) {
+    article {
+        width: 90%;
+    }
+
+    figure {
+        max-width: 90%;
+    }
+
+    figcaption, figure.fullwidth figcaption {
+        margin-right: 0%;
+        max-width: none;
+    }
+
+    blockquote p, blockquote footer {
+        padding-right: 10%;
+    }
+
+    label.margin-toggle:not(.sidenote-number) {
+        display: inline;
+        color: $contrast-color;
+    }
+
+    blockquote .sidenote,
+    blockquote .marginnote,
+    li .sidenote,
+    li .marginnote,
+    .sidenote,
+    .marginnote {
+        // treat as-if inline
+        width: 100%;
+        max-width: 100%;
+
+        display: none;
+        float: left;
+        padding: 0 5%;
+        margin: 1rem 0;
+        vertical-align: baseline;
+    }
+
+    .margin-toggle:checked + .sidenote,
+    .margin-toggle:checked + .marginnote {
+        display: block;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    .table-caption {
+        display: block;
+        float: right;
+        clear: both;
+        width: 98%;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        margin-left: 1%;
+        margin-right: 1%;
+        vertical-align: baseline;
+        position: relative;
+    }
+
+    div.table-wrapper,
+    table,
+    table.booktabs {
+        width: 85%;
+    }
+}
+
+/* ==============================
+ *     Nav and Footer Styling
+ * ============================== */
+
+header > nav.group, body footer {
+    width: 95%;
+    padding-top: 2rem;
+}
+
+// escaped unicode for the carats and then a space on active menu links
+nav.group a.active:before{
+    content:"\0003c\000a0";
+}
+nav.group a.active:after{
+    content:"\000a0\0003e";
+}
+
+header > nav a {
+    font-size: 1.2rem;
+    font-family: $sans-font;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: $contrast-color;
+    padding-top: 1.5rem;
+    display: inline-block;
+    float: left;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 2rem;
+    vertical-align: baseline;
+}
+
+ul.footer-links, .credits {
+    list-style: none;
+    text-align: center;
+    margin: 0 auto;
+}
+ul.footer-links li {
+    display: inline;
+    padding: 0.5rem 0.25rem;
+}
+.credits {
+    padding: 1rem 0rem;
+}
+
+// change font color for credit links in footer
+.credits{
+    font-family: $sans-font;
+    & a {
+        color: $contrast-color;
+    }
+}
+
+/* ==============================
+ * Full-width page styling
+ * ============================== */
+
+body.full-width {
+    width: 90%;
+    padding: 0 5%;
+}
+
+.full-width article p {
+    width: 90%;
+}
+
+/* ==============================
+ * @media print / screen
+ * ============================== */
 
 // do not display a print-footer for screen display
 @media screen {
-  .print-footer{ display: none; }
+    .print-footer{ display: none; }
 }
 
-//printing stuff
 @media print {
-    *,
-    *:before,
-    *:after {
+    *, *:before, *:after {
         background: transparent !important;
-        color: #000 !important; // Black prints faster:http://www.sanbeiji.com/archives/953
+        color: #000 !important;  // Black prints faster
         box-shadow: none !important;
         text-shadow: none !important;
     }
+
     @page {
         margin: 0.75in 0.5in 0.75in 0.5in;
-        orphans:4; widows:2;
+        orphans: 4;
+        widows: 2;
     }
 
     body {
         font-size: 12pt;
         padding-left: 5%;
-        max-width: calc(5% + 1400px); // max-width of content box = 1400px
+        max-width: calc(5% + 1400px);  // max-width of content box = 1400px
     }
 
     article {
@@ -430,7 +544,7 @@ hr.slender {
         max-width: 365.75px;
     }
 
-    html body span.print-footer{
+    html body span.print-footer {
       font-family: $sans-font;
       font-size: 9pt;
       margin-top: 22.4pt;
@@ -446,19 +560,23 @@ hr.slender {
     img {
         page-break-inside: avoid;
     }
+
     article h2, article h2 h3, article h3, article h3 h4, article h4, article h4 h5 {
         page-break-after: avoid;
     }
 
-    body header , body footer {
-      display:none;
+    body header, body footer {
+        display: none;
     }
 }
 
 @media print and (max-width: 760px) {
-    blockquote .sidenote, blockquote .marginnote,
-    li .sidenote, li .marginnote,
-    .sidenote, .marginnote {
+    blockquote .sidenote,
+    blockquote .marginnote,
+    li .sidenote,
+    li .marginnote,
+    .sidenote,
+    .marginnote {
         // treat as-if inline
         width: 100%;
         max-width: 100%;
