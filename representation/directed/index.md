@@ -63,7 +63,7 @@ It is not hard to see that a probability represented by a Bayesian network will 
 
 To summarize, Bayesian networks represent probability distributions that can be formed via products of smaller, local conditional probability distributions (one for each variable). By expressing a probability in this form, we are introducing into our model assumptions that certain variables are independent.
 
-This raises the question: which independence assumptions are we exactly making by using a model Bayesian network with a given structure described by $$G$$? This question is important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
+This raises the question: which independence assumptions are we exactly making by using a Bayesian network model with a given structure described by $$G$$? This question is important for two reasons: we should know precisely what model assumptions we are making (and whether they are correct); also, this information will help us design more efficient inference algorithms later on.
 
 Let us use the notation $$I(p)$$ to denote the set of all independencies that hold for a joint distribution $$p$$. For example, if $$p(x,y) = p(x) p(y)$$, then we say that $$x \perp y \in I(p)$$.
 
@@ -81,7 +81,7 @@ The latter case requires additional explanation. Suppose that $$C$$ is a Boolean
 
 These structures clearly describe the independencies encoded by a three-variable Bayesian net. We can extend them to general networks by applying them recursively over any larger graph. This leads to a notion called $$d$$-separation (where $$d$$ stands for directed).
 
-We say that $$Q$$, $$W$$ are $$d$$-separated when variables $$O$$ are observed if they are not connected by an *active path*. An undirected path in the Bayesian Network structure $$G$$ is called *active* given observed variables $$O$$ if for every consecutive triple of variables $$X,Y,Z$$ on the path, one of the following holds:
+We say that $$Q$$, $$W$$ are $$d$$-separated when the set of variables $$O$$ are observed if they are not connected by an *active path*. An undirected path in the Bayesian Network structure $$G$$ is called *active* given observed variables $$O$$ if for every consecutive triple of variables $$X,Y,Z$$ on the path, one of the following holds:
 
 - $$X \leftarrow Y \leftarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$
 - $$X \rightarrow Y \rightarrow Z$$, and $$Y$$ is unobserved $$Y \not\in O$$

@@ -15,7 +15,7 @@ Consider a [directed](../../representation/directed) [latent-variable](../../lea
 
 $$ p(x,z) = p(x|z)p(z) $$
 
-with observed $$x \in \mathcal{X}$$, where $$\mathcal{X}$$ can be continuous, discrete, or latent $$z \in \Re^k$$.
+with observed $$x \in \mathcal{X}$$, where $$\mathcal{X}$$ can be continuous or discrete, and latent $$z \in \Re^k$$.
 
 {% include marginfigure.html id="faces" url="assets/img/faces.png" description="Variational autoencoder $$p(x|z)p(z)$$ applied to a face images (modeled by $$x$$). The learned latent space $$z$$ can be used to interpolate between facial expressions." %}
 To make things concrete, you may think of $$x$$ as being an image (e.g. a human face), and $$z$$ as latent factors (not seen during training) that explain features of the face. For example, one coordinate of $$z$$ can encode whether the face is happy or sad, another one whether the face is male or female, etc.
@@ -97,19 +97,18 @@ However, taking the gradient with respect to $$q$$ is more difficult. Notice tha
 One way to estimate this gradient is via the so-called score function estimator:
 
 $$
-\nabla_{\phi} \E_{q_\phi(z)} \left[ \log p_\theta(x,z) - \log q_\phi(z) \right] = \E_{q_\phi(z)} \left[ \left(\log p_\theta(x,z) - \log q_\phi(z) \right) \nabla_{\phi} \log q_\phi(z) \right]
+\nabla_\phi \E_{q_\phi(z)} \left[ \log p_\theta(x,z) - \log q_\phi(z) \right] = \E_{q_\phi(z)} \left[ \left(\log p_\theta(x,z) - \log q_\phi(z) \right) \nabla_\phi \log q_\phi(z) \right]
 $$
 
 This follows from some basic algebra and calculus and takes about half a page to derive. We leave it as an exercise to the reader, but for those interested, the full derivation may be found in Appendix B of this [paper](https://www.cs.toronto.edu/~amnih/papers/nvil.pdf).
 
 The above identity places the gradient inside the expectation, which we may now evaluate using Monte Carlo. We refer to this as the *score function* estimator of the gradient.
 
-Unfortunately, the score function estimator has an important shortcoming: it has a high variance. What does this mean? Suppose you are using Monte Carlo to estimate an expectation whose mean is 1. If your samples are $$0.9, 1.1, 0.96, 1.05,..$$ and are close to 1, then after a few samples, you will get a good estimate of the true expectation. If on the other hand you sample zero 99 times out of 100, and you sample 100 once, the expectation is still correct, but you will have to take a very large number of samples to figure out that the true expectation is actually one. We refer to the latter case as being high variance.
+Unfortunately, the score function estimator has an important shortcoming: it has a high variance. What does this mean? Suppose you are using Monte Carlo to estimate some quantity with expected value equal to 1. If your samples are $$0.9, 1.1, 0.96, 1.05, \dotsc$$ and are close to 1, then after a few samples, you will get a good estimate of the true expectation. If on the other hand you sample zero 99 times out of 100, and you sample 100 once, the expectation is still correct, but you will have to take a very large number of samples to figure out that the true expectation is actually one. We refer to the latter case as being high variance.
 
 This is the kind of problem we often run into with the score function estimator. In fact, its variance is so high, that we cannot use it to learn many models.
 
-The key contribution of the VAE paper is to propose an alternative estimator that is much better behaved.
-This is done in two steps: we first reformulate the ELBO so that parts of it can be computed in closed form (without Monte Carlo), and then we use an alternative gradient estimator, based on the so-called reparametrization trick.
+The key contribution of the VAE paper is to propose an alternative estimator that is much better behaved. This is done in two steps: we first reformulate the ELBO so that parts of it can be computed in closed form (without Monte Carlo), and then we use an alternative gradient estimator, based on the so-called reparametrization trick.
 
 ### The SGVB estimator
 
@@ -119,7 +118,7 @@ $$
 \log p(x) \geq \E_{q_\phi(z|x)} \left[ \log p_\theta(x|z) \right] - KL(q_\phi(z|x) || p(z))
 $$
 
-It is straightforward to verify that this is the same using ELBO using some algebra.
+It is straightforward to verify that this is the same as ELBO using some algebra.
 
 This reparametrization has a very interesting interpretation. First, think of $$x$$ as an observed data point. The right-hand side consists of two terms; both involve taking a sample $$z \sim q(z\mid x)$$, which we can interpret as a code describing $$x$$. We are also going to call $$q$$ the *encoder*.
 
