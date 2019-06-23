@@ -90,7 +90,6 @@ p.subtitle { font-style: italic;
              line-height: 1; }
 
 article { width: 55%;
-          position: relative; // create positioning anchor
           padding: 5rem 0; }
 
 /* --- Main Body Text --- */
@@ -175,8 +174,8 @@ a { color: $contrast-color;
 /* Links: replicate underline that clears descenders */
 p > a:link, p > a:visited { color: inherit; }
 
-p > a:link { background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#333, #333);
-             background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(#333, #333);
+p > a:link { background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor);
+             background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
              -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
              -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
              background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
@@ -186,9 +185,7 @@ p > a:link { background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-line
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) { p > a:link { background-position-y: 87%, 87%, 87%; } }
 
-p > a:link::selection { text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
-                        background: #b4d5fe; }
-
+p > a:link::selection,
 p > a:link::-moz-selection { text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
                              background: #b4d5fe; }
 
@@ -202,7 +199,8 @@ p > a:link::-moz-selection { text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0
 pre, code { font-family: $code-font;
             font-size: 1rem;
             line-height: 1.42;
-            margin-top: 1.42rem; }
+            margin-top: 1.42rem;
+            -webkit-text-size-adjust: 100%; /* Prevent adjustments of font size after orientation changes in iOS. See https://github.com/edwardtufte/tufte-css/issues/81#issuecomment-261953409 */ }
 pre { overflow-x: auto; }
 
 /* --- End of Code --- */
@@ -273,7 +271,7 @@ caption, .booktabs caption { font-size: 90%;
 
 /* --- Small Screens --- */
 
-@media screen and (max-width: 760px) {
+@media (max-width: 760px) {
     article { width: 90%; }
     figure { max-width: 90%; }
     figcaption, figure.fullwidth figcaption { margin-right: 0%;
@@ -413,7 +411,24 @@ hr.slender {
         orphans:4; widows:2;
     }
 
-    body { font-size:  12pt; }
+    body {
+        font-size: 12pt;
+        padding-left: 5%;
+        max-width: calc(5% + 1400px); // max-width of content box = 1400px
+    }
+
+    article {
+        padding: 0;
+    }
+
+    /* this only applies when @media width > 760px */
+    .sidenote, .marginnote {
+        // goal: width = 50% of <p> (= 27.5% of 95% <body>)
+        // - vw for constant width regardless of container
+        // - 365.75px = 26.125% of 1400px (max-width of <body>)
+        width: 26.125vw;
+        max-width: 365.75px;
+    }
 
     html body span.print-footer{
       font-family: $sans-font;
@@ -431,22 +446,22 @@ hr.slender {
     img {
         page-break-inside: avoid;
     }
-
-    img {
-        max-width: 100% !important;
-    }
-
-    p,
-    h2,
-    h3 {
-        orphans: 4;
-        widows: 4;
-    }
     article h2, article h2 h3, article h3, article h3 h4, article h4, article h4 h5 {
         page-break-after: avoid;
     }
 
     body header , body footer {
       display:none;
+    }
+}
+
+@media print and (max-width: 760px) {
+    blockquote .sidenote, blockquote .marginnote,
+    li .sidenote, li .marginnote,
+    .sidenote, .marginnote {
+        // treat as-if inline
+        width: 100%;
+        max-width: 100%;
+        display: block;
     }
 }
