@@ -31,7 +31,7 @@ Consider a distribution $$p(\bfx)$$ over images, where $$\bfx$$ is an image repr
 <a id="image-generation"></a>
 ### Image Generation
 
-[Radford et al.](https://arxiv.org/abs/1710.10196) trained a probabilistic model $$ p(\bfx) $$ that assigns high probability to images that look like bedrooms. To do so, they trained their model on a dataset of bedroom images, a sample of which is shown below:
+[Radford et al.](https://arxiv.org/abs/1511.06434) trained a probabilistic model $$ p(\bfx) $$ that assigns high probability to images that look like bedrooms. To do so, they trained their model on a dataset of bedroom images, a sample of which is shown below:
 
 **Training Data**<br />
 ![bedroom1](bedroominpainting1.png)
