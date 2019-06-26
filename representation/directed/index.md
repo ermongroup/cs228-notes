@@ -36,7 +36,7 @@ When the variables are discrete (which will be often be the case in the problem 
 
 ### Graphical representation.
 
-Distributions of this form can be naturally expressed as *directed acyclic graphs*, in which vertices correspond to variables $$x_i$$ and edges indicate dependency relationships. In particular we set the parents of each node to $$x_i$$ to its ancestors $$x_{A_i}$$.
+Distributions of this form can be naturally expressed as *directed acyclic graphs*, in which vertices correspond to variables $$x_i$$ and edges indicate dependency relationships. In particular we set the parents of each node $$x_i$$ to its ancestors $$x_{A_i}$$.
 
 As an example, consider a model of a student's grade $$g$$ on an exam. This grade depends on the exam's difficulty $$d$$ and the student's intelligence $$i$$; it also affects the quality $$l$$ of the reference letter from the professor who taught the course. The student's intelligence $$i$$ affects his SAT score $$s$$ in addition to $$g$$. Each variable is binary, except for $$g$$, which takes 3 possible values.{% include marginfigure.html id="nb1" url="assets/img/grade-model.png" description="Bayes net model describing the performance of a student on an exam. The distribution can be represented a product of conditional probability distributions specified by tables. The form of these distributions is described by edges in the graph." %} The joint probability distribution over the 5 variables naturally factorizes as follows:
 
