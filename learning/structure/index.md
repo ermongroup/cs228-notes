@@ -58,7 +58,7 @@ Remember that from our empirical distribution $$\hat p(x,u) = \frac{Count(x,u)}{
 
 {% include maincolumn_img.html src='assets/img/max-spanning-tree.png' %}
 
-3) Pick any node, and assign directions rading outward from node (arrows go away from it).
+3) Pick any node to be the *root variable*, and assign directions radiating outward from this node (arrows go away from it). This step transforms the resulting undirected tree to a directed one.
 
 {% include maincolumn_img.html src='assets/img/chow-liu-tree.png' %}
 

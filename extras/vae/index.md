@@ -54,7 +54,7 @@ Another approach would be to use [sampling-based methods](../../inference/sampli
 
 We are now going to learn about Auto-encoding variational Bayes (AEVB), an algorithm that can efficiently solve our three inference and learning tasks; the variational auto-encoder will be one instantiation of this algorithm.
 
-AEVB is based on ideas from [variational inference](../../inference/variational/). Recall that in variational inference, we are interested in maximizing the [evidence lower bound](../../inference/variational/) (ELBO)
+AEVB is based on ideas from [variational inference](../../inference/variational/). Recall that in variational inference, we are interested in maximizing the [evidence lower bound](../../inference/variational/#the-variational-lower-bound) (ELBO)
 
 $$
 \mathcal{L}(p_\theta,q_\phi) = \E_{q_\phi(z|x)} \left[ \log p_\theta(x,z) - \log q_\phi(z|x) \right]
@@ -154,10 +154,10 @@ where $$\epsilon \sim \mathcal{N}(0,1)$$. It is easy to check that the two ways 
 The biggest advantage of this approach is that we may now write the gradient of an expectation with respect to $$q(z)$$ (for any $$f$$) as
 
 $$
-\nabla_\phi \E_{z \sim q(z\mid x)}\left[ f(x,z) \right] = \nabla_\phi \E_{\epsilon \sim p(\epsilon)}\left[ f(x,g(\epsilon, x)) \right] = \E_{\epsilon \sim p(\epsilon)}\left[ \nabla_\phi f(x,g(\epsilon, x)) \right].
+\nabla_\phi \E_{z \sim q_\phi(z\mid x)}\left[ f(x,z) \right] = \nabla_\phi \E_{\epsilon \sim p(\epsilon)}\left[ f(x, g_\phi(\epsilon, x)) \right] = \E_{\epsilon \sim p(\epsilon)}\left[ \nabla_\phi f(x, g_\phi(\epsilon, x)) \right].
 $$
 
-The gradient is now inside the expectation and we may use Monte Carlo to get an estimate of the right-hand term. This approach will have a much lower variance{% include sidenote.html id="note-reparam" note="For more details as to why, have a look at the appendix of the paper by [Rezende et al.](https://arxiv.org/pdf/1401.4082.pdf)" %} than the score function estimator, and will enable us to learn models that we otherwise couldn't learn.
+The gradient is now inside the expectation, so we may take Monte Carlo samples to estimate the right-hand term. This approach has much lower variance{% include sidenote.html id="note-reparam" note="For more details as to why, have a look at the appendix of the paper by [Rezende et al.](https://arxiv.org/pdf/1401.4082.pdf)" %} than the score function estimator, and will enable us to learn models that we otherwise couldn't learn.
 
 ### Choosing $$q$$ and $$p$$
 

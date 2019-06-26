@@ -36,7 +36,7 @@ $$
 KL(p^*\|p) = \sum_x p^*(x) \log \frac{p^*(x)}{p(x)} = -H(p^*) - \E_{x \sim p^*} [ \log p(x) ].
 $$
 
-The first term does not depend on p; hence minimizing KL divergence is equivalent to maximizing the expected log-likelihood
+The first term does not depend on $$p$$; hence minimizing KL divergence is equivalent to maximizing the expected log-likelihood
 
 $$ \E_{x \sim p^*} [ \log p(x) ]. $$
 
