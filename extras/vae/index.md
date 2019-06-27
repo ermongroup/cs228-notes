@@ -3,6 +3,10 @@ layout: post
 title: The variational auto-encoder
 ---
 
+$$
+\DeclareMathOperator{\diag}{diag}
+$$
+
 In this chapter, we are going to use various ideas that we have learned in the class in order to present a very influential recent probabilistic model called the *variational autoencoder*.
 
 Variational autoencoders (VAEs) are a deep learning technique for learning latent representations. They have also been used to [draw images](https://arxiv.org/pdf/1502.04623.pdf), achieve state-of-the-art results in [semi-supervised learning](https://arxiv.org/pdf/1602.05473.pdf), as well as [interpolate between sentences](https://arxiv.org/abs/1511.06349).
@@ -167,9 +171,9 @@ For these reasons, we are going to parametrize $$q$$ and $$p$$ by *neural networ
 
 But what does it mean to parametrize a distribution with a neural network? Let's assume again that $$q(z\mid x)$$ and $$p(x\mid z)$$ are Normal distributions; we may write them as
 
-$$ q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \vec \sigma(x) \odot I) $$
+$$ q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \diag(\vec\sigma(x))^2) $$
 
-where $$\vec\mu(x), \vec \sigma(x)$$ are deterministic vector-valued functions of $$x$$ parametrized by an arbitrary complex neural network.
+where $$\vec\mu(x), \vec\sigma(x)$$ are deterministic vector-valued functions of $$x$$ parametrized by an arbitrary complex neural network.
 
 More generally, the same technique can be applied to any exponential family distribution by parameterizing the sufficient statistics by a function of $$x$$.
 
@@ -183,14 +187,14 @@ A variational auto-encoder uses the AEVB algorithm to learn a specific model $$p
 
 $$
 \begin{align*}
-p(x\mid z) & = \mathcal{N}(x; \vec\mu(z), \vec \sigma(z) \odot I) \\
+p(x\mid z) & = \mathcal{N}(x; \vec\mu(z), \diag(\vec\sigma(x))^2) \\
 p(z) & = \mathcal{N}(z; 0, I),
 \end{align*}
 $$
 
-where $$\vec\mu(z), \vec \sigma(z)$$ are parametrized by a neural network (typically, two dense hidden layers of 500 units each). The model $$q$$ is similarly parametrized as
+where $$\vec\mu(z), \vec\sigma(z)$$ are parametrized by a neural network (typically, two dense hidden layers of 500 units each). The model $$q$$ is similarly parametrized as
 
-$$ q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \vec \sigma(x) \odot I). $$
+$$ q(z\mid x) = \mathcal{N}(z; \vec\mu(x), \diag(\vec\sigma(x))^2). $$
 
 This choice of $$p$$ and $$q$$ allows us to further simplify the auto-encoding ELBO. In particular, we can use a closed form expression to compute the regularization term, and we only use Monte-Carlo estimates for the reconstruction term. These expressions are given in the paper.
 

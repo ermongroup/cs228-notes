@@ -52,7 +52,7 @@ where the $$\phi_k$$ are the factors and $$Z(\theta)$$ is the normalization cons
 
 Given this formulation, optimizing $$KL(q\|p)$$ directly is not possible because of the potentially intractable normalization constant $$Z(\theta)$$. In fact, even evaluating $$KL(q\|p)$$ is not possible, because we need to evaluate $$p$$.
 
-Instead, we will work with the following objective, which has the same form as the KL divergence, but only involves the unnormalized probability $$\tp = \prod_{k} \phi_k(x_k; \theta) $$:
+Instead, we will work with the following objective, which has the same form as the KL divergence, but only involves the unnormalized probability $$\tp(x) = \prod_{k} \phi_k(x_k; \theta) $$:
 
 $$ J(q) = \sum_x q(x) \log \frac{q(x)}{\tp(x)}. $$
 
