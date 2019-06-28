@@ -187,7 +187,7 @@ $$
 - Discrete case:
 
 $$
-\E[g(X)] = \sum_{x \in Val(X)} \mathbf{1}\{x \in A \} P_X(x)dx = \sum_{x \in A} P_X(x)dx = P(X \in A)
+\E[g(X)] = \sum_{x \in Val(X)} \mathbf{1}\{x \in A \} P_X(x) = \sum_{x \in A} P_X(x) = P(X \in A)
 $$
 
 - Continuous case:
