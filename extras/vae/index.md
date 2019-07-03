@@ -187,7 +187,7 @@ A variational auto-encoder uses the AEVB algorithm to learn a specific model $$p
 
 $$
 \begin{align*}
-p(x\mid z) & = \mathcal{N}(x; \vec\mu(z), \diag(\vec\sigma(x))^2) \\
+p(x\mid z) & = \mathcal{N}(x; \vec\mu(z), \diag(\vec\sigma(z))^2) \\
 p(z) & = \mathcal{N}(z; 0, I),
 \end{align*}
 $$
