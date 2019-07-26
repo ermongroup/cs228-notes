@@ -114,7 +114,7 @@ Suppose that we are performing marginal inference on an MRF of the form
 
 $$ p(x_1, \dotsc, x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c), $$
 
-Crucially, we assume that the cliques $$c$$ have some path structure, meaning that we can find an ordering $$x_c^{(1)}, \dotsc, x_c^{(n)}$$ with the property that if $$x_i \in x_c^{(j)}$$ and $$x_i \in x_c^{(k)}$$ for some variable $$x_i$$ then $$x_i \in x_c^{(\ell)}$$ for all $$x_c^{(\ell)}$$ on the path between $$x_c^{(j)}$$ and $$x_c^{(k)}$$. We refer to this assumption as the *running intersection* property (RIP).
+Crucially, we assume that the cliques have some path structure, meaning that they can be put into a path $$c_1, ..., c_m$$, such that if some variable $$x_i$$ is in two cliques $$c_j$$ and $$c_k$$, then $$c_i$$ is also in $$c_\ell$$ for all $$c_\ell$$ on the path between $$c_j$$ and $$c_k$$. We refer to this assumption as the *running intersection* property (RIP).
 {% include maincolumn_img.html src='assets/img/junctionpath.png' caption='A chain MRF whose cliques are organized into a chain structure. Round nodes represent cliques and the variables in their scope; rectangular nodes indicate sepsets, which are variables forming the intersection of the scopes of two neighboring cliques.' %}
 
 Suppose that we are interested in computing the marginal probability $$p(x_1)$$ in the above example. Given our assumptions, we may again use a form of variable elimination to "push in" certain variables deeper into the product of cluster potentials:
