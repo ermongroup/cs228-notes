@@ -92,7 +92,7 @@ In order to specify the probability measures used when dealing with random varia
 
 $$ F_X(x) = P(X \leq x). $$
 
-By using this function, one can calculate the probability of any event.
+By using this function, one can calculate the probability that $$X$$ takes on a value between any two real constants $$a$$ and $$b$$ (where $$a < b$$).
 
 ### **Properties**:
 <!--Figure 1: A cumulative distribution function (CDF).-->
