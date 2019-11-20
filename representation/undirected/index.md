@@ -123,7 +123,7 @@ More formally, suppose $$p(y\mid x)$$ is a chain CRF with two types of factors: 
 Given a model of this form, we can jointly infer the structured label $$y$$ using MAP inference:
 
 $$
-\arg\max_y \phi_1(y_1, x_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi(y_i, x_i).
+\arg\max_y \phi(x_1, y_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi(x_i, y_i).
 $$
 
 ### CRF features
@@ -136,13 +136,13 @@ where $$f_c(x_c, y_c)$$ can be an arbitrary set of features describing the compa
 
 In our OCR example, we may introduce features $$f(x_i, y_i)$$ that encode the compatibility of the letter $$y_i$$ with the pixels $$x_i$$. For example, $$f(x_i, y_i)$$ may be the probability of letter $$y_i$$ produced by logistic regression (or a deep neural network) evaluated on pixels $$x_i$$. In addition, we introduce features $$f(y_i, y_{i+1})$$ between adjacent letters. These may be indicators of the form $$f(y_i, y_{i+1}) = \Ind(y_i = \ell_1, y_{i+1} = \ell_2)$$, where $$\ell_1, \ell_2$$ are two letters of the alphabet. The CRF would then learn weights $$w$$ that would assign more weight to more common probability of consecutive letters $$(\ell_1, \ell_2)$$, while at the same time making sure that the predicted $$y_i$$ are consistent with the input $$x_i$$; this process would let us determine $$y_i$$ in cases where $$x_i$$ is ambiguous, like in our above example.
 
-The most important realization about CRF features is that they can be arbitrarily complex. In fact, we may define an OCR model with factors $$\phi_i(x,y_i) = \exp(w_i^T f(x, y_i))$$, that depend on the entire input $$x$$. This does not affect computational performance at all, because at inference time, the $$x$$ is always observed, and our decoding problem involves maximizing
+The most important realization about CRF features is that they can be arbitrarily complex. In fact, we may define an OCR model with factors $$\phi(x,y_i) = \exp(w_i^T f(x, y_i))$$, that depend on the entire input $$x$$. This does not affect computational performance at all, because at inference time, the $$x$$ is always observed, and our decoding problem involves maximizing
 
 $$
-\phi_1(x, y_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi(x, y_i) = \phi_1'(y_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi'(y_i),
+\phi(x, y_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi(x, y_i) = \phi'(y_1) \prod_{i=2}^n \phi(y_{i-1}, y_i) \phi'(y_i),
 $$
 
-where $$\phi'_i(y_i) = \phi_i(x,y_i)$$. Using global features only changes the values of the factors, but not their scope, which possesses the same type of chain structure. We will see in the next section that this structure is all that is needed to ensure we can solve this optimization problem tractably.
+where $$\phi'(y_i) = \phi(x,y_i)$$. Using global features only changes the values of the factors, but not their scope, which possesses the same type of chain structure. We will see in the next section that this structure is all that is needed to ensure we can solve this optimization problem tractably.
 
 This observation may be interpreted in a slightly more general form. If we were to model $$p(x,y)$$ using an MRF (viewed as a single model over $$x, y$$ with normalizing constant $$Z = \sum_{x,y} \tp(x,y)$$), then we need to fit two distributions to the data: $$p(y\mid x)$$ and $$p(x)$$. However, if all we are interested in is predicting $$y$$ given $$x$$, then modeling $$p(x)$$ is unnecessary. In fact, it may be disadvantageous to do so statistically (e.g. we may not have enough data to fit both $$p(y\mid x)$$ and $$p(x)$$; since the models have shared parameters, fitting one may not result in the best parameters for the other) and it may not be a good idea computationally (we need to make simplifying assumptions in the distribution so that $$p(x)$$ can be handled tractably). CRFs forgo this assumption, and often perform better on prediction tasks.
 
