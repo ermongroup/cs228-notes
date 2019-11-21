@@ -59,9 +59,9 @@ Sum-product message passing can also be applied to factor trees with a slight mo
 On factor graphs, we have two types of messages: variable-to-factor messages $$\nu$$ and factor-to-variable messages $$\mu$$. Both messages require taking a product, but only the factor-to-variable messages $$\mu$$ require a sum.
 
 $$
-\nu_{var(i)\to fac(s)}(x_i) = \prod_{t\in\mathcal N(i)\setminus s}\mu_{fac(t)\to var(i)}(x_i)
+\nu_{var(i)\to fac(s)}(x_i) = \prod_{t\in N(i)\setminus s}\mu_{fac(t)\to var(i)}(x_i)
 \\
-\mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{\mathcal N(s)\setminus i}}f_s(x_{\mathcal N(s)})\prod_{j\in\mathcal N(s)\setminus i}\nu_{var(j)\to fac(s)}(x_j)
+\mu_{fac(s)\to var(i)}(x_i) = \sum_{x_{N(s)\setminus i}}f_s(x_{N(s)})\prod_{j\in N(s)\setminus i}\nu_{var(j)\to fac(s)}(x_j)
 $$
 
 {% include maincolumn_img.html src='assets/img/factor-graph-messages.png' %}
