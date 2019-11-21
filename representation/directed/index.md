@@ -11,7 +11,7 @@ We are going to:
 - See how the resulting models can be elegantly described via *directed acyclic graphs* (DAGs).
 - Study connections between the structure of a DAG and the modeling assumptions made by distribution that it describes; this will not only make these modeling assumptions more explicit, but will also help us design more efficient inference algorithms.
 
-The kinds of models that we will see here are referred to as *Bayesian networks*. In the next chapter, we will also see a second approach, which involves *undirected* graphs, also known as *Markov random fields*.
+The kinds of models that we will see here are referred to as *Bayesian networks*. In the next chapter, we will also see a second approach, which involves *undirected* graphs, also known as *Markov random fields* (MRFs).  Bayesian networks effectively show causality, whereas MRFs cannot. Thus, MRFs are preferable for problems where there is no clear causality between random variables.
 
 
 ## Probabilistic modeling with Bayesian networks

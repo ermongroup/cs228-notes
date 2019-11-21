@@ -139,6 +139,48 @@ In the previous example, suppose we eliminated $$g$$ first. Then, we would have 
 
 Clearly some orderings are more efficient than others. In fact, the running time of Variable Elimination is $$O(n k^{M+1})$$, where $$M$$ is the maximum size of any factor $$\tau$$ formed during the elimination process and $$n$$ is the number of variables.
 
+### Variable Elimination in Undirected Models as Graph Transformation
+
+When a variable $$X$$ is eliminated, we create a single factor $$\psi$$ that contains $$X$$ and all of the variables $$\mathbf{Y}$$ with which $$X$$ appears in factors.
+
+We eliminate (marginalize) $$X$$ from $$\psi$$, replacing it with a new factor $$\tau$$ that contains all of the variables $$\mathbf{Y}$$, but not $$X$$.
+
+How does this modify the graph?  Constructing $$\psi$$ generates edges between all of the variables $$Y \in \mathbf{Y}$$ (rendering it a clique). Some of these edges were already there, some are new.
+
+The new edges are called *fill edges*.
+
+## Graph Transformation Example
+
+{% maincolumn 'assets/img/resized_mrf_elimination_ordering_example.png' 'Each time a node is eliminated, all of its neighbors are connected, forming a clique.'%}
+{% marginfigure 'jtt' 'assets/img/mrf_induced_graph_example.png' ''%}
+
+## Induced Graph
+
+We can summarize the computation cost using a single graph that is the <b>*union*</b> of all the graphs *resulting from each step of the elimination*.  We call this the <b>induced graph</b>, $$\mathcal{I}_{\phi,\prec}$$, where $$\prec$$ is the elimination ordering for a set of factors $$\phi$$.
+
+Let's define $$N_{max}$$ as the size of the largest clique in $$\mathcal{I}_{\phi,\prec}$$.
+The running time of VE, $$\mathcal{O}(mv^{N_{max}} )$$, is exponential in the size of the largest clique of the induced graph, 
+{% math %}
+v = \underset{i}{\mbox{max }} |\text{Val}(X_i)|
+{% endmath %}
+
+The width of an induced graph is # nodes in largest clique - 1.
+
+We define the induced width $$w_{\mathcal{G}, \prec}$$ to be the width of the graph $$\mathcal{I}_{\mathcal{G}, \prec}$$
+induced by applying VE to $$\mathcal{G}$$ using ordering $$\prec$$
+
+
+The *treewidth*, or “minimal induced width” of graph G is
+{% math %}
+w_{\mathcal{G}}^* = \underset{\prec}{\mbox{min }} w_{\mathcal{G}, \prec}
+{% endmath %}
+
+Thus, the treewidth is computed with the best ordering over all possible elimination orderings.
+
+
+
+
+
 ### Choosing variable elimination orderings
 
 Unfortunately, choosing the optimal VE ordering is an NP-hard problem. However, in practice, we may resort to the following heuristics:

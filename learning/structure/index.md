@@ -46,17 +46,21 @@ The algorithm has three steps:
 
 1) Compute the mutual information for all pairs of variables $$X,U$$, and form the mutual information graph where the edge between variables $$X,U$$ has weight $$MI(X,U)$$:
 
-$$
-MI(X,U) =\sum_{x,u} \hat p(x,u)\log\left[\frac{\hat{p} (x,u)}{\hat p(x) \hat p(u)}\right]
-$$
+ {% math %}
+ MI(X,U) =\sum_{x,u} \hat p(x,u)\log\left[\frac{\hat{p} (x,u)}{\hat p(x) \hat p(u)}\right]
+ {% endmath %}
 
-{% include maincolumn_img.html src='assets/img/mi-graph.png' %}
-
-Remember that from our empirical distribution $$\hat p(x,u) = \frac{Count(x,u)}{\# \text{ data points}}$$.
+ This function measures how much information $$U$$ provides about $$X$$. The graph with computed MI edge weights might resemble:
+ 
+ {% maincolumn 'assets/img/mi-graph.png' %}
+ 
+ Remember that from our empirical distribution $$\hat p(x,u) = \frac{Count(x,u)}{\# \text{ data points}}$$.
 
 2) Find the **maximum** weight spanning tree: the maximal-weight tree that connects all vertices in a graph. This can be found using Kruskal or Prim Algorithms.
 
-{% include maincolumn_img.html src='assets/img/max-spanning-tree.png' %}
+ {% maincolumn 'assets/img/max-spanning-tree.png' %}
+ 
+3) Pick any node to be the *root variable*, and assign directions radiating outward from this node (arrows go away from it). This step transforms the resulting undirected tree to a directed one.
 
 3) Pick any node to be the *root variable*, and assign directions radiating outward from this node (arrows go away from it). This step transforms the resulting undirected tree to a directed one.
 

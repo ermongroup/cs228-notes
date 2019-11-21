@@ -335,8 +335,6 @@ $$
 
 A useful formula that often arises when trying to derive expressions for conditional probability is **Bayes' rule**.
 
-For discrete random variables $$X$$ and $$Y$$,
-
 $$
 P_{Y \mid X}(y \mid x) = \frac{P_{XY}(x, y)}{P_X(x)} = \frac{P_{X \mid Y} (x \mid y) P_Y(y)}{\sum_{y' \in Val(Y)} P_{X \mid Y} (x \mid y') P_Y(y')}.
 $$
