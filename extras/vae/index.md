@@ -165,7 +165,7 @@ The gradient is now inside the expectation, so we may take Monte Carlo samples t
 
 ### Choosing $$q$$ and $$p$$
 
-Until now, we did not specify the exact form of $$p$$ or $$q$$, besides saying that these could be arbitrary functions. How should one parametrize these distributions? The best $$q(z\mid x)$$ should be able to approximate the true posterior $$p(z\mid x)$$. Similarly, $$p(x)$$ should be flexible enough to represent the richness of the data.
+Until now, we did not specify the exact form of $$p$$ or $$q$$, besides saying that these could be arbitrary functions. How should one parametrize these distributions? The best $$q(z\mid x)$$ should be able to approximate the true posterior $$p(z\mid x)$$. Similarly, $$p(x\mid z)$$ should be flexible enough to represent the richness of the data.
 
 For these reasons, we are going to parametrize $$q$$ and $$p$$ by *neural networks*. These are extremely expressive function approximators that can be efficiently optimized over large datasets. This choice also draws a fascinating bridge between classical machine learning methods (approximate Bayesian inference in this case) and modern deep learning.
 
