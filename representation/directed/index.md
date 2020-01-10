@@ -32,7 +32,7 @@ $$ p(x_i \mid x_{i-1}, \dotsc, x_1) = p(x_i \mid x_{A_i}). $$
 
 For example, in a model with five variables, we may choose to approximate the factor $$p(x_5 \mid x_4, x_3, x_2, x_1)$$ with $$p(x_5 \mid x_4, x_3)$$. In this case, we write $$x_{A_5} = \{x_4, x_3\}$$.
 
-When the variables are discrete (which will be often be the case in the problem we will consider), we may think of the factors $$p(x_i\mid x_{A_i})$$ as *probability tables*, in which rows correspond to assignments to $$x_{A_i}$$ and columns correspond to values of $$x_i$$; the entries contain the actual probabilities $$p(x_i\mid x_{A_i})$$. If each variable takes $$d$$ values and has at most $$k$$ ancestors, then the entire table will contain at most $$O(d^{k+1})$$ entries. Since we have one table per variable, the entire probability distribution can be compactly described with only $$O(nd^{k+1})$$ parameters (compared to $$O(d^n)$$ with a naive approach).
+When the variables are discrete (which will often be the case in the problem we will consider), we may think of the factors $$p(x_i\mid x_{A_i})$$ as *probability tables*, in which rows correspond to assignments to $$x_{A_i}$$ and columns correspond to values of $$x_i$$; the entries contain the actual probabilities $$p(x_i\mid x_{A_i})$$. If each variable takes $$d$$ values and has at most $$k$$ ancestors, then the entire table will contain at most $$O(d^{k+1})$$ entries. Since we have one table per variable, the entire probability distribution can be compactly described with only $$O(nd^{k+1})$$ parameters (compared to $$O(d^n)$$ with a naive approach).
 
 ### Graphical representation.
 
