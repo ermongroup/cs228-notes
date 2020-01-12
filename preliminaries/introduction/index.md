@@ -81,7 +81,7 @@ $$ p(x_1) = \sum_{x_2} \sum_{x_3} \cdots \sum_{x_n} p(x_1, x_2, \dotsc, x_n). $$
 
 - *Maximum a posteriori (MAP) inference* asks for the most likely assignment of variables. For example, we may try to determine the most likely spam message, solving the problem
 
-$$ \max_{x_1, \dots, x_n} p(x_1,\dotsc,x_n, y=1). $$
+$$\underset{x_1, \dots, x_n}{\operatorname{argmax}}p(x_1,\dotsc,x_n, y=1).$$
 
 Often our queries will involve evidence (like in the MAP example above), in which case we will fix the assignment of a subset of the variables.
 
