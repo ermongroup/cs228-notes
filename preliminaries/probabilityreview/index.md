@@ -227,7 +227,7 @@ $$ p(x) = e^{-\lambda} \frac{\lambda^x}{x!} $$
 
 $$
 f(x) = \begin{cases}
-    \frac{1}{b-a}, & \text{if }a \leq b \\
+    \frac{1}{b-a}, & \text{if }a \leq x \leq b \\
     0, & \text{otherwise}
 \end{cases}
 $$
