@@ -83,7 +83,7 @@ We use $$\tau$$ to refer to the marginalized factor. It is important to understa
 
 ### Orderings
 
-Finally, the variable elimination algorithm requires an ordering over the variables according to which variables will be "eliminated." In our chain example, we took the ordering implied by the DAG. It is important note that:
+Finally, the variable elimination algorithm requires an ordering over the variables according to which variables will be "eliminated." In our chain example, we took the ordering implied by the DAG. It is important to note that:
 
 - Different orderings may dramatically alter the running time of the variable elimination algorithm.
 - It is NP-hard to find the best ordering.
@@ -104,7 +104,7 @@ A former CS228 student has created an [interactive web simulation](http://pgmlea
 
 ### Examples
 
-Let's try to understand what these steps correspond to in our chain example. In that case, the chosen ordering was $$x_1, x_2, \dotsc, x_{n-1}$$. Starting with $$x_1$$, we collected all the factors involving $$x_1$$, which were $$p(x_1)$$ and $$p(x_2 \mid x_1)$$. We then used them to construct a new factor $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$. This can be seen as the results of steps 2 and 3 of the VE algorithm: first we form a large factor $$\sigma(x_2, x_1) = p(x_2 \mid x_1) p(x_1)$$; then we eliminate $$x_1$$ from that factor to produce $$\tau$$. Then, we repeat the same procedure for $$x_2$$, except that the factors are now $$p(x_3 \mid x_2), \tau(x_2)$$.
+Let's try to understand what these steps correspond to in our chain example. In that case, the chosen ordering was $$x_1, x_2, \dotsc, x_{n-1}$$. Starting with $$x_1$$, we collected all the factors involving $$x_1$$, which were $$p(x_1)$$ and $$p(x_2 \mid x_1)$$. We then used them to construct a new factor $$\tau(x_2) = \sum_{x_1} p(x_2 \mid x_1) p(x_1)$$. This can be seen as the results of steps 1 and 2 of the VE algorithm: first we form a large factor $$\sigma(x_2, x_1) = p(x_2 \mid x_1) p(x_1)$$; then we eliminate $$x_1$$ from that factor to produce $$\tau$$. Then, we repeat the same procedure for $$x_2$$, except that the factors are now $$p(x_3 \mid x_2), \tau(x_2)$$.
 
 For a slightly more complex example, recall the graphical model of a student's grade that we introduced earlier.{% include marginfigure.html id="grade" url="assets/img/grade-model.png" description="Bayes net model of a student's grade $$g$$ on an exam; in addition to $$g$$, we also model other aspects of the problem, such as the exam's difficulty $$d$$, the student's intelligence $$i$$, his SAT score $$s$$, and the quality $$l$$ of a reference letter from the professor who taught the course. Each variable is binary, except for $$g$$, which takes 3 possible values." %}
 The probability specified by the model is of the form
