@@ -4,11 +4,11 @@ title: Junction Tree Algorithm
 ---
 We have seen how the variable elimination (VE) algorithm can answer marginal queries of the form $$P(Y \mid E = e)$$ for both directed and undirected networks.
 
-However, this algorithm has an important shortcoming: if we want to ask the model for another query, e.g. $$P(Y_2 \mid E_2 = e_2)$$, we need to restart the algorithm from scratch. This is very wasteful and computationally burdensome.
+However, this algorithm has an important shortcoming: if we want to ask the model for another query, e.g., $$P(Y_2 \mid E_2 = e_2)$$, we need to restart the algorithm from scratch. This is very wasteful and computationally burdensome.
 
 Fortunately, it turns out that this problem is also easily avoidable. When computing marginals, VE produces many intermediate factors $$\tau$$ as a side-product of the main computation; these factors turn out to be the same as the ones that we need to answer other marginal queries. By caching them after a first run of VE, we can easily answer new marginal queries at essentially no additional cost.
 
-The end result of this chapter will be a new technique called the Junction Tree (JT) algorithm{% include sidenote.html id="note-VEandJT" note="If you are familiar with dynamic programming (DP), you can think of VE vs. the JT algorithm as two flavors of same technique: top-down DP v.s. bottom-up table filling. Just like in computing the $$n$$-th Fibonacci number $$F_n$$, top-down DP (i.e. VE) computes *just* that number, but bottom-up (i.e. JT) will create a filled table of all $$F_i$$ for $$i \leq n$$. Moreover, the two-pass nature of JT is a result of the underlying DP on bi-directional (junction) trees, while Fibonacci numbers' relation is a uni-directional tree." %}; this algorithm will first execute two runs of the VE algorithm to initialize a particular data structure holding a set of pre-computed factors. Once the structure is initialized, it can answer marginal queries in $$O(1)$$ time.
+The end result of this chapter will be a new technique called the Junction Tree (JT) algorithm{% include sidenote.html id="note-VEandJT" note="If you are familiar with dynamic programming (DP), you can think of VE vs. the JT algorithm as two flavors of same technique: top-down DP v.s. bottom-up table filling. Just like in computing the $$n$$-th Fibonacci number $$F_n$$, top-down DP (i.e., VE) computes *just* that number, but bottom-up (i.e., JT) will create a filled table of all $$F_i$$ for $$i \leq n$$. Moreover, the two-pass nature of JT is a result of the underlying DP on bi-directional (junction) trees, while Fibonacci numbers' relation is a uni-directional tree." %}; this algorithm will first execute two runs of the VE algorithm to initialize a particular data structure holding a set of pre-computed factors. Once the structure is initialized, it can answer marginal queries in $$O(1)$$ time.
 
 We will introduce two variants of this algorithm: belief propagation (BP), and the full junction tree method. BP applies to tree-structured graphs, while the junction-tree method is applicable to general networks.
 
@@ -35,8 +35,8 @@ Finally, this algorithm will be correct because our messages are defined as the 
 
 We are now ready to formally define the belief propagation algorithm. This algorithm has two variants, each used for a different task:
 
-- *sum-product message passing*: used for marginal inference, i.e. computing $$p(x_i)$$
-- *max-product message passing*: used for MAP (maximum a posteriori) inference, i.e. computing $$\max_{x_1, \dotsc, x_n} p(x_1, \dotsc, x_n)$$
+- *sum-product message passing*: used for marginal inference, i.e., computing $$p(x_i)$$
+- *max-product message passing*: used for MAP (maximum a posteriori) inference, i.e., computing $$\max_{x_1, \dotsc, x_n} p(x_1, \dotsc, x_n)$$
 
 ### Sum-product message passing
 
@@ -98,13 +98,13 @@ $$
 
 Since both problems decompose in the same way, we may reuse all of the machinery developed for marginal inference and apply it directly to MAP inference. Note that this also applies to factor trees.
 
-There is a small caveat in that we often want not just maximum value of a distribution, i.e. $$\max_x p(x)$$, but also its most probable assignment, i.e. $$\arg\max_x p(x)$$. This problem can be easily solved by keeping *back-pointers* during the optimization procedure. For instance, in the above example, we would keep a backpointer to the best assignment to $$x_1$$ given each assignment to $$x_2$$, a pointer to the best assignment to $$x_2$$ given each assignment to $$x_3,$$ and so on.
+There is a small caveat in that we often want not just maximum value of a distribution, i.e., $$\max_x p(x)$$, but also its most probable assignment, i.e., $$\arg\max_x p(x)$$. This problem can be easily solved by keeping *back-pointers* during the optimization procedure. For instance, in the above example, we would keep a backpointer to the best assignment to $$x_1$$ given each assignment to $$x_2$$, a pointer to the best assignment to $$x_2$$ given each assignment to $$x_3,$$ and so on.
 
 ## Junction tree algorithm
 
 So far, our discussion assumed that the graph is a tree. What if that is not the case? Inference in that case will not be tractable; however, we may try to massage the graph to its most tree-like form, and then run message passing on this graph.
 
-At a high-level the junction tree algorithm partitions the graph into clusters of variables; internally, the variables within a cluster could be highly coupled; however, interactions *among* clusters will have a tree structure, i.e. a cluster will be only directly influenced by its neighbors in the tree. This leads to tractable global solutions if the local (cluster-level) problems can be solved exactly.
+At a high-level the junction tree algorithm partitions the graph into clusters of variables; internally, the variables within a cluster could be highly coupled; however, interactions *among* clusters will have a tree structure, i.e., a cluster will be only directly influenced by its neighbors in the tree. This leads to tractable global solutions if the local (cluster-level) problems can be solved exactly.
 
 ### An illustrative example
 
@@ -133,7 +133,7 @@ The running intersection property is what enables us to push sums in all the way
 The core idea of the junction tree algorithm is to turn a graph into a tree of clusters that are amenable to the variable elimination algorithm like the above MRF. Then we simply perform message-passing on this tree.
 
 Suppose we have an undirected graphical model $$G$$ (if the model is directed, we consider its moralized graph).
-A junction tree $$T=(C, E_T)$$ over $$G = (\Xc, E_G)$$ is a tree whose nodes $$c \in C$$ are associated with subsets $$x_c \subseteq \Xc$$ of the graph vertices (i.e. sets of variables); the junction tree must satisfy the following properties:
+A junction tree $$T=(C, E_T)$$ over $$G = (\Xc, E_G)$$ is a tree whose nodes $$c \in C$$ are associated with subsets $$x_c \subseteq \Xc$$ of the graph vertices (i.e., sets of variables); the junction tree must satisfy the following properties:
 
 - *Family preservation*: For each factor $$\phi$$, there is a cluster $$c$$ such that $$\text{Scope}[\phi] \subseteq x_c$$.
 - *Running intersection*: For every pair of clusters $$c^{(i)}, c^{(j)}$$, every cluster on the path between $$c^{(i)}, c^{(j)}$$ contains $$x_c^{(i)} \cap x_c^{(j)}$$.
@@ -170,7 +170,7 @@ $$
 \beta_c(x_c) = \psi_c(x_c) \prod_{\ell \in N(i)} m_{\ell \to i}(S_{\ell i}).
 $$
 
-These updates are often referred to as *Shafer-Shenoy*. After all the messages have been passed, beliefs will be proportional to the marginal probabilities over their scopes, i.e. $$\beta_c(x_c) \propto p(x_c)$$. We may answer queries of the form $$\tp(x)$$ for $$x \in x_c$$ by marginalizing out the variable in its belief{% include sidenote.html id="note-dp" note="Readers familiar with combinatorial optimization will recognize this as a special case of dynamic programming on a tree decomposition of a graph with bounded treewidth." %}
+These updates are often referred to as *Shafer-Shenoy*. After all the messages have been passed, beliefs will be proportional to the marginal probabilities over their scopes, i.e., $$\beta_c(x_c) \propto p(x_c)$$. We may answer queries of the form $$\tp(x)$$ for $$x \in x_c$$ by marginalizing out the variable in its belief{% include sidenote.html id="note-dp" note="Readers familiar with combinatorial optimization will recognize this as a special case of dynamic programming on a tree decomposition of a graph with bounded treewidth." %}
 
 $$
 \tp(x) = \sum_{x_c \backslash x} \beta_c(x_c).
@@ -197,7 +197,7 @@ Repeating this procedure eventually produces a single factor $$\beta(x_c^{(i)})$
 
 Formally, we may prove correctness of the JT algorithm through an induction argument on the number of factors $$\psi$$; we will leave this as an exercise to the reader. The key property that makes this argument possible is the RIP; it assures us that it's safe to eliminate a variable from a leaf cluster that is not found in that cluster's sepset; by the RIP, it cannot occur anywhere except that one cluster.
 
-The important thing to note is that if we now set $$c^{(k)}$$ to be the root of the tree (e.g. if we set $$(b,c,e)$$ to be the root), the message it will receive from $$c^{(j)}$$ (or from $$(b,e,f)$$ in our example) will not change. Hence, the caching approach we used for the belief propagation algorithm extends immediately to junction trees; the algorithm we formally defined above implements this caching.
+The important thing to note is that if we now set $$c^{(k)}$$ to be the root of the tree (e.g., if we set $$(b,c,e)$$ to be the root), the message it will receive from $$c^{(j)}$$ (or from $$(b,e,f)$$ in our example) will not change. Hence, the caching approach we used for the belief propagation algorithm extends immediately to junction trees; the algorithm we formally defined above implements this caching.
 
 ### Finding a good junction tree
 

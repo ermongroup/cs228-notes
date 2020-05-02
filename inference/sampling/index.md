@@ -14,7 +14,7 @@ Sampling methods can be used to perform both marginal and MAP inference queries;
 
 As a warm-up, let's think for a minute how we might sample from a multinomial distribution with $$k$$ possible outcomes and associated probabilities $$\theta_1, \dotsc, \theta_k$$.
 
-Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% include sidenote.html id="note-pseudorandom" note="Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g. running averages) are indistinguishable from a truly random one. We call such sequences *pseudorandom*." %}, such as the uniform distribution over $$[0,1]$$. All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.
+Sampling, in general, is not an easy problem. Our computers can only generate samples from very simple distributions{% include sidenote.html id="note-pseudorandom" note="Even those samples are not truly random. They are actually taken from a deterministic sequence whose statistical properties (e.g., running averages) are indistinguishable from a truly random one. We call such sequences *pseudorandom*." %}, such as the uniform distribution over $$[0,1]$$. All sampling techniques involve calling some kind of simple subroutine multiple times in a clever way.
 
 In our case, we may reduce sampling from a multinomial variable to sampling a single uniform variable by subdividing a unit interval into $$k$$ regions with region $$i$$ having size $$\theta_i$$. We then sample uniformly from $$[0,1]$$ and return the value of the region in which our sample falls.
 {% include maincolumn_img.html src="assets/img/multinomial-sampling.png" caption="Reducing sampling from a multinomial distribution to sampling a uniform distribution in [0,1]." %}
@@ -160,7 +160,7 @@ Let us now turn our attention from computing expectations to performing marginal
 
 ### Markov Chain
 
-A key concept in MCMC is that of a *Markov chain*. A (discrete-time) Markov chain is a sequence of random variables $$S_0, S_1, S_2, \ldots$$ with each random variable $$S_i \in \{1,2,\ldots,d\}$$ taking one of $$d$$ possible values, intuitively representing the state of a system. The initial state is distributed according to a probability $$P(S_0)$$; all subsequent states are generated from a conditional probability distribution that depends only on the previous random state, i.e. $$S_i$$ is distributed according to $$P(S_i \mid S_{i-1})$$.
+A key concept in MCMC is that of a *Markov chain*. A (discrete-time) Markov chain is a sequence of random variables $$S_0, S_1, S_2, \ldots$$ with each random variable $$S_i \in \{1,2,\ldots,d\}$$ taking one of $$d$$ possible values, intuitively representing the state of a system. The initial state is distributed according to a probability $$P(S_0)$$; all subsequent states are generated from a conditional probability distribution that depends only on the previous random state, i.e., $$S_i$$ is distributed according to $$P(S_i \mid S_{i-1})$$.
 
 The probability $$P(S_i \mid S_{i-1})$$ is the same at every step $$i$$; this means that the transition probabilities at any time in the entire process depend only on the given state and not on the history of how we got there. This is called the *Markov* assumption.
 
@@ -190,9 +190,9 @@ The high-level idea of MCMC will be to construct a Markov chain whose states wil
 In order to construct such a chain, we first need to understand when stationary distributions exist. This turns out to be true under two sufficient conditions:
 
 - *Irreducibility*: It is possible to get from any state $$x$$ to any other state $$x'$$ with probability > 0 in a finite number of steps.
-- *Aperiodicity*: It is possible to return to any state at any time, i.e. there exists an $$n$$ such that for all $$i$$ and all $$n' \geq n$$, $$P(s_{n'}=i \mid s_0 = i) > 0$$.
+- *Aperiodicity*: It is possible to return to any state at any time, i.e., there exists an $$n$$ such that for all $$i$$ and all $$n' \geq n$$, $$P(s_{n'}=i \mid s_0 = i) > 0$$.
 
-The first condition is meant to prevent *absorbing states*, i.e. states from which we can never leave. In the example below, if we start in states $$1,2$$, we will never reach state 4. Conversely, if we start in state 4, then we will never reach states 1,2. If we start the chain in the middle (in state 3), then clearly it cannot have a single limiting distribution.
+The first condition is meant to prevent *absorbing states*, i.e., states from which we can never leave. In the example below, if we start in states $$1,2$$, we will never reach state 4. Conversely, if we start in state 4, then we will never reach states 1,2. If we start the chain in the middle (in state 3), then clearly it cannot have a single limiting distribution.
 {% include maincolumn_img.html src='assets/img/reducible-chain.png' caption='A reducible Markov Chain over four states.' %}
 
 The second condition is necessary to rule out transition operators such as
@@ -220,7 +220,7 @@ At a high level, MCMC algorithms will have the following structure. They take as
 1. Run the Markov chain from $$x_0$$ for $$B$$ *burn-in* steps.
 2. Run the Markov chain for $$N$$ *sampling* steps and collect all the states that it visits.
 
-Assuming $$B$$ is sufficiently large, the latter collection of states will form samples from $$p$$. We may then use these samples for Monte Carlo integration (or in importance sampling). We may also use them to produce Monte Carlo estimates of marginal probabilities. Finally, we may take the sample with the highest probability and use it as an estimate of the mode (i.e. perform MAP inference).
+Assuming $$B$$ is sufficiently large, the latter collection of states will form samples from $$p$$. We may then use these samples for Monte Carlo integration (or in importance sampling). We may also use them to produce Monte Carlo estimates of marginal probabilities. Finally, we may take the sample with the highest probability and use it as an estimate of the mode (i.e., perform MAP inference).
 
 
 ### Metropolis-Hastings algorithm

@@ -19,7 +19,7 @@ $$ \arg\max_x \sum_c \theta_c(\bfx_c). $$
 
 Marginal inference can also be seen as computing and summing all assignments to the model, one of which is the MAP assignment. If we replace summation with maximization, we can also find the assignment with the highest probability; however, there exist more efficient methods than this sort of enumeration-based approach.
 
-Note, however, that MAP inference is still not an easy problem in the general case. The above optimization objective includes many intractable problems as special cases, e.g. 3-sat. We may reduce 3-sat to MAP inference by constructing for each clause $$ c = (x \lor y \lor \neg z)$$ a factor $$\theta_c (x, y, z)$$ that equals one if $$x, y, z$$ satisfy clause $$c$$, and $$\theta_c (x, y, z) = 0$$ otherwise. Then, the 3-sat instance is satisfiable if and only if the value of the MAP assignment equals the number of clauses{% include sidenote.html id="note-nphard" note="We may also use a similar construction to prove that marginal inference is NP-hard. The high-level idea is to add an additional variable $$X$$ that equals $$1$$ when all the clauses are satisfied, and zero otherwise. Its marginal probability will be greater than zero iff the 3-sat instance is satisfiable." %}.
+Note, however, that MAP inference is still not an easy problem in the general case. The above optimization objective includes many intractable problems as special cases, e.g., 3-sat. We may reduce 3-sat to MAP inference by constructing for each clause $$ c = (x \lor y \lor \neg z)$$ a factor $$\theta_c (x, y, z)$$ that equals one if $$x, y, z$$ satisfy clause $$c$$, and $$\theta_c (x, y, z) = 0$$ otherwise. Then, the 3-sat instance is satisfiable if and only if the value of the MAP assignment equals the number of clauses{% include sidenote.html id="note-nphard" note="We may also use a similar construction to prove that marginal inference is NP-hard. The high-level idea is to add an additional variable $$X$$ that equals $$1$$ when all the clauses are satisfied, and zero otherwise. Its marginal probability will be greater than zero iff the 3-sat instance is satisfiable." %}.
 
 Nonetheless, we will see that the MAP problem is easier than general inference, in the sense that there are some models in which MAP inference can be solved in polynomial time, while general inference is NP-hard.
 
@@ -32,14 +32,14 @@ $$ \arg\max_y \log p(y|x) = \arg\max_y \sum_c \theta_c(\bfy_c, \bfx_c). $$
 {% include marginfigure.html id="ocr" url="assets/img/ocr.png" description="Chain-structured conditional random field for optical character recognition." %}
 We discussed structured prediction in detail when we covered CRFs. Recall that our main example was handwriting recognition, in which we are given images $$x_i \in [0, 1]^{d\times d}$$ of characters in the form of pixel matrices; MAP inference in this setting amounts to jointly recognizing the most likely word $$(y_i)_{i=1}^n$$ encoded by the images.
 
-Another example of MAP inference is image segmentation; here, we are interested in locating an entity in an image and label all its pixels. Our input $$\bfx \in [0, 1]^{d\times d}$$ is a matrix of image pixels, and our task is to predict the label $$y \in \{0, 1\}^{d\times d}$$, indicating whether each pixel encodes the object we want to recover. Intuitively, neighboring pixels should have similar values in $$\bfy$$, i.e. pixels associated with the horse should form one continuous blob (rather than white noise).
+Another example of MAP inference is image segmentation; here, we are interested in locating an entity in an image and label all its pixels. Our input $$\bfx \in [0, 1]^{d\times d}$$ is a matrix of image pixels, and our task is to predict the label $$y \in \{0, 1\}^{d\times d}$$, indicating whether each pixel encodes the object we want to recover. Intuitively, neighboring pixels should have similar values in $$\bfy$$, i.e., pixels associated with the horse should form one continuous blob (rather than white noise).
 {% include marginfigure.html id="segmentation" url="assets/img/imagesegmentation.png" description="An illustration of the image segmentation problem." %}
 
 This prior knowledge can be naturally modeled in the language of graphical models via a [Potts model](https://en.wikipedia.org/wiki/Potts_model). As in our first example, we can introduce potentials $$\phi(y_i,x)$$ that encode the likelihood that any given pixel is from our subject. We then augment them with pairwise potentials $$\phi(y_i, y_j)$$ for neighboring $$y_i, y_j$$, which will encourage adjacent $$y$$'s to have the same value with higher probability.
 
 ## Graph cuts
 
-We start our discussion with an efficient exact MAP inference algorithm called *graph cuts* for certain Potts models over binary-valued variables $$(X_i \in \{0, 1\})$$. Unlike previously-seen methods (e.g. the junction tree algorithm), this algorithm is tractable even when the model has large treewidth.
+We start our discussion with an efficient exact MAP inference algorithm called *graph cuts* for certain Potts models over binary-valued variables $$(X_i \in \{0, 1\})$$. Unlike previously-seen methods (e.g., the junction tree algorithm), this algorithm is tractable even when the model has large treewidth.
 
 A *graph cut* of an undirected graph $$G = (V, \mathcal{E})$$ is a partition of $$V$$ into 2 disjoint sets $$V_s$$ and $$V_t$$. When each edge $$(v_1, v_2) \in \mathcal{E}$$ is associated with a nonnegative cost $$cost(v_1, v_2)$$, the cost of a graph cut is the sum of the costs of the edges that cross between the two partitions:
 
@@ -47,7 +47,7 @@ $$ cost(V_s, V_t) = \sum_{v_1 \in V_s,\ v_2 \in V_t} cost(v_1, v_2). $$
 
 The *min-cut* problem is to find the partition $$V_s, V_t$$ that minimizes the cost of the graph cut. The fastest algorithms for computing min-cuts in a graph take $$O(\lvert \mathcal{E} \rvert \lvert V \rvert \log \lvert V \rvert)$$ or $$O(\lvert V \rvert^3)$$ time, and we refer readers to algorithms textbooks for details on their implementation.
 
-Now, we show a reduction of MAP inference on a particular class of MRFs to the min-cut problem. Suppose we are given a MRF over binary variables with pairwise factors in which edge energies (i.e. negative log-edge factors) have the form
+Now, we show a reduction of MAP inference on a particular class of MRFs to the min-cut problem. Suppose we are given a MRF over binary variables with pairwise factors in which edge energies (i.e., negative log-edge factors) have the form
 
 $$
 E_{uv}(x_u, x_v) =
@@ -156,7 +156,7 @@ $$
 
 Together, these constraints along with the MAP objective yield an integer linear program, whose solution equals the MAP assignment. This ILP is still NP-hard, but we have an easy way to transform this into an (easy to solve) LP via relaxation. This is the essence of the linear programming approach to MAP inference.
 
-In general, this method will only give approximate solutions. An important special case are tree-structured graphs, in which the relaxation is guaranteed to always return integer solutions, which are in turn optimal{% include sidenote.html id="note-tree" note="See e.g. the textbook of Koller and Friedman for a proof and a more detailed discussion." %}.
+In general, this method will only give approximate solutions. An important special case are tree-structured graphs, in which the relaxation is guaranteed to always return integer solutions, which are in turn optimal{% include sidenote.html id="note-tree" note="See e.g., the textbook of Koller and Friedman for a proof and a more detailed discussion." %}.
 
 ## Dual decomposition
 
@@ -164,7 +164,7 @@ Let us now look at another way to transform the MAP objective into a more amenab
 
 $$ \max_x \sum_{i \in V} \theta_i (x_i) + \sum_{f \in F} \theta_f (x_f), $$
 
-where $$F$$ denote arbitrary factors (e.g. the edge potentials in a pairwise MRF){% include sidenote.html id="note-sontag" note="These short notes are roughly based on the tutorial by [Sontag et al.](http://cs.nyu.edu/~dsontag/papers/SonGloJaa_optbook.pdf), to which we refer the reader for a full discussion." %}. Let us use $$p^*$$ to denote the optimal value of this objective and let $$x^*$$ denote the optimal assignment.
+where $$F$$ denote arbitrary factors (e.g., the edge potentials in a pairwise MRF){% include sidenote.html id="note-sontag" note="These short notes are roughly based on the tutorial by [Sontag et al.](http://cs.nyu.edu/~dsontag/papers/SonGloJaa_optbook.pdf), to which we refer the reader for a full discussion." %}. Let us use $$p^*$$ to denote the optimal value of this objective and let $$x^*$$ denote the optimal assignment.
 
 The above objective is difficult to optimize because the potentials are coupled. Consider for a moment an alternative objective where we optimize the potentials separately:
 
@@ -256,7 +256,7 @@ Alternatively, one may perform exhaustive search over the space of assignments, 
 
 ### Simulated annealing
 
-A third approach is to use sampling methods (e.g. Metropolis-Hastings) to sample from $$p_t(x) \propto \exp(\frac{1}{t} \sum_{c \in C} \theta_c (x_c ))$$. The parameter $$t$$ is called the temperature. When $$t \to \infty $$, $$p_t$$ is close to the uniform distribution, which is easy to sample from. As $$t \to 0$$, $$p_t$$ places more weight on $$\arg\max_\bfx \sum_{c \in C} \theta_c (x_c )$$, the quantity we want to recover. However, since this distribution is highly peaked, it is also very difficult to sample from.
+A third approach is to use sampling methods (e.g., Metropolis-Hastings) to sample from $$p_t(x) \propto \exp(\frac{1}{t} \sum_{c \in C} \theta_c (x_c ))$$. The parameter $$t$$ is called the temperature. When $$t \to \infty $$, $$p_t$$ is close to the uniform distribution, which is easy to sample from. As $$t \to 0$$, $$p_t$$ places more weight on $$\arg\max_\bfx \sum_{c \in C} \theta_c (x_c )$$, the quantity we want to recover. However, since this distribution is highly peaked, it is also very difficult to sample from.
 
 The idea of simulated annealing is to run a sampling algorithm starting with a high $$t$$, and gradually decrease it, as the algorithm is being run. If the "cooling rate" is sufficiently slow, we are guaranteed to eventually find the mode of our distribution. In practice, however, choosing the rate requires a lot of tuning. This makes simulated annealing somewhat difficult to use in practice.
 

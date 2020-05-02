@@ -2,12 +2,12 @@
 layout: post
 title: Variational inference
 ---
-In the last chapter, we saw that inference in probabilistic models is often intractable, and we learned about algorithms that provide approximate solutions to the inference problem (e.g. marginal inference) by using subroutines that involve sampling random variables. Most sampling-based inference algorithms are instances of Markov Chain Monte-Carlo (MCMC); two popular MCMC methods are Gibbs sampling and Metropolis-Hastings.
+In the last chapter, we saw that inference in probabilistic models is often intractable, and we learned about algorithms that provide approximate solutions to the inference problem (e.g., marginal inference) by using subroutines that involve sampling random variables. Most sampling-based inference algorithms are instances of Markov Chain Monte-Carlo (MCMC); two popular MCMC methods are Gibbs sampling and Metropolis-Hastings.
 
 Unfortunately, these sampling-based methods have several important shortcomings.
 
 - Although they are guaranteed to find a globally optimal solution given enough time, it is difficult to tell how close they are to a good solution given the finite amount of time that they have in practice.
-- In order to quickly reach a good solution, MCMC methods require choosing an appropriate sampling technique (e.g. a good proposal in Metropolis-Hastings). Choosing this technique can be an art in itself.
+- In order to quickly reach a good solution, MCMC methods require choosing an appropriate sampling technique (e.g., a good proposal in Metropolis-Hastings). Choosing this technique can be an art in itself.
 
 In this chapter, we are going to look at an alternative approach to approximate inference called the *variational* family of algorithms.
 
@@ -38,7 +38,7 @@ In information theory, this function is used to measure differences in informati
 - $$ KL(q\|p) \geq 0 $$ for all $$q,p$$.
 - $$ KL(q\|p) = 0 $$ if and only if $$ q = p $$.
 
-These can be proven as an exercise. Note however that $$KL(q\|p) \neq KL(p\|q)$$, i.e. the KL divergence is not symmetric. This is why we say that it's a divergence, but not a distance. We will come back to this distinction shortly.
+These can be proven as an exercise. Note however that $$KL(q\|p) \neq KL(p\|q)$$, i.e., the KL divergence is not symmetric. This is why we say that it's a divergence, but not a distance. We will come back to this distinction shortly.
 
 ## The variational lower bound
 
@@ -163,7 +163,7 @@ $$
 $$
 where $$H(\mu) = \E_{q(x)} \log q(x)$$ denotes the entropy of $$q(x)$$ and $$\mu = \E_{q(x)} \psi(x)$$ is called the vector of moments. The key observation here is that instead of optimizing over $$q$$, we can equivalently optimize over the set of *valid moments* $$\mu$$.
 
-But which moments are valid? These are the ones that correspond to some probability distribution, i.e. they are in the set
+But which moments are valid? These are the ones that correspond to some probability distribution, i.e., they are in the set
 $$
 \mathbb{M} = \{ \mu : \exists p \text{ s.t. } \mu = \sum_x \psi(x)p(x) \text{ for some $p(x) \geq 0$ that sums to 1} \}
 $$

@@ -43,8 +43,8 @@ $$ p(x; \theta) = \frac{\exp(\theta^T f(x))}{Z(\theta)}. $$
 Here are few facts about these distributions that you should know about.
 
 - Exponential families are log-concave in their *natural parameters* $$\theta$$. The partition function $$Z(\theta)$$ is also log-convex in $$\theta$$.
-- The vector $$f(x)$$ is called the vector of *sufficient statistics*; these fully describe the distribution $$p$$; e.g. if $$p$$ is Gaussian, $$f(x)$$ contains (simple reparametrizations of) the mean and the variance of $$p$$.
-- Exponential families make the fewest unnecessary assumptions about the data distribution. More formally, the distribution maximizing the entropy $$H(p)$$ under the constraint $$\E_p[\phi(x)] = \alpha$$ (i.e. the sufficient statistics equal some value $$\alpha$$) is in the exponential family.
+- The vector $$f(x)$$ is called the vector of *sufficient statistics*; these fully describe the distribution $$p$$; e.g., if $$p$$ is Gaussian, $$f(x)$$ contains (simple reparametrizations of) the mean and the variance of $$p$$.
+- Exponential families make the fewest unnecessary assumptions about the data distribution. More formally, the distribution maximizing the entropy $$H(p)$$ under the constraint $$\E_p[\phi(x)] = \alpha$$ (i.e., the sufficient statistics equal some value $$\alpha$$) is in the exponential family.
 
 Exponential families are also very convenient to work with computationally. Their sufficient statistics can summarize arbitrary amounts of i.i.d. variables from the same distribution, and they admit so-called conjugate priors which makes them easily applicable in variational inference.
 In short, it definitely pays off to learn more about exponential families!
@@ -105,11 +105,11 @@ $$
 \ell_\text{PL}(\theta ; D) = \frac{1}{|D|} \sum_{x\in D} \sum_{i} \log p(x_i \mid x_{N(i)}; \theta),
 $$
 
-where $$x_i$$ is the $$i$$-th variable in $$x$$ and $$N(i)$$ is the set of neighbors of $$i$$ in the graph of $$g$$ (i.e. the Markov blanket of $$i$$).
+where $$x_i$$ is the $$i$$-th variable in $$x$$ and $$N(i)$$ is the set of neighbors of $$i$$ in the graph of $$g$$ (i.e., the Markov blanket of $$i$$).
 
 Note that each term $$\log p(x_i \mid x_{N(i)}; \theta)$$ only involves one variable $$x_i$$ and hence its partition function is going to be tractable (we only need to sum over the values of one variable).
 
-However, it is not equal to the likelihood. Note that the correct way to expand the likelihood would involve the chain rule, i.e. the terms would be $$\log p(x_i \mid x_{-i}; \theta)$$ objective, where $$x_{-i}$$ are variables preceding $$i$$ in some ordering.
+However, it is not equal to the likelihood. Note that the correct way to expand the likelihood would involve the chain rule, i.e., the terms would be $$\log p(x_i \mid x_{-i}; \theta)$$ objective, where $$x_{-i}$$ are variables preceding $$i$$ in some ordering.
 
 Intuitively, the pseudo-likelihood objective assumes that $$x_i$$ depends mainly on its neighbors in the graph, and ignores the dependencies on other, more distant variables.
 Observe also that if pseudo-likelihood succeeds in matching all the conditional distributions to the data, a Gibbs sampler run on the model distribution will have the same invariant distribution as a Gibbs sampler run on the true data distribution, ensuring that they are the same.
@@ -133,7 +133,7 @@ Taking the gradient, and using our expression for the gradient of the partition 
 
 $$ \frac{1}{|D|} \sum_{x \in D} f(x) - \E_{x \sim p} [ f(x) ] $$
 
-Note that this is precisely the difference between the expectations of the natural parameters under the empirical (i.e. data) and the model distribution. Let's now look at one component of $$f(x)$$. Recall that we have defined $$f$$ in the context of MRFs to be the vector of indicator functions for the variables of a clique: one entry of $$f$$ equals $$\mathbb{I}[x_c = \bar x_c]$$ for some $$x_c, \bar x_c$$. The gradient over that component equals
+Note that this is precisely the difference between the expectations of the natural parameters under the empirical (i.e., data) and the model distribution. Let's now look at one component of $$f(x)$$. Recall that we have defined $$f$$ in the context of MRFs to be the vector of indicator functions for the variables of a clique: one entry of $$f$$ equals $$\mathbb{I}[x_c = \bar x_c]$$ for some $$x_c, \bar x_c$$. The gradient over that component equals
 
 $$
 \frac{1}{|D|} \sum_{x \in D} \mathbb{I}[x_c = \bar x_c] - \E_{x \sim p} [ \mathbb{I}[x_c = \bar x_c] ]
@@ -200,7 +200,7 @@ This makes learning CRFs more expensive that learning in MRFs. In practice, howe
 
 To deal with the computational difficulties introduced by the partition function, we may use simpler models in which exact inference is tractable. This was the approach taken in the OCR example introduced in our first discussion of CRFs. More generally, one should try to limit the number of variables or make sure that the model's graph is not too densely connected.
 
-Finally, we would like to add that there exists another popular objective for training CRFs called the max-margin loss, a generalization of the objective for training SVMs. Models trained using this loss are called *structured support vector machines* or *max-margin networks*. This loss is more widely used in practice because it often leads to better generalization, and also it requires only MAP inference to compute the gradient, rather than general (e.g. marginal) inference, which is often more expensive to perform.
+Finally, we would like to add that there exists another popular objective for training CRFs called the max-margin loss, a generalization of the objective for training SVMs. Models trained using this loss are called *structured support vector machines* or *max-margin networks*. This loss is more widely used in practice because it often leads to better generalization, and also it requires only MAP inference to compute the gradient, rather than general (e.g., marginal) inference, which is often more expensive to perform.
 
 
 <br/>

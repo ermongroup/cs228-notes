@@ -5,7 +5,7 @@ title: Learning in latent variable models
 
 Up to now, we have assumed that when learning a directed or an undirected model, we are given examples of every single variable that we are trying to model.
 
-However, that may not always be the case. Consider for example a probabilistic language model of news articles{% include sidenote.html id="note-model" note="A language model $$p$$ assigns probabilities to sequences of words $$x_1,...,x_n$$. We can, among other things, sample from $$p$$ to generate various kinds of sentences." %}. Each article $$x$$ typically focuses on a specific topic $$t$$, e.g. finance, sports, politics. Using this prior knowledge, we may build a more accurate model $$p(x \mid t)p(t)$$, in which we have introduced an additional, unobserved variable $$t$$. This model can be more accurate, because we can now learn a separate $$p(x \mid t)$$ for each topic, rather than trying to model everything with one $$p(x)$$.
+However, that may not always be the case. Consider for example a probabilistic language model of news articles{% include sidenote.html id="note-model" note="A language model $$p$$ assigns probabilities to sequences of words $$x_1,...,x_n$$. We can, among other things, sample from $$p$$ to generate various kinds of sentences." %}. Each article $$x$$ typically focuses on a specific topic $$t$$, e.g., finance, sports, politics. Using this prior knowledge, we may build a more accurate model $$p(x \mid t)p(t)$$, in which we have introduced an additional, unobserved variable $$t$$. This model can be more accurate, because we can now learn a separate $$p(x \mid t)$$ for each topic, rather than trying to model everything with one $$p(x)$$.
 
 However, since $$t$$ is unobserved, we cannot directly use the learning methods that we have so far. In fact, the unobserved variables make learning much more difficult; in this chapter, we will look at how to use and how to learn models that involve latent variables.
 
@@ -94,7 +94,7 @@ By "hallucinating" the data, we mean computing the expected log-likelihood
 
 $$ \E_{z \sim p(z|x)} \log p(x,z; \theta). $$
 
-This expectation is what gives the EM algorithm half of its name. If $$z$$ is not too high-dimensional (e.g. in GMMs it is a one-dimensional categorical variable), then we can compute this expectation.
+This expectation is what gives the EM algorithm half of its name. If $$z$$ is not too high-dimensional (e.g., in GMMs it is a one-dimensional categorical variable), then we can compute this expectation.
 
 Since the summation is now outside the log, we can maximize the expected log-likelihood. In particular, when $$p$$ is a directed model, $$\log p$$ again decomposes into a sum of log-CPD terms that can be optimized independently, as discussed in the chapter on directed graphical models.
 

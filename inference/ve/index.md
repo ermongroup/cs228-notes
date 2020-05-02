@@ -4,7 +4,7 @@ title: Variable Elimination
 ---
 Next, we turn our attention to the problem of *inference* in graphical models. Given a probabilistic model (such as a Bayes net or a MRF), we are interested in using it to answer useful questions, e.g., determining the probability that a given email is spam. More formally, we focus on two types of questions:
 
-- *Marginal inference*: what is the probability of a given variable in our model after we sum everything else out (e.g. probability of spam vs. non-spam)?
+- *Marginal inference*: what is the probability of a given variable in our model after we sum everything else out (e.g., probability of spam vs. non-spam)?
 
 $$
 p(y=1) = \sum_{x_1} \sum_{x_2} \cdots \sum_{x_n} p(y=1, x_1, x_2, \dotsc, x_n).
@@ -18,12 +18,12 @@ It turns out that inference is a challenging task. For many probabilities of int
 
 This chapter covers the first exact inference algorithm, *variable elimination*. We discuss approximate inference in later chapters.
 
-We will assume for the rest of the chapter that $$x_i$$ are discrete variables taking $$k$$ possible values each{% include sidenote.html id="note-continuous" note="The principles behind variable elimination also extend to many continuous distributions (e.g. Gaussians), but we will not discuss these extensions here." %}.
+We will assume for the rest of the chapter that $$x_i$$ are discrete variables taking $$k$$ possible values each{% include sidenote.html id="note-continuous" note="The principles behind variable elimination also extend to many continuous distributions (e.g., Gaussians), but we will not discuss these extensions here." %}.
 
 
 ## An illustrative example
 
-Consider first the problem of marginal inference. Suppose for simplicity that we are given a chain Bayesian network, i.e. a probability of the form
+Consider first the problem of marginal inference. Suppose for simplicity that we are given a chain Bayesian network, i.e., a probability of the form
 
 $$ p(x_1, \dotsc, x_n) = p(x_1) \prod_{i=2}^n p(x_i \mid x_{i-1}). $$
 

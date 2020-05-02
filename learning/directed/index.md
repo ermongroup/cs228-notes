@@ -7,7 +7,7 @@ We now turn our attention to the third and last part of the course: *learning*. 
 A graphical model has two components: the graph structure, and the parameters of the factors induced by this graph. These components lead to two different learning tasks:
 
 - *Parameter learning*, where the graph structure is known and we want to estimate the factors.
-- *Structure learning*, where we want to estimate the graph, i.e. determine from data how the variables depend on each other.
+- *Structure learning*, where we want to estimate the graph, i.e., determine from data how the variables depend on each other.
 
 We are going to first focus on parameter learning, and come back to structure learning in a later chapter.
 
@@ -25,8 +25,8 @@ Still, we want to somehow select the "best" approximation to the underlying dist
 What is "best" in this case? It depends on what we want to do:
 
 - Density estimation: we are interested in the full distribution (so later we can compute whatever conditional probabilities we want)
-- Specific prediction tasks: we are using the distribution to make a prediction, e.g. is this email spam or not?
-- Structure or knowledge discovery: we are interested in the model itself, e.g. how do some genes interact with each other?
+- Specific prediction tasks: we are using the distribution to make a prediction, e.g., is this email spam or not?
+- Structure or knowledge discovery: we are interested in the model itself, e.g., how do some genes interact with each other?
 
 ## Maximum likelihood
 
@@ -123,7 +123,7 @@ Notice that the loss function which corresponds to maximum likelihood estimation
 
 Another example of a loss is the conditional log-likelihood. Suppose we want to predict a set of variables $$y$$ given $$x$$, e.g., for segmentation or stereo vision. We concentrate on predicting $$p(y \mid x)$$, and use a conditional loss function $$L(x,y,p) = −\log p(y \mid x)$$. Since the loss function only depends on $$p(y \mid x)$$, it suffices to estimate the conditional distribution, not the joint. This is the objective function we use to train conditional random fields (CRFs).
 
-Suppose next that our ultimate goal is structured prediction, i.e. given $$x$$ we predict $$y$$ via $$\arg\max_y p(y \mid x)$$. What loss function should we use to measure error in this setting?
+Suppose next that our ultimate goal is structured prediction, i.e., given $$x$$ we predict $$y$$ via $$\arg\max_y p(y \mid x)$$. What loss function should we use to measure error in this setting?
 
 One reasonable choice would be the classification error:
 
@@ -133,7 +133,7 @@ $$
 
 which is the probability over all $$(x, y)$$ pairs sampled from $$p^*$$ that we predict the wrong assignment. A somewhat better choice might be the hamming loss, which counts the number of variables in which the MAP assignment differs from the ground truth label. There also exists a fascinating line of work on generalizations of the hinge loss to CRFs, which leads to a class of models called *structured support vector machines*.
 
-The moral of the story here is that it often makes sense to choose a loss that is appropriate to the task at hand, e.g. prediction rather than full density estimation.
+The moral of the story here is that it often makes sense to choose a loss that is appropriate to the task at hand, e.g., prediction rather than full density estimation.
 
 ## Empirical Risk and Overfitting
 
@@ -151,7 +151,7 @@ Thus, there is an inherent bias-variance trade off when selecting the hypothesis
 
 High bias can be avoided by increasing the capacity of the model. We may avoid high variance using several approaches.
 
-We may impose hard constraints, e.g. by selecting a less expressive hypothesis class: Bayesian networks with at most $$d$$ parents or pairwise (rather than arbitrary-order) MRFs. We may also introduce a soft preference for "simpler" models by adding a regularizer term $$R(p)$$ to the loss $$L(x,p)$$, which will penalize overly complex $$p$$.
+We may impose hard constraints, e.g., by selecting a less expressive hypothesis class: Bayesian networks with at most $$d$$ parents or pairwise (rather than arbitrary-order) MRFs. We may also introduce a soft preference for "simpler" models by adding a regularizer term $$R(p)$$ to the loss $$L(x,p)$$, which will penalize overly complex $$p$$.
 
 ### Generalization error
 

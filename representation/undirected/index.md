@@ -45,13 +45,13 @@ A Markov Random Field (MRF) is a probability distribution $$p$$ over variables $
 
 $$ p(x_1, \dotsc, x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c), $$
 
-where $$C$$ denotes the set of *cliques* (i.e. fully connected subgraphs) of $$G$$, and each *factor* $$\phi_c$$ is a non-negative function over the variables in a clique. The *partition function*
+where $$C$$ denotes the set of *cliques* (i.e., fully connected subgraphs) of $$G$$, and each *factor* $$\phi_c$$ is a non-negative function over the variables in a clique. The *partition function*
 
 $$ Z = \sum_{x_1, \dotsc, x_n} \prod_{c \in C} \phi_c(x_c) $$
 
 is a normalizing constant that ensures that the distribution sums to one.
 
-Thus, given a graph $$G$$, our probability distribution may contain factors whose scope is any clique in $$G$$, which can be a single node, an edge, a triangle, etc. Note that we do not need to specify a factor for each clique. In our above example, we defined a factor over each edge (which is a clique of two nodes). However, we chose not to specify any unary factors, i.e. cliques over single nodes.
+Thus, given a graph $$G$$, our probability distribution may contain factors whose scope is any clique in $$G$$, which can be a single node, an edge, a triangle, etc. Note that we do not need to specify a factor for each clique. In our above example, we defined a factor over each edge (which is a clique of two nodes). However, we chose not to specify any unary factors, i.e., cliques over single nodes.
 
 ### Comparison to Bayesian networks
 
@@ -70,13 +70,13 @@ They also possess several important drawbacks:
 - It is much easier to generate data from a Bayesian network, which is important in some applications.
 
 It is not hard to see that Bayesian networks are a special case of MRFs with a very specific type of clique factor (one that corresponds to a conditional probability distribution and implies a directed acyclic structure in the graph), and a normalizing constant of one. In particular, if we take a directed graph $$G$$ and add side edges to all parents of a given node (and removing their directionality), then the CPDs (seen as factors over a variable and its ancestors) factorize over the resulting undirected graph. The resulting process is called *moralization*.
-{% include maincolumn_img.html src='assets/img/moralization.png' caption='A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g. fully connected) directed graph.' %}
+{% include maincolumn_img.html src='assets/img/moralization.png' caption='A Bayesian network can always be converted into an undirected network with normalization constant one. The converse is also possible, but may be computationally intractable, and may produce a very large (e.g., fully connected) directed graph.' %}
 
 Thus, MRFs have more power than Bayesian networks, but are more difficult to deal with computationally. A general rule of thumb is to use Bayesian networks whenever possible, and only switch to MRFs if there is no natural way to model the problem with a directed graph (like in our voting example).
 
 ## Independencies in Markov Random Fields
 
-Recall that in the case of Bayesian networks, we defined a set of independencies $$I(G)$$ that were described by a directed graph $$G$$, and showed how these describe true independencies that must hold in a distribution $$p$$ that factorizes over the directed graph, i.e. $$I(G) \subseteq I(p)$$.
+Recall that in the case of Bayesian networks, we defined a set of independencies $$I(G)$$ that were described by a directed graph $$G$$, and showed how these describe true independencies that must hold in a distribution $$p$$ that factorizes over the directed graph, i.e., $$I(G) \subseteq I(p)$$.
 
 {% include marginfigure.html id="markovblanket" url="assets/img/markovblanket.png" description="In an MRF, a node $$X$$ is independent from the rest of the graph given its neighbors (which are referred to as the Markov blanket of $$X$$)." %}
 What independencies can be then described by an undirected MRF? The answer here is very simple and intuitive: variables $$x,y$$ are dependent if they are connected by a path of unobserved variables. However, if $$x$$'s neighbors are all observed, then $$x$$ is independent of all the other variables, since they influence $$x$$ only via its neighbors.
@@ -85,9 +85,9 @@ In particular, if a set of observed variables forms a cut-set between two halves
 
 {% include maincolumn_img.html src='assets/img/cutset.png' description='' %}
 
-Formally, we define the *Markov blanket* $$U$$ of a variable $$X$$ as the minimal set of nodes such that $$X$$ is independent from the rest of the graph if $$U$$ is observed, i.e. $$X \perp (\mathcal{X} - \{X\} - U) \mid U$$. This notion holds for both directed and undirected models, but in the undirected case the Markov blanket turns out to simply equal a node's neighborhood.
+Formally, we define the *Markov blanket* $$U$$ of a variable $$X$$ as the minimal set of nodes such that $$X$$ is independent from the rest of the graph if $$U$$ is observed, i.e., $$X \perp (\mathcal{X} - \{X\} - U) \mid U$$. This notion holds for both directed and undirected models, but in the undirected case the Markov blanket turns out to simply equal a node's neighborhood.
 
-In the directed case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$G$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e. the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
+In the directed case, we found that $$I(G) \subseteq I(p)$$, but there were distributions $$p$$ whose independencies could not be described by $$G$$. In the undirected case, the same holds. For example, consider a probability described by a directed v-structure (i.e., the explaining away phenomenon). The undirected model cannot describe the independence assumption $$X \perp Y$$.
 
 {% include maincolumn_img.html src='assets/img/mrf-bn-comparison.png' caption='Examples of probability distributions that have a perfect directed graphical representation but no undirected representation, and vice-versa.' %}
 
@@ -114,11 +114,11 @@ with partition function
 
 $$ Z(x) = \sum_{y \in \mathcal{Y}} \prod_{c \in C} \phi_c(x_c,y_c). $$
 
-Note that in this case, the partition constant now depends on $$x$$ (therefore, we say that it is a function), which is not surprising: $$p(y\mid x)$$ is a probability over $$y$$ that is parametrized by $$x$$, i.e. it encodes a different probability function for each $$x$$. In that sense, a conditional random field results in an instantiation of a new Markov Random Field for each input $$x$$.
+Note that in this case, the partition constant now depends on $$x$$ (therefore, we say that it is a function), which is not surprising: $$p(y\mid x)$$ is a probability over $$y$$ that is parametrized by $$x$$, i.e., it encodes a different probability function for each $$x$$. In that sense, a conditional random field results in an instantiation of a new Markov Random Field for each input $$x$$.
 
 ### Example (continued)
 
-More formally, suppose $$p(y\mid x)$$ is a chain CRF with two types of factors: image factors $$\phi(x_i, y_i)$$ for $$i = 1, \dotsc, n$$ — which assign higher values to $$y_i$$ that are consistent with an input $$x_i$$ — as well as pairwise factors $$\phi(y_i, y_{i+1})$$ for $$i = 1, \dotsc, n-1$$. We may also think of the $$\phi(x_i,y_i)$$ as probabilities $$p(y_i\mid x_i)$$ given by, say, standard (unstructured) softmax regression; the $$\phi(y_i, y_{i+1})$$ can be seen as empirical frequencies of letter co-occurrences obtained from a large corpus of English text (e.g. Wikipedia).
+More formally, suppose $$p(y\mid x)$$ is a chain CRF with two types of factors: image factors $$\phi(x_i, y_i)$$ for $$i = 1, \dotsc, n$$ — which assign higher values to $$y_i$$ that are consistent with an input $$x_i$$ — as well as pairwise factors $$\phi(y_i, y_{i+1})$$ for $$i = 1, \dotsc, n-1$$. We may also think of the $$\phi(x_i,y_i)$$ as probabilities $$p(y_i\mid x_i)$$ given by, say, standard (unstructured) softmax regression; the $$\phi(y_i, y_{i+1})$$ can be seen as empirical frequencies of letter co-occurrences obtained from a large corpus of English text (e.g., Wikipedia).
 
 Given a model of this form, we can jointly infer the structured label $$y$$ using MAP inference:
 
@@ -144,7 +144,7 @@ $$
 
 where $$\phi'(y_i) = \phi(x,y_i)$$. Using global features only changes the values of the factors, but not their scope, which possesses the same type of chain structure. We will see in the next section that this structure is all that is needed to ensure we can solve this optimization problem tractably.
 
-This observation may be interpreted in a slightly more general form. If we were to model $$p(x,y)$$ using an MRF (viewed as a single model over $$x, y$$ with normalizing constant $$Z = \sum_{x,y} \tp(x,y)$$), then we need to fit two distributions to the data: $$p(y\mid x)$$ and $$p(x)$$. However, if all we are interested in is predicting $$y$$ given $$x$$, then modeling $$p(x)$$ is unnecessary. In fact, it may be disadvantageous to do so statistically (e.g. we may not have enough data to fit both $$p(y\mid x)$$ and $$p(x)$$; since the models have shared parameters, fitting one may not result in the best parameters for the other) and it may not be a good idea computationally (we need to make simplifying assumptions in the distribution so that $$p(x)$$ can be handled tractably). CRFs forgo this assumption, and often perform better on prediction tasks.
+This observation may be interpreted in a slightly more general form. If we were to model $$p(x,y)$$ using an MRF (viewed as a single model over $$x, y$$ with normalizing constant $$Z = \sum_{x,y} \tp(x,y)$$), then we need to fit two distributions to the data: $$p(y\mid x)$$ and $$p(x)$$. However, if all we are interested in is predicting $$y$$ given $$x$$, then modeling $$p(x)$$ is unnecessary. In fact, it may be disadvantageous to do so statistically (e.g., we may not have enough data to fit both $$p(y\mid x)$$ and $$p(x)$$; since the models have shared parameters, fitting one may not result in the best parameters for the other) and it may not be a good idea computationally (we need to make simplifying assumptions in the distribution so that $$p(x)$$ can be handled tractably). CRFs forgo this assumption, and often perform better on prediction tasks.
 
 ## Factor Graphs
 

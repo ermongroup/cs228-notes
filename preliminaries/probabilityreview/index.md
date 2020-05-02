@@ -13,7 +13,7 @@ In order to define a probability on a set we need a few basic elements.
 
 **Probability measure**: A function $$P : F \to \Re$$ that satisfies the following **properties**
 * $$P(A) \geq 0$$, for all $$A \in F$$
-* If $$A_1, A_2, \dotsc$$ are disjoint events (i.e. $$A_i \cap A_j = \emptyset$$ whenever $$i \neq j$$), then $$P(\bigcup_i A_i) = \sum_i P(A_i)$$
+* If $$A_1, A_2, \dotsc$$ are disjoint events (i.e., $$A_i \cap A_j = \emptyset$$ whenever $$i \neq j$$), then $$P(\bigcup_i A_i) = \sum_i P(A_i)$$
 * $$P(\Omega) = 1$$.
 
 These three **properties** are called the **Axioms of Probability**.
