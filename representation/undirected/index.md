@@ -45,7 +45,7 @@ A Markov Random Field (MRF) is a probability distribution $$p$$ over variables $
 
 $$ p(x_1, \dotsc, x_n) = \frac{1}{Z} \prod_{c \in C} \phi_c(x_c), $$
 
-where $$C$$ denotes the set of *cliques* (i.e. fully connected subgraphs) of $$G$$, and each *factor* $$\phi_c$$ is a nonegative function over the variables in a clique. The *partition function*
+where $$C$$ denotes the set of *cliques* (i.e. fully connected subgraphs) of $$G$$, and each *factor* $$\phi_c$$ is a non-negative function over the variables in a clique. The *partition function*
 
 $$ Z = \sum_{x_1, \dotsc, x_n} \prod_{c \in C} \phi_c(x_c) $$
 

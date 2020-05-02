@@ -74,7 +74,7 @@ The second variant of the belief propagation algorithm, called max-product messa
 
 $$ \max_{x_1, \dotsc, x_n} p(x_1, \dotsc, x_n). $$
 
-The framework we have introduced for marginal inference now lets us easily perform MAP inference as well. The key observation is that the sum and max operators both distribute over products. Thus, replacing sums in marginal inference with maxes, we are able to solve the MAP inference problem.
+The framework we have introduced for marginal inference now lets us easily perform MAP inference as well. The key observation is that the sum and max operators both distribute over products.{% include sidenote.html id="note-maxdistribute" note="In general, the max operator only distributes over products of non-negative factors. By definition, MRF factors are non-negative." %} Thus, replacing sums in marginal inference with maxes, we are able to solve the MAP inference problem.
 
 For example, we may compute the partition function of a chain MRF as follows:
 
