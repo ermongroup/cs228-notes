@@ -156,7 +156,7 @@ $$ \lim_{T \to \infty} \E_{z \sim q} [\hat{P}(X_i=x_i \mid E=e)] = P(X_i=x_i \mi
 
 ## Markov chain Monte Carlo
 
-Let us now turn our attention from computing expectations to performing marginal and MAP inference using sampling. We will solve these problems using a very powerful technique called Markov chain Monte Carlo{% include sidenote.html id="note-mcmc" note="Markov chain Monte Carlo is another algorithm that was developed during the Manhattan project and eventually republished in the scientific literature some decades later. It is so important, that is was recently named as one of the [10 most important algorithms](https://www.siam.org/pdf/news/637.pdf) of the XXth century." %} (MCMC).
+Let us now turn our attention from computing expectations to performing marginal and MAP inference using sampling. We will solve these problems using a very powerful technique called Markov chain Monte Carlo{% include sidenote.html id="note-mcmc" note="Markov chain Monte Carlo is another algorithm that was developed during the Manhattan project and eventually republished in the scientific literature some decades later. It is so important, that is was recently named as one of the [10 most important algorithms](https://archive.siam.org/pdf/news/637.pdf) of the 20th century." %} (MCMC).
 
 ### Markov Chain
 
