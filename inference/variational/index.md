@@ -93,9 +93,9 @@ $$
 KL(q\|p) = \sum_x q(x) \log \frac{q(x)}{p(x)}.
 $$
 
-This means that if $$p(x) = 0$$ we must have $$q(x) = 0$$. We say that $$KL(q\|p)$$ is zero-forcing for $$q$$ and it will typically under-estimate the support of $$q$$.
+This means that if $$p(x) = 0$$ we must have $$q(x) = 0$$. We say that $$KL(q\|p)$$ is zero-forcing for $$q$$ and it will typically under-estimate the support of $$p$$.
 
-On the other hand, $$KL(p\|q)$$ --- known as the M-projection or the moment projection --- is infinite if $$q(x) = 0$$ and $$p(x) > 0$$. Thus, if $$p(x) > 0$$ we must have $$q(x) > 0$$. We say that $$KL(p\|q)$$ is zero-avoiding for $$q$$ and it will typically over-estimate the support of $$q$$.
+On the other hand, $$KL(p\|q)$$ --- known as the M-projection or the moment projection --- is infinite if $$q(x) = 0$$ and $$p(x) > 0$$. Thus, if $$p(x) > 0$$ we must have $$q(x) > 0$$. We say that $$KL(p\|q)$$ is zero-avoiding for $$q$$ and it will typically over-estimate the support of $$p$$.
 
 The figure below illustrates this phenomenon graphically.
 
