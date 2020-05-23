@@ -8,7 +8,7 @@ However, this algorithm has an important shortcoming: if we want to ask the mode
 
 Fortunately, it turns out that this problem is also easily avoidable. When computing marginals, VE produces many intermediate factors $$\tau$$ as a side-product of the main computation; these factors turn out to be the same as the ones that we need to answer other marginal queries. By caching them after a first run of VE, we can easily answer new marginal queries at essentially no additional cost.
 
-The end result of this chapter will be a new technique called the Junction Tree (JT) algorithm{% include sidenote.html id="note-VEandJT" note="If you are familiar with dynamic programming (DP), you can think of VE vs. the JT algorithm as two flavors of same technique: top-down DP v.s. bottom-up table filling. Just like in computing the $$n$$-th Fibonacci number $$F_n$$, top-down DP (i.e., VE) computes *just* that number, but bottom-up (i.e., JT) will create a filled table of all $$F_i$$ for $$i \leq n$$. Moreover, the two-pass nature of JT is a result of the underlying DP on bi-directional (junction) trees, while Fibonacci numbers' relation is a uni-directional tree." %}; this algorithm will first execute two runs of the VE algorithm to initialize a particular data structure holding a set of pre-computed factors. Once the structure is initialized, it can answer marginal queries in $$O(1)$$ time.
+The end result of this chapter will be a new technique called the Junction Tree (JT) algorithm{% include sidenote.html id="note-VEandJT" note="If you are familiar with dynamic programming (DP), you can think of VE vs. the JT algorithm as two flavors of same technique: top-down DP vs. bottom-up table filling. Just like in computing the $$n$$-th Fibonacci number $$F_n$$, top-down DP (i.e., VE) computes *just* that number, but bottom-up (i.e., JT) will create a filled table of all $$F_i$$ for $$i \leq n$$. Moreover, the two-pass nature of JT is a result of the underlying DP on bi-directional (junction) trees, while Fibonacci numbers' relation is a uni-directional tree." %}; this algorithm will first execute two runs of the VE algorithm to initialize a particular data structure holding a set of pre-computed factors. Once the structure is initialized, it can answer marginal queries in $$O(1)$$ time.
 
 We will introduce two variants of this algorithm: belief propagation (BP), and the full junction tree method. BP applies to tree-structured graphs, while the junction-tree method is applicable to general networks.
 
@@ -18,12 +18,12 @@ We will introduce two variants of this algorithm: belief propagation (BP), and t
 
 First, consider what happens if we run the VE algorithm on a tree in order to compute a marginal $$p(x_i)$$. We can easily find an optimal ordering for this problem by rooting the tree at $$x_i$$ and iterating through the nodes in post-order{% include sidenote.html id="note-postorder" note="A postorder traversal of a rooted tree is one that starts from the leaves and goes up the tree such that a node is always visited after all of its children. The root is visited last." %}.
 
-This ordering is optimal because the largest clique formed during VE will have size 2. At each step, we will eliminate $$x_j$$; this will involve computing the factor $$\tau_{jk}(x_k) = \sum_{x_j} \phi(x_k, x_j) \tau_j(x_j)$$, where $$x_k$$ is the parent of $$x_j$$ in the tree. At a later step, $$x_k$$ will be eliminated, and $$\tau_{jk}(x_k)$$ will be passed up the tree to the parent $$x_l$$ of $$x_k$$ in order to be multiplied by the factor $$\phi(x_l, x_k)$$ before being marginalized out. The factor $$\tau_j(x_j)$$ can be thought of as a message that $$x_j$$ sends to $$x_k$$ that summarizes all of the information from the subtree rooted at $$x_j$$. We can visualize this transfer of information using arrows on a tree.
+This ordering is optimal because the largest clique formed during VE will have size 2. At each step, we will eliminate $$x_j$$; this will involve computing the factor $$\tau_k(x_k) = \sum_{x_j} \phi(x_k, x_j) \tau_j(x_j)$$, where $$x_k$$ is the parent of $$x_j$$ in the tree. At a later step, $$x_k$$ will be eliminated, and $$\tau_k(x_k)$$ will be passed up the tree to the parent $$x_l$$ of $$x_k$$ in order to be multiplied by the factor $$\phi(x_l, x_k)$$ before being marginalized out. The factor $$\tau_j(x_j)$$ can be thought of as a message that $$x_j$$ sends to $$x_k$$ that summarizes all of the information from the subtree rooted at $$x_j$$. We can visualize this transfer of information using arrows on a tree.
 {% include marginfigure.html id="mp1" url="assets/img/mp1.png" description="Message passing order when using VE to compute $$p(x_3)$$ on a small tree." %}
 
 At the end of VE, $$x_i$$ receives messages from all of its immediate children, marginalizes them out, and we obtain the final marginal.
 
-Now suppose that after computing $$p(x_i)$$, we want to compute $$p(x_k)$$ as well. We would again run VE with $$x_k$$ as the root, waiting until $$x_k$$ receives all messages from its children. The key insight: the messages $$x_k$$ received from $$x_j$$ now will be the same as those received when $$x_i$$ was the root{% include sidenote.html id="note-ve" note="Another reason why this is true is because there is only a single path connecting two nodes in the tree." %}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly recompute other marginals as well.
+Now suppose that after computing $$p(x_i)$$, we want to compute $$p(x_k)$$ as well. We would again run VE with $$x_k$$ as the root, waiting until $$x_k$$ receives all messages from its children. The key insight: the messages $$x_k$$ received from $$x_j$$ now will be the same as those received when $$x_i$$ was the root{% include sidenote.html id="note-ve" note="Another reason why this is true is because there is only a single path connecting two nodes in the tree." %}. Thus, if we store the intermediary messages of the VE algorithm, we can quickly compute other marginals as well.
 
 ### A message-passing algorithm
 
@@ -82,17 +82,17 @@ $$
 \begin{align*}
 Z
 &= \sum_{x_1} \cdots \sum_{x_n} \phi(x_1) \prod_{i=2}^n \phi(x_i, x_{i-1}) \\
-&= \sum_{x_n} \sum_{x_{n-1}} \phi(x_n, x_{n-1}) \sum_{x_{n-2}} \phi(x_{n-1}, x_{n-2}) \cdots \sum_{x_1} \phi(x_2 , x_1) \phi(x_1) .
+&= \sum_{x_n} \sum_{x_{n-1}} \phi(x_n, x_{n-1}) \sum_{x_{n-2}} \phi(x_{n-1}, x_{n-2}) \cdots \sum_{x_1} \phi(x_2 , x_1) \phi(x_1).
 \end{align*}
 $$
 
-To compute the maximum value $$\tp^*$$ of $$\tp(x_1, \dotsc, x_n)$$, we simply replace sums with maxes, i.e.
+To compute the maximum value $$\tp^*$$ of $$\tp(x_1, \dotsc, x_n)$$, we simply replace sums with maxes:
 
 $$
 \begin{align*}
 \tp^*
 &= \max_{x_1} \cdots \max_{x_n} \phi(x_1) \prod_{i=2}^n \phi(x_i, x_{i-1}) \\
-&= \max_{x_n} \max_{x_{n-1}} \phi(x_n, x_{n-1}) \max_{x_{n-2}} \phi(x_{n-1}, x_{n-2}) \cdots \max_{x_1} \phi(x_2 , x_1) \phi(x_1) .
+&= \max_{x_n} \max_{x_{n-1}} \phi(x_n, x_{n-1}) \max_{x_{n-2}} \phi(x_{n-1}, x_{n-2}) \cdots \max_{x_1} \phi(x_2 , x_1) \phi(x_1).
 \end{align*}
 $$
 
