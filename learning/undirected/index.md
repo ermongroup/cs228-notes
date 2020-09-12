@@ -42,7 +42,7 @@ $$ p(x; \theta) = \frac{\exp(\theta^T f(x))}{Z(\theta)}. $$
 
 Here are few facts about these distributions that you should know about.
 
-- Exponential families are log-concave in their *natural parameters* $$\theta$$. The partition function $$Z(\theta)$$ is also log-convex in $$\theta$$.
+- Exponential families are log-convex in their *natural parameters* $$\theta$$. The partition function $$Z(\theta)$$ is also log-convex in $$\theta$$.
 - The vector $$f(x)$$ is called the vector of *sufficient statistics*; these fully describe the distribution $$p$$; e.g., if $$p$$ is Gaussian, $$f(x)$$ contains (simple reparametrizations of) the mean and the variance of $$p$$.
 - Exponential families make the fewest unnecessary assumptions about the data distribution. More formally, the distribution maximizing the entropy $$H(p)$$ under the constraint $$\E_p[\phi(x)] = \alpha$$ (i.e., the sufficient statistics equal some value $$\alpha$$) is in the exponential family.
 
