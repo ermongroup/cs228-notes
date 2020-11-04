@@ -73,7 +73,7 @@ $$ \log Z(\theta) = KL(q\|p) - J(q) \geq -J(q). $$
 
 Thus, $$-J(q)$$ is a *lower bound* on the log partition function $$\log Z(\theta)$$. In many cases, $$Z(\theta)$$ has an interesting interpretation. For example, we may be trying to compute the marginal probability $$p(x \mid D) = p(x,D) / p(D)$$ of variables $$x$$ given observed data $$D$$ that plays the role of evidence. We assume that $$p(x,D)$$ is directed. In this case, minimizing $$J(q)$$ amounts to maximizing a lower bound on the log-likelihood $$\log p(D)$$ of the observed data.
 
-Because of this property, $$-J(q)$$ is called the variational lower bound or the evidence lower bound (ELBO); it often written in the form
+Because of this property, $$-J(q)$$ is called the variational lower bound or the evidence lower bound (ELBO); it is often written in the form
 
 $$ \log Z(\theta) \geq \E_{q(x)} [ \log \tp(x) - \log q(x) ]. $$
 
