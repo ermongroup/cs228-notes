@@ -84,9 +84,9 @@ The Expectation-Maximization (EM) algorithm is a hugely important and widely use
 The EM algorithm relies on two simple observations.
 
 - If the latent $$z$$ were fully observed, then we could optimize the log-likelihood exactly using our previously seen closed form solution for $$p(x,z)$$.
-- Knowing the weights, we can often efficiently compute the posterior $$p(z\mid x; \theta)$$ (this is an assumption; it is not true for some models).
+- Knowing the parameters, we can often efficiently compute the posterior $$p(z\mid x; \theta)$$ (this is an assumption; it is not true for some models).
 
-EM follows a simple iterative two-step strategy: given an estimate $$\theta_t$$ of the weights, compute $$p(z\mid x)$$ and use it to "hallucinate" values for $$z$$. Then, find a new $$\theta_{t+1}$$ by optimizing the resulting tractable objective. This process will eventually converge.
+EM follows a simple iterative two-step strategy: given an estimate $$\theta_t$$ of the parameters, compute $$p(z\mid x)$$ and use it to "hallucinate" values for $$z$$. Then, find a new $$\theta_{t+1}$$ by optimizing the resulting tractable objective. This process will eventually converge.
 
 We haven't exactly defined what we mean by "hallucinating" the data. The full definition is a bit technical, but its instantiation is very intuitive in most models like GMMs.
 
@@ -102,7 +102,7 @@ We can formally define the EM algorithm as follows. Let $$D$$ be our dataset.
 
 - Starting at an initial $$\theta_0$$, repeat until convergence for $$t = 1, 2, \dotsc$$:
 - *E-Step*: For each $$x \in D$$, compute the posterior $$p(z\mid x; \theta_t)$$.
-- *M-Step*: Compute new weights via
+- *M-Step*: Compute new parameters via
 
 $$
 \theta_{t+1} = \arg\max_\theta \sum_{x \in D} \E_{z \sim p(z|x; \theta_t)} \log p(x,z; \theta).
