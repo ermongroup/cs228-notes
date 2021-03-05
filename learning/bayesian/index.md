@@ -53,7 +53,7 @@ $$
 p(\mathcal{D}) = \int_\theta p(\mathcal{D} \mid \theta)p(\theta)d\theta
 $$
 
-This might cause us trouble, since integration is usually difficult. For this very simple example, we might be able to compute this integral, but as you may have seen many times in this class, if $\theta$ is high dimensional that computing integrals could be quite challenging. 
+This might cause us trouble, since integration is usually difficult. For this very simple example, we might be able to compute this integral, but as you may have seen many times in this class, if $$\theta$$ is high dimensional then computing integrals could be quite challenging. 
 
 To tackle this issue, people have observed that for some choices of prior $p(\theta)$, the posterior distribution $$p(\theta \mid \mathcal{D})$$ can be directly computed in closed form. Going back to our coin toss example, where we are given a sequence of $$N$$ coin tosses, $$\mathcal{D} = \{X_{1},\ldots,X_{N}\}$$ and we want to infer the probability of getting heads $$\theta$$ using Bayes rule. Suppose we choose the prior $$p(\theta)$$ as the Beta distribution defined by
 
@@ -84,7 +84,7 @@ The idea we presented here is usually called "conjugacy". Using standard terminl
 
 ### Categorical Distribution
 
-We give another example of a conjugate prior which generalizes the Bernoulli example above. Instead of being limited to binary outcomes, we can now consider the categorical distribution (think of a $$K$$-sided dice). Let $$\mathcal{D} = \{ X_1, \ldots, X_N \}$$ be $N$ rolls of the dice, where $$X_j \in \{ 1, \ldots, K \}$$ is the outcome of the $$j$$-th roll. The parameter of the categorical distribution is denoted by $\theta$
+We give another example of a conjugate prior which generalizes the Bernoulli example above. Instead of being limited to binary outcomes, we can now consider the categorical distribution (think of a $$K$$-sided dice). Let $$\mathcal{D} = \{ X_1, \ldots, X_N \}$$ be $N$ rolls of the dice, where $$X_j \in \{ 1, \ldots, K \}$$ is the outcome of the $$j$$-th roll. The parameter of the categorical distribution is denoted by $$\theta$$
 
 $$
 \theta =(\theta_1, \cdots, \theta_K) := (P(X_j = 1), \ldots, P(X_j = K))
@@ -116,7 +116,7 @@ In other words, if the prior is a Dirichlet distribution with parameter $$(\alph
 
 ### Some Concluding Remarks
 
-Many distributions have conjugate priors. In fact, any exponential family distribution have a conjugate prior. Even though conjugacy seemingly solve the problem of computing Bayesian posteriors, there are two caveats: 1. Usually practitioners will want to choose the prior $p(\theta)$ to best capture his or her knowledge about the problem, and using conjugate priors is a strong restriction. 2. For more complex distributions, the posterior computation is not as easy as those in our examples. There are distributions for which the posterior computation is still NP hard. 
+Many distributions have conjugate priors. In fact, any exponential family distribution have a conjugate prior. Even though conjugacy seemingly solve the problem of computing Bayesian posteriors, there are two caveats: 1. Usually practitioners will want to choose the prior $$p(\theta)$$ to best capture his or her knowledge about the problem, and using conjugate priors is a strong restriction. 2. For more complex distributions, the posterior computation is not as easy as those in our examples. There are distributions for which the posterior computation is still NP hard. 
 
 Conjugate priors is a powerful tool used in many real world applications such as topic modeling (e.g. latent dirichlet allocation) and medical diagnosis. However, practitioners should be mindful of its short-comings and consider and compare with other tools such as MCMC or variational inference (also covered in these lecture notes). 
 
