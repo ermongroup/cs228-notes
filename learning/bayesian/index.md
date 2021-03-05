@@ -55,7 +55,7 @@ $$
 
 This might cause us trouble, since integration is usually difficult. For this very simple example, we might be able to compute this integral, but as you may have seen many times in this class, if $$\theta$$ is high dimensional then computing integrals could be quite challenging. 
 
-To tackle this issue, people have observed that for some choices of prior $p(\theta)$, the posterior distribution $$p(\theta \mid \mathcal{D})$$ can be directly computed in closed form. Going back to our coin toss example, where we are given a sequence of $$N$$ coin tosses, $$\mathcal{D} = \{X_{1},\ldots,X_{N}\}$$ and we want to infer the probability of getting heads $$\theta$$ using Bayes rule. Suppose we choose the prior $$p(\theta)$$ as the Beta distribution defined by
+To tackle this issue, people have observed that for some choices of prior $$p(\theta)$$, the posterior distribution $$p(\theta \mid \mathcal{D})$$ can be directly computed in closed form. Going back to our coin toss example, where we are given a sequence of $$N$$ coin tosses, $$\mathcal{D} = \{X_{1},\ldots,X_{N}\}$$ and we want to infer the probability of getting heads $$\theta$$ using Bayes rule. Suppose we choose the prior $$p(\theta)$$ as the Beta distribution defined by
 
 $$
 P(\theta) = Beta(\theta \mid \alpha_H, \alpha_T) = \frac{\theta^{\alpha_H -1 }(1-\theta)^{\alpha_T -1 }}{B(\alpha_H,\alpha_T)}
