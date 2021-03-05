@@ -32,7 +32,7 @@ In contrast to maximum likelihood learning, Bayesian learning explicitly models 
 
 A _prior_ distribution over the parameters, $$p(\theta)$$ encodes our initial beliefs. These beliefs are subjective. For example, we can choose the prior over $$\theta$$ for a biased coin to be uniform between 0 and 1. If however we expect the coin to be fair, the prior distribution can be peaked around $$\theta = 0.5$$. We will discuss commonly used priors later in this chapter.
 
-If we observed the dataset $$\mathcal{D} = \lbrace X_1, \cdots, X_N \rbrace$$ (in the coin toss example, each $X_i$ is the outcome of one toss of the coin) we can update our beliefs using Bayes' rule,
+If we observed the dataset $$\mathcal{D} = \lbrace X_1, \cdots, X_N \rbrace$$ (in the coin toss example, each $$X_i$$ is the outcome of one toss of the coin) we can update our beliefs using Bayes' rule,
 
 $$
 p(\theta \mid \mathcal{D}) = \frac{p(\mathcal{D} \mid \theta) \, p(\theta)}{p(\mathcal{D})} \propto p(\mathcal{D} \mid \theta) \, p(\theta)
@@ -48,26 +48,31 @@ Hence, Bayesian learning provides a principled mechanism for incorporating prior
 
 ## Conjugate Priors
 When calculating posterior distribution using Bayes' rule, as in the above, it should be pretty straightforward to calculate the numerator. But to calculate the denominator $$p(\mathcal{D})$$, we are required to compute an integral 
+
 $$
 p(\mathcal{D}) = \int_\theta p(\mathcal{D} \mid \theta)p(\theta)d\theta
 $$
+
 This might cause us trouble, since integration is usually difficult. For this very simple example, we might be able to compute this integral, but as you may have seen many times in this class, if $\theta$ is high dimensional that computing integrals could be quite challenging. 
 
 To tackle this issue, people have observed that for some choices of prior $p(\theta)$, the posterior distribution $$p(\theta \mid \mathcal{D})$$ can be directly computed in closed form. Going back to our coin toss example, where we are given a sequence of $$N$$ coin tosses, $$\mathcal{D} = \{X_{1},\ldots,X_{N}\}$$ and we want to infer the probability of getting heads $$\theta$$ using Bayes rule. Suppose we choose the prior $$p(\theta)$$ as the Beta distribution defined by
+
 $$
 P(\theta) = Beta(\theta \mid \alpha_H, \alpha_T) = \frac{\theta^{\alpha_H -1 }(1-\theta)^{\alpha_T -1 }}{B(\alpha_H,\alpha_T)}
 $$
 
 where $$\alpha_H$$ and $$\alpha_T$$ are the two parameters that determine the shape of the distribution (similar to how the mean and variance determine a Gaussian distribution), and $$B(\alpha_H, \alpha_T)$$ is some normalization constant that ensures $$\int p(\theta)d\theta=1$$. We will go into more details about the Beta distribution later. What matters here is that the Beta distribution has a very special property: the posterior $$p(\theta \mid \mathcal{D})$$ is always another Beta distribution (but with different parameters). More concretely, out of $$N$$ coin tosses, if the number of heads and the number of tails are $$N_H$$ and $$N_T$$ respectively, then it can be shown that the posterior is:
+
 $$
 P(\theta \mid \mathcal{D}) = Beta(\theta \mid \alpha_H+N_H,\alpha_T+H_T) = \frac{\theta^{N_H+ \alpha_H -1 }(1-\theta)^{ N_T+ \alpha_T -1 }}{B(N_H+ \alpha_H,N_T+ \alpha_T)}
 $$
+
+{% include marginfigure.html id="beta" url="assets/img/beta.png" description="The expectation of both $$Beta(3,2)$$ and $$Beta(30,20)$$ are $$0.6$$, but $$Beta(30,20)$$ is much more concentrated. This can be used to represent different levels of uncertainty in $$\theta$$" %}
 
 which is another Beta distribution with parameters $$(\alpha_H+N_H, \alpha_T+N_T)$$. In other words, if the prior is a Beta distribution (we can represent it as two numbers $$\alpha_H,\alpha_T$$) then the posterior can be immediately computed by a simple addition $$\alpha_H+N_H, \alpha_T+N_T$$. There is no need to compute the complex integral $$p(\mathcal{D})$$. 
 
 
 
-{% include marginfigure.html id="beta" url="assets/img/beta.png" description="Here the exponents $$(3,2)$$ and $$(30,20)$$ can both be used to encode the belief that $$\theta$$ is $$0.6.$$ But the second set of exponents imply a stronger belief as they are based on a larger sample." %}
 
 Now we try to understand the Beta distribution better. If $$\theta$$ has distribution $$Beta(\theta \mid \alpha_H, \alpha_T)$$, then the expected value of $$\theta$$ is $$\frac{\alpha_H}{\alpha_H+\alpha_T}$$. Intuitively, $$\alpha_H$$ is larger than $$\alpha_T$$ if we believe that heads are more likely. The variance of the Beta distribution is the somewhat complex expression $$\frac{\alpha_H\alpha_T}{(\alpha_H+\alpha_T)^2(\alpha_H+\alpha_T+1)}$$, but we remark that (very roughly) the numerator is quadratic in $$\alpha_H,\alpha_T$$ while the denominator is cubic in $$\alpha_H,\alpha_T$$. Hence if $$\alpha_H$$ and $$\alpha_T$$ are bigger, the variance is smaller, so we are more certain about the value of $$\theta$$. We can use this observation to better understand the above posterior update rule: after observing more data $$\mathcal{D}$$, the prior parameters $$\alpha_H$$ and $$\alpha_T$$ increases by $$N_H$$ and $$N_T$$ respectively. Thus, the variance of $$p(\theta \mid \mathcal{D})$$ should be smaller than $$p(\theta)$$, i.e. we are more certain about the value of $$\theta$$ after observing data $$\mathcal{D}$$. 
 
@@ -80,9 +85,11 @@ The idea we presented here is usually called "conjugacy". Using standard terminl
 ### Categorical Distribution
 
 We give another example of a conjugate prior which generalizes the Bernoulli example above. Instead of being limited to binary outcomes, we can now consider the categorical distribution (think of a $$K$$-sided dice). Let $$\mathcal{D} = \{ X_1, \ldots, X_N \}$$ be $N$ rolls of the dice, where $$X_j \in \{ 1, \ldots, K \}$$ is the outcome of the $$j$$-th roll. The parameter of the categorical distribution is denoted by $\theta$
+
 $$
 \theta =(\theta_1, \cdots, \theta_K) := (P(X_j = 1), \ldots, P(X_j = K))
 $$
+
 where $$\sum_{k = 1}^K \theta_k = 1$$.
 
 We claim that the Dirichlet distribution is the conjugate prior for the categorical distribution. A Dirichlet distribution is defined by $$K$$ parameters $$\mathbf{\alpha} = (\alpha_1, \ldots, \alpha_K)$$, and its PDF is given by 
@@ -100,6 +107,7 @@ P(\mathcal{D} \mid \theta) = \prod_{k=1}^K \theta_k^{\sum_{j=1}^N 1\{ X_j = k \}
 $$
 
 To simply the notation we denote $$N_k = \sum_{j=1}^N 1\lbrace X_j=k\rbrace$$ as the number of times we roll out $$k$$, so $$p(\mathcal{D}\mid\theta)=\prod\theta_k^{N_k}$$. Using this new notation the posterior can be calculated as 
+
 $$
 P(\theta \mid \mathcal{D}) \propto P(\mathcal{D} \mid \theta) P(\theta) \propto \prod_{k=1}^K \theta_k^{N_k + \alpha_k - 1}:=\textsf{Dirichlet}(\theta \mid \alpha_1+N_1,\cdots,\alpha_K+N_K)
 $$
