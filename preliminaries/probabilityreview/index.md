@@ -127,7 +127,7 @@ Both CDFs and PDFs (when they exist) can be used for calculating the probabiliti
 
 ### **Properties**:
 - $$f_X(x) \geq 0$$.
-- $$\int^{\infty}_{-\infty} f_X(x) = 1$$.
+- $$\int^{\infty}_{-\infty} f_X(x) dx = 1$$.
 - $$\int_{x \in A} f_X(x) dx = P(X \in A)$$.
 
 
