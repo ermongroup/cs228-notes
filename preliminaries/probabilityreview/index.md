@@ -103,7 +103,7 @@ By using this function, one can calculate the probability that $$X$$ takes on a 
 
 
 ## 2.2 Probability mass functions
-When a random variable $$X$$ takes on a finite set of possible values (i.e., $$X$$ is a discrete random variable), a simpler way to represent the probability measure associated with a random variable is to directly specify the probability of each value that the random variable can assume. In particular, a probability mass function (PMF) is a function $$p_X : \Omega \to \Re$$ such that $$p_X(x) = P(X = x)$$.
+When a random variable $$X$$ takes on a finite set of possible values (i.e., $$X$$ is a discrete random variable), a simpler way to represent the probability measure associated with a random variable is to directly specify the probability of each value that the random variable can assume. In particular, a probability mass function (PMF) is a function $$p_X : \Re \to [0, 1]$$ such that $$p_X(x) = P(X = x)$$.
 
 In the case of discrete random variable, we use the notation $$Val(X)$$ for the set of possible values that the random variable $$X$$ may assume. For example, if $$X(\omega)$$ is a random variable indicating the number of heads out of ten tosses of coin, then $$Val(X) = \{0, 1, 2, \dotsc, 10\}$$.
 
