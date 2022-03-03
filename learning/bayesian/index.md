@@ -64,7 +64,7 @@ $$
 where $$\alpha_H$$ and $$\alpha_T$$ are the two parameters that determine the shape of the distribution (similar to how the mean and variance determine a Gaussian distribution), and $$B(\alpha_H, \alpha_T)$$ is some normalization constant that ensures $$\int p(\theta)d\theta=1$$. We will go into more details about the Beta distribution later. What matters here is that the Beta distribution has a very special property: the posterior $$p(\theta \mid \mathcal{D})$$ is always another Beta distribution (but with different parameters). More concretely, out of $$N$$ coin tosses, if the number of heads and the number of tails are $$N_H$$ and $$N_T$$ respectively, then it can be shown that the posterior is:
 
 $$
-P(\theta \mid \mathcal{D}) = Beta(\theta \mid \alpha_H+N_H,\alpha_T+H_T) = \frac{\theta^{N_H+ \alpha_H -1 }(1-\theta)^{ N_T+ \alpha_T -1 }}{B(N_H+ \alpha_H,N_T+ \alpha_T)}
+P(\theta \mid \mathcal{D}) = Beta(\theta \mid \alpha_H+N_H,\alpha_T+N_T) = \frac{\theta^{N_H+ \alpha_H -1 }(1-\theta)^{ N_T+ \alpha_T -1 }}{B(N_H+ \alpha_H,N_T+ \alpha_T)}
 $$
 
 {% include marginfigure.html id="beta" url="assets/img/beta.png" description="The expectation of both $$Beta(3,2)$$ and $$Beta(30,20)$$ are $$0.6$$, but $$Beta(30,20)$$ is much more concentrated. This can be used to represent different levels of uncertainty in $$\theta$$" %}
@@ -116,7 +116,7 @@ In other words, if the prior is a Dirichlet distribution with parameter $$(\alph
 
 ### Some Concluding Remarks
 
-Many distributions have conjugate priors. In fact, any exponential family distribution have a conjugate prior. Even though conjugacy seemingly solve the problem of computing Bayesian posteriors, there are two caveats: 1. Usually practitioners will want to choose the prior $$p(\theta)$$ to best capture his or her knowledge about the problem, and using conjugate priors is a strong restriction. 2. For more complex distributions, the posterior computation is not as easy as those in our examples. There are distributions for which the posterior computation is still NP hard. 
+Many distributions have conjugate priors. In fact, any exponential family distribution has a conjugate prior. Even though conjugacy seemingly solves the problem of computing Bayesian posteriors, there are two caveats: 1. Usually practitioners will want to choose the prior $$p(\theta)$$ to best capture his or her knowledge about the problem, and using conjugate priors is a strong restriction. 2. For more complex distributions, the posterior computation is not as easy as those in our examples. There are distributions for which the posterior computation is still NP hard. 
 
 Conjugate priors is a powerful tool used in many real world applications such as topic modeling (e.g. latent dirichlet allocation) and medical diagnosis. However, practitioners should be mindful of its short-comings and consider and compare with other tools such as MCMC or variational inference (also covered in these lecture notes). 
 
