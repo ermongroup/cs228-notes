@@ -41,7 +41,7 @@ $$
 
 To generate a new data point, we sample a cluster $$k$$ and then sample its Gaussian $$\mathcal{N}(x; \mu_k, \Sigma_k)$$.
 
-{% include maincolumn_img.html src='assets/img/gmm2.png' caption='Example of a Gaussian mixture model, consisting of three components with different class proportions (a). The true class of each point is unobserved, so the distribution over $x$ looks like in (b); it is both multi-modal and non-Gaussian. Visualizing it in 3D shows the effects of class proportions on the magnitudes of the modes.' %}
+{% include maincolumn_img.html src='assets/img/gmm2.png' caption='Example of a Gaussian mixture model, consisting of three components with different class proportions (a). The true class of each point is unobserved, so the distribution over $$x$$ looks like in (b); it is both multi-modal and non-Gaussian. Visualizing it in 3D shows the effects of class proportions on the magnitudes of the modes.' %}
 
 ### Why are latent variable models useful?
 
