@@ -17,7 +17,7 @@ $$ Score(G:D) = LL(G:D) - \phi(|D|) \|G\|. $$
 
 Here $$LL(G:D)$$ refers to the log-likelihood of the data under the graph structure $$\mathcal{G}$$. The parameters in the Bayesian network $$G$$ are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If the score function only consisted of the log-likelihood term, then the optimal graph would be a complete graph, which is probably overfitting the data. Instead, the second term $$\phi(\lvert D \rvert) \lVert G \rVert$$ in the scoring function serves as a regularization term, favoring simpler models. $$\lvert D \rvert$$ is the number of data samples, and $$\|G\|$$ is the number of parameters in the graph $$\mathcal{G}$$. When $$\phi(t) = 1$$, the score function is known as the Akaike Information Criterion (AIC). When $$\phi(t) = \log(t)/2$$, the score function is known as the Bayesian Information Criterion (BIC). With the BIC, the influence of model complexity decreases as $$\lvert D \rvert$$ grows, allowing the log-likelihood term to eventually dominate the score.
 
-There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, if first defines the probability of data $$D$$ conditional on the graph structure $$\mathcal{G}$$ as
+There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, it first defines the probability of data $$D$$ conditional on the graph structure $$\mathcal{G}$$ as
 
 $$
 P(D|\mathcal{G})=\int P(D|\mathcal{G}, \Theta_{\mathcal{G}})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},
@@ -36,11 +36,11 @@ With a prior for the graph structure $$P(\Theta_{\mathcal{G}})$$ (say, a uniform
 
 $$ \log P(D|\Theta_{\mathcal{G}}) + \log P(\Theta_{\mathcal{G}}). $$
 
-Notice there is no penalty term appending to the BD score due to that it will penalize the overfitting implicitly via the integral over parameter space.
+Notice there is no penalty term appended to the BD score since it will penalize overfitting implicitly via the integral over the parameter space.
 
 ### Chow-Liu Algorithm
 
-The Chow-Liu Algorithm is a specific type of score based approach which finds the maximum-likelihood tree-structured graph (i.e., each node has exactly one parent, except for parentless a root node). The score is simply the log-likelihood; there is no penalty term for graph structure complexity since the algorithm only considers tree structures.
+The Chow-Liu Algorithm is a specific type of score based approach which finds the maximum-likelihood tree-structured graph (i.e., each node has exactly one parent, except for parentless root node). The score is simply the log-likelihood; there is no penalty term for graph structure complexity since the algorithm only considers tree structures.
 
 The algorithm has three steps:
 
@@ -84,7 +84,7 @@ $$
 \arg\max_{G:G\text{ is tree}} \log P(\mathcal D \mid \theta^{ML}, G) = \arg\max_{G:G\text{ is tree}} \sum_{(i,j)\in E} MI(X_i,X_j).
 $$
 
-The orientation of edges does not matter because mutual information is symmetric. Thus we can see why the Chow-Liu algorithm finds a tree-structured that maximizes the log-likelihood of the data.
+The orientation of edges does not matter because mutual information is symmetric. Thus we can see why the Chow-Liu algorithm finds a tree-structure that maximizes the log-likelihood of the data.
 
 ### Search algorithms
 
@@ -96,7 +96,7 @@ For greedy search (namely the K3 algorithm), we first assume a topological order
 
 A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/k3LearningApp) for visualizing the K3 learning algorithm. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
 
-Although both approach are computational tractable, neither of them have a guarantee of the quality of the graph that we end up with. The graph space is highly "non-convex" and both algorithm might get stuck at some sub-optimal regions.
+Although both approaches are computationally tractable, neither of them have a guarantee of the quality of the graph that we end up with. The graph space is highly "non-convex" and both algorithms might get stuck at some sub-optimal regions.
 
 
 ### Constraint-based approach
