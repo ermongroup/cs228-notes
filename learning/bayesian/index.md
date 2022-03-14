@@ -84,7 +84,7 @@ The idea we presented here is usually called "conjugacy". Using standard terminl
 
 ### Categorical Distribution
 
-We give another example of a conjugate prior which generalizes the Bernoulli example above. Instead of being limited to binary outcomes, we can now consider the categorical distribution (think of a $$K$$-sided dice). Let $$\mathcal{D} = \{ X_1, \ldots, X_N \}$$ be $N$ rolls of the dice, where $$X_j \in \{ 1, \ldots, K \}$$ is the outcome of the $$j$$-th roll. The parameter of the categorical distribution is denoted by $$\theta$$
+We give another example of a conjugate prior which generalizes the Bernoulli example above. Instead of being limited to binary outcomes, we can now consider the categorical distribution (think of a $$K$$-sided dice). Let $$\mathcal{D} = \{ X_1, \ldots, X_N \}$$ be $$N$$ rolls of the dice, where $$X_j \in \{ 1, \ldots, K \}$$ is the outcome of the $$j$$-th roll. The parameter of the categorical distribution is denoted by $$\theta$$
 
 $$
 \theta =(\theta_1, \cdots, \theta_K) := (P(X_j = 1), \ldots, P(X_j = K))
@@ -100,7 +100,7 @@ $$
 
 where $$B(\alpha)$$ is still a normalization constant. 
 
-To show that the Dirichlet distribution is the conjugate prior for the categorial distribution, we need to show that the posterior is also a Dirichlet distribution. To calaulate the posterior $$p(\theta \mid \mathcal{D})$$ with Bayes rule we first calculate the likelihood $$p(\mathcal{D} \mid \theta)$$ as
+To show that the Dirichlet distribution is the conjugate prior for the categorial distribution, we need to show that the posterior is also a Dirichlet distribution. To calculate the posterior $$p(\theta \mid \mathcal{D})$$ with Bayes rule we first calculate the likelihood $$p(\mathcal{D} \mid \theta)$$ as
 
 $$
 P(\mathcal{D} \mid \theta) = \prod_{k=1}^K \theta_k^{\sum_{j=1}^N 1\{ X_j = k \}}
