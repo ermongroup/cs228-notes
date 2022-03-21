@@ -123,7 +123,7 @@ $$
 \phi(x_1) \sum_{x_2} \phi(x_1,x_2) \sum_{x_3} \phi(x_1,x_2,x_3) \sum_{x_5} \phi(x_2,x_3,x_5) \sum_{x_6} \phi(x_2,x_5,x_6).
 $$
 
-We first sum over $$x_6$$, which creates a factor $$\tau(x_2, x_3, x_5) = \phi(x_2,x_3,x_5) \sum_{x_6} \phi(x_2,x_5,x_6)$$. Then, $$x_5$$ gets eliminated, and so on. At each step, each cluster marginalizes out the variables that are not in the scope of its neighbor. This marginalization can also be interpreted as computing a message over the variables it shares with the neighbor.
+We first sum over $$x_6$$, which creates a factor $$\tau(x_2, x_5) = \sum_{x_6} \phi(x_2,x_5,x_6)$$. Then, $$x_5$$ gets eliminated, and so on. At each step, each cluster marginalizes out the variables that are not in the scope of its neighbor. This marginalization can also be interpreted as computing a message over the variables it shares with the neighbor.
 
 The running intersection property is what enables us to push sums in all the way to the last factor. We may eliminate $$x_6$$ because we know that only the last cluster will carry this variable: since it is not present in the neighboring cluster, it cannot be anywhere else in the graph without violating the RIP.
 
