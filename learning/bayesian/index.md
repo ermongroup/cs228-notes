@@ -19,14 +19,14 @@ In both the above situations, the maximum likelihood estimate does not change as
 
 ## Example 2
 
-Consider a language model for sentences based on the bag-of-words assumption. A bag of words model has a generative process where a sentence is formed from a sample of words which are metaphorically `pulled out of a bag', i.e. sampled independently. In such a model, the probability of a sentence can be factored as the probability of the words appearing in the sentence, i.e. for a sentence $S$ consisting of words $w_1, ldots, w_n$, we have 
+Consider a language model for sentences based on the bag-of-words assumption. A bag of words model has a generative process where a sentence is formed from a sample of words which are metaphorically `pulled out of a bag', i.e. sampled independently. In such a model, the probability of a sentence can be factored as the probability of the words appearing in the sentence, i.e. for a sentence $$S$$ consisting of words $$w_1, ldots, w_n$$, we have 
 
 $$ p(S) = \prod_{i=1}^n p(w_n). $$
 
 For simplicity, assume that our language corpus consists of a single sentence, "Probabilistic graphical models are fun. They are also powerful." We can estimate the probability of each of the individual words based on the counts. Our corpus contains 10 words with each word appearing once, and hence, each word in the corpus is assigned a probability of 0.1. Now, while testing the generalization of our model to the English language, we observe another sentence, "Probabilistic graphical models are hard." The probability of the sentence under our model is
 $$0.1 \times 0.1 \times 0.1 \times 0.1 \times 0 = 0$$. We did not observe one of the words ("hard") during training which made our language model infer the sentence as impossible, even though it is a perfectly plausible sentence.
 
-Out-of-vocabulary words are a common phenomena even for language models trained on large corpus. One of the simplest ways to handle these words is to assign a prior probability of observing an out-of-vocabulary word such that the model will assign a low, but non-zero probability to test sentences containing such words. In practice in modern systems, a system of [https://ai.googleblog.com/2021/12/a-fast-wordpiece-tokenization-system.html](tokenization) is used where a set of fundamental tokens can be combined to form any word. Hence the word "Hello" as a single token and the word "Bayesian" is encoded as "Bay" + "esian" under the common Byte Pair Encoding. This can be viewed as putting a prior over all words, where longer words are less likely.
+Out-of-vocabulary words are a common phenomena even for language models trained on large corpus. One of the simplest ways to handle these words is to assign a prior probability of observing an out-of-vocabulary word such that the model will assign a low, but non-zero probability to test sentences containing such words. In practice in modern systems, a system of [tokenization](https://ai.googleblog.com/2021/12/a-fast-wordpiece-tokenization-system.html) is used where a set of fundamental tokens can be combined to form any word. Hence the word "Hello" as a single token and the word "Bayesian" is encoded as "Bay" + "esian" under the common Byte Pair Encoding. This can be viewed as putting a prior over all words, where longer words are less likely.
 
 ## Setup
 
@@ -113,7 +113,7 @@ $$
 P(\theta \mid \mathcal{D}) \propto P(\mathcal{D} \mid \theta) P(\theta) \propto \prod_{k=1}^K \theta_k^{N_k + \alpha_k - 1}:=\textsf{Dirichlet}(\theta \mid \alpha_1+N_1,\cdots,\alpha_K+N_K).
 $$
 
-In other words, if the prior is a Dirichlet distribution with parameter $$(\alpha_1, \cdots, \alpha_K)$$ then the posterior $$p(\theta \mid \mathcal{D})$$ is a Dirichlet distribution with parameters $$(\alpha_1+N_1, \cdots, \alpha_K+N_K)$$. In example 2 above, we added a prior probability to observing an out-of-vocabulary word. We can see that this corresponds exactly to choosing a prior with nonzero prior $\alpha = \alpha_1 = \ldots = \alpha_K$. This is also exactly the same as [https://en.wikipedia.org/wiki/Additive_smoothing](Laplace smoothing) with parameter $\alpha$. We see that Laplace's heuristic for handling missing values has a rigorous justification when viewed with the Bayesian formalism.
+In other words, if the prior is a Dirichlet distribution with parameter $$(\alpha_1, \cdots, \alpha_K)$$ then the posterior $$p(\theta \mid \mathcal{D})$$ is a Dirichlet distribution with parameters $$(\alpha_1+N_1, \cdots, \alpha_K+N_K)$$. In example 2 above, we added a prior probability to observing an out-of-vocabulary word. We can see that this corresponds exactly to choosing a prior with nonzero prior $$\alpha = \alpha_1 = \ldots = \alpha_K$$. This is also exactly the same as [Laplace smoothing](https://en.wikipedia.org/wiki/Additive_smoothing) with parameter $$\alpha$$. We see that Laplace's heuristic for handling missing values has a rigorous justification when viewed with the Bayesian formalism.
 
 ### Some Concluding Remarks
 
