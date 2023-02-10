@@ -19,7 +19,7 @@ In both the above situations, the maximum likelihood estimate does not change as
 
 ## Example 2
 
-Consider a language model for sentences based on the bag-of-words assumption. A bag of words model has a generative process where a sentence is formed from a sample of words which are metaphorically `pulled out of a bag', i.e. sampled independently. In such a model, the probability of a sentence can be factored as the probability of the words appearing in the sentence, i.e. for a sentence $$S$$ consisting of words $$w_1, ldots, w_n$$, we have 
+Consider a language model for sentences based on the bag-of-words assumption. A bag of words model has a generative process where a sentence is formed from a sample of words which are metaphorically `pulled out of a bag', i.e. sampled independently. In such a model, the probability of a sentence can be factored as the probability of the words appearing in the sentence, i.e. for a sentence $$S$$ consisting of words $$w_1, \ldots, w_n$$, we have 
 
 $$ p(S) = \prod_{i=1}^n p(w_n). $$
 
