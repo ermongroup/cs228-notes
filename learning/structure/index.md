@@ -3,6 +3,36 @@ layout: post
 title: Structure learning for Bayesian networks
 ---
 
+We consider finding the graphical structure for a Bayesian network from a dataset.
+The task is challenging because (a) the graph structure need not be identifiable (i.e., two different graphs may induce the the same set of independencies; recall _I-equivalence_) and (b) the set of a directed acyclic graphs is exponentially large in the number of variables.
+
+Before discussing approaches, we emphasize that these challenges contrast with our pleasant results on parameter learning for a Bayesian network _given_ the directed acyclic graph (see [Learning in directed models](../directed/)).
+There we supposed that we had elicited a graph from a domain expert, constructed it using our own (causal) intuition, or asserted it to simplify learning and inference.
+We will see that this last point---the accuracy-efficiency trade-off for learning and inference---is also relevant for structure learning.
+
+### Approaches
+
+We briefly touch on two broad approaches to structure learning: (1) constraint-based methods and (2) score-based methods.
+Constraint-based approaches use the dataset to perform statistical tests of independence between variables and construct a graph.
+Score-based approaches search for network structures to maximize the likelihood of the dataset while controlling the complexity of the model.
+
+The goal of the modeling guides the choice of approach.
+Constraint-based techniques avoid parameter identification, and so are natural if one is only interested in the qualitative statistical associations between the variables---namely, the graph itself.
+In this case, structure learning is also called _knowledge discovery_.
+Score-based approaches are natural when one is also interested in density estimation. 
+These approaches will generally incorporate parameter estimation.
+We briefly touch upon constraint based approaches before turning to those based on scores.
+
+### Problem statement
+
+Given a dataset $$x^{(1)}, x^{(2)}, \dots, x^{(m)}$$ of categorical outcomes in the finite set $$\mathcal{X}$$, find a distribution $$P$$ and directed acyclic graph $$G$$ to
+This setting is distinct from familiar case we have considered so far,  Often we start with a known netstarted with a known network structure that encodes information about independencies among the random variables we are modeling, we now assume no such knowledge.
+This approach is in contrast 
+Structure learning refers to simultaneously estimating the graph and structure of a bayesian network from a dataset.
+Given a dataset $x^{(1)}, \dots, x^{(m)}$, find a directed acyclic graph $G$
+Often one is given the structure of the Bayesian network from a domain expert or from notions of causality
+Historically, the structure of a Bayesian network is often
+estimating th
 The task of structure learning for Bayesian networks refers to learning the structure of the directed acyclic graph (DAG) from data. There are two major approaches for structure learning: score-based and constraint-based.
 
 ### Score-based approach
@@ -13,7 +43,7 @@ The score-based approach first defines a criterion to evaluate how well the Baye
 
 The score metrics for a structure $$\mathcal{G}$$ and data $$D$$ can be generally defined as:
 
-$$ Score(G:D) = LL(G:D) - \phi(|D|) \|G\|. $$
+$$ Score(G \mid D) = \log P(D \mid G, \theta_G) - \phi(|D|) \|G\|. $$
 
 Here $$LL(G:D)$$ refers to the log-likelihood of the data under the graph structure $$\mathcal{G}$$. The parameters in the Bayesian network $$G$$ are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If the score function only consisted of the log-likelihood term, then the optimal graph would be a complete graph, which is probably overfitting the data. Instead, the second term $$\phi(\lvert D \rvert) \lVert G \rVert$$ in the scoring function serves as a regularization term, favoring simpler models. $$\lvert D \rvert$$ is the number of data samples, and $$\|G\|$$ is the number of parameters in the graph $$\mathcal{G}$$. When $$\phi(t) = 1$$, the score function is known as the Akaike Information Criterion (AIC). When $$\phi(t) = \log(t)/2$$, the score function is known as the Bayesian Information Criterion (BIC). With the BIC, the influence of model complexity decreases as $$\lvert D \rvert$$ grows, allowing the log-likelihood term to eventually dominate the score.
 
