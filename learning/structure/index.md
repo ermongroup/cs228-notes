@@ -3,144 +3,265 @@ layout: post
 title: Structure learning for Bayesian networks
 ---
 
-We consider finding the graphical structure for a Bayesian network from a dataset.
-The task is challenging because (a) the graph structure need not be identifiable (i.e., two different graphs may induce the the same set of independencies; recall _I-equivalence_) and (b) the set of a directed acyclic graphs is exponentially large in the number of variables.
+We consider estimating the graphical structure for a Bayesian network from a dataset.
+The task is challenging because (a) the graph structure need not be identifiable (i.e., two different graphs may induce the the same set of independencies; recall _I-equivalence_) and (b) the set of directed acyclic graphs is exponentially large in the number of variables.
 
-Before discussing approaches, we emphasize that these challenges contrast with our pleasant results on parameter learning for a Bayesian network _given_ the directed acyclic graph (see [Learning in directed models](../directed/)).
+Before discussing approaches, we emphasize the contrast between these challenges and our pleasant results on parameter learning for a Bayesian network _given_ the directed acyclic graph (see [Learning in directed models](../directed/)).
 There we supposed that we had elicited a graph from a domain expert, constructed it using our own (causal) intuition, or asserted it to simplify learning and inference.
 We will see that this last point---the accuracy-efficiency trade-off for learning and inference---is also relevant for structure learning.
 
-### Approaches
+## Approaches
 
 We briefly touch on two broad approaches to structure learning: (1) constraint-based methods and (2) score-based methods.
-Constraint-based approaches use the dataset to perform statistical tests of independence between variables and construct a graph.
+Constraint-based approaches use the dataset to perform statistical tests of independence between variables and construct a graph accordingly.
 Score-based approaches search for network structures to maximize the likelihood of the dataset while controlling the complexity of the model.
 
-The goal of the modeling guides the choice of approach.
+The modeling goal guides the choice of approach.
 Constraint-based techniques avoid parameter identification, and so are natural if one is only interested in the qualitative statistical associations between the variables---namely, the graph itself.
-In this case, structure learning is also called _knowledge discovery_.
-Score-based approaches are natural when one is also interested in density estimation. 
-These approaches will generally incorporate parameter estimation.
-We briefly touch upon constraint based approaches before turning to those based on scores.
+Such structure learning is also called _knowledge discovery_.
+On the other hand, score-based approaches are natural when one is also interested in identifying model parameters. 
+For example, if one is interested in density estimation.
+We briefly touch upon constraint-based approaches before turning to score-based approaches.
 
-### Problem statement
+### Constraint-based approaches for knowledge discovery
 
-Given a dataset $$x^{(1)}, x^{(2)}, \dots, x^{(m)}$$ of categorical outcomes in the finite set $$\mathcal{X}$$, find a distribution $$P$$ and directed acyclic graph $$G$$ to
-This setting is distinct from familiar case we have considered so far,  Often we start with a known netstarted with a known network structure that encodes information about independencies among the random variables we are modeling, we now assume no such knowledge.
-This approach is in contrast 
-Structure learning refers to simultaneously estimating the graph and structure of a bayesian network from a dataset.
-Given a dataset $x^{(1)}, \dots, x^{(m)}$, find a directed acyclic graph $G$
-Often one is given the structure of the Bayesian network from a domain expert or from notions of causality
-Historically, the structure of a Bayesian network is often
-estimating th
-The task of structure learning for Bayesian networks refers to learning the structure of the directed acyclic graph (DAG) from data. There are two major approaches for structure learning: score-based and constraint-based.
+Here we consider one natural approach to constraint-based structure learning.
+The method extends an algorithm for finding a minimal I-map to the case in which we do not know the conditional independencies, but can deduce them using statistical tests of independence.
 
-### Score-based approach
+First we recall the algorithm for finding a minimal I-map.
+Suppose $$X_1, \dots, X_n$$ is an ordering of $$n$$ random variables variables satisfying a set of conditional independences $$\mathcal{I}$$.
+For $$i = 1,\dots, n$$, define $$\mathbf{A}_i$$ to be a minimal subset of $$\{ X_1, \dots, X_{i-1}\}$$ satisfying 
 
-The score-based approach first defines a criterion to evaluate how well the Bayesian network fits the data, then searches over the space of DAGs for a structure achieving the maximal score. The score-based approach is essentially a search problem that consists of two parts: the definition of a score metric and the search algorithm.
+$$p(X_i | X_1, \dots, X_{i-1}) = p(X_i | \mathbf{A}_i).$$
 
-### Score metrics
+Then the directed acyclic graph $$G$$ defined by the parent function $$\text{pa}(X_i) = A_i$$ is a minimal I-map for $$\mathcal{I}$$.
 
-The score metrics for a structure $$\mathcal{G}$$ and data $$D$$ can be generally defined as:
+There is a natural modification to this procedure for the case in which we have a dataset rather than a set of conditional indepencies.
+Given nonoverlapping subsets $$\mathbf{X}, \mathbf{Y}, \mathbf{Z}$$ of $$\{X_1, \dots, X_n\}$$,
+we use a hypothesis test to decide if $$\mathbf{X} \perp \mathbf{Y} | \mathbf{Z}$$.
+The test is usually based on some statistical measure of deviance (e.g., a $$\chi^2$$ statistic or empirical mutual information) from the null hypothesis that the conditional independence holds.
+For example, we might distinguish a v-structure from a common-parent structure by doing an independence test for the two variables on the sides conditioned on the variable in the middle. 
 
-$$ Score(G \mid D) = \log P(D \mid G, \theta_G) - \phi(|D|) \|G\|. $$
+As usual, such approaches suffer when we have limited data, which is exacerbated when the number of variables involved in the test is large.
+These approaches tend to work better with some prior (expert) knowledge of structure.
 
-Here $$LL(G:D)$$ refers to the log-likelihood of the data under the graph structure $$\mathcal{G}$$. The parameters in the Bayesian network $$G$$ are estimated based on MLE and the log-likelihood score is calculated based on the estimated parameters. If the score function only consisted of the log-likelihood term, then the optimal graph would be a complete graph, which is probably overfitting the data. Instead, the second term $$\phi(\lvert D \rvert) \lVert G \rVert$$ in the scoring function serves as a regularization term, favoring simpler models. $$\lvert D \rvert$$ is the number of data samples, and $$\|G\|$$ is the number of parameters in the graph $$\mathcal{G}$$. When $$\phi(t) = 1$$, the score function is known as the Akaike Information Criterion (AIC). When $$\phi(t) = \log(t)/2$$, the score function is known as the Bayesian Information Criterion (BIC). With the BIC, the influence of model complexity decreases as $$\lvert D \rvert$$ grows, allowing the log-likelihood term to eventually dominate the score.
+### Score-based approaches for simultaneous structure and parameter learning
 
-There is another family of Bayesian score function called BD (Bayesian Dirichlet) score. For BD score, it first defines the probability of data $$D$$ conditional on the graph structure $$\mathcal{G}$$ as
-
-$$
-P(D|\mathcal{G})=\int P(D|\mathcal{G}, \Theta_{\mathcal{G}})P(\Theta_{\mathcal{G}}|\mathcal{G})d\Theta_{\mathcal{G}},
-$$
-
-where $$P(D \mid \mathcal{G}, \Theta_{\mathcal{G}})$$ is the probability of the data given the network structure and parameters, and $$P(\Theta_{\mathcal{G}} \mid \mathcal{G})$$ is the prior probability of the parameters. When the prior probability is specified as a Dirichlet distribution,
+Suppose $$x^{(1)}, x^{(2)}, \dots, x^{(m)}$$ is a dataset of samples from $$n$$ random variables and $$\mathcal{G}$$ is a nonempty set of directed acyclic graphs.
+It is natural to be interested in finding a distribution $$p$$ and graph $$G \in \mathcal{G}$$ to
 
 $$
-P(D|\Theta_{\mathcal{G}})
-= \prod_i \prod_{\pi_i} \left[ \frac{\Gamma(\sum_j N'_{i,\pi_i,j})}{\Gamma(\sum_j N'_{i,\pi_i,j} + N_{i,\pi_i,j} )} \prod_{j}\frac{\Gamma(N'_{i,\pi_i,j} + N_{i,\pi_i,j})}{\Gamma(N'_{i,\pi_i,j})}\right].
+\begin{aligned}
+    \text{maximize} \quad & \frac{1}{m} \sum_{i = 1}^{m} \log p(x^{(i)})  \\
+    \text{subject to} \quad & p \text{ factors according to } G \\
+\end{aligned}
 $$
 
-Here $$\pi_i$$ refers to the parent configuration of the variable $$i$$ and $$N_{i,\pi_i,j}$$ is the count of variable $$i$$ taking value $$j$$ with parent configuration $$\pi_i$$. $$N'$$ represents the counts in the prior respectively.
+In other words, among structures in $$\mathcal{G}$$, we are interested in finding the one for which, with an appropriate choice of parameters, we maximize the likelihood of data.
 
-With a prior for the graph structure $$P(\Theta_{\mathcal{G}})$$ (say, a uniform one), the BD score is defined as
 
-$$ \log P(D|\Theta_{\mathcal{G}}) + \log P(\Theta_{\mathcal{G}}). $$
+_An approximation perspective._ 
+We mention in passing that the above problem is equivalent to finding $$p$$ and $$G \in \mathcal{G}$$ to minimize $$D_{KL}(\hat{p} \| p)$$ subject to $$p$$ factors according to $$G$$, where $$\hat{p}$$ is the _emprical (data) distribution_; here $$D_{KL}$$ is the usual Kullback-Leibler divergence between $$\hat{p}$$ and $$p$$.
+Thus we can also interpret this task as finding the distribution which factors according to some graph in $$\mathcal{G}$$ which best _approximates_ the empirical distribution.
 
-Notice there is no penalty term appended to the BD score since it will penalize overfitting implicitly via the integral over the parameter space.
+It is natural to ask about the existence and uniqueness of solutions to this problem.
+Existence is easy, but uniqueness is subtle.
+To see this, suppose $$\mathcal{G}$$ is the set of all directed acyclic graphs.
+In this case, any _complete_ directed acyclic graph will be optimal in the above problem. 
+Indeed, we have seen that a complete graph can represent any distribution, so all distributions factor according to a complete graph.
 
-### Chow-Liu Algorithm
+These considerations, coupled with the accuracy-efficiency trade-off, make it natural to control the complexity of $$p$$ by restricting the class $$\mathcal{G}$$ or by adding regularization to the log-likelihood objective.
+In other words, we can replace the average log likelihood in the problem above with a real-valued _score_ $$\text{Score}(G, D)$$ which may trade off between a measure of model fit with a measure of model complexity.
+Before discussing methods for solving the general (and difficult) score-based problem, we consider a famous tractable example in which the class $$\mathcal{G}$$ is taken to be the set of directed trees.
 
-The Chow-Liu Algorithm is a specific type of score based approach which finds the maximum-likelihood tree-structured graph (i.e., each node has exactly one parent, except for parentless root node). The score is simply the log-likelihood; there is no penalty term for graph structure complexity since the algorithm only considers tree structures.
 
-The algorithm has three steps:
+## The Chow-Liu algorithm
 
-1. Compute the mutual information for all pairs of variables $$X,U$$, and form a complete graph from the variables where the edge between variables $$X,U$$ has weight $$MI(X,U)$$:
+Here we discuss the celebrated Chow-Liu algorithm, proposed in 1968.
+
+_A bit of history._
+Chow and Liu were interested in fitting distributions over a set of binary hand-written digits for the purposes of optical character recognition.
+We have seen the number of parameters grows exponentially in the number of pixels, and so naturally they became interested in parsimonious representations.
+Specifically, they considered the set of distributions which factor according to some directed tree.
+Roughly speaking, they showed that in this case the aformentioned problem of maximizing likelihood reduces to a maximum spanning tree problem, which happens to be a famously _tractable_ problem.
+
+_Note on identifiability._ 
+If a distribution $$p$$ factors according to a tree rooted at some variable $$X_r$$, where $$r \in \{1, \dots, n\}$$, then it factors according to the same tree rooted at every other variable.
+In other words, these two grpahs are _I-equivalent_.
+We will see below that Chow and Liu's formulation choice of root is immaterial to maximizing the likelihood.
+
+### Chow and Liu's solution to the optimization
+
+Suppose we have a dataset $$x^{(1)}, \dots, x^{(m)}$$ in some finite set $$\mathcal{S} = \prod_{i = 1}^{n} S_i$$, where $$S_i$$ are each finite sets for $$i = 1, \dots, n$$.
+As usual, we define the _empirical distribution_ $$\hat{p}$$ on $$\mathcal{S}$$ so that $$\hat{p}(x)$$ is the number of times $$x$$ appears in the dataset.
+We consider the above optimization for the case in which $$\mathcal{G}$$ is the set of directed trees.
+Chow and Liu's solution has two steps.
+
+_Step 1: optimal distribution given tree._ 
+First, they fix a directed tree $$T$$, and considered how to maximize the log likelihood among all distributions that factor according $$T$$.
+We have seen ([Learning in directed models](../directed/)) that the solution to this problem is to pick the conditional probabilities to match the empirical distribution.
+In other words, if we denote the solution for tree $$T$$ by $$p^\star_T$$, it satisfies
+
+$$
+    p^\star_T(X) = \hat{p}(X_r) \prod_{i \neq r} \hat{p}(X_i | X_{\text{pa}(i)})
+$$
+
+where $$X_r$$ is the root of the tree.
+
+_Step 2: optimal tree._ 
+Second, they plug in $p^\star_T$ and consider optimizing $$T$$.
+The first step is express the log likelihood in terms of the empirical distribution as
+
+$$
+\begin{aligned}
+    \frac{1}{m} \sum_{i = 1}^{m} \log p^\star_T(x) 
+    &= \sum_{x \in \mathcal{S}} \hat{p}(x) \log p^\star_T(x) 
+\end{aligned}
+$$
+
+The right hand side is the negative _cross-entropy_ of $$p^\star_T$$ with respect to $$\hat{p}$$.
+Next we can re-write the negative cross-entropy
+
+$$
+\begin{aligned}
+    \sum_{x \in \mathcal{S}} \hat{p}(x) \sum_{i = 1}^{n} \log p^\star_T(x)  
+    &= -H_{\hat{p}}(X_r) + \sum_{i \neq r} \sum_{x \in \mathcal{S}} \hat{p}(x) \log \hat{p}(x_i | x_{\text{pa}(i)})  \\
+    &= -H_{\hat{p}}(X_r) + \sum_{i \neq r} \sum_{x \in \mathcal{S}} \hat{p}(x) \log \frac{\hat{p}(x_i , x_{\text{pa}(i)})}{\hat{p}(x_{\text{pa}(i)})} \frac{\hat{p}(x_i)}{\hat{p}(x_i)} \\
+    &= \sum_{i \neq r} I_{\hat{p}}(X_i, X_{\text{pa}(i)}) - \sum_{i = 1}^{n} H_{\hat{p}}(X_i)
+\end{aligned}
+$$
+
+where $$H_{\hat{p}}(X_i) = -\sum_{x_i \in S_i} \hat{p}(x_i) \log \hat{p}(x_i)$$ is the _entropy_ of the random variable $$X_i$$ and $$I_{\hat{p}}(X_i, X_j) = D_{KL}(\hat{p}(X_i,X_j), \hat{p}(X_i)\hat{p}(X_j))$$ is the mutual information between random variables $$X_i$$ and $$X_j$$, under the distribution $$\hat{p}$$.
+
+The key insight is that the first sum is over the edges of $$T$$, and the second sum of entropies _does not depend on T_.
+Thus, all directed trees with the same skeleton have the same objective.
+Consequently, we need only find an _undirected_ tree with a set of edges $$E$$ to 
+
+$$
+\begin{aligned}
+    \text{maximize} \quad & \sum_{\{i, j\} \in E} I_{\hat{p}}(X_i, X_j)  \\
+    \text{subject to} \quad & (\{1, \dots, n\}, E) \text{ is a tree}
+\end{aligned}
+$$
+
+This happens to be the well-known maximum spanning tree problem. 
+It has several algorithms for its solution with runtimes quadratic in the number of vertices.
+Two of the famous ones are Kruskal's algorithm and Prim's algorithm.
+Any such maximum spanning tree, with any node its root, is a solution.
+
+### Chow and Liu's algorithm
+
+1. Compute the mutual information for all pairs of variables $$X_i,X_j$$, where $$i \neq j$$:
 
     $$
-    MI(X,U) =\sum_{x,u} \hat p(x,u)\log\left[\frac{\hat p(x,u)}{\hat p(x) \hat p(u)}\right]
+    I_{\hat{p}}(X_i, X_j) =\sum_{x_i,_j} \hat p(x_i,x_j)\log \frac{\hat{p}(x_i,x_j)}{\hat p(x_i) \hat{p}(x_j)}
     $$
 
-    This function measures how much information $$U$$ provides about $$X$$. The graph with computed MI edge weights might resemble:
+    This symmetric function is an information theoretic measure of the association between $$X_i$$ and $$X_j$$.
+    It is zero if $$X_i$$ and $$X_j$$ are independent.
+    Recall $$\hat{p}(x_i, x_j)$$ is the proportion of all datapoints $$x^{(k)}$$ with $$x^{(k)}_i = x_i$$ _and_ $$x^{(k)}_j = x_j$$.
+
+    Suppose we have four random variables $$A, B, C, D$$. 
+    Then we may visualize these mutual information weights as follows:
 
     {% include maincolumn_img.html src='assets/img/mi-graph.png' %}
 
-    Remember that from our empirical distribution $$\hat p(x,u) = \frac{Count(x,u)}{\# \text{ data points}}$$.
 
-2. Find the **maximum** weight spanning tree: the maximal-weight tree that connects all vertices in a graph. This can be found using Kruskal or Prim Algorithms.
+2. Find the **maximum** weight spanning tree: the maximal-weight _undirected_ tree that connects all vertices in a graph. 
 
+    Again, we may visualize this with four random variables $$A, B, C, D$$
     {% include maincolumn_img.html src='assets/img/max-spanning-tree.png' %}
  
-3. Pick any node to be the *root variable*, and assign directions radiating outward from this node (arrows go away from it). This step transforms the resulting undirected tree to a directed one.
+3. Pick any node to be the *root variable*. Direct arrows away from root to obtain a directed tree.
+   The conditional probability parameters are chosen as usual, to match those of the empirical distribution.
+
+    We may visualize two choices four roots on our example with four random variables $$A, B, C, D$$:
 
     {% include maincolumn_img.html src='assets/img/chow-liu-tree.png' %}
+ 
 
-The Chow-Liu Algorithm has a complexity of order $$n^2$$, as it takes $$O(n^2)$$ to compute mutual information for all pairs, and $$O(n^2)$$ to compute the maximum spanning tree.
 
-Having described the algorithm, let's explain why this works. It turns out that the likelihood score decomposes into mutual information and entropy terms:
+_Complexity._ 
+The Chow-Liu Algorithm has a runtime complexity quadratic in $$n$$.
+To see this, notice we must compute $$O(n^2)$$ mutual information values, given which we can find the maximum spanning tree in $$O(n^2)$$ time.
+
+## General score-based approach
+
+As we mentioned earlier, every distribution factors according to a complete directed graph.
+Thus, the complete graph, if it is a member of $$\mathcal{G}$$, is always optimal.
+However, complete graphs are undesirable because (1) they make no conditional indpendence assertion, (2) their treewidth is $$n-1$$---making inference computationally expensive, and (3) they require many parameters---and so suffer from overfitting.
+Consequently, we often regularize the log likelihood optimization problem by restricting the class of graphs considered, as in the Chow-Liu approach, or by penalizing the log likelihood objective.
+
+Given a dataset $$\mathcal{D} = x^{(1)}, \dots, x^{(m)}$$, set of graphs $$\mathcal{G}$$, and a score function mapping graphs and datasets to real values, we want to find a graph $$G \in \mathcal{G}$$ to
 
 $$
-\log p(\mathcal D \mid \theta^{ML}, G) = |\mathcal D| \sum_i MI_{\hat p}(X_i, X_{pa(i)}) - |\mathcal D| \sum_i H_{\hat p}(X_i).
+\begin{aligned}
+\text{maximize} & \quad \text{Score}(G, \mathcal{D})
+\end{aligned}
 $$
 
-We would like to find a graph $$G$$ that maximizes this log-likelihood. Since the entropies are independent of the dependency ordering in the tree, the only terms that change with the choice of $$G$$ are the mutual information terms. So we want
+Here we did not include the distribution $$p$$ factoring according to $$G$$ as an optimization variable.
+This is because the standard practice is to associate the distribution which maximizes the dataset likelihood with $$G$$ (see [Learning in directed models](../directed))---the likelihood value obtained by this distribution is often used in computing the score.
+
+In general, this is a difficult problem.
+In the absence of additional structure, one must exhaustively search the set $$\mathcal{G}$$, which may be large.
+Such an exhaustive, so-called brute-force search, is often infeasible.
+As a result, heuristic search algorithms for exploring the set $$\mathcal{G}$$ are usually employed.
+
+To summarize, score-based approaches are often described by specifying the score metric and a search algorithm. 
+
+### Score metrics
+
+
+Denote the log-likelihood obtained by the maximum likelihood distribution factoring according to $$G$$ by by $$\text{LL}(D \mid G)$$.
+Often, score metrics take the form
+
+$$ \text{Score}(G, \mathcal{D}) = \underbrace{\text{LL}(\mathcal{D} \mid G)}_{\text{fit}} - \underbrace{R(G, \mathcal{D})}_{\text{complexity}} $$
+
+where the function $$R$$ is a regularizer measuring the complexity of the model.
+
+_Commmon regularizers._
+Often $$R$$ is a function of the size of the dataset and the number of parameters.
+The former is denoted $$\lvert \mathcal{D} \rvert$$ and the latter is denoted by $$\lVert \mathcal{G} \rVert$$, since two categorical Bayes nets with the same graph structure have the same number of parameters.
+The regularizer often has the form
 
 $$
-\arg\max_G \log P(\mathcal D \mid \theta^{ML}, G) = \arg\max_G \sum_i MI(X_i, X_{pa(i)}).
+    R(G, \mathcal{D}) = \psi(\lvert \mathcal{D} \rvert) \lVert G \rVert
 $$
 
-Now if we assume $$G = (V,E)$$ is a tree (where each node has at most one parent), then
-
-$$
-\arg\max_{G:G\text{ is tree}} \log P(\mathcal D \mid \theta^{ML}, G) = \arg\max_{G:G\text{ is tree}} \sum_{(i,j)\in E} MI(X_i,X_j).
-$$
-
-The orientation of edges does not matter because mutual information is symmetric. Thus we can see why the Chow-Liu algorithm finds a tree-structure that maximizes the log-likelihood of the data.
+where $$\psi$$ is a real-valued function of the dataset size.
+The choice $$\psi(\lvert D \rvert) = 1$$ is called the _Akaike Information Criterion_ (AIC) and the choice $$\psi(\lvert \mathcal{D} \rvert) = \ln(n)/2$$ is called the _Bayesian Information Criterion_ (BIC).
+In the former, the log-likelihood function grows linearly in the dataset size and will dominate the penalty term, and so the model complexity criterion will only be used to distinguish model with similar log-likelihoods.
+In the latter, the the influence of model complexity grows logarithmically in the dataset size, which is heavier than in the AIC, but still allows the log-likelihood term to dominate as the dataset size grows large.
+There are several desiderata associated with these scores.
 
 ### Search algorithms
 
-The most common choice for search algorithms are local search and greedy search.
+In the absence of additional structure in $$\mathcal{G}$$, and in light of the computational infeasibility of exhaustive search, a local search algorithm is often employed.
+Although such methods are not guaranteed to provide globally optimal graph structures, they are often designed to be fast and may perform well in practice.
+We briefly outline two approaches here.
 
-For local search algorithm, it starts with an empty graph or a complete graph. At each step, it attempts to change the graph structure by a single operation of adding an edge, removing an edge or reversing an edge. (Of course, the operation should preserve the acyclic property.) If the score increases, then it adopts the attempt and does the change, otherwise it makes another attempt.
+_Local structure search._
+One such approach begins with a given graph, and at each step of an iterative procedure, modifies the graph by (a) adding an edge (b) removing an edge or (c) fipping an edge. 
+Here these operations are only considered if the modified graph remains acyclic.
+If the score of the new structure improves upon the current, the new structure is adopted. 
+Otherwise, a different operation is attempted.
+The procedure can be terminated via a variety of stopping criterion; for example, once no operation exists which improves the score.
+Since the conditional probability tables only change locally, recomputing the score may be fast at each iteration.
 
-For greedy search (namely the K3 algorithm), we first assume a topological order of the graph. For each variable, we restrict its parent set to the variables with a higher order. While searching for parent set for each variable, it takes a greedy approach by adding the parent that increases the score most until no improvement can be made.
+_K3 algorithm._
+A second approach, the K3 algorithm, takes as inpute an ordering of the variables.
+In this order, it searches for a parent set for variable $$X_i$$ from within the variables $$\{X_1, \dots, X_{n-1}\}$$.
+A greedy approach may be used which builds the parent set by iteratively adding the next parent which most increases the score, until no further improvement can be made or until a maximum number of parents have been added.
+This approach is evidently sensitive to the initial variable ordering, and depends on the tractability of finding the parent set, but may still perform well in practice. 
 
-A former CS228 student has created an [interactive web simulation](http://pgmlearning.herokuapp.com/k3LearningApp) for visualizing the K3 learning algorithm. Feel free to play around with it and, if you do, please submit any feedback or bugs through the Feedback button on the web app.
+### Other methods
 
-Although both approaches are computationally tractable, neither of them have a guarantee of the quality of the graph that we end up with. The graph space is highly "non-convex" and both algorithms might get stuck at some sub-optimal regions.
-
-
-### Constraint-based approach
-
-The constraint-based case employs the independence test to identify a set of edge constraints for the graph and then finds the best DAG that satisfies the constraints. For example, we could distinguish V-structure and fork-structure by doing an independence test for the two variables on the sides conditional on the variable in the middle. This approach works well with some other prior (expert) knowledge of structure but requires lots of data samples to guarantee testing power. So it is less reliable when the number of sample is small.
-
-### Recent Advances
-
-In this section, we will briefly introduce two recent algorithms for graph search: order-search (OS) approach and integer linear programming (ILP) approach.
+In this section, we briefly mention two other methods for graph search: an order-search (OS) approach and an integer linear programming (ILP) approach.
 
 The OS approach, as its name suggests, conducts a search over the topological orders and the graph space at the same time. The K3 algorithm assumes a topological order in advance and searches only over the graphs that obey the topological order. When the order specified is a poor one, it may end with a bad graph structure (with a low graph score). The OS algorithm resolves this problem by performing a search over orders at the same time. It swaps the order of two adjacent variables at each step and employs the K3 algorithm as a sub-routine.
 
 The ILP approach encodes the graph structure, scoring and the acyclic constraints into a linear programming problem. Thus it can utilize a state-of-art integer programming solver. That said, this approach requires a bound on the maximum number of parents any node in the graph can have (say to be 4 or 5). Otherwise, the number of constraints in the ILP will explode and the computation will become intractable.
-
 
 <br/>
 
