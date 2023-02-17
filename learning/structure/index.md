@@ -16,12 +16,13 @@ We briefly touch on two broad approaches to structure learning: (1) constraint-b
 Constraint-based approaches use the dataset to perform statistical tests of independence between variables and construct a graph accordingly.
 Score-based approaches search for network structures to maximize the likelihood of the dataset while controlling the complexity of the model.
 
-The modeling goal guides the choice of approach.
-Constraint-based techniques avoid parameter identification (e.g., estimating the values of the conditional probability tables), and so are natural if one is only interested in the qualitative statistical associations between the variables---namely, the graph itself.
-Such structure learning is also called _knowledge discovery_.
-On the other hand, score-based approaches are natural when one is also interested in identifying model parameters. 
-For example, these approaches may be used for density estimation.
-We briefly touch upon constraint-based approaches before turning to score-based approaches.
+The goal of the modeling often guides the choice of approach.
+A useful distinction to make is whether one is interested in estimating parameters of the conditional probability distributions or potentials in addition to the graphical structure.
+It may be the case that one is only interested in the qualitative statistical associations between the variables---namely, the graph itself and the conditional independence assertions it encodes.
+Such structure learning is sometimes called _knowledge discovery_.
+Since constraint-based techniques may avoid estimating parameters, they are natural in this setting.
+On the other hand, score based techniques may be natural when one also wants to estimate parameters.
+In the sequel, we briefly touch upon constraint-based approaches before turning to score-based approaches.
 
 ### Constraint-based approaches for knowledge discovery
 
@@ -47,13 +48,13 @@ These approaches tend to work better with some prior (expert) knowledge of struc
 
 ### Score-based approaches for simultaneous structure and parameter learning
 
-Suppose $$x^{(1)}, x^{(2)}, \dots, x^{(m)}$$ is a dataset of samples from $$n$$ random variables and $$\mathcal{G}$$ is a nonempty set of directed acyclic graphs.
-It is natural to be interested in finding a distribution $$p$$ and graph $$G \in \mathcal{G}$$ to
+Suppose $$\mathcal{D} = x^{(1)}, x^{(2)}, \dots, x^{(m)}$$ is a dataset of samples from $$n$$ random variables and $$\mathcal{G}$$ is a nonempty set of directed acyclic graphs.
+It is natural to be interested in finding a distribution $$p$$ and graph $$G$$ to
 
 $$
 \begin{aligned}
-    \text{maximize} \quad & \frac{1}{m} \sum_{i = 1}^{m} \log p(x^{(i)})  \\
-    \text{subject to} \quad & p \text{ factors according to } G \\
+    \underset{p \text{ and } G}{\text{maximize}} \quad & \frac{1}{m} \sum_{i = 1}^{m} \log p(x^{(i)})  \\
+    \text{subject to} \quad & p \text{ factors according to } G \in \mathcal{G} \\
 \end{aligned}
 $$
 
@@ -64,14 +65,16 @@ _An approximation perspective._
 We mention in passing that the above problem is equivalent to finding $$p$$ and $$G \in \mathcal{G}$$ to minimize $$D_{KL}(\hat{p} \| p)$$ subject to $$p$$ factors according to $$G$$, where $$\hat{p}$$ is the _empirical (data) distribution_; here $$D_{KL}$$ is the usual Kullback-Leibler divergence between $$\hat{p}$$ and $$p$$.
 Thus we can also interpret this task as finding the distribution which factors according to some graph in $$\mathcal{G}$$ which best _approximates_ the empirical distribution.
 
-It is natural to ask about the existence and uniqueness of solutions to this problem.
-Existence is easy, but uniqueness is subtle.
-To see this, suppose $$\mathcal{G}$$ is the set of all directed acyclic graphs.
-In this case, any _complete_ directed acyclic graph will be optimal in the above problem. 
-Indeed, we have seen that a complete graph can represent any distribution, so all distributions factor according to a complete graph.
+There is always a solution to this optimization problem, but its quality often depends on how one constrains the set $$\mathcal{G}$$.
+To see this, suppose $$\mathcal{G}$$ is the set of _all_ directed acyclic graphs.
+In this case, _any_ complete directed acyclic graph will be optimal because it encodes no conditional independence assumptions.
+In general, given an optimal $$p^\star$$ and $$G^\star$$, any 
+graph $$G' \in \mathcal{G}$$ satisfying $$\mathcal{I}(G') \subseteq \mathcal{I}(G^\star)$$ is also optimal. 
+The reason is that $$p^\star$$ _also_ factors according to $$G'$$.
+Unfortunately, a complete graph (or generally any _dense_ graph) is often an undesirable solution because it models no (or few) conditional independence assertions and has many parameters to estimate.
 
 These considerations, coupled with the accuracy-efficiency trade-off, make it natural to control the complexity of $$p$$ by restricting the class $$\mathcal{G}$$ or by adding regularization to the log-likelihood objective.
-In other words, we can replace the average log likelihood in the problem above with a real-valued _score_ $$\text{Score}(G, D)$$ which may trade off between a measure of model fit with a measure of model complexity.
+In other words, we can replace the average log likelihood in the problem above with a real-valued _score_ function $$\text{Score}(G, \mathcal{D})$$ which may trade off between a measure of model fit with a measure of model complexity.
 Before discussing methods for solving the general (and difficult) score-based problem, we consider a famous tractable example in which the class $$\mathcal{G}$$ is taken to be the set of directed trees.
 
 
@@ -109,7 +112,7 @@ $$
 where $$X_r$$ is the root of the tree.
 
 _Step 2: optimal tree._ 
-Second, they plug in $p^\star_T$ and consider optimizing $$T$$.
+Second, they plug in $$p^\star_T$$ and consider optimizing $$T$$.
 The first step is express the log likelihood in terms of the empirical distribution as
 
 $$
@@ -124,7 +127,7 @@ Next we can re-write the negative cross-entropy
 
 $$
 \begin{aligned}
-    \sum_{x \in \mathcal{S}} \hat{p}(x) \sum_{i = 1}^{n} \log p^\star_T(x)  
+    \sum_{x \in \mathcal{S}} \hat{p}(x) \log p^\star_T(x)  
     &= -H_{\hat{p}}(X_r) + \sum_{i \neq r} \sum_{x \in \mathcal{S}} \hat{p}(x) \log \hat{p}(x_i | x_{\text{pa}(i)})  \\
     &= -H_{\hat{p}}(X_r) + \sum_{i \neq r} \sum_{x \in \mathcal{S}} \hat{p}(x) \log \frac{\hat{p}(x_i , x_{\text{pa}(i)})}{\hat{p}(x_{\text{pa}(i)})} \frac{\hat{p}(x_i)}{\hat{p}(x_i)} \\
     &= \sum_{i \neq r} I_{\hat{p}}(X_i, X_{\text{pa}(i)}) - \sum_{i = 1}^{n} H_{\hat{p}}(X_i)
@@ -140,7 +143,7 @@ Consequently, we need only find an _undirected_ tree with a set of edges $$E$$ t
 $$
 \begin{aligned}
     \text{maximize} \quad & \sum_{\{i, j\} \in E} I_{\hat{p}}(X_i, X_j)  \\
-    \text{subject to} \quad & (\{1, \dots, n\}, E) \text{ is a tree}
+    \text{subject to} \quad & G = (\{1, \dots, n\}, E) \text{ is a tree}
 \end{aligned}
 $$
 
@@ -154,7 +157,7 @@ Any such maximum spanning tree, with any node its root, is a solution.
 1. Compute the mutual information for all pairs of variables $$X_i,X_j$$, where $$i \neq j$$:
 
     $$
-    I_{\hat{p}}(X_i, X_j) =\sum_{x_i,_j} \hat p(x_i,x_j)\log \frac{\hat{p}(x_i,x_j)}{\hat p(x_i) \hat{p}(x_j)}
+    I_{\hat{p}}(X_i, X_j) =\sum_{x_i,x_j} \hat p(x_i,x_j)\log \frac{\hat{p}(x_i,x_j)}{\hat p(x_i) \hat{p}(x_j)}
     $$
 
     This symmetric function is an information theoretic measure of the association between $$X_i$$ and $$X_j$$.
@@ -192,11 +195,12 @@ Thus, the complete graph, if it is a member of $$\mathcal{G}$$, is always optima
 However, complete graphs are undesirable because (1) they make no conditional independence assertion, (2) their tree width is $$n-1$$---making inference computationally expensive, and (3) they require many parameters---and so suffer from overfitting.
 Consequently, we often regularize the log likelihood optimization problem by restricting the class of graphs considered, as in the Chow-Liu approach, or by penalizing the log likelihood objective.
 
-Given a dataset $$\mathcal{D} = x^{(1)}, \dots, x^{(m)}$$, set of graphs $$\mathcal{G}$$, and a score function mapping graphs and datasets to real values, we want to find a graph $$G \in \mathcal{G}$$ to
+Given a dataset $$\mathcal{D} = x^{(1)}, \dots, x^{(m)}$$, set of graphs $$\mathcal{G}$$, and a score function mapping graphs and datasets to real values, we want to find a graph $$G$$ to
 
 $$
 \begin{aligned}
-\text{maximize} & \quad \text{Score}(G, \mathcal{D})
+\text{maximize} & \quad \text{Score}(G, \mathcal{D}) \\
+\text{subject to} & \quad G \in \mathcal{G}
 \end{aligned}
 $$
 
