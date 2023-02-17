@@ -4,7 +4,7 @@ title: Structure learning for Bayesian networks
 ---
 
 We consider estimating the graphical structure for a Bayesian network from a dataset.
-The task is challenging because (a) the graph structure need not be identifiable (i.e., two different graphs may induce the the same set of independencies; recall _I-equivalence_) and (b) the set of directed acyclic graphs is exponentially large in the number of variables.
+The task is challenging because (a) the graph structure need not be identifiable (i.e., two different graphs may induce the the same set of conditional indpendence assumptions; recall _I-equivalence_) and (b) the set of directed acyclic graphs is exponentially large in the number of variables.
 
 Before discussing approaches, we emphasize the contrast between these challenges and our pleasant results on parameter learning for a Bayesian network _given_ the directed acyclic graph (see [Learning in directed models](../directed/)).
 There we supposed that we had elicited a graph from a domain expert, constructed it using our own (causal) intuition, or asserted it to simplify learning and inference.
@@ -17,26 +17,26 @@ Constraint-based approaches use the dataset to perform statistical tests of inde
 Score-based approaches search for network structures to maximize the likelihood of the dataset while controlling the complexity of the model.
 
 The modeling goal guides the choice of approach.
-Constraint-based techniques avoid parameter identification, and so are natural if one is only interested in the qualitative statistical associations between the variables---namely, the graph itself.
+Constraint-based techniques avoid parameter identification (e.g., estimating the values of the conditional probability tables), and so are natural if one is only interested in the qualitative statistical associations between the variables---namely, the graph itself.
 Such structure learning is also called _knowledge discovery_.
 On the other hand, score-based approaches are natural when one is also interested in identifying model parameters. 
-For example, if one is interested in density estimation.
+For example, these approaches may be used for density estimation.
 We briefly touch upon constraint-based approaches before turning to score-based approaches.
 
 ### Constraint-based approaches for knowledge discovery
 
 Here we consider one natural approach to constraint-based structure learning.
-The method extends an algorithm for finding a minimal I-map to the case in which we do not know the conditional independencies, but can deduce them using statistical tests of independence.
+The method extends an algorithm for finding a minimal I-map to the case in which we do not know the conditional independence assertions, but can deduce them using statistical tests of independence.
 
 First we recall the algorithm for finding a minimal I-map.
-Suppose $$X_1, \dots, X_n$$ is an ordering of $$n$$ random variables variables satisfying a set of conditional independences $$\mathcal{I}$$.
+Suppose $$X_1, \dots, X_n$$ is an ordering of $$n$$ random variables variables satisfying a set of conditional independence assertions $$\mathcal{I}$$.
 For $$i = 1,\dots, n$$, define $$\mathbf{A}_i$$ to be a minimal subset of $$\{ X_1, \dots, X_{i-1}\}$$ satisfying 
 
 $$p(X_i | X_1, \dots, X_{i-1}) = p(X_i | \mathbf{A}_i).$$
 
 Then the directed acyclic graph $$G$$ defined by the parent function $$\text{pa}(X_i) = A_i$$ is a minimal I-map for $$\mathcal{I}$$.
 
-There is a natural modification to this procedure for the case in which we have a dataset rather than a set of conditional indepencies.
+There is a natural modification to this procedure for the case in which we have a dataset rather than a set of conditional independence assertions.
 Given nonoverlapping subsets $$\mathbf{X}, \mathbf{Y}, \mathbf{Z}$$ of $$\{X_1, \dots, X_n\}$$,
 we use a hypothesis test to decide if $$\mathbf{X} \perp \mathbf{Y} | \mathbf{Z}$$.
 The test is usually based on some statistical measure of deviance (e.g., a $$\chi^2$$ statistic or empirical mutual information) from the null hypothesis that the conditional independence holds.
@@ -61,7 +61,7 @@ In other words, among structures in $$\mathcal{G}$$, we are interested in findin
 
 
 _An approximation perspective._ 
-We mention in passing that the above problem is equivalent to finding $$p$$ and $$G \in \mathcal{G}$$ to minimize $$D_{KL}(\hat{p} \| p)$$ subject to $$p$$ factors according to $$G$$, where $$\hat{p}$$ is the _emprical (data) distribution_; here $$D_{KL}$$ is the usual Kullback-Leibler divergence between $$\hat{p}$$ and $$p$$.
+We mention in passing that the above problem is equivalent to finding $$p$$ and $$G \in \mathcal{G}$$ to minimize $$D_{KL}(\hat{p} \| p)$$ subject to $$p$$ factors according to $$G$$, where $$\hat{p}$$ is the _empirical (data) distribution_; here $$D_{KL}$$ is the usual Kullback-Leibler divergence between $$\hat{p}$$ and $$p$$.
 Thus we can also interpret this task as finding the distribution which factors according to some graph in $$\mathcal{G}$$ which best _approximates_ the empirical distribution.
 
 It is natural to ask about the existence and uniqueness of solutions to this problem.
@@ -83,11 +83,11 @@ _A bit of history._
 Chow and Liu were interested in fitting distributions over a set of binary hand-written digits for the purposes of optical character recognition.
 We have seen the number of parameters grows exponentially in the number of pixels, and so naturally they became interested in parsimonious representations.
 Specifically, they considered the set of distributions which factor according to some directed tree.
-Roughly speaking, they showed that in this case the aformentioned problem of maximizing likelihood reduces to a maximum spanning tree problem, which happens to be a famously _tractable_ problem.
+Roughly speaking, they showed that in this case the aforementioned problem of maximizing likelihood reduces to a maximum spanning tree problem, which happens to be a famously _tractable_ problem.
 
 _Note on identifiability._ 
 If a distribution $$p$$ factors according to a tree rooted at some variable $$X_r$$, where $$r \in \{1, \dots, n\}$$, then it factors according to the same tree rooted at every other variable.
-In other words, these two grpahs are _I-equivalent_.
+In other words, these two graphs are _I-equivalent_.
 We will see below that Chow and Liu's formulation choice of root is immaterial to maximizing the likelihood.
 
 ### Chow and Liu's solution to the optimization
@@ -159,7 +159,7 @@ Any such maximum spanning tree, with any node its root, is a solution.
 
     This symmetric function is an information theoretic measure of the association between $$X_i$$ and $$X_j$$.
     It is zero if $$X_i$$ and $$X_j$$ are independent.
-    Recall $$\hat{p}(x_i, x_j)$$ is the proportion of all datapoints $$x^{(k)}$$ with $$x^{(k)}_i = x_i$$ _and_ $$x^{(k)}_j = x_j$$.
+    Recall $$\hat{p}(x_i, x_j)$$ is the proportion of all data points $$x^{(k)}$$ with $$x^{(k)}_i = x_i$$ _and_ $$x^{(k)}_j = x_j$$.
 
     Suppose we have four random variables $$A, B, C, D$$. 
     Then we may visualize these mutual information weights as follows:
@@ -189,7 +189,7 @@ To see this, notice we must compute $$O(n^2)$$ mutual information values, given 
 
 As we mentioned earlier, every distribution factors according to a complete directed graph.
 Thus, the complete graph, if it is a member of $$\mathcal{G}$$, is always optimal.
-However, complete graphs are undesirable because (1) they make no conditional indpendence assertion, (2) their treewidth is $$n-1$$---making inference computationally expensive, and (3) they require many parameters---and so suffer from overfitting.
+However, complete graphs are undesirable because (1) they make no conditional independence assertion, (2) their tree width is $$n-1$$---making inference computationally expensive, and (3) they require many parameters---and so suffer from overfitting.
 Consequently, we often regularize the log likelihood optimization problem by restricting the class of graphs considered, as in the Chow-Liu approach, or by penalizing the log likelihood objective.
 
 Given a dataset $$\mathcal{D} = x^{(1)}, \dots, x^{(m)}$$, set of graphs $$\mathcal{G}$$, and a score function mapping graphs and datasets to real values, we want to find a graph $$G \in \mathcal{G}$$ to
@@ -220,7 +220,7 @@ $$ \text{Score}(G, \mathcal{D}) = \underbrace{\text{LL}(\mathcal{D} \mid G)}_{\t
 
 where the function $$R$$ is a regularizer measuring the complexity of the model.
 
-_Commmon regularizers._
+_Common regularizers._
 Often $$R$$ is a function of the size of the dataset and the number of parameters.
 The former is denoted $$\lvert \mathcal{D} \rvert$$ and the latter is denoted by $$\lVert \mathcal{G} \rVert$$, since two categorical Bayes nets with the same graph structure have the same number of parameters.
 The regularizer often has the form
@@ -242,7 +242,7 @@ Although such methods are not guaranteed to provide globally optimal graph struc
 We briefly outline two approaches here.
 
 _Local structure search._
-One such approach begins with a given graph, and at each step of an iterative procedure, modifies the graph by (a) adding an edge (b) removing an edge or (c) fipping an edge. 
+One such approach begins with a given graph, and at each step of an iterative procedure, modifies the graph by (a) adding an edge (b) removing an edge or (c) flipping an edge. 
 Here these operations are only considered if the modified graph remains acyclic.
 If the score of the new structure improves upon the current, the new structure is adopted. 
 Otherwise, a different operation is attempted.
@@ -250,7 +250,7 @@ The procedure can be terminated via a variety of stopping criterion; for example
 Since the conditional probability tables only change locally, recomputing the score may be fast at each iteration.
 
 _K3 algorithm._
-A second approach, the K3 algorithm, takes as inpute an ordering of the variables.
+A second approach, the K3 algorithm, takes as input an ordering of the variables.
 In this order, it searches for a parent set for variable $$X_i$$ from within the variables $$\{X_1, \dots, X_{n-1}\}$$.
 A greedy approach may be used which builds the parent set by iteratively adding the next parent which most increases the score, until no further improvement can be made or until a maximum number of parents have been added.
 This approach is evidently sensitive to the initial variable ordering, and depends on the tractability of finding the parent set, but may still perform well in practice. 
