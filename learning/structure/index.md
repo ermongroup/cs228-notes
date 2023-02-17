@@ -4,7 +4,7 @@ title: Structure learning for Bayesian networks
 ---
 
 We consider estimating the graphical structure for a Bayesian network from a dataset.
-The task is challenging because (a) the graph structure need not be identifiable (i.e., two different graphs may induce the the same set of conditional indpendence assumptions; recall _I-equivalence_) and (b) the set of directed acyclic graphs is exponentially large in the number of variables.
+The task is challenging because (a) the graph structure need not be identifiable (i.e., two different graphs may induce the the same set of conditional independence assumptions; recall _I-equivalence_) and (b) the set of directed acyclic graphs is exponentially large in the number of variables.
 
 Before discussing approaches, we emphasize the contrast between these challenges and our pleasant results on parameter learning for a Bayesian network _given_ the directed acyclic graph (see [Learning in directed models](../directed/)).
 There we supposed that we had elicited a graph from a domain expert, constructed it using our own (causal) intuition, or asserted it to simplify learning and inference.
@@ -16,12 +16,12 @@ We briefly touch on two broad approaches to structure learning: (1) constraint-b
 Constraint-based approaches use the dataset to perform statistical tests of independence between variables and construct a graph accordingly.
 Score-based approaches search for network structures to maximize the likelihood of the dataset while controlling the complexity of the model.
 
-The goal of the modeling often guides the choice of approach.
-A useful distinction to make is whether one is interested in estimating parameters of the conditional probability distributions or potentials in addition to the graphical structure.
-It may be the case that one is only interested in the qualitative statistical associations between the variables---namely, the graph itself and the conditional independence assertions it encodes.
+One's modeling goal often guides the choice of approach.
+A useful distinction to make is whether one wants to estimate parameters of the conditional probability distributions in addition to the graphical structure.
+Sometimes, one is only interested in the qualitative statistical associations between the variables---namely, the graph itself and the conditional independence assertions it encodes.
 Such structure learning is sometimes called _knowledge discovery_.
-Since constraint-based techniques may avoid estimating parameters, they are natural in this setting.
-On the other hand, score based techniques may be natural when one also wants to estimate parameters.
+Since constraint-based techniques can avoid estimating parameters, they are natural candidates.
+On the other hand, score based techniques tend to be natural when one also wants parameter estimates.
 In the sequel, we briefly touch upon constraint-based approaches before turning to score-based approaches.
 
 ### Constraint-based approaches for knowledge discovery
@@ -38,10 +38,8 @@ $$p(X_i | X_1, \dots, X_{i-1}) = p(X_i | \mathbf{A}_i).$$
 Then the directed acyclic graph $$G$$ defined by the parent function $$\text{pa}(X_i) = A_i$$ is a minimal I-map for $$\mathcal{I}$$.
 
 There is a natural modification to this procedure for the case in which we have a dataset rather than a set of conditional independence assertions.
-Given nonoverlapping subsets $$\mathbf{X}, \mathbf{Y}, \mathbf{Z}$$ of $$\{X_1, \dots, X_n\}$$,
-we use a hypothesis test to decide if $$\mathbf{X} \perp \mathbf{Y} | \mathbf{Z}$$.
+For subsets $$\mathbf{U}$$ of $$\{X_1, \dots, X_{i-1}\}$$, the algorithm uses a hypothesis test to decide if $$X_i \perp \{X_1, \dots, X_{i-1}\} \setminus \mathbf{U} \; | \; \mathbf{U}$$.
 The test is usually based on some statistical measure of deviance (e.g., a $$\chi^2$$ statistic or empirical mutual information) from the null hypothesis that the conditional independence holds.
-For example, we might distinguish a v-structure from a common-parent structure by doing an independence test for the two variables on the sides conditioned on the variable in the middle. 
 
 As usual, such approaches suffer when we have limited data, which is exacerbated when the number of variables involved in the test is large.
 These approaches tend to work better with some prior (expert) knowledge of structure.
@@ -148,8 +146,8 @@ $$
 $$
 
 This happens to be the well-known maximum spanning tree problem. 
-It has several algorithms for its solution with runtimes quadratic in the number of vertices.
-Two of the famous ones are Kruskal's algorithm and Prim's algorithm.
+It has several algorithms for its solution with runtimes which are quadratic in the number of vertices.
+Two famous examples are Kruskal's algorithm and Prim's algorithm.
 Any such maximum spanning tree, with any node its root, is a solution.
 
 ### Chow and Liu's algorithm
