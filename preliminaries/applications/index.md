@@ -9,13 +9,17 @@ Probabilistic graphical models have numerous and diverse real-world applications
   - [Generation](#image-generation)
   - [In-Painting](#image-inpainting)
   - [Denoising](#image-denoising)
+  - [Models for Image Applications](#image-models)
 + **Language**
   - [Generation](#text-generation)
   - [Translation](#text-translation)
+  - [Models for Language Applications](#language-models)
 + **Audio**
   - [Super-Resolution](#audio-superresolution)
   - [Speech Synthesis](#speech-synthesis)
   - [Speech Recognition](#speech-recognition)
++ **Economics**
+  - [Causal Inference](#causal-inference)
 + **Science**
   - [Error-Correcting Codes](#error-correcting-codes)
   - [Computational Biology](#comp-bio)
@@ -36,7 +40,7 @@ Consider a distribution $$p(\bfx)$$ over images, where $$\bfx$$ is an image repr
 **Training Data**<br />
 ![bedroom1](bedroominpainting1.png)
 
-Now that we have this probabilistic model of bedrooms, we can now _**generate**_ new realistic bedroom images by sampling from this distribution.  Specifically, new sampled images $$\hat{\mathbf{x}} \sim p(\mathbf{x})$$ are created directly from our model $$p(\mathbf{x})$$, which can now generate data similar to the bedroom images that we trained it with.  
+Now that we have this probabilistic model of bedrooms, we can now _**generate**_ new realistic bedroom images by sampling from this distribution.  Specifically, new sampled images $$\hat{\mathbf{x}} \sim p(\mathbf{x})$$ are created directly from our model $$p(\mathbf{x})$$, which can now generate data similar to the bedroom images that we trained it with.
 
 Moreover, one of the reasons why generative models are powerful lies in the fact that they have many fewer parameters than the amount of data that they are trained with --- as a result, the models have to efficiently distill the essence of the training data to be able to generate new samples.  We see that our particular probabilistic model of bedrooms has done a good job of capturing the data's essence, and can therefore produce highly realistic images, some examples of which are shown below:
 
@@ -71,7 +75,35 @@ Similarly, given an image corrupted by noise (e.g., an old photograph), we can a
 
 ![Image Denoising](imageDenoising4.png)
 
-## Language Models
+
+<a id="image-models"></a>
+### Models for Image Applications
+Different variants of PGMs have been developed for the aforementioned image applications. Here we discuss two state-of-the art model families: diffusion models and variational autoencoders.
+
+**Diffusion Models**<br />
+![diffusiongm](diffusiongm.png)
+
+Diffusion models are a class of PGMs that build upon the directed Markov chain structure to model a sequence of random variables, i.e [stochastic process](https://en.wikipedia.org/wiki/Stochastic_process), $$\{x_{t}\}_{t = 0}^{T}$$ where each $$x_{t}$$ represents an intermediate between a uniform random distribution and the data distribution. The Markov chain structure captures the key sparse independence assumptions between the variables and consequently enables efficient learning and inference. Diffusion models have been successfully leveraged for generating images of faces and natural scenaries:
+
+![diffusionsamples](diffusionpics.png)
+
+Diffusion models are an active area of research. Some seminal works in the area include
+- Denoising Diffusion Probablistic Models (DDPMs) by [Ho et al. 2020](https://arxiv.org/pdf/2006.11239.pdf)
+- Score-based Generative Modeling through Stochastic Differential Equations by [Song et al. 2021](https://arxiv.org/pdf/2011.13456.pdf).
+
+**Variational Autoencoders (VAE)**<br />
+<img src="vaegm.png" alt="Vae Images Samples" width="200" title="VAE Images Samples">
+
+A Variational Autoencoder (VAE) is a simple PGM that has a directed edge between the latent (unobserved) variables $$z$$ and observed variables $$x$$. The observed variables $$x$$ represent the data distribution (such as the distribution of MNIST images) while the latents $$z$$ often represent a distinguishied semantatic characteristic of the data, e.g digit identity. VAEs have the additional use case for compression, i.e the latents $z$ can be interpreted as a compressed representations of the original images. VAEs can generate high fidelity images as shown below
+
+![vaepics](vaepics.png)
+
+More details on the technical formulation of the VAE model can be found [here](../../extras/vae). Like Diffusion Models, VAEs are an active area of research and some seminal works in the area include:
+- Autoencoding Variational Bayes by [Kingma et al. 2013](https://arxiv.org/pdf/1312.6114.pdf)
+- Importance Weighted Autoencoders by [Burda et al. 2016](https://arxiv.org/pdf/1509.00519.pdf)
+- Very Deep VAEs Generalize Autoregressive Models and Can Outperform Them on Images by [Child et al. 2021](https://arxiv.org/pdf/2011.10650.pdf)
+
+## Language
 
 Knowing the probability distribution can also help us model natural language utterances. In this case, we want to construct a probability distribution $$p(x)$$ over sequences of words or characters $$x$$ that assigns high probability to proper (English) sentences. This distribution can be learned from a variety of sources, such as Wikipedia articles.
 
@@ -105,6 +137,17 @@ Suppose that we have gathered a training set of paragraphs that were transcribed
 
 ![Neural Machine Translation](nmt-model-fast.gif)
 
+<a id="language-models"></a>
+### Models for Language Applications
+Many modern language models do not make strong independence assumptions and instead learn a fully connected PGM with tons of data in order to avoid overfitting. Recent successes in commerical language products such as [ChatGPT](https://openai.com/blog/chatgpt/) are based on the [Transformer Architecture](https://arxiv.org/pdf/1706.03762.pdf) which is a fully connected graphical model.
+
+![ChatGPT](chatgpt.png)
+
+Some language models such as [XLNet](https://arxiv.org/pdf/1906.08237.pdfleverage) leverage sparser graph structures, and hence more baked-in independence assumptions, which can reduce computational costs. Some works in the area of language modeling include
+- BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding by [Devlin et al. 2019](https://arxiv.org/abs/1810.04805)
+- XLNet: Generalized Autoregressive Pretraining for Language Understanding by [Yang et al. 2020](https://arxiv.org/pdf/1906.08237.pdf)
+
+
 ## Audio Models
 
 We can also use probabilistic graphical models for audio applications. Suppose we construct a probability distribution $$p(x)$$ over audio signals that assigns high probability to ones that sound like human speech.
@@ -133,6 +176,18 @@ As we did in image processing, we can also sample the model and generate (synthe
 ### Speech recognition
 Given a (joint) model of speech signals and language (text), we can attempt to infer spoken words from audio signals.
 ![Speech](speech.png)
+
+
+## Economics
+
+
+<a id="causal-inference"></a>
+### Causal Inference
+
+<img src="causalgm.png" alt="Causal Graphical Model" width="350" title="VAE Images Samples">
+
+PGMs are used in the field of [Causal Inference](https://en.wikipedia.org/wiki/Causal_inference) to reason about when a set of variables $$X_{C}$$ have a "causal effect" on another set of variables $$X_{E}$$. This is done by modifying the original graphical model, e.g the figure above, so that all incoming directed edges to $$X_{C}$$ are removed. We say that $$X_{C}$$ has a causal effect on $$X_{E}$$ if setting $$X_{C}$$ to different values $$x_{c}, x_{c}'$$ leads to different conditional distributions for $$X_{E}$$, i.e $$p(X_{E} \vert X_{C} = x_{c}) \neq p(X_{E} \vert X_{C} = x_{c}')$$. Intuitively, this surgery on the graph corresponds to the process of shutting off the mechanisms that would ordinarily set $$X_{C}$$ and leaving the other mechanisms propagating out of $$X_{C}$$ on, which propagates the fixed values of $$X_{C}$$. More details can be found in this [write-up](https://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch22.pdf). Some works in this field include
+- Causal Effect Inference with Deep Latent-Variable Models by [Louizos et al. 2017](https://arxiv.org/pdf/1705.08821.pdf)
 
 ## Applications in Science Today
 
