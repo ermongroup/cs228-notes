@@ -94,7 +94,7 @@ Diffusion models are an active area of research. Some seminal works in the area 
 **Variational Autoencoders (VAE)**<br />
 <img src="vaegm.png" alt="Vae Images Samples" width="200" title="VAE Images Samples">
 
-A Variational Autoencoder (VAE) is a simple PGM that has a directed edge between the latent (unobserved) variables $$z$$ and observed variables $$x$$. The observed variables $$x$$ represent the data distribution (such as the distribution of MNIST images) while the latents $$z$$ often represent a distinguishied semantatic characteristic of the data, e.g digit identity. VAEs have the additional use case for compression, i.e the latents $z$ can be interpreted as a compressed representations of the original images. VAEs can generate high fidelity images as shown below
+A Variational Autoencoder (VAE) is a simple PGM that has a directed edge between the latent (unobserved) variables $$z$$ and observed variables $$x$$. The observed variables $$x$$ represent the data distribution (such as the distribution of MNIST images) while the latents $$z$$ often represent a distinguishied semantatic characteristic of the data, e.g digit identity. VAEs have the additional use case for compression, i.e the latents $$z$$ can be interpreted as a compressed representations of the original images. VAEs can generate high fidelity images as shown below
 
 ![vaepics](vaepics.png)
 
@@ -139,11 +139,11 @@ Suppose that we have gathered a training set of paragraphs that were transcribed
 
 <a id="language-models"></a>
 ### Models for Language Applications
-Many modern language models do not make strong independence assumptions and instead learn a fully connected PGM with tons of data in order to avoid overfitting. Recent successes in commerical language products such as [ChatGPT](https://openai.com/blog/chatgpt/) are based on the [Transformer Architecture](https://arxiv.org/pdf/1706.03762.pdf) which is a fully connected graphical model.
+Many modern language models do not make strong independence assumptions and instead learn a fully connected PGM with a large quantity of data in order to avoid overfitting. Recent successes in commerical language products such as [ChatGPT](https://openai.com/blog/chatgpt/) are based on the [Transformer Architecture](https://arxiv.org/pdf/1706.03762.pdf) which is a fully connected graphical model.
 
 ![ChatGPT](chatgpt.png)
 
-Some language models such as [XLNet](https://arxiv.org/pdf/1906.08237.pdfleverage) leverage sparser graph structures, and hence more baked-in independence assumptions, which can reduce computational costs. Some works in the area of language modeling include
+Some language models such as [XLNet](https://arxiv.org/pdf/1906.08237.pdf) leverage sparser graph structures, and hence more baked-in independence assumptions, which can reduce computational costs. Some works in the area of language modeling include
 - BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding by [Devlin et al. 2019](https://arxiv.org/abs/1810.04805)
 - XLNet: Generalized Autoregressive Pretraining for Language Understanding by [Yang et al. 2020](https://arxiv.org/pdf/1906.08237.pdf)
 
