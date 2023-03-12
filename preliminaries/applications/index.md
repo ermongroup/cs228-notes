@@ -94,7 +94,7 @@ Diffusion models are an active area of research. Some seminal works in the area 
 **Variational Autoencoders (VAE)**<br />
 <img src="vaegm.png" alt="Vae Images Samples" width="200" title="VAE Images Samples">
 
-A Variational Autoencoder (VAE) is a simple PGM that has a directed edge between the latent (unobserved) variables $$z$$ and observed variables $$x$$. The observed variables $$x$$ represent the data distribution (such as the distribution of MNIST images) while the latents $$z$$ often represent a distinguishied semantatic characteristic of the data, e.g digit identity. VAEs have the additional use case for compression, i.e the latents $$z$$ can be interpreted as a compressed representations of the original images. VAEs can generate high fidelity images as shown below
+A Variational Autoencoder (VAE) is a simple PGM that has a directed edge between the latent (unobserved) variables $$z$$ and observed variables $$x$$. The observed variables $$x$$ represent the data distribution (such as the distribution of MNIST images) while the latents $$z$$ often represent a distinguishied semantatic characteristic of the data, e.g digit identity. VAEs have the additional use case for compression, i.e the latents $$z$$ can be interpreted as a compressed representations of the original images. VAEs can generate high fidelity images as shown below.
 
 ![vaepics](vaepics.png)
 
@@ -143,7 +143,7 @@ Many modern language models do not make strong independence assumptions and inst
 
 ![ChatGPT](chatgpt.png)
 
-Some language models such as [XLNet](https://arxiv.org/pdf/1906.08237.pdf) leverage sparser graph structures, and hence more baked-in independence assumptions, which can reduce computational costs. Some works in the area of language modeling include
+Some works in the area of language modeling include
 - BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding by [Devlin et al. 2019](https://arxiv.org/abs/1810.04805)
 - XLNet: Generalized Autoregressive Pretraining for Language Understanding by [Yang et al. 2020](https://arxiv.org/pdf/1906.08237.pdf)
 
@@ -186,7 +186,7 @@ Given a (joint) model of speech signals and language (text), we can attempt to i
 
 <img src="causalgm.png" alt="Causal Graphical Model" width="350" title="VAE Images Samples">
 
-PGMs are used in the field of [Causal Inference](https://en.wikipedia.org/wiki/Causal_inference) to reason about when a set of variables $$X_{C}$$ have a "causal effect" on another set of variables $$X_{E}$$. This is done by modifying the original graphical model, e.g the figure above, so that all incoming directed edges to $$X_{C}$$ are removed. We say that $$X_{C}$$ has a causal effect on $$X_{E}$$ if setting $$X_{C}$$ to different values $$x_{c}, x_{c}'$$ leads to different conditional distributions for $$X_{E}$$, i.e $$p(X_{E} \vert X_{C} = x_{c}) \neq p(X_{E} \vert X_{C} = x_{c}')$$. Intuitively, this surgery on the graph corresponds to the process of shutting off the mechanisms that would ordinarily set $$X_{C}$$ and leaving the other mechanisms propagating out of $$X_{C}$$ on, which propagates the fixed values of $$X_{C}$$. More details can be found in this [write-up](https://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch22.pdf). Some works in this field include
+PGMs are used in the field of [Causal Inference](https://en.wikipedia.org/wiki/Causal_inference) to reason about when a set of variables $$X_{C}$$ have a "causal effect" on another set of variables $$X_{E}$$. This is done by modifying the original graphical model, e.g the figure above, so that all incoming directed edges to $$X_{C}$$ are removed. We say that $$X_{C}$$ has a causal effect on $$X_{E}$$ if setting $$X_{C}$$ to different values $$x_{c}, x_{c}'$$ leads to different conditional distributions for $$X_{E}$$ on the modified graph, i.e. $$p(X_{E} \vert X_{C} = x_{c}) \neq p(X_{E} \vert X_{C} = x_{c}')$$. Intuitively, this surgery on the graph corresponds to the process of shutting off the mechanisms that would ordinarily set $$X_{C}$$ and leaving the other mechanisms propagating out of $$X_{C}$$ on, which propagates the fixed values of $$X_{C}$$. More details can be found in this [write-up](https://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch22.pdf). Some works in this field include
 - Causal Effect Inference with Deep Latent-Variable Models by [Louizos et al. 2017](https://arxiv.org/pdf/1705.08821.pdf)
 
 ## Applications in Science Today
