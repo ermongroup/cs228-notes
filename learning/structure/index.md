@@ -81,37 +81,42 @@ Before discussing methods for solving the general (and difficult) score-based pr
 Here we discuss the celebrated Chow-Liu algorithm, proposed in 1968.
 
 _A bit of history._
-Chow and Liu were interested in fitting distributions over a set of binary hand-written digits for the purposes of optical character recognition.
-We have seen the number of parameters grows exponentially in the number of pixels, and so naturally they became interested in parsimonious representations.
+Chow and Liu were interested in fitting distributions over binary images of hand-written digits for the purposes of optical character recognition.
+As we have seen, the number of parameters grows exponentially in the number of pixels and so they naturally became interested in parsimonious representations.
 Specifically, they considered the set of distributions which factor according to some directed tree.
-Roughly speaking, they showed that in this case the aforementioned problem of maximizing likelihood reduces to a maximum spanning tree problem, which happens to be a famously _tractable_ problem.
+Roughly speaking, they showed that for this class of graphs the aforementioned problem of maximizing likelihood reduces to a maximum spanning tree problem. 
+Such problems are famously _tractable_.
 
-_Note on identifiability._ 
-If a distribution $$p$$ factors according to a tree rooted at some variable $$X_r$$, where $$r \in \{1, \dots, n\}$$, then it factors according to the same tree rooted at every other variable.
-In other words, these two graphs are _I-equivalent_.
-We will see below that Chow and Liu's formulation choice of root is immaterial to maximizing the likelihood.
+_A note on identifiability._ 
+If a distribution $$p$$ factors according to a rooted tree with root $$X_r$$, where $$r \in \{1, \dots, n\}$$, then it factors according to the same tree rooted at any other variable $$X_i$$, where $$i = 1, \dots, n$$ and $$i \neq r$$.
+In other words, two such rooted trees with the same skeleton but different roots are _I-equivalent_. To see this, notice that they have the same skeleton and same _v-structures_.
+Hence, we say that the root of the graph is not _identifiable_.
+By this we mean that two different choices of root give the same distribution, and so from the distribution alone we can not determine the root.
+This is related to the fact that we do not apply _causal_ interpretations to the edges in structure learning. 
+These techniques only involve statistical association apparent in the distribution.
+We see below that, in Chow and Liu's formulation, the choice of root is immaterial to maximizing the likelihood.
 
-### Chow and Liu's solution to the optimization
+### Chow and Liu's solution
 
 Suppose we have a dataset $$x^{(1)}, \dots, x^{(m)}$$ in some finite set $$\mathcal{S} = \prod_{i = 1}^{n} S_i$$, where $$S_i$$ are each finite sets for $$i = 1, \dots, n$$.
 As usual, we define the _empirical distribution_ $$\hat{p}$$ on $$\mathcal{S}$$ so that $$\hat{p}(x)$$ is the number of times $$x$$ appears in the dataset.
 We consider the above optimization for the case in which $$\mathcal{G}$$ is the set of directed trees.
 Chow and Liu's solution has two steps.
 
-_Step 1: optimal distribution given tree._ 
-First, they fix a directed tree $$T$$, and considered how to maximize the log likelihood among all distributions that factor according $$T$$.
-We have seen ([Learning in directed models](../directed/)) that the solution to this problem is to pick the conditional probabilities to match the empirical distribution.
-In other words, if we denote the solution for tree $$T$$ by $$p^\star_T$$, it satisfies
+_Step 1: optimal distribution for a given tree._ 
+First, we fix a directed tree $$T$$ and then maximize the log likelihood among all distributions that factor according $$T$$.
+The solution to this problem (see [Learning in directed models](../directed/)) is to pick the conditional probabilities to match the empirical distribution.
+Denote the optimal distribution by $$p^\star_T$$. Then
 
 $$
     p^\star_T(X) = \hat{p}(X_r) \prod_{i \neq r} \hat{p}(X_i | X_{\text{pa}(i)})
 $$
 
-where $$X_r$$ is the root of the tree.
+Here $$X_r$$, with $$r \in \{1, \dots, n\}$$, is the root of the tree and $$i$$ ranges from $$1, \dots, n$$ except $$r$$.
 
 _Step 2: optimal tree._ 
-Second, they plug in $$p^\star_T$$ and consider optimizing $$T$$.
-The first step is express the log likelihood in terms of the empirical distribution as
+Second, we substitute $$p^\star_T$$ into the objective and optimize $$T$$.
+The first step is to express the log likelihood in terms of the empirical distribution as
 
 $$
 \begin{aligned}
@@ -145,9 +150,10 @@ $$
 \end{aligned}
 $$
 
-This happens to be the well-known maximum spanning tree problem. 
-It has several algorithms for its solution with runtimes which are quadratic in the number of vertices.
-Two famous examples are Kruskal's algorithm and Prim's algorithm.
+We recognize this as a maximum spanning tree problem. 
+It has several well-known algorithms for its solution.
+Their runtimes are quadratic in the number of vertices.
+Two famous examples include Kruskal's algorithm and Prim's algorithm.
 Any such maximum spanning tree, with any node its root, is a solution.
 
 ### Chow and Liu's algorithm
@@ -168,23 +174,24 @@ Any such maximum spanning tree, with any node its root, is a solution.
     {% include maincolumn_img.html src='assets/img/mi-graph.png' %}
 
 
-2. Find the **maximum** weight spanning tree: the maximal-weight _undirected_ tree that connects all vertices in a graph. 
+2. Find the _maximum_ weight spanning tree: the _undirected_ tree which connects all vertices in the graph and has the highest weight. 
 
     Again, we may visualize this with four random variables $$A, B, C, D$$
     {% include maincolumn_img.html src='assets/img/max-spanning-tree.png' %}
  
 3. Pick any node to be the *root variable*. Direct arrows away from root to obtain a directed tree.
    The conditional probability parameters are chosen as usual, to match those of the empirical distribution.
-
-    We may visualize two choices four roots on our example with four random variables $$A, B, C, D$$:
+    We visualize two choices of the four possible roots below:
 
     {% include maincolumn_img.html src='assets/img/chow-liu-tree.png' %}
  
 
 
-_Complexity._ 
-The Chow-Liu Algorithm has a runtime complexity quadratic in $$n$$.
-To see this, notice we must compute $$O(n^2)$$ mutual information values, given which we can find the maximum spanning tree in $$O(n^2)$$ time.
+_A note on complexity._ 
+The Chow-Liu Algorithm has a runtime complexity which grows quadratically in the number of variables $$n$$.
+To see this, notice that we must compute the mutual information between $$O(n^2)$$ variables. 
+Given these weights, we can find a maximum spanning tree using any of the standard algorithms.
+Such algorithms have $$O(n^2)$$ runtime.
 
 ## General score-based approach
 
