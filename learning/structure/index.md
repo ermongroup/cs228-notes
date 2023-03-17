@@ -46,16 +46,24 @@ $$
 Then the directed acyclic graph $$G$$ defined by the parent function $$\text{pa}(X_i) = A_i$$ is a minimal _I_-map for $$\mathcal{I}$$.
 
 There is a natural modification to this procedure for the case in which we have a dataset rather than a set of conditional independence assertions.
-For subsets $$\mathbf{U}$$ of $$\{X_1, \dots, X_{i-1}\}$$, the algorithm uses a hypothesis test to decide if $$X_i \perp \{X_1, \dots, X_{i-1}\} \setminus \mathbf{U} \; | \; \mathbf{U}$$.
-The test is usually based on some statistical measure of deviance (e.g., a $$\chi^2$$ statistic or empirical mutual information) from the null hypothesis that the conditional independence holds.
+First, we select some ordering of the variables either arbitrarily or using domain knowledge.
+Second, for subsets $$\mathbf{U}$$ of the set of variables $$\{X_1, \dots, X_{i-1}\}$$, the algorithm uses a hypothesis test to decide if 
 
-As usual, such approaches suffer when we have limited data, which is exacerbated when the number of variables involved in the test is large.
-These approaches tend to work better with some prior (expert) knowledge of structure.
+$$
+    X_i \perp (\{X_1, \dots, X_{i-1}\} \setminus \mathbf{U}) \; | \; \mathbf{U}.
+$$
+
+The test is performed under the null hypothesis that the conditional independence holds and is usually based on some statistical measure of deviance. 
+For example, a $$\chi^2$$ statistic or empirical mutual information.
+
+As usual, the reliability of such techniques suffers when we have limited data.
+This situation is exacerbated when the number of variables involved in the test is large.
+These approaches tend to work better when domain knowledge is incorporated in deciding the ordering of the variables or asserting conditional independence properties.
 
 ### Score-based approaches for simultaneous structure and parameter learning
 
 Suppose $$\mathcal{D} = x^{(1)}, x^{(2)}, \dots, x^{(m)}$$ is a dataset of samples from $$n$$ random variables and $$\mathcal{G}$$ is a nonempty set of directed acyclic graphs.
-It is natural to be interested in finding a distribution $$p$$ and graph $$G$$ to
+Employing the principle of maximum likelihood, it is natural to be interested in finding a distribution $$p$$ and graph $$G$$ to
 
 $$
 \begin{aligned}
@@ -68,8 +76,19 @@ In other words, among structures in $$\mathcal{G}$$, we are interested in findin
 
 
 _An approximation perspective._ 
-We mention in passing that the above problem is equivalent to finding $$p$$ and $$G \in \mathcal{G}$$ to minimize $$D_{KL}(\hat{p} \| p)$$ subject to $$p$$ factors according to $$G$$, where $$\hat{p}$$ is the _empirical (data) distribution_; here $$D_{KL}$$ is the usual Kullback-Leibler divergence between $$\hat{p}$$ and $$p$$.
-Thus we can also interpret this task as finding the distribution which factors according to some graph in $$\mathcal{G}$$ which best _approximates_ the empirical distribution.
+Denote the _empirical (data) distribution_ by $$\hat{p}$$ and the usual Kullback-Leibler (KL) divergence between $$\hat{p}$$ and $$p$$ by $$D_{\text{KL}}(\hat{p}, p)$$.
+It can be shown that the above problem is equivalent to 
+
+$$
+\begin{aligned}
+    \underset{p \text{ and } G}{\text{maximize}} \quad & D_{\text{KL}}(\hat{p}, p)  \\
+    \text{subject to} \quad & p \text{ factors according to } G \in \mathcal{G} \\
+\end{aligned}
+$$
+
+To see this, express the KL-divergence as the likelihood of the dataset plus the entropy of $$\hat{p}$$.
+Consequently, we can given an alternative interpretation of the original problem.
+It finds the best _approximation_ of the empirical distribution, among those which factor appropriately.
 
 There is always a solution to this optimization problem, but its quality often depends on how one constrains the set $$\mathcal{G}$$.
 To see this, suppose $$\mathcal{G}$$ is the set of _all_ directed acyclic graphs.
@@ -78,6 +97,7 @@ In general, given an optimal $$p^\star$$ and $$G^\star$$, any
 graph $$G' \in \mathcal{G}$$ satisfying $$\mathcal{I}(G') \subseteq \mathcal{I}(G^\star)$$ is also optimal. 
 The reason is that $$p^\star$$ _also_ factors according to $$G'$$.
 Unfortunately, a complete graph (or generally any _dense_ graph) is often an undesirable solution because it models no (or few) conditional independence assertions and has many parameters to estimate.
+It may be prone to overfitting and inference may be intractable.
 
 These considerations, coupled with the accuracy-efficiency trade-off, make it natural to control the complexity of $$p$$ by restricting the class $$\mathcal{G}$$ or by adding regularization to the log-likelihood objective.
 In other words, we can replace the average log likelihood in the problem above with a real-valued _score_ function $$\text{Score}(G, \mathcal{D})$$ which may trade off between a measure of model fit with a measure of model complexity.
@@ -159,8 +179,7 @@ $$
 $$
 
 We recognize this as a maximum spanning tree problem. 
-It has several well-known algorithms for its solution.
-Their runtimes are quadratic in the number of vertices.
+It has several well-known algorithms for its solution, each with a runtime which grows quadratically in the number of verticies.
 Two famous examples include Kruskal's algorithm and Prim's algorithm.
 Any such maximum spanning tree, with any node its root, is a solution.
 
@@ -198,8 +217,7 @@ Any such maximum spanning tree, with any node its root, is a solution.
 _A note on complexity._ 
 The Chow-Liu Algorithm has a runtime complexity which grows quadratically in the number of variables $$n$$.
 To see this, notice that we must compute the mutual information between $$O(n^2)$$ variables. 
-Given these weights, we can find a maximum spanning tree using any of the standard algorithms.
-Such algorithms have $$O(n^2)$$ runtime.
+Given these weights, we can find a maximum spanning tree using any standard algorithm with runtime $$O(n^2)$$.
 
 ## General score-based approach
 
