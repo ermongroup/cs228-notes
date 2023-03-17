@@ -292,11 +292,17 @@ This approach is evidently sensitive to the initial variable ordering, and depen
 
 ### Other methods
 
-In this section, we briefly mention two other methods for graph search: an order-search (OS) approach and an integer linear programming (ILP) approach.
+In this section, we briefly mention three other methods for graph search: an order-search (OS) approach, an integer linear programming (ILP) approach, and a continuous relaxation approach.
 
 The OS approach, as its name suggests, conducts a search over the topological orders and the graph space at the same time. The K3 algorithm assumes a topological order in advance and searches only over the graphs that obey the topological order. When the order specified is a poor one, it may end with a bad graph structure (with a low graph score). The OS algorithm resolves this problem by performing a search over orders at the same time. It swaps the order of two adjacent variables at each step and employs the K3 algorithm as a sub-routine.
 
 The ILP approach encodes the graph structure, scoring and the acyclic constraints into a linear programming problem. Thus it can utilize a state-of-art integer programming solver. That said, this approach requires a bound on the maximum number of parents any node in the graph can have (say to be 4 or 5). Otherwise, the number of constraints in the ILP will explode and the computation will become intractable.
+
+The [continuous relaxation approach](https://arxiv.org/abs/1803.01422) encodes the directed graph structure via a weighted adjacency matrix.
+A function $$h: \mathbb{R}^{n \times n} \to \mathbb{R}$$ is specified whose zero level set characterizes the set of such matrices corresponding to _acyclic_ graphs.
+In other words, $$h(A) = 0$$ if and only if $$A \in \mathbb{R}^{n \times n}$$ is the weighted adjacency matrix of some directed and _acyclic_ graph.
+To find the graph which maximizes a score function, we formulate a _continuous_ optimization problem over the set $$\{A \in \mathbb{R}^{n \times n} \;|\; h(A) = 0\}$$.
+We can apply any constrained optimization algorithm to this problem.
 
 <br/>
 
