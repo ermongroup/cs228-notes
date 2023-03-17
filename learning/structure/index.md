@@ -4,7 +4,13 @@ title: Structure learning for Bayesian networks
 ---
 
 We consider estimating the graphical structure for a Bayesian network from a dataset.
-The task is challenging because (a) the graph structure need not be identifiable (i.e., two different graphs may induce the the same set of conditional independence assumptions; recall _I-equivalence_) and (b) the set of directed acyclic graphs is exponentially large in the number of variables.
+The task is challenging for at least two reasons.
+First, the set of directed acyclic graphs is exponentially large in the number of variables.
+Second, the graph structure need not be _identifiable_.
+In other words, two different graphs may by _I-equivalent_ and hence induce the same set of conditional independence assumptions.
+
+This second challenge is closely related to the fact that we can not associate causal interpretations to the edges learned, since the techniques we consider here are statistical in nature and can only detect association in the distribution or dataset of interest. 
+One way to keep this subtlety in mind is to remember that two Bayesian networks with different edge orientations may still represent the same distribution.
 
 Before discussing approaches, we emphasize the contrast between these challenges and our pleasant results on parameter learning for a Bayesian network _given_ the directed acyclic graph (see [Learning in directed models](../directed/)).
 There we supposed that we had elicited a graph from a domain expert, constructed it using our own (causal) intuition, or asserted it to simplify learning and inference.
@@ -16,26 +22,28 @@ We briefly touch on two broad approaches to structure learning: (1) constraint-b
 Constraint-based approaches use the dataset to perform statistical tests of independence between variables and construct a graph accordingly.
 Score-based approaches search for network structures to maximize the likelihood of the dataset while controlling the complexity of the model.
 
-One's modeling goal often guides the choice of approach.
-A useful distinction to make is whether one wants to estimate parameters of the conditional probability distributions in addition to the graphical structure.
-Sometimes, one is only interested in the qualitative statistical associations between the variables---namely, the graph itself and the conditional independence assertions it encodes.
+Our modeling goal often guides the choice of approach.
+A useful distinction to make is whether we want to estimate parameters of the conditional probability distributions in addition to the graphical structure.
+Sometimes, we are primarily interested in the qualitative statistical associations between the variables---namely, the graph itself and the conditional independence assertions it encodes.
 Such structure learning is sometimes called _knowledge discovery_.
 Since constraint-based techniques can avoid estimating parameters, they are natural candidates.
-On the other hand, score based techniques tend to be natural when one also wants parameter estimates.
+On the other hand, score based techniques tend to be natural when we also want parameter estimates.
 In the sequel, we briefly touch upon constraint-based approaches before turning to score-based approaches.
 
 ### Constraint-based approaches for knowledge discovery
 
-Here we consider one natural approach to constraint-based structure learning.
-The method extends an algorithm for finding a minimal I-map to the case in which we do not know the conditional independence assertions, but can deduce them using statistical tests of independence.
+Here we briefly describe one simple and natural approach to constraint-based structure learning.
+The method extends an algorithm for finding a minimal _I_-map to the case in which we do not know the conditional independence assertions, but estimate them using statistical tests of independence.
 
-First we recall the algorithm for finding a minimal I-map.
+First we recall the algorithm for finding a minimal _I_-map.
 Suppose $$X_1, \dots, X_n$$ is an ordering of $$n$$ random variables variables satisfying a set of conditional independence assertions $$\mathcal{I}$$.
 For $$i = 1,\dots, n$$, define $$\mathbf{A}_i$$ to be a minimal subset of $$\{ X_1, \dots, X_{i-1}\}$$ satisfying 
 
-$$p(X_i | X_1, \dots, X_{i-1}) = p(X_i | \mathbf{A}_i).$$
+$$
+p(X_i | X_1, \dots, X_{i-1}) = p(X_i | \mathbf{A}_i).
+$$
 
-Then the directed acyclic graph $$G$$ defined by the parent function $$\text{pa}(X_i) = A_i$$ is a minimal I-map for $$\mathcal{I}$$.
+Then the directed acyclic graph $$G$$ defined by the parent function $$\text{pa}(X_i) = A_i$$ is a minimal _I_-map for $$\mathcal{I}$$.
 
 There is a natural modification to this procedure for the case in which we have a dataset rather than a set of conditional independence assertions.
 For subsets $$\mathbf{U}$$ of $$\{X_1, \dots, X_{i-1}\}$$, the algorithm uses a hypothesis test to decide if $$X_i \perp \{X_1, \dots, X_{i-1}\} \setminus \mathbf{U} \; | \; \mathbf{U}$$.
