@@ -9,7 +9,7 @@ First, the set of directed acyclic graphs is exponentially large in the number o
 Second, the graph structure need not be _identifiable_.
 In other words, two different graphs may by _I-equivalent_ and hence induce the same set of conditional independence assumptions.
 
-This second challenge is closely related to the fact that we can not associate causal interpretations to the edges learned, since the techniques we consider here are statistical in nature and can only detect association in the distribution or dataset of interest. 
+This second challenge is closely related to the fact that we do not apply causal interpretations to the edges learned, since the techniques we consider here are statistical in nature and can only detect association in the distribution or dataset of interest. 
 One way to keep this subtlety in mind is to remember that two Bayesian networks with different edge orientations may still represent the same distribution.
 
 Before discussing approaches, we emphasize the contrast between these challenges and our pleasant results on parameter learning for a Bayesian network _given_ the directed acyclic graph (see [Learning in directed models](../directed/)).
