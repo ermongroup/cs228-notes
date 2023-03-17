@@ -86,7 +86,7 @@ $$
 \end{aligned}
 $$
 
-To see this, express the KL-divergence as the likelihood of the dataset plus the entropy of $$\hat{p}$$.
+To see this, express the KL-divergence in terms of the likelihood of the dataset and the entropy of $$\hat{p}$$.
 Consequently, we can given an alternative interpretation of the original problem.
 It finds the best _approximation_ of the empirical distribution, among those which factor appropriately.
 
