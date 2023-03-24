@@ -116,14 +116,13 @@ $$
 In other words, if the prior is a Dirichlet distribution with parameter $$(\alpha_1, \cdots, \alpha_K)$$ then the posterior $$p(\theta \mid \mathcal{D})$$ is a Dirichlet distribution with parameters $$(\alpha_1+N_1, \cdots, \alpha_K+N_K)$$. In example 2 above, we added a prior probability to observing an out-of-vocabulary word. We can see that this corresponds exactly to choosing a prior with nonzero prior $$\alpha = \alpha_1 = \ldots = \alpha_K$$. This is also exactly the same as [Laplace smoothing](https://en.wikipedia.org/wiki/Additive_smoothing) with parameter $$\alpha$$. We see that Laplace's heuristic for handling missing values has a rigorous justification when viewed with the Bayesian formalism.
 
 ### MAP Estimation
-
-It is often easier to compute the posterior mode (optimization) than the posterior mean $$\E[\theta \mid \mathcal{D}]$$ (integration).
+Computing the posterior distribution exactly is often unfeasible, as we may need to compute a high-dimensional integral for the normalization constant. Hence, point estimates are used to avoid intractable computation. It is often easier to compute the posterior mode (optimization) than the posterior mean $$\E[\theta \mid \mathcal{D}]$$ (integration).
 
 $$
 \hat{\theta} = \arg \max_{\theta} P(\theta \mid \mathcal{D}) = \arg \max_{\theta} \frac{P(\mathcal{D} \mid \theta) P(\theta)}{\mathcal{D}} = \arg \max_{\theta} P(\mathcal{D} \mid \theta) P(\theta)
 $$
 
-The point estimate $$ \hat{\theta}$$ is called the \textbf{maximum a posteriori estimation}. It can be interpreted as \textbf{regularized} maximum likelihood estimation, where the prior $$P(\theta)$$ behaves as the regularizer. 
+The point estimate $$ \hat{\theta}$$ is called the \textbf{maximum a posteriori estimator}. It can be interpreted as \textbf{regularized} maximum likelihood estimation, where the prior $$P(\theta)$$ behaves as the regularizer. 
 
 $$
 \hat{\theta} = \arg \max_{\theta} \log P(\theta \mid \mathcal{D}) = \arg \max_{\theta} \log P(\mathcal{D} \mid \theta) + \log P(\theta)
@@ -131,7 +130,7 @@ $$
 
 #### Bayesian Linear Regression
 
-Suppose we have training data $$\mathcal{D} = \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2),...,(\mathbf{x}_m, y_m) \} $$. Then our model $$ P(Y \mid \mathbf{X} = \mathbf{x}, \theta) $$ is Multivariate Normal with mean $$ \theta \mathbf{x} $$ and covariance $$ I $$. Given maximimzing likelihood is equivalent to minimizing the least square cost, the MLE estimate of the parameter is 
+Suppose we have training data $$\mathcal{D} = \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2),...,(\mathbf{x}_m, y_m) \} $$. Then our model $$ P(Y \mid \mathbf{X} = \mathbf{x}, \theta) $$ is Multivariate Normal with mean $$ \theta \mathbf{x} $$ and covariance $$ I $$. Given maximizing likelihood is equivalent to minimizing the least square cost, the MLE estimate of the parameter is 
 
 $$
 \hat{\theta} = \arg \max_{\theta} \log P(y_1, ..., y_m \mid \mathbf{x}_1, ..., \mathbf{x}_m) = \arg \min \frac{1}{2} \sum_{i=1}^m (y_i - \theta \mathbf{x}_i)^2
@@ -156,10 +155,14 @@ $$
 \hat{\theta}^{MAP} = \arg \max_{\theta} - \frac{1}{2} \sum_{i=1}^m (y_i - \theta \mathbf{x}_i)^2 - \frac{\lambda} {2} \theta^{\top} \theta = \arg \min_{\theta} \sum_{i = 1}^m  (y_i - \theta \mathbf{x}_i)^2 + \lambda \theta^{\top} \theta
 $$
 
-This objective is equivalent fo the regularized least-squares objective (\textbf{ridge regression}). Similarly, if you were to use a Laplacian prior, you would derive the objective for \textbf{lasso regression}.
+This objective is equivalent to the regularized least-squares objective (\textbf{ridge regression}), which biases the parameter to smaller values of $$ \theta $$. Similarly, if we were to use a Laplacian prior, we would derive the objective for \textbf{lasso regression}.
+
+#### Computing MAP Estimates
+There are several methods to compute MAP estimates. i) When the posterior has a conjugate prior, the MAP estimate can be computed analytically in closed-form. ii) Numerical optimization algorithms like Newton's method, which often require computing the first or second derivatives. iii) A modified Expectation Maximization algorithm, which does not require computing derivatives. iv) Monte Carlo methods.
 
 
 ### Some Concluding Remarks
+Bayesian methods are conceptually simple and elegant and can handle small sample sizes and complex hierarchical models with less overfitting. They provide a single mechanism for answering all questions of interest; there is no need to choose between different estimators or models. Still, here are some key limitations: i) Computational issues (we may require computing an intractable integral) and ii) Bayes rule requires a prior, which is considered ``subjective''.
 
 Many distributions have conjugate priors. In fact, any exponential family distribution has a conjugate prior. Even though conjugacy seemingly solves the problem of computing Bayesian posteriors, there are two caveats: 1. Usually practitioners will want to choose the prior $$p(\theta)$$ to best capture his or her knowledge about the problem, and using conjugate priors is a strong restriction. 2. For more complex distributions, the posterior computation is not as easy as those in our examples. There are distributions for which the posterior computation is still NP hard. 
 
