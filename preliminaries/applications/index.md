@@ -170,7 +170,7 @@ We can solve this by sampling or performing inference on $$p(\textbf{I} \mid \te
 
 As we did in image processing, we can also sample the model and generate (synthesize) speech signals.
 
-[Super resolution of audio signals demo](https://deepmind.com/blog/wavenet-generative-model-raw-audio/)
+[Speech synthesis example](https://deepmind.com/blog/wavenet-generative-model-raw-audio/)
 
 <a id="speech-recognition"></a>
 ### Speech recognition
