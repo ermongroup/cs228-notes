@@ -114,7 +114,7 @@ By using this function, one can calculate the probability that $$X$$ takes on a 
 ### **Properties**:
 <!--Figure 1: A cumulative distribution function (CDF).-->
 - $$0 \leq F_X(x) \leq 1$$. This follows from the definition of the probability measure.
-- $$\lim_{x \to -\infty} F_X(x) = 0$$. As $$x$$ approaches $$-\infty$$, the corresponding set of $$\omega$$ where $$X(\Omega) \le x$$ approaches $$\emptyset$$, for which $$P(\emptyset) = 0$$. 
+- $$\lim_{x \to -\infty} F_X(x) = 0$$. As $$x$$ approaches $$-\infty$$, the corresponding set of $$\omega$$ where $$X(\omega) \le x$$ approaches $$\emptyset$$, for which $$P(\emptyset) = 0$$. 
 - $$\lim_{x \to +\infty} F_X(x) = 1$$. As $$x$$ approaches $$\infty$$, the corresponding set of $$\omega$$ where $$X(\omega) \le x$$ approaches $$\Omega$$, for which $$P(\Omega) = 1$$.
 - $$x \leq y \implies F_X(x) \leq F_X(y)$$. This follows from the fact that the event that $$X \le x$$ is a subset of $$X \le y$$ for $$x \leq y$$.
 
@@ -320,7 +320,7 @@ $$ \int \int_{(x,y) \in A} f_{XY} (x, y) dx dy = P((X, Y) \in A). $$
 
 Note that the values of the probability density function $$f_{XY}(x, y)$$ are always nonnegative, but they may be greater than 1. Nonetheless, it must be the case that $$\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1$$.
 
-Analagous to the discrete case, we define
+Analogous to the discrete case, we define
 
 $$ f_X(x) = \int^{\infty}_{-\infty} f_{XY} (x, y)dy $$
 
