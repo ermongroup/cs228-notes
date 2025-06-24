@@ -114,7 +114,7 @@ By using this function, one can calculate the probability that $$X$$ takes on a 
 ### **Properties**:
 <!--Figure 1: A cumulative distribution function (CDF).-->
 - $$0 \leq F_X(x) \leq 1$$. This follows from the definition of the probability measure.
-- $$\lim_{x \to -\infty} F_X(x) = 0$$. As $$x$$ approaches $$-\infty$$, the corresponding set of $$\omega$$ where $$X(\Omega) \le x$$ approaches $$\emptyset$$, for which $$P(\emptyset) = 0$$. 
+- $$\lim_{x \to -\infty} F_X(x) = 0$$. As $$x$$ approaches $$-\infty$$, the corresponding set of $$\omega$$ where $$X(\omega) \le x$$ approaches $$\emptyset$$, for which $$P(\emptyset) = 0$$. 
 - $$\lim_{x \to +\infty} F_X(x) = 1$$. As $$x$$ approaches $$\infty$$, the corresponding set of $$\omega$$ where $$X(\omega) \le x$$ approaches $$\Omega$$, for which $$P(\Omega) = 1$$.
 - $$x \leq y \implies F_X(x) \leq F_X(y)$$. This follows from the fact that the event that $$X \le x$$ is a subset of $$X \le y$$ for $$x \leq y$$.
 
