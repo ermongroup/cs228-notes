@@ -320,7 +320,7 @@ $$ \int \int_{(x,y) \in A} f_{XY} (x, y) dx dy = P((X, Y) \in A). $$
 
 Note that the values of the probability density function $$f_{XY}(x, y)$$ are always nonnegative, but they may be greater than 1. Nonetheless, it must be the case that $$\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} f_{XY}(x,y) = 1$$.
 
-Analagous to the discrete case, we define
+Analogous to the discrete case, we define
 
 $$ f_X(x) = \int^{\infty}_{-\infty} f_{XY} (x, y)dy $$
 
