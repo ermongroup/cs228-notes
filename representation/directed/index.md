@@ -102,6 +102,27 @@ In other words, all the independencies encoded in $$G$$ are sound: variables tha
 
 In a way this is almost a trivial statement. If $$p(x,y) = p(x)p(y)$$, then this distribution still factorizes over the graph $$y \rightarrow x$$, since we can always write it as $$p(x,y) = p(x\mid y)p(y)$$ with a CPD $$p(x\mid y)$$ in which the probability of $$x$$ does not actually vary with $$y$$. However, we can construct a graph that matches the structure of $$p$$ by simply removing that unnecessary edge.
 
+**Framework for determining d-separation** {% include sidenote.html note="Taken from Pieter Abbeel's YouTube video on d-separation https://www.youtube.com/watch?v=yDs_q6jKHb0&t=1040s" %}
+
+Given a query $$X_1 \perp X_2 \mid X_3, X_4$$
+- Shade all evidence nodes ($$X_3, X_4$$)
+- For all paths from $$X_1$$ to $$X_2$$, take triplets along each path and using the 4 rules described above, determine if the path is active or inactive.
+- If any path is active it is not guaranteed that $$X_1 \perp X_2 \mid X_3, X_4$$ is true.
+- If all paths are inactive (one of the triplets along the path violates the 4 rules) then the query is true.
+
+**Example of Applying this Framework**
+
+{% include marginfigure.html id="dp2" url="assets/img/dsep3.png" description="In this example, $$Y$$ and $$Z$$ are not $$d$$-separated given $$X$$." %}
+
+We consider the query $$Y \perp Z \mid X$$
+- There are two paths from $$Y$$ to $$Z$$. ($$Y, X, V, T, Z$$ and $$Y, W, V, T, Z$$)
+- Considering Path 1 $$Y, X, V, T, Z$$, the first triple is $$Y, X, V$$.
+- This is an inactive triple since $$X$$ is observed, which means that Path 1 is inactive.
+- Along Path 2, the first triple is $$Y, W, V$$ which is active.
+- The second triple is $$W, V, T$$ which is active and finally the third triple $$V, T, Z$$ is also active.
+- Since there is an active path between $$Y$$ and $$Z$$ the independence statement is not guaranteed to be true.
+
+
 ### The representational power of directed graphs
 
 This raises our last and perhaps most important question: can directed graphs express all the independencies of any distribution $$p$$? More formally, given a distribution $$p$$, can we construct a graph $$G$$ such that $$I(G) = I(p)$$?
