@@ -16,9 +16,9 @@ The kinds of models that we will see here are referred to as *Bayesian networks*
 
 ## Probabilistic modeling with Bayesian networks
 
-Directed graphical models (a.k.a. Bayesian networks) are a family of probability distributions that admit a compact parametrization that can be naturally described using a directed graph.
+Directed graphical models (a.k.a. Bayesian networks) are a family of probability distributions that admit a compact parameterization that can be naturally described using a directed graph.
 
-The general idea behind this parametrization is surprisingly simple.
+The general idea behind this parameterization is surprisingly simple.
 
 Recall that by the chain rule, we can write any probability $$p$$ as:
 
